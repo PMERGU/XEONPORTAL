@@ -1,12 +1,11 @@
 'use strict';
 
-angular.module('portalApp', ['LocalStorageModule', 
+angular.module('portalApp', ['LocalStorageModule',
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
     // jhipster-needle-angularjs-add-module JHipster will add new module here
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar'])
 
     .run(function ($rootScope, $location, $window, $http, $state,  Auth, Principal, ENV, VERSION) {
-        
         $rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
@@ -16,8 +15,8 @@ angular.module('portalApp', ['LocalStorageModule',
             if (Principal.isIdentityResolved()) {
                 Auth.authorize();
             }
-			
-            
+
+
         });
 
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
@@ -27,7 +26,7 @@ angular.module('portalApp', ['LocalStorageModule',
             // reset the state memory after logout. If we're redirected to login, our
             // previousState is already set in the authExpiredInterceptor. If we're going
             // to login directly, we don't want to be sent to some previous state anyway
-            if (toState.name != 'login' && $rootScope.previousStateName) {
+            if (toState.name !== 'login' && $rootScope.previousStateName) {
               $rootScope.previousStateName = fromState.name;
               $rootScope.previousStateParams = fromParams;
             }
@@ -38,7 +37,7 @@ angular.module('portalApp', ['LocalStorageModule',
             }
             $window.document.title = titleKey;
         });
-        
+
         $rootScope.back = function() {
             // If previous state is 'activate' or do not exist go to 'home'
             if ($rootScope.previousStateName === 'activate' || $state.get($rootScope.previousStateName) === null) {
@@ -47,6 +46,7 @@ angular.module('portalApp', ['LocalStorageModule',
                 $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
             }
         };
+
     })
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider,  httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
         // uncomment below to make alerts look like toast
@@ -78,16 +78,21 @@ angular.module('portalApp', ['LocalStorageModule',
         $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('notificationInterceptor');
         // jhipster-needle-angularjs-add-interceptor JHipster will add new application interceptor here
-        
+
     })
     // jhipster-needle-angularjs-add-config JHipster will add new application configuration here
     .config(['$urlMatcherFactoryProvider', function($urlMatcherFactory) {
         $urlMatcherFactory.type('boolean', {
             name : 'boolean',
-            decode: function(val) { return val == true ? true : val == "true" ? true : false },
+            decode: function(val) { return val === true ? true : val === 'true' ? true : false; },
             encode: function(val) { return val ? 1 : 0; },
             equals: function(a, b) { return this.is(a) && a === b; },
-            is: function(val) { return [true,false,0,1].indexOf(val) >= 0 },
+            is: function(val) { return [true,false,0,1].indexOf(val) >= 0; },
             pattern: /bool|true|0|1/
         });
-    }]);
+    }])
+    .config(function ($compileProvider, ENV) {
+        // Optimize load start with remove binding information inside the DOM element
+        //TODO: change to prod for prod...need to do this automatigally
+        $compileProvider.debugInfoEnabled(ENV === 'dev' ? true: false);
+    });

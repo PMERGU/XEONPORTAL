@@ -54,7 +54,7 @@ gulp.task('test', ['wiredep:test', 'ngconstant:dev'], function(done) {
 
 
 gulp.task('copy', function() {
-    return es.merge( 
+    return es.merge(
         gulp.src(config.app + 'bower_components/bootstrap/fonts/*.*')
         .pipe(plumber({errorHandler: handleErrors}))
         .pipe(changed(config.dist + 'assets/fonts/'))
@@ -89,7 +89,12 @@ gulp.task('styles', ['sass'], function() {
 });
 
 gulp.task('install', function(done) {
-    runSequence('wiredep', 'ngconstant:dev', 'sass', done);
+    runSequence('wiredep', 'ngconstant:dev', 'sass', 'icons', done);
+});
+
+gulp.task('icons', function() {
+    return gulp.src(config.importPath + '/fontawesome/fonts/**.*')
+        .pipe(gulp.dest(config.app + 'assets/fonts'));
 });
 
 gulp.task('serve', function() {
