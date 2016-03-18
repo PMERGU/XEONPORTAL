@@ -1,0 +1,151 @@
+{
+  "relationships": [
+    {
+      "relationshipName": "poLine",
+      "otherEntityName": "poLine",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "purchaseOrder",
+      "relationshipId": 1
+    },
+    {
+      "relationshipName": "shipToParty",
+      "otherEntityName": "party",
+      "relationshipType": "one-to-one",
+      "otherEntityField": "id",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "purchaseOrder",
+      "relationshipId": 2
+    },
+    {
+      "relationshipName": "pickUpParty",
+      "otherEntityName": "party",
+      "relationshipType": "one-to-one",
+      "otherEntityField": "id",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "purchaseOrder",
+      "relationshipId": 3
+    },
+    {
+      "relationshipName": "employee",
+      "otherEntityName": "employee",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name",
+      "relationshipId": 4
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "state",
+      "fieldType": "PoState",
+      "fieldValues": "PROCESSED,UNPROCESSED",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "serviceLevel",
+      "fieldType": "ServiceLevel",
+      "fieldValues": "ECONOMY,EXPRESS_AM,EXPRESS_PM,DEDICATED"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "captureDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "deliveryDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "poNumber",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 6,
+      "fieldName": "reference",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 7,
+      "fieldName": "customerType",
+      "fieldType": "CustomerType",
+      "fieldValues": "REGULAR,ONE_TIME"
+    },
+    {
+      "fieldId": 8,
+      "fieldName": "shipToType",
+      "fieldType": "DeliveryType",
+      "fieldValues": "RETAIL,STANDARD,HOME_DROP_BOX,HOME_CONNECTION"
+    },
+    {
+      "fieldId": 9,
+      "fieldName": "telephone",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 10,
+      "fieldName": "collective",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 11,
+      "fieldName": "accountReference",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 12,
+      "fieldName": "modeOfTransport",
+      "fieldType": "ModeOfTransport",
+      "fieldValues": "AIR_DELIVERIES,AIR_TRANSFERS,ROAD,SEA"
+    },
+    {
+      "fieldId": 13,
+      "fieldName": "carrierVesselName",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 14,
+      "fieldName": "carrierVesselNumber",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 15,
+      "fieldName": "pickUpType",
+      "fieldType": "DeliveryType",
+      "fieldValues": "RETAIL,STANDARD,HOME_DROP_BOX,HOME_CONNECTION"
+    }
+  ],
+  "changelogDate": "20160318131121",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "entityTableName": "PurchaseOrder"
+}

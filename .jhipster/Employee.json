@@ -1,0 +1,30 @@
+{
+  "relationships": [
+    {
+      "relationshipName": "purchaseOrder",
+      "otherEntityName": "purchaseOrder",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "employee",
+      "relationshipId": 1
+    },
+    {
+      "relationshipName": "company",
+      "otherEntityName": "company",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name",
+      "relationshipId": 2
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20160318131120",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "entityTableName": "Employee"
+}

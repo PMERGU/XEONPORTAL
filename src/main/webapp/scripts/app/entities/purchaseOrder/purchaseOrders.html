@@ -1,0 +1,99 @@
+<div>
+    <h2>PurchaseOrders</h2>
+    <jh-alert></jh-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="purchaseOrder.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span 
+                       >Create new PurchaseOrder
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
+                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="state"><span>State</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="serviceLevel"><span>ServiceLevel</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="captureDate"><span>CaptureDate</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deliveryDate"><span>DeliveryDate</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="poNumber"><span>PoNumber</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="reference"><span>Reference</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="customerType"><span>CustomerType</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="shipToType"><span>ShipToType</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="telephone"><span>Telephone</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="collective"><span>Collective</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="accountReference"><span>AccountReference</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="modeOfTransport"><span>ModeOfTransport</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="carrierVesselName"><span>CarrierVesselName</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="carrierVesselNumber"><span>CarrierVesselNumber</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="pickUpType"><span>PickUpType</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="shipToPartyId"><span>shipToParty</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="pickUpPartyId"><span>pickUpParty</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="employeeName"><span>employee</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="purchaseOrder in purchaseOrders track by purchaseOrder.id">
+                    <td><a ui-sref="purchaseOrder.detail({id:purchaseOrder.id})">{{purchaseOrder.id}}</a></td>
+                    <td translate="{{'portalApp.PoState.' + purchaseOrder.state}}">{{purchaseOrder.state}}</td>
+                    <td translate="{{'portalApp.ServiceLevel.' + purchaseOrder.serviceLevel}}">{{purchaseOrder.serviceLevel}}</td>
+                    <td>{{purchaseOrder.captureDate | date:'medium'}}</td>
+                        <td>{{purchaseOrder.deliveryDate | date:'mediumDate'}}</td>
+                    <td>{{purchaseOrder.poNumber}}</td>
+                    <td>{{purchaseOrder.reference}}</td>
+                    <td translate="{{'portalApp.CustomerType.' + purchaseOrder.customerType}}">{{purchaseOrder.customerType}}</td>
+                    <td translate="{{'portalApp.DeliveryType.' + purchaseOrder.shipToType}}">{{purchaseOrder.shipToType}}</td>
+                    <td>{{purchaseOrder.telephone}}</td>
+                    <td>{{purchaseOrder.collective}}</td>
+                    <td>{{purchaseOrder.accountReference}}</td>
+                    <td translate="{{'portalApp.ModeOfTransport.' + purchaseOrder.modeOfTransport}}">{{purchaseOrder.modeOfTransport}}</td>
+                    <td>{{purchaseOrder.carrierVesselName}}</td>
+                    <td>{{purchaseOrder.carrierVesselNumber}}</td>
+                    <td translate="{{'portalApp.DeliveryType.' + purchaseOrder.pickUpType}}">{{purchaseOrder.pickUpType}}</td>
+                    <td>
+                        <a ui-sref="party.detail({id:purchaseOrder.shipToPartyId})">{{purchaseOrder.shipToPartyId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="party.detail({id:purchaseOrder.pickUpPartyId})">{{purchaseOrder.pickUpPartyId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="employee.detail({id:purchaseOrder.employeeId})">{{purchaseOrder.employeeName}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="purchaseOrder.detail({id:purchaseOrder.id})"
+                                    class="btn btn-info btn-sm"> 
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="purchaseOrder.edit({id:purchaseOrder.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="purchaseOrder.delete({id:purchaseOrder.id})"
+                                    class="btn btn-danger btn-sm">                                    
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <uib-pagination class="pagination-sm" total-items="totalItems" ng-model="page" ng-change="loadAll()"></uib-pagination>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+{
+  "relationships": [
+    {
+      "relationshipName": "purchaseOrder",
+      "otherEntityName": "purchaseOrder",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "reference",
+      "relationshipId": 1
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "materialNumber",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "orderQuantity",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "unitOfMeasure",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "warehouse",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "length",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 6,
+      "fieldName": "width",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 7,
+      "fieldName": "height",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 8,
+      "fieldName": "grossWeight",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 9,
+      "fieldName": "netWeight",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 10,
+      "fieldName": "batchNumber",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20160318131122",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "entityTableName": "PoLine"
+}

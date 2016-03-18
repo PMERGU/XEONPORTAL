@@ -1,0 +1,166 @@
+
+<div>
+    <h2><span>PurchaseOrder</span> {{purchaseOrder.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>State</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'portalApp.PoState.' + purchaseOrder.state}}">{{purchaseOrder.state}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>ServiceLevel</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'portalApp.ServiceLevel.' + purchaseOrder.serviceLevel}}">{{purchaseOrder.serviceLevel}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>CaptureDate</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.captureDate | date:'medium'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DeliveryDate</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.deliveryDate | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>PoNumber</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.poNumber}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Reference</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.reference}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>CustomerType</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'portalApp.CustomerType.' + purchaseOrder.customerType}}">{{purchaseOrder.customerType}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>ShipToType</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'portalApp.DeliveryType.' + purchaseOrder.shipToType}}">{{purchaseOrder.shipToType}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Telephone</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.telephone}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Collective</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.collective}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>AccountReference</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.accountReference}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>ModeOfTransport</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'portalApp.ModeOfTransport.' + purchaseOrder.modeOfTransport}}">{{purchaseOrder.modeOfTransport}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>CarrierVesselName</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.carrierVesselName}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>CarrierVesselNumber</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{purchaseOrder.carrierVesselNumber}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>PickUpType</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'portalApp.DeliveryType.' + purchaseOrder.pickUpType}}">{{purchaseOrder.pickUpType}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>shipToParty</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="party.detail({id:purchaseOrder.shipToPartyId})">{{purchaseOrder.shipToPartyId}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>pickUpParty</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="party.detail({id:purchaseOrder.pickUpPartyId})">{{purchaseOrder.pickUpPartyId}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>employee</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="employee.detail({id:purchaseOrder.employeeId})">{{purchaseOrder.employeeName}}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

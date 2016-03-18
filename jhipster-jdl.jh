@@ -1,0 +1,83 @@
+
+entity Company {
+	name String required
+    sapId String required
+    background ImageBlob
+}
+
+entity Employee {
+	name String
+}
+
+relationship OneToMany {
+  Company{employee} to Employee{company(name)}
+}
+
+enum PoState { PROCESSED, UNPROCESSED }
+enum ServiceLevel { ECONOMY, EXPRESS_AM, EXPRESS_PM, DEDICATED }
+enum CustomerType { REGULAR, ONE_TIME }
+enum ModeOfTransport { AIR_DELIVERIES, AIR_TRANSFERS, ROAD, SEA }
+enum DeliveryType { RETAIL, STANDARD, HOME_DROP_BOX, HOME_CONNECTION }
+
+entity PurchaseOrder{
+	state PoState required
+    serviceLevel ServiceLevel
+    captureDate ZonedDateTime
+    deliveryDate LocalDate required
+    poNumber String required
+    reference String required
+    customerType CustomerType
+    shipToType DeliveryType
+    telephone String required
+    collective String required
+    accountReference String required
+    modeOfTransport ModeOfTransport
+ 	carrierVesselName String required
+    carrierVesselNumber String required
+    pickUpType DeliveryType
+}
+
+relationship OneToMany {
+  Employee{purchaseOrder} to PurchaseOrder{employee(name)}
+}
+
+relationship OneToMany {
+  PurchaseOrder{poLine} to PoLine{purchaseOrder(reference)}
+}
+
+entity PoLine{
+	materialNumber String required
+    orderQuantity Integer required
+    unitOfMeasure String required
+    warehouse String required
+ 	length Integer required
+    width Integer required
+    height Integer required
+    grossWeight Integer required
+    netWeight Integer required
+    batchNumber String
+}
+
+entity Party{
+	name String required
+    houseNumber String
+    streetName String
+    district String
+    postalCode Integer
+    city String
+    country String
+    reference String
+}
+
+relationship OneToOne {
+  PurchaseOrder{shipToParty} to Party
+}
+
+relationship OneToOne {
+  PurchaseOrder{pickUpParty} to Party
+}
+
+paginate Company, Employee, PurchaseOrder, PoLine with pagination
+dto PurchaseOrder with mapstruct
+service PurchaseOrder with serviceClass
+service Employee with serviceImpl

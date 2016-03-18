@@ -1,0 +1,53 @@
+{
+  "relationships": [],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "houseNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "streetName",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "district",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "postalCode",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldId": 6,
+      "fieldName": "city",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 7,
+      "fieldName": "country",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 8,
+      "fieldName": "reference",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20160318131123",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "entityTableName": "Party"
+}

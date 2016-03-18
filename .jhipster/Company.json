@@ -1,0 +1,40 @@
+{
+  "relationships": [
+    {
+      "relationshipName": "employee",
+      "otherEntityName": "employee",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "company",
+      "relationshipId": 1
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "sapId",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "background",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "changelogDate": "20160318131119",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "entityTableName": "Company"
+}
