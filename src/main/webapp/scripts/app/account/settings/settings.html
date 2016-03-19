@@ -1,7 +1,17 @@
 <div>
+    <div small-header>
+        <div class="hpanel">
+            <div class="panel-body">
+                <h2>User settings for [<b>{{settingsAccount.login}}</b>]</h2>
+                </div>
+            </div>
+        </div>
+
     <div class="row">
+        <div class="hpanel">
+            <div class="panel-body">
         <div class="col-md-8 col-md-offset-2">
-            <h2>User settings for [<b>{{settingsAccount.login}}</b>]</h2>
+
 
             <div class="alert alert-success" ng-show="success">
                 <strong>Settings saved!</strong>
@@ -82,6 +92,8 @@
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Save</button>
             </form>
         </div>
+                </div>
+            </div>
     </div>
 
 </div>

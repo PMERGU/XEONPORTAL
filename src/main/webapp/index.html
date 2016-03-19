@@ -42,14 +42,16 @@
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
 
         <!-- Top navigation -->
-        <div ui-view="navbar" ng-cloak=""></div>
+        <div id="header" ui-view="navbar" ng-cloak=""></div>
 
         <!-- right navigation -->
-        <aside id="menu" ui-view="navigation" ng-cloak=""></aside>
+        <aside id="menu" ui-view="leftmenu" ng-cloak=""></aside>
 
         <!-- Main Wrapper -->
-        <div id="wrapper" >
-            <div ui-view="content"></div>
+        <div id="wrapper">
+            <div class="content">
+                <div ui-view="content" animate-panel></div>
+            </div>
             <!-- Footer -->
             <footer class="footer">
                 <span class="pull-right">
@@ -132,6 +134,8 @@
     <script src="scripts/components/interceptor/notification.interceptor.js"></script>
     <script src="scripts/components/navbar/navbar.directive.js"></script>
     <script src="scripts/components/navbar/navbar.controller.js"></script>
+        <script src="scripts/components/leftmenu/leftmenu.directive.js"></script>
+        <script src="scripts/components/leftmenu/leftmenu.controller.js"></script>
     <script src="scripts/components/user/user.service.js"></script>
     <script src="scripts/components/util/truncate.filter.js"></script>
     <script src="scripts/components/util/base64.service.js"></script>

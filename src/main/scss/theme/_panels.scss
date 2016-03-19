@@ -32,9 +32,30 @@
   background: #fff;
   border: 1px solid $border-color;
   border-radius: 2px;
-  padding: 20px;
+  padding: 15px;
   position: relative;
 }
+
+div[small-header]{
+    .hpanel .panel-body {
+        background: #fff;
+        border: 1px solid $border-color;
+        border-radius: 2px;
+        padding: 15px;
+        position: relative;
+        button{
+            &.btn-primary{
+                background-color: rgba(52, 73, 94, 0.9);
+                margin-top: -30px;
+                margin-right: 10px;
+                &:hover{
+                    background-color: rgb(52, 73, 94);
+                }
+            }
+        }
+    }
+}
+
 
 
 .hpanel.panel-group .panel-body:first-child {

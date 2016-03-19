@@ -48,6 +48,11 @@ angular.module('portalApp', ['LocalStorageModule',
         };
 
     })
+    .config(function ($compileProvider, ENV) {
+        // Optimize load start with remove binding information inside the DOM element
+        //TODO: change to prod for prod...need to do this automatigally
+        $compileProvider.debugInfoEnabled(ENV === 'prod' ? false: true);
+    })
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider,  httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
         // uncomment below to make alerts look like toast
         //AlertServiceProvider.showAsToast(true);
@@ -62,6 +67,10 @@ angular.module('portalApp', ['LocalStorageModule',
                 'navbar@': {
                     templateUrl: 'scripts/components/navbar/navbar.html',
                     controller: 'NavbarController'
+                },
+                'leftmenu@': {
+                    templateUrl: 'scripts/components/leftmenu/leftmenu.html',
+                    controller: 'LeftmenuController'
                 }
             },
             resolve: {
@@ -90,9 +99,4 @@ angular.module('portalApp', ['LocalStorageModule',
             is: function(val) { return [true,false,0,1].indexOf(val) >= 0; },
             pattern: /bool|true|0|1/
         });
-    }])
-    .config(function ($compileProvider, ENV) {
-        // Optimize load start with remove binding information inside the DOM element
-        //TODO: change to prod for prod...need to do this automatigally
-        $compileProvider.debugInfoEnabled(ENV === 'dev' ? true: false);
-    });
+    }]);

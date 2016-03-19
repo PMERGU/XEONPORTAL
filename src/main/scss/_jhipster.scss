@@ -9,7 +9,7 @@
     top: 0;
     left: 0;
     border: 0;
-    z-index: 1000;
+    z-index: 10000;
     background-image: url("../images/development_ribbon.png");
     background-position: center center;
     background-repeat: no-repeat;
@@ -17,7 +17,10 @@
 
 .navbar-version {
     font-size: 10px;
-    color: #ccc
+    color: #A9A9A9;
+    position: absolute;
+    top: 65px;
+    right: 25px;
 }
 
 .browserupgrade {

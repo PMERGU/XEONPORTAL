@@ -1,0 +1,69 @@
+<div id="navigation">
+    <div class="profile-picture">
+        <a href="index.html">
+            <img src="images/profile.jpg" class="img-circle m-b" alt="logo">
+        </a>
+
+        <div class="stats-label text-color">
+            <span class="font-extra-bold font-uppercase">Robert Razer</span>
+
+            <div>
+                <small class="text-muted">Last login 21min ago</small>
+            </div>
+
+            <div class="small-chart m-t-sm">
+                <!--<div sparkline spark-data="barProfileData" spark-options="barProfileOptions"></div>-->
+            </div>
+            </br>
+            <br>
+                <span class="font-extra-bold font-uppercase">Orders placed</span>
+                </br>
+                <span class="font-extra-bold font-uppercase">21</span>
+                <div>
+                    <small class="text-muted">in last 30 days</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ul side-navigation class="nav" id="side-menu">
+        <li ui-sref-active="active">
+            <a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>&#xA0;<span>Profile</span></a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-lock"></span>&#xA0;<span>Password</span></a>
+        </li>
+        <li ng-class="{active: $state.includes('admin')}" has-authority="ROLE_ADMIN">
+            <a href="#">
+                <span class="nav-label">Administration</span><span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('admin')}">
+                <li ui-sref-active="active">
+                    <a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>&#xA0;<span>User management</span></a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="metrics" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-dashboard"></span>&#xA0;<span>Metrics</span></a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="health" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-heart"></span>&#xA0;<span>Health</span></a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="configuration" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-list-alt"></span>&#xA0;<span>Configuration</span></a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="audits" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-bell"></span>&#xA0;<span>Audits</span></a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="logs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-tasks"></span>&#xA0;<span>Logs</span></a>
+                </li>
+                <li ng-hide="inProduction" ui-sref-active="active">
+                    <a ui-sref="docs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-book"></span>&#xA0;<span>API</span></a>
+                </li>
+                <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
+                <li ng-hide="inProduction">
+                    <a href='/h2-console' target="_tab" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-hdd"></span>&#xA0;<span>Database</span></a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
