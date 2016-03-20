@@ -158,3 +158,353 @@ Error: [2] >Sun Mar 20 17:17:40,416<    RfcException raised by system [ZED|mcsas
     return code: RFC_CONVERSION (21)
     error group: 104
     key: RFC_ERROR_SYSTEM_FAILURE
+
+**** Error file opened at 20160320 201645 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Info:  >Sun Mar 20 20:16:45,821<    ComplexParameter.setXmlBytes thrown com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20" com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:628)
+	at com.sap.conn.jco.rt.XRfcParser.parse(XRfcParser.java:377)
+	at com.sap.conn.jco.rt.ComplexParameter.setXmlBytes(ComplexParameter.java:111)
+	at com.sap.conn.rfc.engine.RfcImp.receiveXMLData(RfcImp.java:318)
+	at com.sap.conn.rfc.engine.RfcGet.ab_rfcget(RfcGet.java:336)
+	at com.sap.conn.rfc.engine.RfcRcv.ab_rfcreceive(RfcRcv.java:36)
+	at com.sap.conn.rfc.engine.RfcIoOpenCntl.RfcReceive(RfcIoOpenCntl.java:1987)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.execute(MiddlewareJavaRfc.java:2032)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1185)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1014)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1458)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1428)
+	at com.sap.conn.jco.rt.AbapFunction.execute(AbapFunction.java:332)
+	at org.hibersap.execution.jco.JCoConnection.execute(JCoConnection.java:88)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:110)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:93)
+	at za.co.xeon.external.sap.hibersap.HiberSapService.getCustomerOrdersByDate(HiberSapService.java:55)
+	at za.co.xeon.Application.run(Application.java:108)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:788)
+	at org.springframework.boot.SpringApplication.afterRefresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.doRun(SpringApplication.java:366)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:305)
+	at za.co.xeon.Application.main(Application.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5076)
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:624)
+	... 28 more
+Caused by: java.text.ParseException: Unparseable date: "0834-65-20"
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeDATE(AbstractRecord.java:4849)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5072)
+	... 29 more
+
+Error:  >Sun Mar 20 20:16:45,825<    >RfcGetException rc (14) message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+<RfcGetException
+
+Error: [2] >Sun Mar 20 20:16:45,827<    RfcException raised by system [ZED|mcsasap1]:
+    message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+    return code: RFC_CONVERSION (21)
+    error group: 104
+    key: RFC_ERROR_SYSTEM_FAILURE
+
+**** Error file opened at 20160320 201733 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Info:  >Sun Mar 20 20:17:33,725<    ComplexParameter.setXmlBytes thrown com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20" com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:628)
+	at com.sap.conn.jco.rt.XRfcParser.parse(XRfcParser.java:377)
+	at com.sap.conn.jco.rt.ComplexParameter.setXmlBytes(ComplexParameter.java:111)
+	at com.sap.conn.rfc.engine.RfcImp.receiveXMLData(RfcImp.java:318)
+	at com.sap.conn.rfc.engine.RfcGet.ab_rfcget(RfcGet.java:336)
+	at com.sap.conn.rfc.engine.RfcRcv.ab_rfcreceive(RfcRcv.java:36)
+	at com.sap.conn.rfc.engine.RfcIoOpenCntl.RfcReceive(RfcIoOpenCntl.java:1987)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.execute(MiddlewareJavaRfc.java:2032)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1185)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1014)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1458)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1428)
+	at com.sap.conn.jco.rt.AbapFunction.execute(AbapFunction.java:332)
+	at org.hibersap.execution.jco.JCoConnection.execute(JCoConnection.java:88)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:110)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:93)
+	at za.co.xeon.external.sap.hibersap.HiberSapService.getCustomerOrdersByDate(HiberSapService.java:55)
+	at za.co.xeon.Application.run(Application.java:108)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:788)
+	at org.springframework.boot.SpringApplication.afterRefresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.doRun(SpringApplication.java:366)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:305)
+	at za.co.xeon.Application.main(Application.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5076)
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:624)
+	... 28 more
+Caused by: java.text.ParseException: Unparseable date: "0834-65-20"
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeDATE(AbstractRecord.java:4849)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5072)
+	... 29 more
+
+Error:  >Sun Mar 20 20:17:33,728<    >RfcGetException rc (14) message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+<RfcGetException
+
+Error: [2] >Sun Mar 20 20:17:33,730<    RfcException raised by system [ZED|mcsasap1]:
+    message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+    return code: RFC_CONVERSION (21)
+    error group: 104
+    key: RFC_ERROR_SYSTEM_FAILURE
+
+**** Error file opened at 20160320 202104 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Info:  >Sun Mar 20 20:21:04,178<    ComplexParameter.setXmlBytes thrown com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20" com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:628)
+	at com.sap.conn.jco.rt.XRfcParser.parse(XRfcParser.java:377)
+	at com.sap.conn.jco.rt.ComplexParameter.setXmlBytes(ComplexParameter.java:111)
+	at com.sap.conn.rfc.engine.RfcImp.receiveXMLData(RfcImp.java:318)
+	at com.sap.conn.rfc.engine.RfcGet.ab_rfcget(RfcGet.java:336)
+	at com.sap.conn.rfc.engine.RfcRcv.ab_rfcreceive(RfcRcv.java:36)
+	at com.sap.conn.rfc.engine.RfcIoOpenCntl.RfcReceive(RfcIoOpenCntl.java:1987)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.execute(MiddlewareJavaRfc.java:2032)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1185)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1014)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1458)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1428)
+	at com.sap.conn.jco.rt.AbapFunction.execute(AbapFunction.java:332)
+	at org.hibersap.execution.jco.JCoConnection.execute(JCoConnection.java:88)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:110)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:93)
+	at za.co.xeon.external.sap.hibersap.HiberSapService.getCustomerOrdersByDate(HiberSapService.java:55)
+	at za.co.xeon.Application.run(Application.java:108)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:788)
+	at org.springframework.boot.SpringApplication.afterRefresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.doRun(SpringApplication.java:366)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:305)
+	at za.co.xeon.Application.main(Application.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5076)
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:624)
+	... 28 more
+Caused by: java.text.ParseException: Unparseable date: "0834-65-20"
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeDATE(AbstractRecord.java:4849)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5072)
+	... 29 more
+
+Error:  >Sun Mar 20 20:21:04,183<    >RfcGetException rc (14) message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+<RfcGetException
+
+Error: [2] >Sun Mar 20 20:21:04,185<    RfcException raised by system [ZED|mcsasap1]:
+    message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+    return code: RFC_CONVERSION (21)
+    error group: 104
+    key: RFC_ERROR_SYSTEM_FAILURE
+
+**** Error file opened at 20160320 202448 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Info:  >Sun Mar 20 20:24:48,678<    ComplexParameter.setXmlBytes thrown com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20" com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:628)
+	at com.sap.conn.jco.rt.XRfcParser.parse(XRfcParser.java:377)
+	at com.sap.conn.jco.rt.ComplexParameter.setXmlBytes(ComplexParameter.java:111)
+	at com.sap.conn.rfc.engine.RfcImp.receiveXMLData(RfcImp.java:318)
+	at com.sap.conn.rfc.engine.RfcGet.ab_rfcget(RfcGet.java:336)
+	at com.sap.conn.rfc.engine.RfcRcv.ab_rfcreceive(RfcRcv.java:36)
+	at com.sap.conn.rfc.engine.RfcIoOpenCntl.RfcReceive(RfcIoOpenCntl.java:1987)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.execute(MiddlewareJavaRfc.java:2032)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1185)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1014)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1458)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1428)
+	at com.sap.conn.jco.rt.AbapFunction.execute(AbapFunction.java:332)
+	at org.hibersap.execution.jco.JCoConnection.execute(JCoConnection.java:88)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:110)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:93)
+	at za.co.xeon.external.sap.hibersap.HiberSapService.getCustomerOrdersByDate(HiberSapService.java:55)
+	at za.co.xeon.Application.run(Application.java:108)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:788)
+	at org.springframework.boot.SpringApplication.afterRefresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.doRun(SpringApplication.java:366)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:305)
+	at za.co.xeon.Application.main(Application.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5076)
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:624)
+	... 28 more
+Caused by: java.text.ParseException: Unparseable date: "0834-65-20"
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeDATE(AbstractRecord.java:4849)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5072)
+	... 29 more
+
+Error:  >Sun Mar 20 20:24:48,682<    >RfcGetException rc (14) message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+<RfcGetException
+
+Error: [2] >Sun Mar 20 20:24:48,683<    RfcException raised by system [ZED|mcsasap1]:
+    message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+    return code: RFC_CONVERSION (21)
+    error group: 104
+    key: RFC_ERROR_SYSTEM_FAILURE
+
+**** Error file opened at 20160320 202718 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Info:  >Sun Mar 20 20:27:18,061<    ComplexParameter.setXmlBytes thrown com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20" com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:628)
+	at com.sap.conn.jco.rt.XRfcParser.parse(XRfcParser.java:377)
+	at com.sap.conn.jco.rt.ComplexParameter.setXmlBytes(ComplexParameter.java:111)
+	at com.sap.conn.rfc.engine.RfcImp.receiveXMLData(RfcImp.java:318)
+	at com.sap.conn.rfc.engine.RfcGet.ab_rfcget(RfcGet.java:336)
+	at com.sap.conn.rfc.engine.RfcRcv.ab_rfcreceive(RfcRcv.java:36)
+	at com.sap.conn.rfc.engine.RfcIoOpenCntl.RfcReceive(RfcIoOpenCntl.java:1987)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.execute(MiddlewareJavaRfc.java:2032)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1185)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1014)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1458)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1428)
+	at com.sap.conn.jco.rt.AbapFunction.execute(AbapFunction.java:332)
+	at org.hibersap.execution.jco.JCoConnection.execute(JCoConnection.java:88)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:110)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:93)
+	at za.co.xeon.external.sap.hibersap.HiberSapService.getCustomerOrdersByDate(HiberSapService.java:55)
+	at za.co.xeon.Application.run(Application.java:108)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:788)
+	at org.springframework.boot.SpringApplication.afterRefresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.doRun(SpringApplication.java:366)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:305)
+	at za.co.xeon.Application.main(Application.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5076)
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:624)
+	... 28 more
+Caused by: java.text.ParseException: Unparseable date: "0834-65-20"
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeDATE(AbstractRecord.java:4849)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5072)
+	... 29 more
+
+Error:  >Sun Mar 20 20:27:18,063<    >RfcGetException rc (14) message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+<RfcGetException
+
+Error: [2] >Sun Mar 20 20:27:18,064<    RfcException raised by system [ZED|mcsasap1]:
+    message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+    return code: RFC_CONVERSION (21)
+    error group: 104
+    key: RFC_ERROR_SYSTEM_FAILURE
+
+**** Error file opened at 20160320 202947 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Info:  >Sun Mar 20 20:29:47,252<    ComplexParameter.setXmlBytes thrown com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20" com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:628)
+	at com.sap.conn.jco.rt.XRfcParser.parse(XRfcParser.java:377)
+	at com.sap.conn.jco.rt.ComplexParameter.setXmlBytes(ComplexParameter.java:111)
+	at com.sap.conn.rfc.engine.RfcImp.receiveXMLData(RfcImp.java:318)
+	at com.sap.conn.rfc.engine.RfcGet.ab_rfcget(RfcGet.java:336)
+	at com.sap.conn.rfc.engine.RfcRcv.ab_rfcreceive(RfcRcv.java:36)
+	at com.sap.conn.rfc.engine.RfcIoOpenCntl.RfcReceive(RfcIoOpenCntl.java:1987)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.execute(MiddlewareJavaRfc.java:2032)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1185)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1014)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1458)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1428)
+	at com.sap.conn.jco.rt.AbapFunction.execute(AbapFunction.java:332)
+	at org.hibersap.execution.jco.JCoConnection.execute(JCoConnection.java:88)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:110)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:93)
+	at za.co.xeon.external.sap.hibersap.HiberSapService.getCustomerOrdersByDate(HiberSapService.java:55)
+	at za.co.xeon.Application.run(Application.java:108)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:788)
+	at org.springframework.boot.SpringApplication.afterRefresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.doRun(SpringApplication.java:366)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:305)
+	at za.co.xeon.Application.main(Application.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5076)
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:624)
+	... 28 more
+Caused by: java.text.ParseException: Unparseable date: "0834-65-20"
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeDATE(AbstractRecord.java:4849)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5072)
+	... 29 more
+
+Error:  >Sun Mar 20 20:29:47,254<    >RfcGetException rc (14) message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+<RfcGetException
+
+Error: [2] >Sun Mar 20 20:29:47,254<    RfcException raised by system [ZED|mcsasap1]:
+    message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+    return code: RFC_CONVERSION (21)
+    error group: 104
+    key: RFC_ERROR_SYSTEM_FAILURE
+
+**** Error file opened at 20160320 203313 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Info:  >Sun Mar 20 20:33:13,959<    ComplexParameter.setXmlBytes thrown com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20" com.sap.conn.jco.XMLParserException: (130) JCO_ERROR_XML_PARSER: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:628)
+	at com.sap.conn.jco.rt.XRfcParser.parse(XRfcParser.java:377)
+	at com.sap.conn.jco.rt.ComplexParameter.setXmlBytes(ComplexParameter.java:111)
+	at com.sap.conn.rfc.engine.RfcImp.receiveXMLData(RfcImp.java:318)
+	at com.sap.conn.rfc.engine.RfcGet.ab_rfcget(RfcGet.java:336)
+	at com.sap.conn.rfc.engine.RfcRcv.ab_rfcreceive(RfcRcv.java:36)
+	at com.sap.conn.rfc.engine.RfcIoOpenCntl.RfcReceive(RfcIoOpenCntl.java:1987)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.execute(MiddlewareJavaRfc.java:2032)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1185)
+	at com.sap.conn.jco.rt.ClientConnection.execute(ClientConnection.java:1014)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1458)
+	at com.sap.conn.jco.rt.RfcDestination.execute(RfcDestination.java:1428)
+	at com.sap.conn.jco.rt.AbapFunction.execute(AbapFunction.java:332)
+	at org.hibersap.execution.jco.JCoConnection.execute(JCoConnection.java:88)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:110)
+	at org.hibersap.session.SessionImpl.execute(SessionImpl.java:93)
+	at za.co.xeon.external.sap.hibersap.HiberSapService.getCustomerOrdersByDate(HiberSapService.java:55)
+	at za.co.xeon.Application.run(Application.java:108)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:788)
+	at org.springframework.boot.SpringApplication.afterRefresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.doRun(SpringApplication.java:366)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:305)
+	at za.co.xeon.Application.main(Application.java:79)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5076)
+	at com.sap.conn.jco.rt.XRfcParser.storeValue(XRfcParser.java:624)
+	... 28 more
+Caused by: java.text.ParseException: Unparseable date: "0834-65-20"
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeDATE(AbstractRecord.java:4849)
+	at com.sap.conn.jco.rt.AbstractRecord.encodeGENERIC(AbstractRecord.java:5072)
+	... 29 more
+
+Error:  >Sun Mar 20 20:33:13,963<    >RfcGetException rc (14) message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+<RfcGetException
+
+Error: [2] >Sun Mar 20 20:33:13,965<    RfcException raised by system [ZED|mcsasap1]:
+    message: com.sap.conn.jco.ConversionException: (122) JCO_ERROR_CONVERSION: Date '0834-65-20' has a wrong format at field DATBG: Unparseable date: "0834-65-20"
+    return code: RFC_CONVERSION (21)
+    error group: 104
+    key: RFC_ERROR_SYSTEM_FAILURE

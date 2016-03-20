@@ -1,5 +1,7 @@
 package za.co.xeon;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import za.co.xeon.config.Constants;
 import za.co.xeon.config.JHipsterProperties;
 
@@ -14,6 +16,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+import za.co.xeon.external.sap.hibersap.HiberSapService;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -26,13 +29,15 @@ import java.util.Collection;
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
 @EnableConfigurationProperties({ JHipsterProperties.class, LiquibaseProperties.class })
-public class Application {
+public class Application implements CommandLineRunner{
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     @Inject
     private Environment env;
 
+    @Autowired
+    private HiberSapService hiberSapService;
     /**
      * Initializes portal.
      * <p/>
@@ -90,5 +95,20 @@ public class Application {
 
             app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
         }
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        try{
+            hiberSapService.getHandelingUnits(80108175);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+        }
+        try{
+            hiberSapService.getCustomerOrdersByDate(213);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+        }
+
     }
 }

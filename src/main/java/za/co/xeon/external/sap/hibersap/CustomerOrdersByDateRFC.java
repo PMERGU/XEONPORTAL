@@ -90,6 +90,9 @@ public class CustomerOrdersByDateRFC {
             this.high = high;
         }
 
+        public ImDateR() {
+        }
+
         /**
          * @return "Sign" - "Type of SIGN component in row type of a Ranges type" */
         public java.lang.String getSign() {
@@ -298,6 +301,9 @@ public class CustomerOrdersByDateRFC {
             this.pname1 = pname1;
             this.bkunnr = bkunnr;
             this.bname1 = bname1;
+        }
+
+        public EvResult() {
         }
 
         /**
