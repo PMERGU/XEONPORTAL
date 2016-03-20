@@ -55,14 +55,14 @@ public class HiberSapService {
             session.execute(rfc);
             List<CustomerOrdersByDateRFC.EvResult> tmp = rfc.getEvResult();
             for (CustomerOrdersByDateRFC.EvResult line : tmp) {
-                System.out.print("\t" + line.getSkunnr() + " - " + line.getBstkd());
+                log.debug("\t" + line.getSkunnr() + " - " + line.getBstkd());
             }
 
-            System.out.println("\nReturn");
+            log.debug("\nReturn");
             BapiRet2 returnStruct = rfc.getEvReturn();
-            System.out.println("\tMessage: " + returnStruct.getMessage());
-            System.out.println("\tNumber: " + returnStruct.getNumber());
-            System.out.println("\tType: " + returnStruct.getType());
+            log.debug("\tMessage: " + returnStruct.getMessage());
+            log.debug("\tNumber: " + returnStruct.getNumber());
+            log.debug("\tType: " + returnStruct.getType());
 
         }catch(Exception e){
             e.printStackTrace();
@@ -79,15 +79,15 @@ public class HiberSapService {
             session.execute(rfc);
             List<Huheader> tmp = rfc.getHuheader();
             for (Huheader line : tmp) {
-                System.out.print("\t" + line.getClient() + " - " + line.getCreatedDate());
+                log.debug("\t" + line.getClient() + " - " + line.getCreatedDate());
             }
 
-            System.out.println("\nReturn");
+            log.debug("\nReturn");
             List<BapiRet2> returnStruct = rfc.getReturn();
             for (BapiRet2 bapiRet2 : returnStruct) {
-                System.out.println("\tMessage: " + bapiRet2.getMessage());
-                System.out.println("\tNumber: " + bapiRet2.getNumber());
-                System.out.println("\tType: " + bapiRet2.getType());
+                log.debug("\tMessage: " + bapiRet2.getMessage());
+                log.debug("\tNumber: " + bapiRet2.getNumber());
+                log.debug("\tType: " + bapiRet2.getType());
             }
 
         }catch(Exception e){
