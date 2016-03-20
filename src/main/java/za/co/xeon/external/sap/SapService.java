@@ -7,7 +7,8 @@ import com.sap.conn.jco.ext.DestinationDataProvider;
 import com.squareup.javapoet.*;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hibersap.annotations.Bapi;
+import org.hibersap.annotations.*;
+import org.hibersap.bapi.BapiRet2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by derick on 2016/02/07.
@@ -39,6 +39,7 @@ public class SapService {
     private SapSettings s3Settings;
     @Autowired
     private PropertyDestinationDataProvider propertyDestinationDataProvider;
+    private Map<String,String> subClassTypes;
 
     //    private static final String BAPI = "Z_GET_HANDELING_UNITS";
     //private static final String BAPI = "Z_GET_CUSTOMER_ORDERS_BY_DATE";
@@ -86,49 +87,280 @@ public class SapService {
         }
     }
 
+    public String makeNamesPritty(String name){
+        return StringUtils.remove(WordUtils.capitalizeFully(name,new char[]{'_'}), "_");
+    }
+
     public String generateJavaSourceFromRFC(String bapiName) throws JCoException {
+        subClassTypes = new HashMap<>();
         JCoFunction function = destination.getRepository().getFunction(bapiName);
-        log.debug("Generating java source for structure: \n{}", prettyFormat(function.toXML()));
+        String packagePath = "za.co.xeon.external.sap.hibersap";
+        String className = makeNamesPritty(bapiName.toUpperCase().startsWith("Z_GET") ? bapiName.substring(5) : bapiName) + "RFC";
+        String packageWithParentName = packagePath + "." + className;
+
+        log.debug("Generating java source for structure 2: \n{}", prettyFormat(function.toXML()));
         if (function == null) {
             throw new RuntimeException(bapiName + " not found in SAP.");
         }
 
-        TypeSpec.Builder builder = TypeSpec.classBuilder(StringUtils.remove(WordUtils.capitalizeFully(
-            bapiName.toUpperCase().startsWith("Z_GET") ? bapiName.substring(5) : bapiName,
-            new char[]{'_'}), "_") + "RFC")
+        TypeSpec.Builder builder = TypeSpec.classBuilder(ClassName.get(packageWithParentName, className))
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(AnnotationSpec.builder(Bapi.class).addMember("value", "$S", bapiName).build());
+        MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder()
+            .addModifiers(Modifier.PUBLIC);
 
+
+        // =============================================================================================================
+        //      IMPORT PARAMETERS
+        // =============================================================================================================
         JCoParameterList importParameters = function.getImportParameterList();
         if (importParameters != null) {
             JCoParameterFieldIterator it = importParameters.getParameterFieldIterator();
             while (it.hasNextField()) {
                 JCoField test = it.nextParameterField();
-
-                builder.addField(FieldSpec.builder(String.class, test.getName())
-                    .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
-                    .addJavadoc("Field detail : $S", test.getDescription() + "\n")
-                    .build());
-
-//                log.debug(test.getClassNameOfValue());
-                if (test.getTypeAsString().equals("TABLE")) {
-                    printFieldDebugInfo(test.getTable().getRecordFieldIterator());
-                }else if (test.getTypeAsString().equals("STRUCTURE")) {
-                    printFieldDebugInfo(test.getStructure().getRecordFieldIterator());
+                String fieldName = makeNamesPritty(test.getName());
+                String typeName = fieldName;
+                fieldName = Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1);
+                switch (test.getTypeAsString()){
+                    case "TABLE":
+                        ClassName newType = ClassName.get(packageWithParentName, typeName);
+                        ClassName list = ClassName.get("java.util", "List");
+                        builder.addField(FieldSpec.builder(ParameterizedTypeName.get(list, newType), fieldName)
+                            .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+                            .addAnnotation(Import.class)
+                            .addAnnotation(AnnotationSpec.builder(Parameter.class).addMember("value", "$S", test.getName()).build())
+                            .addJavadoc("$S", test.getDescription())
+                            .build());
+                        builder.addType(buildSubClass(typeName, test.getTable().getRecordFieldIterator()).build());
+                        constructorBuilder
+                            .addParameter(ParameterSpec.builder(ParameterizedTypeName.get(list, newType), fieldName).build())
+                            .addStatement("this.$N = $N", fieldName, fieldName);
+                        break;
+                    case "STRUCTURE":
+                        log.debug("Import parameter not yet implemented succesfully.");
+                        builder.addField(FieldSpec.builder(TypeVariableName.get(typeName), fieldName)
+                            .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+                            .addAnnotation(Import.class)
+                            .addAnnotation(AnnotationSpec.builder(Parameter.class)
+                                .addMember("value", "$S", test.getName())
+                                .addMember("type", "$T.$L", ParameterType.class, ParameterType.STRUCTURE.name())
+                                .build())
+                            .addJavadoc("$S", test.getDescription())
+                            .build());
+                        builder.addType(buildSubClass(typeName, test.getStructure().getRecordFieldIterator()).build());
+                        break;
+                    default:
+                        builder.addField(FieldSpec.builder(String.class, fieldName)
+                            .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+                            .addAnnotation(Import.class)
+                            .addAnnotation(AnnotationSpec.builder(Parameter.class).addMember("value", "$S", test.getName()).build())
+                            .addJavadoc("$S", test.getDescription())
+                            .build());
+                        constructorBuilder
+                            .addParameter(String.class, fieldName)
+                            .addStatement("this.$N = $N", fieldName, fieldName)
+                            .addJavadoc("@param $S - $S", fieldName, test.getDescription());
+                        break;
                 }
             }
         }
 
+        // =============================================================================================================
+        //      EXPORT PARAMETERS
+        // =============================================================================================================
+        JCoParameterList exportParameters = function.getExportParameterList();
+        if (exportParameters != null) {
+            JCoParameterFieldIterator it = exportParameters.getParameterFieldIterator();
+            while (it.hasNextField()) {
+                JCoField test = it.nextParameterField();
+                String fieldName = makeNamesPritty(test.getName());
+                String typeName = fieldName;
+                fieldName = Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1);
+
+                MethodSpec.Builder getter = MethodSpec.methodBuilder("get" + typeName)
+                    .addModifiers(Modifier.PUBLIC);
+
+                if(test.getName().equals("RETURN") || test.getName().equals("EV_RETURN")){
+                    builder.addField(FieldSpec.builder(BapiRet2.class, fieldName + "Type")
+                        .addModifiers(Modifier.PRIVATE)
+                        .addAnnotation(Export.class)
+                        .addAnnotation(AnnotationSpec.builder(Parameter.class)
+                            .addMember("value", "$S", test.getName())
+                            .addMember("type", "$T.$L", ParameterType.class, ParameterType.STRUCTURE.name())
+                            .build())
+                        .addJavadoc("$S", test.getDescription())
+                        .addJavadoc("@return $S - $S", typeName, test.getDescription())
+                        .build());
+                    getter.returns(ClassName.get(BapiRet2.class))
+                        .addStatement("return $T", TypeVariableName.get(fieldName + "Type"));
+                }else {
+                    switch (test.getTypeAsString()) {
+                        case "TABLE":
+                            ClassName newType = ClassName.get(packageWithParentName, typeName);
+                            ClassName list = ClassName.get("java.util", "List");
+                            builder.addField(FieldSpec.builder(ParameterizedTypeName.get(list, newType), fieldName)
+                                .addModifiers(Modifier.PRIVATE)
+                                .addAnnotation(Export.class)
+                                .addAnnotation(AnnotationSpec.builder(Parameter.class).addMember("value", "$S", test.getName()).build())
+                                .addJavadoc("$S", test.getDescription())
+                                .build());
+
+                            builder.addType(buildSubClass(typeName, test.getTable().getRecordFieldIterator()).build());
+                            getter.returns(ParameterizedTypeName.get(list, newType))
+                                .addStatement("return $T", TypeVariableName.get(fieldName));
+                            break;
+                        case "STRUCTURE":
+                            builder.addField(FieldSpec.builder(TypeVariableName.get(typeName), fieldName)
+                                .addModifiers(Modifier.PRIVATE)
+                                .addAnnotation(AnnotationSpec.builder(Parameter.class)
+                                    .addMember("value", "$S", test.getName())
+                                    .addMember("type", "$T.$L", ParameterType.class, ParameterType.STRUCTURE.name())
+                                    .build())
+                                .addAnnotation(Export.class)
+                                .addJavadoc("$S", test.getDescription())
+                                .build());
+
+                            builder.addType(buildSubClass(typeName, test.getStructure().getRecordFieldIterator()).build());
+                            getter.returns(TypeVariableName.get(typeName))
+                                .addStatement("return $T", TypeVariableName.get(fieldName));
+                            break;
+                        default:
+                            builder.addField(FieldSpec.builder(String.class, fieldName)
+                                .addModifiers(Modifier.PRIVATE)
+                                .addAnnotation(AnnotationSpec.builder(Parameter.class).addMember("value", "$S", test.getName()).build())
+                                .addAnnotation(Export.class)
+                                .addJavadoc("$S", test.getDescription())
+                                .build());
+                            getter.returns(String.class)
+                                .addStatement("return $T", TypeVariableName.get(fieldName));
+                            break;
+                    }
+                }
+                builder.addMethod(getter.build());
+            }
+        }
+
+        // =============================================================================================================
+        //      TABLE PARAMETERS
+        // =============================================================================================================
+        JCoParameterList tableParameters = function.getTableParameterList();
+        if (tableParameters != null) {
+            JCoParameterFieldIterator it = tableParameters.getParameterFieldIterator();
+            while (it.hasNextField()) {
+                JCoField test = it.nextParameterField();
+                String fieldName = makeNamesPritty(test.getName());
+                String typeName = fieldName;
+                fieldName = Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1);
+
+                MethodSpec.Builder getter = MethodSpec.methodBuilder("get" + typeName)
+                    .addModifiers(Modifier.PUBLIC);
+
+                if(test.getName().equals("RETURN") || test.getName().equals("EV_RETURN")){
+                    builder.addField(FieldSpec.builder(ParameterizedTypeName.get(List.class, BapiRet2.class), fieldName + "Type")
+                        .addModifiers(Modifier.PRIVATE)
+                        .addAnnotation(Table.class)
+                        .addAnnotation(AnnotationSpec.builder(Parameter.class).addMember("value", "$S", test.getName()).build())
+                        .addJavadoc("$S", test.getDescription())
+                        .addJavadoc("@return $S - $S", typeName, test.getDescription())
+                        .build());
+                    getter.returns(ParameterizedTypeName.get(ClassName.get("java.util", "List"), ClassName.get(BapiRet2.class)))
+                        .addStatement("return $T", TypeVariableName.get(fieldName + "Type"));
+                }else {
+                    switch (test.getTypeAsString()) {
+                        case "TABLE":
+                            ClassName newType = ClassName.get(packageWithParentName, typeName);
+                            ClassName list = ClassName.get("java.util", "List");
+                            builder.addField(FieldSpec.builder(ParameterizedTypeName.get(list, newType), fieldName)
+                                .addModifiers(Modifier.PRIVATE)
+                                .addAnnotation(AnnotationSpec.builder(Parameter.class).addMember("value", "$S", test.getName()).build())
+                                .addAnnotation(Table.class)
+                                .addJavadoc("$S", test.getDescription())
+                                .build());
+
+                            getter.returns(ParameterizedTypeName.get(list, newType))
+                                .addStatement("return $T", TypeVariableName.get(fieldName));
+                            builder.addType(buildSubClass(typeName, test.getTable().getRecordFieldIterator()).build());
+                            break;
+//                        case "STRUCTURE":
+//                            builder.addField(FieldSpec.builder(String.class, fieldName)
+//                                .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+//                                .addAnnotation(AnnotationSpec.builder(Parameter.class)
+//                                    .addMember("value", "$S", test.getName())
+//                                    .addMember("type", "$T.$L", ParameterType.class, ParameterType.STRUCTURE.name())
+//                                    .build())
+//                                .addAnnotation(Table.class)
+//                                .addJavadoc("$S", test.getDescription())
+//                                .build());
+//                            break;
+                        default:
+                            throw new RuntimeException("We did not expect this....why would table types return anything other than a table type???? WTF aaaaaa....in fact there isnt enough coffee in the world to try and comprehend how this came to be...FU SAP");
+//                            builder.addField(FieldSpec.builder(String.class, fieldName)
+//                                .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+//                                .addAnnotation(AnnotationSpec.builder(Parameter.class).addMember("value", "$S", test.getName()).build())
+//                                .addAnnotation(Table.class)
+//                                .addJavadoc("$S", test.getDescription())
+//                                .build());
+//                            break;
+                    }
+                }
+                builder.addMethod(getter.build());
+            }
+        }
+
+        builder.addMethod(constructorBuilder.build());
         TypeSpec helloWorld = builder.build();
 
-        JavaFile javaFile = JavaFile.builder("za.co.xeon.external.sap.hibersap", helloWorld)
+        JavaFile javaFile = JavaFile.builder(packagePath, helloWorld)
             .build();
 
-        log.debug("Class file for RFC auto generation: \n{}", javaFile.toString());
+//        log.debug("Class file for RFC auto generation: \n{}", javaFile.toString());
 
         return javaFile.toString();
     }
 
+    public TypeSpec.Builder buildSubClass(String className, JCoRecordFieldIterator recordFieldIterator){
+        if(subClassTypes.containsKey(className)){
+            log.debug(className + " already mapped to subclass");
+            return null;
+        }else {
+            TypeSpec.Builder subClassBuilder = TypeSpec.classBuilder(className)
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(BapiStructure.class);
+            MethodSpec.Builder subConstructorBuilder = MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC);
+
+            while (recordFieldIterator.hasNextField()) {
+                JCoField jCoRecordField = recordFieldIterator.nextField();
+                String subFieldName = makeNamesPritty(jCoRecordField.getName());
+                String subTypeName = subFieldName;
+                subFieldName = Character.toLowerCase(subFieldName.charAt(0)) + subFieldName.substring(1);
+
+                subClassBuilder.addField(FieldSpec.builder(TypeVariableName.get(jCoRecordField.getClassNameOfValue()), subFieldName)
+                    .addModifiers(Modifier.PRIVATE)
+                    .addAnnotation(AnnotationSpec.builder(Parameter.class).addMember("value", "$S", jCoRecordField.getName()).build())
+                    .addJavadoc("$S", jCoRecordField.getDescription()).build());
+
+                subConstructorBuilder
+                    .addParameter(ParameterSpec.builder(TypeVariableName.get(jCoRecordField.getClassNameOfValue()), subFieldName).build())
+                    .addStatement("this.$N = $N", subFieldName, subFieldName);
+
+
+                subClassBuilder.addMethod(MethodSpec.methodBuilder("get" + subTypeName)
+                    .addModifiers(Modifier.PUBLIC)
+                    .returns(TypeVariableName.get(jCoRecordField.getClassNameOfValue()))
+                    .addJavadoc("@return $S - $S", subTypeName, jCoRecordField.getDescription())
+                    .addStatement("return $T", TypeVariableName.get(subFieldName)).build());
+            }
+            subClassTypes.put(className,className);
+            subClassBuilder.addMethod(subConstructorBuilder.build());
+            subClassBuilder.addMethod(MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC).build());
+
+            return subClassBuilder;
+        }
+
+
+    }
 
     public String diagnoseBapi(String bapiName) throws JCoException {
         JCoFunction function = destination.getRepository().getFunction(bapiName);
@@ -189,10 +421,11 @@ public class SapService {
             while (it.hasNextField()) {
                 log.debug("---------------------------------------------");
                 JCoField test = it.nextParameterField();
-                log.debug(test.getName());
-                log.debug(test.getDescription());
-                log.debug(test.getClassNameOfValue());
-                log.debug(test.getTypeAsString());
+                log.debug("getName                          " + test.getName());
+                log.debug("getDescription                   " + test.getDescription());
+                log.debug("getClassNameOfValue              " + test.getClassNameOfValue());
+                log.debug("getTypeAsString                  " + test.getTypeAsString());
+//                log.debug("getRecordMetaData:toString       " + test.getRecordMetaData() == null ? "null" : test.getRecordMetaData().toString());
                 if (test.getTypeAsString().equals("TABLE")) {
                     printFieldDebugInfo(test.getTable().getRecordFieldIterator());
                 }
@@ -205,9 +438,19 @@ public class SapService {
 
         // try to call function
         try {
-            function.getImportParameterList().setValue("IM_DEL_VBELN", "80108175");
+//            function = destination.getRepository().getFunction("RFC_SYSTEM_INFO");
+//            function.getImportParameterList().setValue("IM_DEL_VBELN", String.format ("%010d", 80108175));
+//            function.getImportParameterList().setValue("IM_CUSTOMER", String.format ("%010d", 213));
+//            JCoTable dateRange = function.getImportParameterList().getTable("IM_DATE_R");
+//            dateRange.setValue("I", "SIGN" );
+//            dateRange.setValue("BT", "OPTION" );
+//            dateRange.setValue("20160120", "LOW" );
+//            dateRange.setValue("20160320", "HIGH" );
+//            dateRange.appendRow();
+
+//            function.getImportParameterList().setValue("IM_CUSTOMER", "213");
             function.execute(destination);
-            System.out.println("STFC_CONNECTION finished:");
+
         } catch (AbapException e) {
             System.out.println(e.toString());
         }
@@ -216,13 +459,25 @@ public class SapService {
     }
 
     public void printFieldDebugInfo(JCoRecordFieldIterator recordFieldIterator) {
+        printFieldDebugInfo(recordFieldIterator, false);
+    }
+
+    public void printFieldDebugInfo(JCoRecordFieldIterator recordFieldIterator, boolean includeValues) {
         while (recordFieldIterator.hasNextField()) {
-            log.debug("            " + formatColumnDetails(recordFieldIterator.nextRecordField()));
+            if(includeValues){
+                log.debug("            " + formatColumnDetailsWithValues(recordFieldIterator.nextRecordField()));
+            }else{
+                log.debug("            " + formatColumnDetails(recordFieldIterator.nextRecordField()));
+            }
         }
     }
 
-    public static String formatColumnDetails(JCoRecordField field) {
-        return String.format("%20s%10s%20s%s", field.getName(), field.getTypeAsString(), field.getClassNameOfValue(), field.getDescription());
+    private static String formatColumnDetails(JCoRecordField field) {
+        return String.format("%20s%10s%20s%60s", field.getName(), field.getTypeAsString(), field.getClassNameOfValue(), field.getDescription());
+    }
+
+    private static String formatColumnDetailsWithValues(JCoRecordField field) {
+        return String.format("%20s%10s%20s%60s%60s", field.getName(), field.getTypeAsString(), field.getClassNameOfValue(), field.getDescription(), field.getValue());
     }
 
 
