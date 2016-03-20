@@ -47,11 +47,19 @@ body.blank {
 }
 
 @media(max-width: 720px) {
+    .register-container {
+        margin: auto 10px;
+        padding-top:12%;
+    }
+    .lock-container {
+        padding-top: 15%;
+    }
+}
+
+@media(max-width: 1024px) {
   .register-container {
     margin: auto 10px;
-  }
-  .lock-container {
-    padding-top: 15%;
+    padding-top: 2%;
   }
 }
 

@@ -43,6 +43,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/jquery-mousewheel/jquery.mousewheel.js',
             'main/webapp/bower_components/php-date-formatter/js/php-date-formatter.js',
             'main/webapp/bower_components/eonasdan-bootstrap-/build/jquery.datetimepicker.full.min.js',
+            'main/webapp/bower_components/angular-gravatar/build/angular-gravatar.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

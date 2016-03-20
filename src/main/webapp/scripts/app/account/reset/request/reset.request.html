@@ -1,10 +1,18 @@
 <div class="register-container">
-    <div class="row">
-        <div class="hpanel">
+    <div small-header>
+        <div class="hpanel" style="margin-bottom: 15px;">
             <div class="panel-body">
-                <div class="col-lg-12">
+                <div class="col-md-8 col-md-offset-2">
                     <h1>Reset your password</h1>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="hpanel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
                     <div class="alert alert-danger" ng-show="errorEmailNotExists">
                         <strong>E-Mail address isn't registered!</strong> Please check and try again.
                     </div>
@@ -43,10 +51,8 @@
                         </div>
                         <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Reset</button>
                     </form>
-
                 </div>
             </div>
         </div>
-
     </div>
 </div>

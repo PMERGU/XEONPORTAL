@@ -26,7 +26,7 @@ spring:
         password:
     h2:
         console:
-            enabled: false
+            enabled: true
     jpa:
         database-platform: za.co.xeon.domain.util.FixedH2Dialect
         database: H2
@@ -48,6 +48,32 @@ liquibase:
 
 server:
     port: 8080
+
+# ===================================================================
+# Application specific properties
+# ===================================================================
+ocr:
+  application: SAP Integrator
+  password: j6txBszFf55dgs9tSgJLi9fN
+  uri: https://cloud.ocrsdk.com
+amazon:
+  s3:
+    bucketName: xeondocstore
+    accessKeyId: AKIAIXQWY62ESWPBJZLQ
+    secretKey: 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
+    url: https://936207874332.signin.aws.amazon.com/console
+    user: xeonbackend
+    folderPod: pod
+sap:
+  jco:
+    sysnr: "00"
+    user: "dpotgieter"
+    passwd: "mobile"
+    lang: "en"
+    poolCapacity: "3"
+    peakLimit: "10"
+    ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
+    client: "700"
 
 # ===================================================================
 # JHipster specific properties

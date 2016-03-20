@@ -1,0 +1,10 @@
+#for tests only !
+#Sun Mar 20 09:03:45 CAT 2016
+jco.client.lang=en
+jco.destination.peak_limit=10
+jco.client.client=200
+jco.client.passwd=mobile
+jco.client.user=dpotgieter
+jco.client.sysnr=00
+jco.destination.pool_capacity=3
+jco.client.ashost=/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.161/S/3200

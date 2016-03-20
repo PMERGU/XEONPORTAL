@@ -11,7 +11,7 @@
 
     <groupId>za.co.xeon</groupId>
     <artifactId>portal</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>portal</name>
 
@@ -33,6 +33,11 @@
     </prerequisites>
 
     <properties>
+        <!-- project properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sapjco.path>${project.basedir}/libs/win/sapjco3.jar</sapjco.path>
+        <os.type>win</os.type>
+        <!-- framework properties-->
         <hikaricp.version>2.4.1</hikaricp.version>
         <assertj-core.version>3.1.0</assertj-core.version>
         <awaitility.version>1.4.0</awaitility.version>
@@ -360,6 +365,52 @@
             <version>${metrics-spark-reporter.version}</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        <!-- application dependencies -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-core</artifactId>
+            <version>RELEASE</version>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-kms</artifactId>
+            <version>RELEASE</version>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>sap</groupId>
+            <artifactId>jco</artifactId>
+            <version>3.0.14</version>
+            <scope>system</scope>
+            <systemPath>${sapjco.path}</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.hibersap</groupId>
+            <artifactId>hibersap-core</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibersap</groupId>
+            <artifactId>hibersap-jco</artifactId>
+            <version>1.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibersap</groupId>
+                    <artifactId>sapjco3</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+            <version>1.6.0</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
@@ -622,12 +673,69 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>dev.win</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <os>
+                    <arch>amd64</arch>
+                    <family>dos</family>
+                </os>
             </activation>
             <properties>
-                <!-- log configuration -->
+                <run.profiles>dev</run.profiles>
+                <sapjco.path>${project.basedir}/libs/win/sapjco3.jar</sapjco.path>
+                <os.type>win</os.type>
+                <logback.loglevel>DEBUG</logback.loglevel>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-devtools</artifactId>
+                    <optional>true</optional>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>dev.mac</id>
+            <activation>
+                <os>
+                    <arch>x86_64</arch>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <run.profiles>dev.mac</run.profiles>
+                <sapjco.path>${project.basedir}/libs/mac/sapjco3.jar</sapjco.path>
+                <os.type>mac</os.type>
+                <logback.loglevel>DEBUG</logback.loglevel>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-devtools</artifactId>
+                    <optional>true</optional>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>dev.linux</id>
+            <activation>
+                <os>
+                    <arch>x86_64</arch>
+                    <family>linux</family>
+                </os>
+            </activation>
+            <properties>
+                <run.profiles>dev.linux</run.profiles>
+                <sapjco.path>${project.basedir}/libs/linux/sapjco3.jar</sapjco.path>
+                <os.type>linux</os.type>
                 <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
             <dependencies>

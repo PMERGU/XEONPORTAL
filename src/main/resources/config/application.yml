@@ -46,7 +46,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: portal@localhost
+        from: port@localhost
     security:
         authentication:
             xauth:
