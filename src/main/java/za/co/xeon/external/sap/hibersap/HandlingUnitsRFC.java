@@ -3,11 +3,13 @@ package za.co.xeon.external.sap.hibersap;
 import java.lang.String;
 import java.util.List;
 import org.hibersap.annotations.Bapi;
-import org.hibersap.annotations.BapiStructure;
 import org.hibersap.annotations.Import;
 import org.hibersap.annotations.Parameter;
 import org.hibersap.annotations.Table;
 import org.hibersap.bapi.BapiRet2;
+import za.co.xeon.external.sap.hibersap.dto.Huheader;
+import za.co.xeon.external.sap.hibersap.dto.Huitem;
+import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 
 @Bapi("Z_GET_HANDLING_UNITS")
 public class HandlingUnitsRFC {

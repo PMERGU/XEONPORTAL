@@ -1,4 +1,4 @@
-package za.co.xeon.external.sap.hibersap;
+package za.co.xeon.external.sap.hibersap.dto;
 
 import org.hibersap.annotations.BapiStructure;
 import org.hibersap.annotations.Parameter;

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -93,6 +94,10 @@ public class HiberSapService {
         }finally {
             session.close();
         }
+    }
+
+    public void updateDeliveredHandelingUnits(String barcode, List<Hunumbers> handlingUnits){
+        //TODO implement updateHandlingUnits
     }
 
 }

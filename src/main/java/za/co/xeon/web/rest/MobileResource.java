@@ -1,6 +1,7 @@
 package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.external.ocr.Converters;
@@ -8,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
-import za.co.xeon.external.sap.hibersap.CustomerOrdersByDateRFC;
-import za.co.xeon.external.sap.hibersap.EvResult;
-import za.co.xeon.external.sap.hibersap.Huitem;
+import za.co.xeon.external.sap.hibersap.dto.EvResult;
+import za.co.xeon.external.sap.hibersap.dto.Huitem;
+import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.service.MobileService;
 
 import javax.annotation.PostConstruct;
@@ -45,7 +46,7 @@ public class MobileResource {
     @RequestMapping(value = "/mobile/pods", method = RequestMethod.POST)
     @Timed
     public Callable<String> scanDocument(@RequestParam("podDocument") MultipartFile podDocument) throws Exception {
-        log.debug("Service : /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
+        log.debug("Service : [POST} /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
         String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));;
         String originalExtension = podDocument.getOriginalFilename().substring(podDocument.getOriginalFilename().indexOf(".")+1);
         log.debug(originalFileName + "." + originalExtension);
@@ -70,16 +71,24 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)
     @Timed
-    public List<Huitem> getHandlingUnits(@PathVariable(value="barcode") String barcode) throws Exception {
-        log.debug("Service /mobile/pod/" + barcode + "/handlingunits");
+    public List<Hunumbers> getHandlingUnits(@PathVariable(value="barcode") String barcode) throws Exception {
+        log.debug("Service [GET] /mobile/pod/" + barcode + "/handlingunits");
         return mobileService.getHandlingUnits(barcode);
     }
 
     @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET)
     @Timed
     public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber) throws Exception {
-        log.debug("Service /mobile/customer/" + customerNumber + "/orders");
+        log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
         return mobileService.getCustomerOrders(customerNumber);
+    }
+
+    @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.PUT)
+    @Timed
+    public ResponseEntity updateDeliveredHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody List<Hunumbers> hunumbers) throws Exception {
+        log.debug("Service [PUT] /mobile/pods/" + barcode + "/handlingunits");
+        mobileService.updateDeliveredHandelingUnits(barcode, hunumbers);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -1,6 +1,5 @@
 package za.co.xeon.service;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import za.co.xeon.external.as3.S3Service;
 import za.co.xeon.external.as3.S3Settings;
 import za.co.xeon.external.ocr.OcrService;
@@ -11,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import za.co.xeon.external.sap.hibersap.CustomerOrdersByDateRFC;
-import za.co.xeon.external.sap.hibersap.EvResult;
+import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
-import za.co.xeon.external.sap.hibersap.Huitem;
+import za.co.xeon.external.sap.hibersap.dto.Huitem;
+import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 
 import java.io.File;
 import java.util.List;
@@ -65,11 +64,16 @@ public class MobileService {
         podFile.delete();
     }
 
-    public List<Huitem> getHandlingUnits(String barcode) throws Exception{
-        return hiberSapService.getHandelingUnits(barcode).getHuitem();
+    public List<Hunumbers> getHandlingUnits(String barcode) throws Exception{
+        return hiberSapService.getHandelingUnits(barcode).getHunumbers();
     }
 
     public List<EvResult> getCustomerOrders(String customerNumber) throws Exception{
         return hiberSapService.getCustomerOrdersByDate(customerNumber).getEvResult();
     }
+
+    public void updateDeliveredHandelingUnits(String barcode, List<Hunumbers> handlingUnits) throws Exception{
+        return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnits);
+    }
+
 }
