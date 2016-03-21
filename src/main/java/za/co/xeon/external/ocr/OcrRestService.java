@@ -1,5 +1,6 @@
 package za.co.xeon.external.ocr;
 
+import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.external.ocr.dto.Result;
 import za.co.xeon.external.ocr.dto.Task;
 import za.co.xeon.external.ocr.dto.xsd.result.Document;
@@ -27,13 +28,20 @@ public class OcrRestService {
     @Autowired
     private OcrService ocrService;
 
+    @Autowired
+    private MobileConfiguration mobileConf;
+
     private final AtomicLong counter = new AtomicLong();
 
     @RequestMapping(value = "/ocr", method = RequestMethod.POST)
     public Task scanDocument(@RequestParam("podDocument") MultipartFile podDocument) {
         try {
             // Get name of uploaded file.
-            File tmpFile = Converters.multipartToFile(podDocument);
+            String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));;
+            String originalExtension = podDocument.getOriginalFilename().substring(podDocument.getOriginalFilename().indexOf("."));
+            log.debug(originalFileName + "." + originalExtension);
+
+            File tmpFile = Converters.multipartToFile(new File(mobileConf.getPodDirectory()), originalFileName, originalExtension, podDocument);
             Result result = ocrService.scanDocument(tmpFile.getPath());
             return result.getTask();
         } catch (Exception e) {

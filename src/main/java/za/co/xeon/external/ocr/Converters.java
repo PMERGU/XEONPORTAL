@@ -9,11 +9,9 @@ import java.io.IOException;
  * Created by derick on 2016/03/02.
  */
 public class Converters {
-
-    public static File multipartToFile(MultipartFile multipart) throws IllegalStateException, IOException {
-        File convFile = File.createTempFile(multipart.getOriginalFilename(), "");
+    public static File multipartToFile(File directory, String name, String extension, MultipartFile multipart) throws IllegalStateException, IOException {
+        File convFile = File.createTempFile(name+"-", "." + extension, directory);
         multipart.transferTo(convFile);
         return convFile;
     }
-
 }

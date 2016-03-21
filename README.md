@@ -46,11 +46,15 @@ Before you can build this project, you must install and configure the following 
     Add the `-h` flag on any command to see how you can use it. For example, `bower update -h`.
 
 # Running with the correct profile
-This application support multiple profiles in a 3 dimensional state. ie [dev,uat,prod] x [win,mac,linux]
+This application support multiple profiles (needs fixes due to os depedencies and sap libs) in a 3 dimensional state. ie [dev,uat,prod] x [win,mac,linux]
 
-    mvn spring-boot:run -Drun.profiles=dev.win
+    mvn spring-boot:run #works currently
+    mvn spring-boot:run -Drun.profiles=dev.win #need to fix this
     
 The application will load the correct native SAP (dll, so, jnilib) and environment variables needed to run against specific profile.
+
+# Testing services
+We use postman for all service call testing. import this link [xeon collection](https://www.getpostman.com/collections/3cc698791fe3c38f33f4)
 
 # Building for production
 

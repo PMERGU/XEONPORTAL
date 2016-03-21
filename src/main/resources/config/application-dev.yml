@@ -52,6 +52,8 @@ server:
 # ===================================================================
 # Application specific properties
 # ===================================================================
+mobile:
+  podDirectory: c:/dev/podTempDir
 ocr:
   application: SAP Integrator
   password: j6txBszFf55dgs9tSgJLi9fN

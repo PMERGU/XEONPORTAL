@@ -9,7 +9,8 @@ import org.hibersap.annotations.Parameter;
 @BapiStructure
 public class Huheader {
     /**
-     * "Client" */
+     * Client name and number
+     * */
     @Parameter("CLIENT")
     private java.lang.String client;
 
@@ -543,7 +544,9 @@ public class Huheader {
     }
 
     /**
-     * @return "Client" - "Client" */
+     * Client name and handling number
+     * @return client
+     * */
     public java.lang.String getClient() {
         return client;
     }
@@ -687,7 +690,7 @@ public class Huheader {
     }
 
     /**
-     * @return "CreatedDate" - "Date on which the record was created" */
+     * @return createdDate - "Date on which the record was created" */
     public java.util.Date getCreatedDate() {
         return createdDate;
     }

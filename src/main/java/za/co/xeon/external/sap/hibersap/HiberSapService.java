@@ -47,14 +47,14 @@ public class HiberSapService {
         sessionManager = configuration.buildSessionManager();
     }
 
-    public void getCustomerOrdersByDate(int customerNumber){
-        String paddedNumber = String.format ("%010d", customerNumber);
+    public CustomerOrdersByDateRFC getCustomerOrdersByDate(String customerNumber){
+        String paddedNumber = "0000000000".substring(customerNumber.length()) + customerNumber;
         Session session = sessionManager.openSession();
         try {
             CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(paddedNumber, null, null);
             session.execute(rfc);
-            List<CustomerOrdersByDateRFC.EvResult> tmp = rfc.getEvResult();
-            for (CustomerOrdersByDateRFC.EvResult line : tmp) {
+            List<EvResult> tmp = rfc.getEvResult();
+            for (EvResult line : tmp) {
                 log.debug("\t" + line.getSkunnr() + " - " + line.getBstkd());
             }
 
@@ -64,23 +64,21 @@ public class HiberSapService {
             log.debug("\tNumber: " + returnStruct.getNumber());
             log.debug("\tType: " + returnStruct.getType());
 
+            return rfc;
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("Couldnt complete getCustomerOrdersByDate : + " + e.getMessage(), e);
+            throw e;
         }finally {
             session.close();
         }
     }
 
-    public void getHandelingUnits(int deliveryNo){
-        String paddedNumber = String.format ("%010d", deliveryNo);
+    public HandlingUnitsRFC getHandelingUnits(String barcode){
+        String paddedNumber = "0000000000".substring(barcode.length()) + barcode;
         Session session = sessionManager.openSession();
         try {
             HandlingUnitsRFC rfc = new HandlingUnitsRFC(paddedNumber);
             session.execute(rfc);
-            List<Huheader> tmp = rfc.getHuheader();
-            for (Huheader line : tmp) {
-                log.debug("\t" + line.getClient() + " - " + line.getCreatedDate());
-            }
 
             log.debug("\nReturn");
             List<BapiRet2> returnStruct = rfc.getReturn();
@@ -89,9 +87,10 @@ public class HiberSapService {
                 log.debug("\tNumber: " + bapiRet2.getNumber());
                 log.debug("\tType: " + bapiRet2.getType());
             }
-
+            return rfc;
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
+            throw e;
         }finally {
             session.close();
         }
