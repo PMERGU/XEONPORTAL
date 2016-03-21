@@ -73,7 +73,7 @@ public class MobileService {
     }
 
     public void updateDeliveredHandelingUnits(String barcode, List<Hunumbers> handlingUnits) throws Exception{
-        return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnits);
+//        return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnits);
     }
 
 }
