@@ -4,7 +4,7 @@ import org.hibersap.annotations.BapiStructure;
 import org.hibersap.annotations.Parameter;
 
 /**
- * Created by Derick on 3/21/2016.
+ * Created by derick on 2016/03/21.
  */
 @BapiStructure
 public class ImDateR {

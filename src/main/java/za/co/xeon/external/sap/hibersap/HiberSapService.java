@@ -53,17 +53,16 @@ public class HiberSapService {
         try {
             CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(paddedNumber, null, null);
             session.execute(rfc);
-            List<EvResult> tmp = rfc.getEvResult();
-            for (EvResult line : tmp) {
-                log.debug("\t" + line.getSkunnr() + " - " + line.getBstkd());
-            }
+//            List<EvResult> tmp = rfc.getEvResult();
+//            for (EvResult line : tmp) {
+//                log.debug("\t" + line.getSkunnr() + " - " + line.getBstkd());
+//            }
 
-            log.debug("\nReturn");
-            BapiRet2 returnStruct = rfc.getEvReturn();
-            log.debug("\tMessage: " + returnStruct.getMessage());
-            log.debug("\tNumber: " + returnStruct.getNumber());
-            log.debug("\tType: " + returnStruct.getType());
-
+//            log.debug("\nReturn");
+//            BapiRet2 returnStruct = rfc.getEvReturn();
+//            log.debug("\tMessage: " + returnStruct.getMessage());
+//            log.debug("\tNumber: " + returnStruct.getNumber());
+//            log.debug("\tType: " + returnStruct.getType());
             return rfc;
         }catch(Exception e){
             log.error("Couldnt complete getCustomerOrdersByDate : + " + e.getMessage(), e);
@@ -80,13 +79,13 @@ public class HiberSapService {
             HandlingUnitsRFC rfc = new HandlingUnitsRFC(paddedNumber);
             session.execute(rfc);
 
-            log.debug("\nReturn");
-            List<BapiRet2> returnStruct = rfc.getReturn();
-            for (BapiRet2 bapiRet2 : returnStruct) {
-                log.debug("\tMessage: " + bapiRet2.getMessage());
-                log.debug("\tNumber: " + bapiRet2.getNumber());
-                log.debug("\tType: " + bapiRet2.getType());
-            }
+//            log.debug("\nReturn");
+//            List<BapiRet2> returnStruct = rfc.getReturn();
+//            for (BapiRet2 bapiRet2 : returnStruct) {
+//                log.debug("\tMessage: " + bapiRet2.getMessage());
+//                log.debug("\tNumber: " + bapiRet2.getNumber());
+//                log.debug("\tType: " + bapiRet2.getType());
+//            }
             return rfc;
         }catch(Exception e){
             log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);

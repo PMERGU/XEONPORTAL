@@ -1,5 +1,6 @@
 package za.co.xeon.web.rest;
 
+import com.codahale.metrics.annotation.Timed;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.external.ocr.Converters;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
+import za.co.xeon.external.sap.hibersap.CustomerOrdersByDateRFC;
 import za.co.xeon.external.sap.hibersap.EvResult;
 import za.co.xeon.external.sap.hibersap.Huitem;
 import za.co.xeon.service.MobileService;
@@ -41,6 +43,7 @@ public class MobileResource {
     }
 
     @RequestMapping(value = "/mobile/pods", method = RequestMethod.POST)
+    @Timed
     public Callable<String> scanDocument(@RequestParam("podDocument") MultipartFile podDocument) throws Exception {
         log.debug("Service : /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
         String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));;
@@ -66,12 +69,14 @@ public class MobileResource {
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)
+    @Timed
     public List<Huitem> getHandlingUnits(@PathVariable(value="barcode") String barcode) throws Exception {
         log.debug("Service /mobile/pod/" + barcode + "/handlingunits");
         return mobileService.getHandlingUnits(barcode);
     }
 
     @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET)
+    @Timed
     public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber) throws Exception {
         log.debug("Service /mobile/customer/" + customerNumber + "/orders");
         return mobileService.getCustomerOrders(customerNumber);
