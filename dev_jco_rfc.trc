@@ -532,3 +532,51 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20160324 180849 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Thu Mar 24 18:08:49,333<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Mar 24 18:08:49 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20160324 181419 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Thu Mar 24 18:14:19,068<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '128.87.245.163:3300' not reached
+TIME        Thu Mar 24 18:14:19 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 128.87.245.163:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

@@ -64,3 +64,25 @@ jhipster:
         contact:
         license:
         licenseUrl:
+
+---
+
+spring:
+    profiles: dev.win
+mobile:
+  podDirectory: c:/dev/podTempDir
+
+---
+
+spring:
+    profiles: dev.mac
+mobile:
+  podDirectory: ../podTempDir
+
+---
+
+spring:
+    profiles: dev.internal
+sap:
+    jco:
+        ashost: "128.87.245.163"

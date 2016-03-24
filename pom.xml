@@ -673,7 +673,7 @@
 
     <profiles>
         <profile>
-            <id>dev.win</id>
+            <id>win</id>
             <activation>
                 <os>
                     <arch>amd64</arch>
@@ -699,7 +699,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>dev.mac</id>
+            <id>mac</id>
             <activation>
                 <os>
                     <arch>x86_64</arch>
@@ -725,7 +725,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>dev.linux</id>
+            <id>linux</id>
             <activation>
                 <os>
                     <arch>x86_64</arch>

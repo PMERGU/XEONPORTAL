@@ -52,8 +52,6 @@ server:
 # ===================================================================
 # Application specific properties
 # ===================================================================
-mobile:
-  podDirectory: c:/dev/podTempDir
 ocr:
   application: SAP Integrator
   password: j6txBszFf55dgs9tSgJLi9fN
@@ -66,6 +64,7 @@ amazon:
     url: https://936207874332.signin.aws.amazon.com/console
     user: xeonbackend
     folderPod: pod
+
 sap:
   jco:
     sysnr: "00"
@@ -75,7 +74,6 @@ sap:
     poolCapacity: "3"
     peakLimit: "10"
     ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
-#    ashost: "128.87.245.163"
     client: "700"
 
 # ===================================================================
@@ -100,3 +98,4 @@ jhipster:
             host: localhost
             port: 2003
             prefix: portal
+
