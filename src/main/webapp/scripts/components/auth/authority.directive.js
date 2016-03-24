@@ -1,6 +1,38 @@
 'use strict';
 
 angular.module('portalApp')
+    .directive('showIfAuthenticated', ['Principal', function (Principal) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var setVisible = function () {
+                        element.removeClass('hidden');
+                    },
+                    setHidden = function () {
+                        element.addClass('hidden');
+                    },
+                    defineVisibility = function (reset) {
+                        var result;
+                        if (reset) {
+                            setVisible();
+                        }
+
+                        result = Principal.isAuthenticated();
+                        if (result) {
+                            setVisible();
+                        } else {
+                            setHidden();
+                        }
+                    };
+
+                scope.$watch(function(scope) {
+                    return Principal.isAuthenticated();
+                }, function(newValue) {
+                    defineVisibility(true);
+                });
+            }
+        };
+    }])
     .directive('hasAnyAuthority', ['Principal', function (Principal) {
         return {
             restrict: 'A',
@@ -28,7 +60,7 @@ angular.module('portalApp')
 
                 if (authorities.length > 0) {
                     defineVisibility(true);
-                    
+
                     scope.$watch(function(scope) {
                         return Principal.isAuthenticated();
                     }, function(newValue) {

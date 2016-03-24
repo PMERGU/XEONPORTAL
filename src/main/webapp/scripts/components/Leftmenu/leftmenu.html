@@ -14,14 +14,19 @@
             <div class="small-chart m-t-sm">
                 <!--<div sparkline spark-data="barProfileData" spark-options="barProfileOptions"></div>-->
             </div>
+
+            <!--</br>-->
+            <!--<span class="font-extra-bold font-uppercase">Orders placed</span>-->
+            <!--</br>-->
+            <!--<span class="font-extra-bold font-uppercase">21</span>-->
+            <!--<div>-->
+                <!--<small class="text-muted">in last 30 days</small>-->
+            <!--</div>-->
             </br>
-            <br>
-                <span class="font-extra-bold font-uppercase">Orders placed</span>
-                </br>
-                <span class="font-extra-bold font-uppercase">21</span>
-                <div>
-                    <small class="text-muted">in last 30 days</small>
-                </div>
+            <span class="font-extra-bold font-uppercase">Roles</span>
+            </br>
+            <div ng-repeat="role in identity.authorities">
+                <small class="text-muted">{{ role }}</small>
             </div>
         </div>
     </div>

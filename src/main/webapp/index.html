@@ -42,10 +42,10 @@
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
 
         <!-- Top navigation -->
-        <div id="header" ui-view="navbar" ng-cloak="" has-authority="ROLE_USER"></div>
+        <div id="header" ui-view="navbar" ng-cloak="" show-if-authenticated></div>
 
         <!-- right navigation -->
-        <aside id="menu" ui-view="leftmenu" ng-cloak="" has-authority="ROLE_USER"></aside>
+        <aside id="menu" ui-view="leftmenu" ng-cloak="" show-if-authenticated></aside>
 
         <!-- Main Wrapper -->
         <div id="wrapper">

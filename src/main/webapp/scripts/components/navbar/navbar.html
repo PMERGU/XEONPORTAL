@@ -111,7 +111,7 @@
                     <!--</table>-->
                 <!--</div>-->
             <!--</li>-->
-            <li uib-dropdown ng-show="servicesDown">
+            <li uib-dropdown ng-show="servicesDown" has-authority="ROLE_ADMIN">
                 <a class="label-menu-corner" href="#" uib-dropdown-toggle>
                     <i class="pe-7s-mail"></i>
                     <span class="label label-success">{{servicesDown.length}}</span>

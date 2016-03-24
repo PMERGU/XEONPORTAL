@@ -74,7 +74,7 @@ angular.module('portalApp', ['LocalStorageModule',
                 }
             },
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_CUSTOMER']
             },
             resolve: {
                 authorize: ['Auth',

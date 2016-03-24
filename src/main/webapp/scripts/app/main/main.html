@@ -10,7 +10,8 @@
                             <i class="fa fa-linkedin btn btn-default btn-xs"></i>
                         </div>
                     </div>
-                    <img alt="logo" class="img-circle m-b m-t-md" src="images/profile.jpg">
+                    <img alt="logo" class="" data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}"
+                         style="height: 150px; max-width: 100%;" ng-if="company.background"/>
                     <h3><a href="">Max Simson</a></h3>
                     <div class="text-muted font-bold m-b-xs">California, LA</div>
                     <p>
