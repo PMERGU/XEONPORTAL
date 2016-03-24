@@ -24,18 +24,42 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="sap_id" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="background" type="blob" />
             <column name="background_content_type" type="varchar(50)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
-            
+
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/company.csv"
+                  separator=";"
+                  tableName="company"/>
+
+        <addColumn tableName="jhi_user">
+            <column name="company_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="jhi_user"
+                                 constraintName="fk_jhi_user_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
+        <update tableName="jhi_user">
+            <column name="company_id" value="1" />
+            <where>ID = 4</where>
+        </update>
+        <update tableName="jhi_user">
+            <column name="company_id" value="2" />
+            <where>ID = 5</where>
+        </update>
+
     </changeSet>
 </databaseChangeLog>

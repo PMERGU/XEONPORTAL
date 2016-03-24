@@ -20,3 +20,7 @@
 *.ai binary
 *.eps binary
 *.swf binary
+*.jar binary
+libsapjco3.so binary
+libsapjco3.jnlib binary
+sapjco3.dll binary

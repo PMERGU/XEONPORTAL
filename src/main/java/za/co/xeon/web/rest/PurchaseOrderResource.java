@@ -1,12 +1,11 @@
 package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import za.co.xeon.domain.Company;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.service.PurchaseOrderService;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
-import za.co.xeon.web.rest.dto.PurchaseOrderDTO;
-import za.co.xeon.web.rest.mapper.PurchaseOrderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -35,13 +34,10 @@ import java.util.stream.Collectors;
 public class PurchaseOrderResource {
 
     private final Logger log = LoggerFactory.getLogger(PurchaseOrderResource.class);
-        
+
     @Inject
     private PurchaseOrderService purchaseOrderService;
-    
-    @Inject
-    private PurchaseOrderMapper purchaseOrderMapper;
-    
+
     /**
      * POST  /purchaseOrders -> Create a new purchaseOrder.
      */
@@ -49,14 +45,14 @@ public class PurchaseOrderResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PurchaseOrderDTO> createPurchaseOrder(@Valid @RequestBody PurchaseOrderDTO purchaseOrderDTO) throws URISyntaxException {
-        log.debug("REST request to save PurchaseOrder : {}", purchaseOrderDTO);
-        if (purchaseOrderDTO.getId() != null) {
+    public ResponseEntity<PurchaseOrder> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder) throws URISyntaxException {
+        log.debug("REST request to save PurchaseOrder : {}", purchaseOrder);
+        if (purchaseOrder.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("purchaseOrder", "idexists", "A new purchaseOrder cannot already have an ID")).body(null);
         }
-        PurchaseOrderDTO result = purchaseOrderService.save(purchaseOrderDTO);
+        PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         return ResponseEntity.created(new URI("/api/purchaseOrders/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("purchaseOrder", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert("purchaseOrders", result.getId().toString()))
             .body(result);
     }
 
@@ -67,14 +63,14 @@ public class PurchaseOrderResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PurchaseOrderDTO> updatePurchaseOrder(@Valid @RequestBody PurchaseOrderDTO purchaseOrderDTO) throws URISyntaxException {
-        log.debug("REST request to update PurchaseOrder : {}", purchaseOrderDTO);
-        if (purchaseOrderDTO.getId() == null) {
-            return createPurchaseOrder(purchaseOrderDTO);
+    public ResponseEntity<PurchaseOrder> updatePurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder) throws URISyntaxException {
+        log.debug("REST request to update PurchaseOrder : {}", purchaseOrder);
+        if (purchaseOrder.getId() == null) {
+            return createPurchaseOrder(purchaseOrder);
         }
-        PurchaseOrderDTO result = purchaseOrderService.save(purchaseOrderDTO);
+        PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("purchaseOrder", purchaseOrderDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("purchaseOrder", purchaseOrder.getId().toString()))
             .body(result);
     }
 
@@ -86,14 +82,12 @@ public class PurchaseOrderResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<PurchaseOrderDTO>> getAllPurchaseOrders(Pageable pageable)
+    public ResponseEntity<List<PurchaseOrder>> getAllPurchaseOrders(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of PurchaseOrders");
-        Page<PurchaseOrder> page = purchaseOrderService.findAll(pageable); 
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/purchaseOrders");
-        return new ResponseEntity<>(page.getContent().stream()
-            .map(purchaseOrderMapper::purchaseOrderToPurchaseOrderDTO)
-            .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
+        Page<PurchaseOrder> page = purchaseOrderService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -103,10 +97,10 @@ public class PurchaseOrderResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PurchaseOrderDTO> getPurchaseOrder(@PathVariable Long id) {
+    public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable Long id) {
         log.debug("REST request to get PurchaseOrder : {}", id);
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderService.findOne(id);
-        return Optional.ofNullable(purchaseOrderDTO)
+        PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        return Optional.ofNullable(purchaseOrder)
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))

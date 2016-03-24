@@ -24,63 +24,63 @@
             <column name="state" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="service_level" type="varchar(255)"/>
-            
+
             <column name="capture_date" type="timestamp"/>
-            
+
             <column name="delivery_date" type="date">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="po_number" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="reference" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="customer_type" type="varchar(255)"/>
-            
+
             <column name="ship_to_type" type="varchar(255)"/>
-            
+
             <column name="telephone" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="collective" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="account_reference" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="mode_of_transport" type="varchar(255)"/>
-            
+
             <column name="carrier_vessel_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="carrier_vessel_number" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="pick_up_type" type="varchar(255)"/>
-            
+
             <column name="ship_to_party_id" type="bigint">
                 <constraints unique="true"/>
             </column>
             <column name="pick_up_party_id" type="bigint">
                 <constraints unique="true"/>
             </column>
-            <column name="employee_id" type="bigint"/>
+            <column name="user_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="purchase_order" columnName="capture_date" columnDataType="datetime"/>
 
-        
+
         <addForeignKeyConstraint baseColumnNames="ship_to_party_id"
                                  baseTableName="purchase_order"
                                  constraintName="fk_purchaseorder_shiptoparty_id"
@@ -93,11 +93,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="party"/>
 
-        <addForeignKeyConstraint baseColumnNames="employee_id"
+        <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="purchase_order"
-                                 constraintName="fk_purchaseorder_employee_id"
+                                 constraintName="fk_purchaseorder_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="employee"/>
+                                 referencedTableName="jhi_user"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="assets/styles/main.css">
         <!-- endbuild -->
     </head>
-    <body ng-app="portalApp" class="{{$state.current.data.specialClass}} fixed-navbar">
+    <body ng-app="portalApp" class="{{$state.current.data.specialClass}} fixed-navbar" ng-class="{'hide-sidebar': isAuthenticated()}">
         <!--[if lt IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -42,10 +42,10 @@
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
 
         <!-- Top navigation -->
-        <div id="header" ui-view="navbar" ng-cloak=""></div>
+        <div id="header" ui-view="navbar" ng-cloak="" has-authority="ROLE_USER"></div>
 
         <!-- right navigation -->
-        <aside id="menu" ui-view="leftmenu" ng-cloak=""></aside>
+        <aside id="menu" ui-view="leftmenu" ng-cloak="" has-authority="ROLE_USER"></aside>
 
         <!-- Main Wrapper -->
         <div id="wrapper">
@@ -53,7 +53,7 @@
                 <div ui-view="content" animate-panel></div>
             </div>
             <!-- Footer -->
-            <footer class="footer">
+            <footer class="footer" has-authority="ROLE_USER">
                 <span class="pull-right">
                     XEON Customer Portal
                </span>

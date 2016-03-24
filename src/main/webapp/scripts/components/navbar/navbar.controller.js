@@ -9,7 +9,8 @@ angular.module('portalApp')
 
         $scope.logout = function () {
             Auth.logout();
-            $state.go('home');
+            $location.url("/");
+            //$state.go('home');
         };
 
         MonitoringService.checkHealth().then(function (response) {

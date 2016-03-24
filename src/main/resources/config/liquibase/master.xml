@@ -6,7 +6,7 @@
 
     <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160318131119_added_entity_Company.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20160318131120_added_entity_Employee.xml" relativeToChangelogFile="false"/>
+    <!--<include file="classpath:config/liquibase/changelog/20160318131120_added_entity_Employee.xml" relativeToChangelogFile="false"/>-->
     <include file="classpath:config/liquibase/changelog/20160318131123_added_entity_Party.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160318131121_added_entity_PurchaseOrder.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160318131122_added_entity_PoLine.xml" relativeToChangelogFile="false"/>

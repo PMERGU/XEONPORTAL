@@ -3,7 +3,6 @@ package za.co.xeon.service;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.web.rest.dto.PurchaseOrderDTO;
-import za.co.xeon.web.rest.mapper.PurchaseOrderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,33 +24,27 @@ import java.util.stream.Collectors;
 public class PurchaseOrderService {
 
     private final Logger log = LoggerFactory.getLogger(PurchaseOrderService.class);
-    
+
     @Inject
     private PurchaseOrderRepository purchaseOrderRepository;
-    
-    @Inject
-    private PurchaseOrderMapper purchaseOrderMapper;
-    
+
     /**
      * Save a purchaseOrder.
      * @return the persisted entity
      */
-    public PurchaseOrderDTO save(PurchaseOrderDTO purchaseOrderDTO) {
-        log.debug("Request to save PurchaseOrder : {}", purchaseOrderDTO);
-        PurchaseOrder purchaseOrder = purchaseOrderMapper.purchaseOrderDTOToPurchaseOrder(purchaseOrderDTO);
-        purchaseOrder = purchaseOrderRepository.save(purchaseOrder);
-        PurchaseOrderDTO result = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-        return result;
+    public PurchaseOrder save(PurchaseOrder purchaseOrder) {
+        log.debug("Request to save PurchaseOrder : {}", purchaseOrder);
+        return purchaseOrderRepository.save(purchaseOrder);
     }
 
     /**
      *  get all the purchaseOrders.
      *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public Page<PurchaseOrder> findAll(Pageable pageable) {
         log.debug("Request to get all PurchaseOrders");
-        Page<PurchaseOrder> result = purchaseOrderRepository.findAll(pageable); 
+        Page<PurchaseOrder> result = purchaseOrderRepository.findAll(pageable);
         return result;
     }
 
@@ -59,12 +52,10 @@ public class PurchaseOrderService {
      *  get one purchaseOrder by id.
      *  @return the entity
      */
-    @Transactional(readOnly = true) 
-    public PurchaseOrderDTO findOne(Long id) {
+    @Transactional(readOnly = true)
+    public PurchaseOrder findOne(Long id) {
         log.debug("Request to get PurchaseOrder : {}", id);
-        PurchaseOrder purchaseOrder = purchaseOrderRepository.findOne(id);
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-        return purchaseOrderDTO;
+        return purchaseOrderRepository.findOne(id);
     }
 
     /**

@@ -681,7 +681,7 @@
                 </os>
             </activation>
             <properties>
-                <run.profiles>dev</run.profiles>
+                <run.profiles>dev.win</run.profiles>
                 <sapjco.path>${project.basedir}/libs/win/sapjco3.jar</sapjco.path>
                 <os.type>win</os.type>
                 <logback.loglevel>DEBUG</logback.loglevel>

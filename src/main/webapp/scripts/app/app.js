@@ -73,6 +73,9 @@ angular.module('portalApp', ['LocalStorageModule',
                     controller: 'LeftmenuController'
                 }
             },
+            data: {
+                authorities: ['ROLE_USER']
+            },
             resolve: {
                 authorize: ['Auth',
                     function (Auth) {

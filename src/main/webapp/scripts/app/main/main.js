@@ -7,7 +7,7 @@ angular.module('portalApp')
                 parent: 'site',
                 url: '/',
                 data: {
-                    authorities: []
+
                 },
                 views: {
                     'content@': {
@@ -16,7 +16,7 @@ angular.module('portalApp')
                     }
                 },
                 resolve: {
-                    
+
                 }
             });
     });

@@ -127,3 +127,10 @@ Desktop.ini
 # Maven Wrapper
 ######################
 !.mvn/wrapper/maven-wrapper.jar
+
+######################
+# SAPJCO LIB
+######################
+!libs/win/sapjco3.jar
+!libs/mac/sapjco3.jar
+!libs/linux/sapjco3.jar

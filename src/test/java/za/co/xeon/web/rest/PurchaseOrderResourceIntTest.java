@@ -4,8 +4,6 @@ import za.co.xeon.Application;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.service.PurchaseOrderService;
-import za.co.xeon.web.rest.dto.PurchaseOrderDTO;
-import za.co.xeon.web.rest.mapper.PurchaseOrderMapper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,10 +55,10 @@ public class PurchaseOrderResourceIntTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneId.of("Z"));
 
-    
+
     private static final PoState DEFAULT_STATE = PoState.PROCESSED;
     private static final PoState UPDATED_STATE = PoState.UNPROCESSED;
-    
+
     private static final ServiceLevel DEFAULT_SERVICE_LEVEL = ServiceLevel.ECONOMY;
     private static final ServiceLevel UPDATED_SERVICE_LEVEL = ServiceLevel.EXPRESS_AM;
 
@@ -74,10 +72,10 @@ public class PurchaseOrderResourceIntTest {
     private static final String UPDATED_PO_NUMBER = "BBBBB";
     private static final String DEFAULT_REFERENCE = "AAAAA";
     private static final String UPDATED_REFERENCE = "BBBBB";
-    
+
     private static final CustomerType DEFAULT_CUSTOMER_TYPE = CustomerType.REGULAR;
     private static final CustomerType UPDATED_CUSTOMER_TYPE = CustomerType.ONE_TIME;
-    
+
     private static final DeliveryType DEFAULT_SHIP_TO_TYPE = DeliveryType.RETAIL;
     private static final DeliveryType UPDATED_SHIP_TO_TYPE = DeliveryType.STANDARD;
     private static final String DEFAULT_TELEPHONE = "AAAAA";
@@ -86,22 +84,19 @@ public class PurchaseOrderResourceIntTest {
     private static final String UPDATED_COLLECTIVE = "BBBBB";
     private static final String DEFAULT_ACCOUNT_REFERENCE = "AAAAA";
     private static final String UPDATED_ACCOUNT_REFERENCE = "BBBBB";
-    
+
     private static final ModeOfTransport DEFAULT_MODE_OF_TRANSPORT = ModeOfTransport.AIR_DELIVERIES;
     private static final ModeOfTransport UPDATED_MODE_OF_TRANSPORT = ModeOfTransport.AIR_TRANSFERS;
     private static final String DEFAULT_CARRIER_VESSEL_NAME = "AAAAA";
     private static final String UPDATED_CARRIER_VESSEL_NAME = "BBBBB";
     private static final String DEFAULT_CARRIER_VESSEL_NUMBER = "AAAAA";
     private static final String UPDATED_CARRIER_VESSEL_NUMBER = "BBBBB";
-    
+
     private static final DeliveryType DEFAULT_PICK_UP_TYPE = DeliveryType.RETAIL;
     private static final DeliveryType UPDATED_PICK_UP_TYPE = DeliveryType.STANDARD;
 
     @Inject
     private PurchaseOrderRepository purchaseOrderRepository;
-
-    @Inject
-    private PurchaseOrderMapper purchaseOrderMapper;
 
     @Inject
     private PurchaseOrderService purchaseOrderService;
@@ -121,7 +116,6 @@ public class PurchaseOrderResourceIntTest {
         MockitoAnnotations.initMocks(this);
         PurchaseOrderResource purchaseOrderResource = new PurchaseOrderResource();
         ReflectionTestUtils.setField(purchaseOrderResource, "purchaseOrderService", purchaseOrderService);
-        ReflectionTestUtils.setField(purchaseOrderResource, "purchaseOrderMapper", purchaseOrderMapper);
         this.restPurchaseOrderMockMvc = MockMvcBuilders.standaloneSetup(purchaseOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -152,12 +146,9 @@ public class PurchaseOrderResourceIntTest {
     public void createPurchaseOrder() throws Exception {
         int databaseSizeBeforeCreate = purchaseOrderRepository.findAll().size();
 
-        // Create the PurchaseOrder
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isCreated());
 
         // Validate the PurchaseOrder in the database
@@ -188,12 +179,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setState(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -207,12 +195,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setDeliveryDate(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -226,12 +211,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setPoNumber(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -245,12 +227,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setReference(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -264,12 +243,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setTelephone(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -283,12 +259,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setCollective(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -302,12 +275,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setAccountReference(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -321,12 +291,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setCarrierVesselName(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -340,12 +307,9 @@ public class PurchaseOrderResourceIntTest {
         // set the field null
         purchaseOrder.setCarrierVesselNumber(null);
 
-        // Create the PurchaseOrder, which fails.
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
-
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isBadRequest());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
@@ -440,11 +404,10 @@ public class PurchaseOrderResourceIntTest {
         purchaseOrder.setCarrierVesselName(UPDATED_CARRIER_VESSEL_NAME);
         purchaseOrder.setCarrierVesselNumber(UPDATED_CARRIER_VESSEL_NUMBER);
         purchaseOrder.setPickUpType(UPDATED_PICK_UP_TYPE);
-        PurchaseOrderDTO purchaseOrderDTO = purchaseOrderMapper.purchaseOrderToPurchaseOrderDTO(purchaseOrder);
 
         restPurchaseOrderMockMvc.perform(put("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(purchaseOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
                 .andExpect(status().isOk());
 
         // Validate the PurchaseOrder in the database

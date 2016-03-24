@@ -26,20 +26,22 @@ public class Company implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-    
+
     @NotNull
     @Column(name = "sap_id", nullable = false)
     private String sapId;
-    
+
     @Lob
     @Column(name = "background")
     private byte[] background;
-    
-    @Column(name = "background_content_type")        private String backgroundContentType;
+
+    @Column(name = "background_content_type")
+    private String backgroundContentType;
+
     @OneToMany(mappedBy = "company")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Employee> employees = new HashSet<>();
+    private Set<User> employees = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -52,7 +54,7 @@ public class Company implements Serializable {
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -60,7 +62,7 @@ public class Company implements Serializable {
     public String getSapId() {
         return sapId;
     }
-    
+
     public void setSapId(String sapId) {
         this.sapId = sapId;
     }
@@ -68,7 +70,7 @@ public class Company implements Serializable {
     public byte[] getBackground() {
         return background;
     }
-    
+
     public void setBackground(byte[] background) {
         this.background = background;
     }
@@ -81,11 +83,11 @@ public class Company implements Serializable {
         this.backgroundContentType = backgroundContentType;
     }
 
-    public Set<Employee> getEmployees() {
+    public Set<User> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Set<Employee> employees) {
+    public void setEmployees(Set<User> employees) {
         this.employees = employees;
     }
 
