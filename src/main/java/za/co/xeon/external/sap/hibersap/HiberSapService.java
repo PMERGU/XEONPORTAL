@@ -1,6 +1,7 @@
 package za.co.xeon.external.sap.hibersap;
 
 import org.hibersap.bapi.BapiRet2;
+import za.co.xeon.domain.dto.PurchaseOrderDto;
 import za.co.xeon.external.sap.SapSettings;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 import org.hibersap.configuration.AnnotationConfiguration;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 
 import javax.annotation.PostConstruct;
@@ -48,23 +50,18 @@ public class HiberSapService {
         sessionManager = configuration.buildSessionManager();
     }
 
-    public CustomerOrdersByDateRFC getCustomerOrdersByDate(String customerNumber){
+    public List<PurchaseOrderDto> convertEvResultToPO(List<EvResult> results){
+        List<PurchaseOrderDto>
+    }
+
+    public List<PurchaseOrderDto> getCustomerOrdersByDate(String customerNumber){
         String paddedNumber = "0000000000".substring(customerNumber.length()) + customerNumber;
         Session session = sessionManager.openSession();
         try {
             CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(paddedNumber, null, null);
             session.execute(rfc);
-//            List<EvResult> tmp = rfc.getEvResult();
-//            for (EvResult line : tmp) {
-//                log.debug("\t" + line.getSkunnr() + " - " + line.getBstkd());
-//            }
 
-//            log.debug("\nReturn");
-//            BapiRet2 returnStruct = rfc.getEvReturn();
-//            log.debug("\tMessage: " + returnStruct.getMessage());
-//            log.debug("\tNumber: " + returnStruct.getNumber());
-//            log.debug("\tType: " + returnStruct.getType());
-            return rfc;
+            return convertEvResultToPO(rfc.getEvResult());
         }catch(Exception e){
             log.error("Couldnt complete getCustomerOrdersByDate : + " + e.getMessage(), e);
             throw e;

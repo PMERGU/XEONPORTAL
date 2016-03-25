@@ -83,6 +83,21 @@ angular.module('portalApp', ['LocalStorageModule',
                     }
                 ]
             }
+        })
+        .state('bare', {
+            'abstract': true,
+            views: {
+            },
+            data: {
+                authorities: ['ROLE_USER','ROLE_CUSTOMER']
+            },
+            resolve: {
+                authorize: ['Auth',
+                    function (Auth) {
+                        return Auth.authorize();
+                    }
+                ]
+            }
         });
 
         $httpProvider.interceptors.push('errorHandlerInterceptor');

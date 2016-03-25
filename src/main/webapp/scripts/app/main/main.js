@@ -16,9 +16,6 @@ angular.module('portalApp')
                     }
                 },
                 resolve: {
-                    company: ['$stateParams', 'Company', function($stateParams, Company) {
-                        return Company.get({id : 2});
-                    }]
                 }
             });
     });

@@ -1,9 +1,10 @@
-<div class="register-container">
+<div class="login-wrapper">
+    <div class="container" style="max-width: 660px;">
     <div small-header>
         <div class="hpanel" style="margin-bottom: 15px;">
             <div class="panel-body">
-                <div class="col-md-8 col-md-offset-2">
-                    <h1>Sign in</h1>
+                <div class="text-center">
+                    <h1>Welcome to our customer portal</h1>
                 </div>
             </div>
         </div>
@@ -11,13 +12,13 @@
 
     <div class="hpanel">
         <div class="panel-body">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+            <div class="row" style="padding: 20px 50px">
+                <div>
                     <div class="alert alert-danger" ng-show="authenticationError">
                         <strong>Failed to sign in!</strong> Please check your credentials and try again.
                     </div>
                 </div>
-                <div class="col-md-8 col-md-offset-2">
+                <div>
                     <form class="form" role="form" ng-submit="login($event)">
                         <div class="form-group">
                             <label for="username">Login</label>
@@ -40,5 +41,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>

@@ -7,8 +7,10 @@ angular.module('portalApp')
 
         $scope.rememberMe = true;
         $timeout(function (){angular.element('[ng-model="username"]').focus();});
+
         $scope.login = function (event) {
             event.preventDefault();
+
             Auth.login({
                 username: $scope.username,
                 password: $scope.password,

@@ -33,33 +33,35 @@
         <!-- Simple splash screen-->
         <div class="splash">
             <div class="color-line"></div>
-            <div class="splash-title"><h1>Homer - Responsive Admin Theme</h1>
-                <p>Special AngularJS Admin Theme for small and medium webapp with very clean and aesthetic style and feel. </p>
+            <div class="splash-title"><h1>XEON Customer Portal</h1>
+                <p>Enabling critical views into our business platform.</p>
                 <img src="assets/images/loading-bars.svg" width="64" height="64"/>
             </div>
         </div>
+        <div show-if-authenticated>
+            <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
 
-        <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
+            <!-- Top navigation -->
+            <div id="header" ui-view="navbar" ng-cloak=""></div>
 
-        <!-- Top navigation -->
-        <div id="header" ui-view="navbar" ng-cloak="" show-if-authenticated></div>
+            <!-- right navigation -->
+            <aside id="menu" ui-view="leftmenu" ng-cloak=""></aside>
 
-        <!-- right navigation -->
-        <aside id="menu" ui-view="leftmenu" ng-cloak="" show-if-authenticated></aside>
-
-        <!-- Main Wrapper -->
-        <div id="wrapper">
-            <div class="content">
-                <div ui-view="content" animate-panel></div>
+            <!-- Main Wrapper -->
+            <div id="wrapper">
+                <div class="content">
+                    <div ui-view="content" animate-panel></div>
+                </div>
+                <!-- Footer -->
+                <footer class="footer" has-authority="ROLE_USER">
+                    <span class="pull-right">
+                        XEON Customer Portal
+                   </span>
+                    2016
+                </footer>
             </div>
-            <!-- Footer -->
-            <footer class="footer" has-authority="ROLE_USER">
-                <span class="pull-right">
-                    XEON Customer Portal
-               </span>
-                2016
-            </footer>
         </div>
+        <div ui-view="login" animate-panel></div>
 
         <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
         <script>

@@ -60,6 +60,10 @@
             <column name="company_id" value="2" />
             <where>ID = 5</where>
         </update>
+        <update tableName="jhi_user">
+            <column name="company_id" value="3" />
+            <where>ID = 6</where>
+        </update>
 
     </changeSet>
 </databaseChangeLog>

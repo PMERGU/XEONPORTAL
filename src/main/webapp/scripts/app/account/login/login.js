@@ -4,20 +4,20 @@ angular.module('portalApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('login', {
-                parent: 'account',
+                parent: 'bare',
                 url: '/login',
                 data: {
-                    authorities: [], 
+                    authorities: [],
                     pageTitle: 'Sign in'
                 },
                 views: {
-                    'content@': {
+                    'login@': {
                         templateUrl: 'scripts/app/account/login/login.html',
                         controller: 'LoginController'
                     }
                 },
                 resolve: {
-                    
+
                 }
             });
     });

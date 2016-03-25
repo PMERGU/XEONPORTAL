@@ -1,6 +1,7 @@
 package za.co.xeon.web.rest.dto;
 
 import za.co.xeon.domain.Authority;
+import za.co.xeon.domain.Company;
 import za.co.xeon.domain.User;
 
 import org.hibernate.validator.constraints.Email;
@@ -37,6 +38,8 @@ public class UserDTO {
 
     private boolean activated = false;
 
+    private Company company;
+
     @Size(min = 2, max = 5)
     private String langKey;
 
@@ -49,11 +52,13 @@ public class UserDTO {
         this(user.getLogin(), null, user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet()),
+            new Company(user.getCompany().getId())
+        );
     }
 
     public UserDTO(String login, String password, String firstName, String lastName,
-        String email, boolean activated, String langKey, Set<String> authorities) {
+        String email, boolean activated, String langKey, Set<String> authorities, Company company) {
 
         this.login = login;
         this.password = password;
@@ -63,6 +68,7 @@ public class UserDTO {
         this.activated = activated;
         this.langKey = langKey;
         this.authorities = authorities;
+        this.company = company;
     }
 
     public String getPassword() {
@@ -95,6 +101,10 @@ public class UserDTO {
 
     public Set<String> getAuthorities() {
         return authorities;
+    }
+
+    public Company getCompany() {
+        return company;
     }
 
     @Override

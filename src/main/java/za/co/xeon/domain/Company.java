@@ -43,6 +43,13 @@ public class Company implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<User> employees = new HashSet<>();
 
+    public Company() {
+    }
+
+    public Company(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
