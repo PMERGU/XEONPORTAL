@@ -3,6 +3,10 @@ package za.co.xeon.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import za.co.xeon.domain.Company;
 import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
+import za.co.xeon.repository.UserRepository;
+import za.co.xeon.security.AuthoritiesConstants;
+import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.PurchaseOrderService;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
@@ -37,6 +41,9 @@ public class PurchaseOrderResource {
 
     @Inject
     private PurchaseOrderService purchaseOrderService;
+
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * POST  /purchaseOrders -> Create a new purchaseOrder.
@@ -82,10 +89,16 @@ public class PurchaseOrderResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<PurchaseOrder>> getAllPurchaseOrders(Pageable pageable)
-        throws URISyntaxException {
+    public ResponseEntity<List<PurchaseOrder>> getAllPurchaseOrders(Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of PurchaseOrders");
-        Page<PurchaseOrder> page = purchaseOrderService.findAll(pageable);
+        Page<PurchaseOrder> page = null;
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            log.debug("Restricting PurchaseOrders lookup by username " + user.getLogin());
+            page = purchaseOrderService.findAllByUser(user, pageable);
+        }else {
+            page = purchaseOrderService.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

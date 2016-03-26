@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainController', function ($scope, $cacheFactory, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder) {
+    .controller('MainController', function ($scope, $cacheFactory, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder) {
         $scope.deliveredOrders = [];
         $scope.undeliveredOrders = [];
         $scope.dtOptions = DTOptionsBuilder.newOptions()
@@ -22,6 +22,7 @@ angular.module('portalApp')
             $scope.isAuthenticated = Principal.isAuthenticated;
             $scope.company = Company.get({id : account.company.id });
             getOrders();
+            getCapturedPOs();
         });
 
         $scope.reloadData = function () {
@@ -48,6 +49,15 @@ angular.module('portalApp')
                 $scope.undeliveredOrders = data.filter(function (el) {
                     console.log(el.PDSTK);
                     return (el.PDSTK !== "C");
+                });
+            });
+        }
+
+        function getCapturedPOs(){
+            PurchaseOrder.query().$promise.then(function(data) {
+                $scope.capturedPos = data;
+                $scope.posProcessed = data.filter(function (el) {
+                    return (el.state === "PROCESSED");
                 });
             });
         }

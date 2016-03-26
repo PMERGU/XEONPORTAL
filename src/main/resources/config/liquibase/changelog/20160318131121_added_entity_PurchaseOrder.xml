@@ -70,10 +70,8 @@
             <column name="pick_up_type" type="varchar(255)"/>
 
             <column name="ship_to_party_id" type="bigint">
-                <constraints unique="true"/>
             </column>
             <column name="pick_up_party_id" type="bigint">
-                <constraints unique="true"/>
             </column>
             <column name="user_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
@@ -99,5 +97,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/purchaseorders.csv"
+                  separator=";"
+                  tableName="purchase_order"/>
     </changeSet>
 </databaseChangeLog>

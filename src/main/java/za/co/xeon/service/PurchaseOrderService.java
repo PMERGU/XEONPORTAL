@@ -1,7 +1,10 @@
 package za.co.xeon.service;
 
+import org.springframework.security.access.annotation.Secured;
 import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
 import za.co.xeon.repository.PurchaseOrderRepository;
+import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.web.rest.dto.PurchaseOrderDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +45,21 @@ public class PurchaseOrderService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
+    @Secured(AuthoritiesConstants.USER)
     public Page<PurchaseOrder> findAll(Pageable pageable) {
         log.debug("Request to get all PurchaseOrders");
         Page<PurchaseOrder> result = purchaseOrderRepository.findAll(pageable);
+        return result;
+    }
+
+    /**
+     *  get all the purchaseOrders.
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<PurchaseOrder> findAllByUser(User user, Pageable pageable) {
+        log.debug("Request to get all PurchaseOrders");
+        Page<PurchaseOrder> result = purchaseOrderRepository.findByUser(user, pageable);
         return result;
     }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('PurchaseOrderDetailController', function ($scope, $rootScope, $stateParams, entity, PurchaseOrder, PoLine, Party, Employee) {
+    .controller('PurchaseOrderDetailController', function ($scope, $rootScope, $stateParams, entity, PurchaseOrder, PoLine, Party, User) {
         $scope.purchaseOrder = entity;
         $scope.load = function (id) {
             PurchaseOrder.get({id: id}, function(result) {

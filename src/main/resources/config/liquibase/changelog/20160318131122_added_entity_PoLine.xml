@@ -24,50 +24,53 @@
             <column name="material_number" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="order_quantity" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="unit_of_measure" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="warehouse" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="length" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="width" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="height" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="gross_weight" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="net_weight" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="batch_number" type="varchar(255)"/>
-            
+
             <column name="purchase_order_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="purchase_order_id"
                                  baseTableName="po_line"
                                  constraintName="fk_poline_purchaseorder_id"
                                  referencedColumnNames="id"
                                  referencedTableName="purchase_order"/>
-
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/polines.csv"
+                  separator=";"
+                  tableName="po_line"/>
     </changeSet>
 </databaseChangeLog>

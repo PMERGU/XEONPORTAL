@@ -112,18 +112,20 @@ public class HiberSapService {
     }
 
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, List<ImHuitem> handlingUnits){
-        String paddedNumber = "0000000000".substring(barcode.length()) + barcode;
-        Session session = sessionManager.openSession();
-        try {
-            UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(handlingUnits);
-            session.execute(rfc);
-            return rfc.getReturn();
-        }catch(Exception e){
-            log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
-            throw e;
-        }finally {
-            session.close();
-        }
+//        String paddedNumber = "0000000000".substring(barcode.length()) + barcode;
+//        Session session = sessionManager.openSession();
+//        try {
+//            UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(handlingUnits);
+//            session.execute(rfc);
+//            return rfc.getReturn();
+//        }catch(Exception e){
+//            log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
+//            throw e;
+//        }finally {
+//            session.close();
+//        }
+        //RFC needs fixing
+        return new ArrayList<>();
     }
 
 }

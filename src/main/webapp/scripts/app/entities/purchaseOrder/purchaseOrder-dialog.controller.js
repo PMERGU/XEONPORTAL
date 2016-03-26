@@ -2,7 +2,7 @@
 
 angular.module('portalApp').controller('PurchaseOrderDialogController',
     ['$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'PurchaseOrder', 'PoLine', 'Party', 'Employee',
-        function($scope, $stateParams, $uibModalInstance, $q, entity, PurchaseOrder, PoLine, Party, Employee) {
+        function($scope, $stateParams, $uibModalInstance, $q, entity, PurchaseOrder, PoLine, Party, User) {
 
         $scope.purchaseOrder = entity;
         $scope.polines = PoLine.query();
@@ -24,7 +24,7 @@ angular.module('portalApp').controller('PurchaseOrderDialogController',
         }).then(function(pickUpParty) {
             $scope.pickuppartys.push(pickUpParty);
         });
-        $scope.employees = Employee.query();
+        $scope.users = User.query();
         $scope.load = function(id) {
             PurchaseOrder.get({id : id}, function(result) {
                 $scope.purchaseOrder = result;

@@ -3,13 +3,6 @@
         <div class="col-lg-4 col-md-3 hidden-sm">
             <div class="hpanel hgreen">
                 <div class="panel-body">
-                    <div class="pull-right text-right">
-                        <div class="btn-group">
-                            <i class="fa fa-facebook btn btn-default btn-xs"></i>
-                            <i class="fa fa-twitter btn btn-default btn-xs"></i>
-                            <i class="fa fa-linkedin btn btn-default btn-xs"></i>
-                        </div>
-                    </div>
                     <img alt="logo" class=""
                          data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}"
                          style="height: 150px; max-width: 100%;" ng-if="company.background"/>
@@ -25,30 +18,36 @@
                 <div class="border-right border-left">
                 </div>
                 <div class="panel-body">
-                    <dl>
-                        <dt>Description lists</dt>
-                        <dd>A description list is perfect for defining terms.</dd>
-                        <dt>Euismod</dt>
-                        <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
-                        <dd>Donec id elit non mi porta gravida at eget metus.</dd>
-                        <dt>Malesuada porta</dt>
-                        <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
-                    </dl>
+                    <table class="table table-responsive hover">
+                        <thead class="text-primary text-capitalize" style="font-weight: 600">
+                            <tr>
+                                <td>Order</td>
+                                <td>Date</td>
+                                <td>Actioned</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="po in capturedPos">
+                                <td>{{ po.pickUpType }} pickup via {{ po.modeOfTransport }}</td>
+                                <td>{{ po.captureDate }}</td>
+                                <td>{{ po.state }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="panel-footer contact-footer">
                     <div class="row">
                         <div class="col-md-4 border-right">
-                            <div class="contact-stat"><span>Projects: </span> <strong>200</strong></div>
+                            <div class="contact-stat"><span>Purchase Orders: </span> <strong>{{capturedPos.length}}</strong></div>
                         </div>
                         <div class="col-md-4 border-right">
-                            <div class="contact-stat"><span>Messages: </span> <strong>300</strong></div>
+                            <div class="contact-stat"><span>Processed: </span> <strong>{{posProcessed.length}}</strong></div>
                         </div>
                         <div class="col-md-4">
-                            <div class="contact-stat"><span>Views: </span> <strong>400</strong></div>
+                            <div class="contact-stat"><span>Unprocessed: </span> <strong>{{ capturedPos.length - posProcessed.length }}</strong></div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="col-lg-8 col-md-9 col-sm-12">

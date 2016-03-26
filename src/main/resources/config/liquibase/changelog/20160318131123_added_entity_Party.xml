@@ -24,23 +24,27 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="house_number" type="varchar(255)"/>
-            
+
             <column name="street_name" type="varchar(255)"/>
-            
+
             <column name="district" type="varchar(255)"/>
-            
+
             <column name="postal_code" type="integer"/>
-            
+
             <column name="city" type="varchar(255)"/>
-            
+
             <column name="country" type="varchar(255)"/>
-            
+
             <column name="reference" type="varchar(255)"/>
-            
+
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/parties.csv"
+                  separator=";"
+                  tableName="party"/>
     </changeSet>
 </databaseChangeLog>
