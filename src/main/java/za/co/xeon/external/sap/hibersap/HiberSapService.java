@@ -1,7 +1,10 @@
 package za.co.xeon.external.sap.hibersap;
 
 import org.hibersap.bapi.BapiRet2;
+import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.dto.DeliveryDto;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
+import za.co.xeon.domain.dto.SalesOrderDto;
 import za.co.xeon.external.sap.SapSettings;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 import org.hibersap.configuration.AnnotationConfiguration;
@@ -15,10 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
+import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by derick on 2016/02/07.
@@ -47,23 +53,40 @@ public class HiberSapService {
                 .setProperty(DestinationDataProvider.JCO_PEAK_LIMIT,    s3Settings.getPeakLimit());
 
         AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
-        configuration.addBapiClasses( CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class );
+        configuration.addBapiClasses( CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, UpdateHandlingUnitsRFC.class);
         sessionManager = configuration.buildSessionManager();
     }
 
-    public List<PurchaseOrderDto> convertEvResultToPO(List<EvResult> results){
-        List<PurchaseOrderDto> dtos = new ArrayList<>();
-        return dtos;
-    }
+//    public Map<String, PurchaseOrderDto> convertEvResultToPO(List<EvResult> results){
+//        Map<String, PurchaseOrderDto> poDtos = new HashMap<>();
+//        log.debug(results.get(0).getBstkd());
+    // =========== something not working here, it seems to create a hashmap and then below doesnt work. Think there is bug....
+//        for(EvResult evResult : results){
+//            String po = evResult.getBstkd();
+//            String so = evResult.getVbeln();
+//            String delivery = evResult.getDbeln();
+//            String shipment = evResult.getTknum();
+//
+//            if(poDtos.containsKey(po)){
+//                PurchaseOrderDto purchaseOrderDto = poDtos.get(po);
+//
+//            }else{
+//                poDtos.put(po, PurchaseOrderDto.newPurchaseOrder(so, SalesOrderDto.newSalesOrder(delivery, DeliveryDto.newDelivery(shipment, evResult))));
+//            }
+//
+//        }
+//        return poDtos;
+//    }
 
-    public List<PurchaseOrderDto> getCustomerOrdersByDate(String customerNumber){
+    public List<EvResult> getCustomerOrdersByDate(String customerNumber){
         String paddedNumber = "0000000000".substring(customerNumber.length()) + customerNumber;
         Session session = sessionManager.openSession();
         try {
             CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(paddedNumber, null, null);
             session.execute(rfc);
 
-            return convertEvResultToPO(rfc.getEvResult());
+//            return convertEvResultToPO(rfc.getEvResult());
+            return rfc.getEvResult();
         }catch(Exception e){
             log.error("Couldnt complete getCustomerOrdersByDate : + " + e.getMessage(), e);
             throw e;
@@ -79,13 +102,6 @@ public class HiberSapService {
             HandlingUnitsRFC rfc = new HandlingUnitsRFC(paddedNumber);
             session.execute(rfc);
 
-//            log.debug("\nReturn");
-//            List<BapiRet2> returnStruct = rfc.getReturn();
-//            for (BapiRet2 bapiRet2 : returnStruct) {
-//                log.debug("\tMessage: " + bapiRet2.getMessage());
-//                log.debug("\tNumber: " + bapiRet2.getNumber());
-//                log.debug("\tType: " + bapiRet2.getType());
-//            }
             return rfc;
         }catch(Exception e){
             log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
@@ -95,8 +111,19 @@ public class HiberSapService {
         }
     }
 
-    public void updateDeliveredHandelingUnits(String barcode, List<Hunumbers> handlingUnits){
-        //TODO implement updateHandlingUnits
+    public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, List<ImHuitem> handlingUnits){
+        String paddedNumber = "0000000000".substring(barcode.length()) + barcode;
+        Session session = sessionManager.openSession();
+        try {
+            UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(handlingUnits);
+            session.execute(rfc);
+            return rfc.getReturn();
+        }catch(Exception e){
+            log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
+            throw e;
+        }finally {
+            session.close();
+        }
     }
 
 }

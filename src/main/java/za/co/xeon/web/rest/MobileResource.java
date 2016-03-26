@@ -1,6 +1,7 @@
 package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.hibersap.bapi.BapiRet2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.config.MobileConfiguration;
@@ -13,12 +14,15 @@ import org.springframework.web.multipart.MultipartFile;
 import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.Huitem;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
+import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 import za.co.xeon.service.MobileService;
+import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.annotation.MultipartConfig;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
@@ -26,6 +30,7 @@ import java.util.concurrent.Callable;
  */
 
 @RestController
+@RequestMapping("/api")
 //Max uploaded file size (here it is 20 MB)
 @MultipartConfig(fileSizeThreshold = 5971520)
 public class MobileResource {
@@ -79,17 +84,16 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET)
     @Timed
-    public List<PurchaseOrderDto> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber) throws Exception {
+    public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber) throws Exception {
         log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
         return mobileService.getCustomerOrders(customerNumber);
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.PUT)
     @Timed
-    public ResponseEntity updateDeliveredHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody List<Hunumbers> hunumbers) throws Exception {
+    public List<BapiRet2> updateDeliveredHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
         log.debug("Service [PUT] /mobile/pods/" + barcode + "/handlingunits");
-        mobileService.updateDeliveredHandelingUnits(barcode, hunumbers);
-        return ResponseEntity.ok().build();
+        return mobileService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
     }
 
 }

@@ -3,7 +3,8 @@
 angular.module('portalApp', ['LocalStorageModule',
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
     // jhipster-needle-angularjs-add-module JHipster will add new module here
-    'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar', 'ui.gravatar'])
+    'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar', 'ui.gravatar',
+        'datatables', 'datatables.bootstrap'])
 
     .run(function ($rootScope, $location, $window, $http, $state,  Auth, Principal, ENV, VERSION) {
         $rootScope.ENV = ENV;

@@ -1,6 +1,6 @@
 <div ng-cloak>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-4 col-md-3 hidden-sm">
             <div class="hpanel hgreen">
                 <div class="panel-body">
                     <div class="pull-right text-right">
@@ -10,13 +10,14 @@
                             <i class="fa fa-linkedin btn btn-default btn-xs"></i>
                         </div>
                     </div>
-                    <img alt="logo" class="" data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}"
+                    <img alt="logo" class=""
+                         data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}"
                          style="height: 150px; max-width: 100%;" ng-if="company.background"/>
                     <h3><a href="">{{company.name}} - {{company.sapId}}</a></h3>
                     <!--<div class="text-muted font-bold m-b-xs">California, LA</div>-->
                     <!--<p>-->
-                        <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices-->
-                        <!--accumsan.-->
+                    <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices-->
+                    <!--accumsan.-->
                     <!--</p>-->
                     <uib-progressbar value="65" type="success"
                                      class="progress-small full progress-striped active"></uib-progressbar>
@@ -50,61 +51,67 @@
 
             </div>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-md-9 col-sm-12">
             <div class="hpanel">
                 <div class="hpanel">
                     <uib-tabset>
                         <uib-tab>
                             <uib-tab-heading>
-                                Un-delivered
+                                Un-delivered&nbsp;
+                                <i class="fa fa-refresh btn btn-default btn-xs" ng-click="reloadData()"></i>
                             </uib-tab-heading>
                             <div class="panel-body">
-                                <strong>Purchase Orders in pre-delivery and out-for-delivery status</strong>
                                 <div class="table-responsive">
-                                    <table class="table table-striped">
+                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
                                         <thead>
-                                            <tr>
-
-                                                <th>#</th>
-                                                <th>Project</th>
-                                                <th>Name</th>
-                                                <th>Phone</th>
-                                                <th>Company</th>
-                                                <th>Completed</th>
-                                                <th>Task</th>
-                                                <th>Date</th>
-                                                <th>Action</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Purchase Order</th>
+                                            <th>Sales Order</th>
+                                            <th>Delivery No</th>
+                                            <th>Shipment No</th>
+                                            <th>Status</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Project
-                                                    <small>This is example of project</small>
-                                                </td>
-                                                <td>Patrick Smith</td>
-                                                <td>0800 051213</td>
-                                                <td>Inceptos Hymenaeos Ltd</td>
-                                                <td>
-                                                    <pie-chart data="PieChart5.data"
-                                                               options="PieChart5.options"></pie-chart>
-                                                </td>
-                                                <td>20%</td>
-                                                <td>Jul 14, 2013</td>
-                                                <td><a href="#"><i class="fa fa-check text-success"></i></a></td>
-                                            </tr>
+                                        <tr ng-repeat="order in undeliveredOrders">
+                                            <td>{{ order.BSTKD }}</td>
+                                            <td>{{ order.VBELN }}</td>
+                                            <td>{{ order.DBELN }}</td>
+                                            <td>{{ order.TKNUM }}</td>
+                                            <td>{{ order.PDSTK }}</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <p>You currently have 12 un-delivered items</p>
                             </div>
                         </uib-tab>
                         <uib-tab>
                             <uib-tab-heading>
                                 Delivered
                             </uib-tab-heading>
-                            <div class="panel-body no-padding">
-
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
+                                        <thead>
+                                            <tr>
+                                                <th>Purchase Order</th>
+                                                <th>Sales Order</th>
+                                                <th>Delivery No</th>
+                                                <th>Shipment No</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="order in deliveredOrders">
+                                                <td>{{ order.BSTKD }}</td>
+                                                <td>{{ order.VBELN }}</td>
+                                                <td>{{ order.DBELN }}</td>
+                                                <td>{{ order.TKNUM }}</td>
+                                                <td>{{ order.PDSTK }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </uib-tab>
                     </uib-tabset>

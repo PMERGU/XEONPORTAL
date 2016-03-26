@@ -39,7 +39,8 @@
     "angular-ladda": "^0.3.4",
     "clockpicker": "^0.0.7",
     "eonasdan-bootstrap-": "datetimepicker#^2.5.1",
-    "angular-gravatar": "^0.4.2"
+    "angular-gravatar": "^0.4.2",
+    "angular-datatables": "^0.5.3"
   },
   "devDependencies": {
     "angular-mocks": "1.4.8",

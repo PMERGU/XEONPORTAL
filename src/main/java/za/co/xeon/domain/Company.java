@@ -50,6 +50,11 @@ public class Company implements Serializable {
         this.id = id;
     }
 
+    public Company(Long id, String sapId) {
+        this.id = id;
+        this.sapId = sapId;
+    }
+
     public Long getId() {
         return id;
     }

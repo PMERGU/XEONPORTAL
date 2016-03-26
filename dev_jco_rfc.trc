@@ -580,3 +580,16 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20160326 150613 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Sat Mar 26 15:06:13,970<    >RfcGetException rc (7) message: Syntax error in program SAPLZRMD_MOBILITY_PORTAL                .
+<RfcGetException
+
+
+**** Error file opened at 20160326 152101 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Sat Mar 26 15:21:01,404<    >RfcGetException rc (7) message: The function module "Z_SET_HANDLING_UNITS" not released for 'remote' calls.
+<RfcGetException
+
+Error:  >Sat Mar 26 15:37:54,016<    >RfcGetException rc (7) message: The function module "Z_SET_HANDLING_UNITS" not released for 'remote' calls.
+<RfcGetException
+

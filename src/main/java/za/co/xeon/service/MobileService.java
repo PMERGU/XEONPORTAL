@@ -1,5 +1,6 @@
 package za.co.xeon.service;
 
+import org.hibersap.bapi.BapiRet2;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
 import za.co.xeon.external.as3.S3Service;
 import za.co.xeon.external.as3.S3Settings;
@@ -15,9 +16,14 @@ import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.dto.Huitem;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
+import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
+import za.co.xeon.web.rest.dto.HandlingUnitDto;
+import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by derick on 2016/02/07.
@@ -69,12 +75,16 @@ public class MobileService {
         return hiberSapService.getHandelingUnits(barcode).getHunumbers();
     }
 
-    public List<PurchaseOrderDto> getCustomerOrders(String customerNumber) throws Exception{
+    public List<EvResult> getCustomerOrders(String customerNumber) throws Exception{
         return hiberSapService.getCustomerOrdersByDate(customerNumber);
     }
 
-    public void updateDeliveredHandelingUnits(String barcode, List<Hunumbers> handlingUnits) throws Exception{
-//        return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnits);
+    public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception{
+        List<ImHuitem> imHuitems = new ArrayList<>();
+        for(HandlingUnitDto dto : handlingUnitUpdateDto.getHandlingUnits()){
+            imHuitems.add(new ImHuitem(barcode, dto.getHandlingUnit(), handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
+        }
+        return hiberSapService.updateDeliveredHandelingUnits(barcode, imHuitems);
     }
 
 }
