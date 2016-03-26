@@ -1,5 +1,6 @@
 package za.co.xeon.service;
 
+import za.co.xeon.domain.dto.PurchaseOrderDto;
 import za.co.xeon.external.as3.S3Service;
 import za.co.xeon.external.as3.S3Settings;
 import za.co.xeon.external.ocr.OcrService;
@@ -68,8 +69,8 @@ public class MobileService {
         return hiberSapService.getHandelingUnits(barcode).getHunumbers();
     }
 
-    public List<EvResult> getCustomerOrders(String customerNumber) throws Exception{
-        return hiberSapService.getCustomerOrdersByDate(customerNumber).getEvResult();
+    public List<PurchaseOrderDto> getCustomerOrders(String customerNumber) throws Exception{
+        return hiberSapService.getCustomerOrdersByDate(customerNumber);
     }
 
     public void updateDeliveredHandelingUnits(String barcode, List<Hunumbers> handlingUnits) throws Exception{

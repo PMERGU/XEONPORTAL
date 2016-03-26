@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.config.MobileConfiguration;
+import za.co.xeon.domain.dto.PurchaseOrderDto;
 import za.co.xeon.external.ocr.Converters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +79,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET)
     @Timed
-    public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber) throws Exception {
+    public List<PurchaseOrderDto> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber) throws Exception {
         log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
         return mobileService.getCustomerOrders(customerNumber);
     }

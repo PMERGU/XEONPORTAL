@@ -17,6 +17,7 @@ import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +52,8 @@ public class HiberSapService {
     }
 
     public List<PurchaseOrderDto> convertEvResultToPO(List<EvResult> results){
-        List<PurchaseOrderDto>
+        List<PurchaseOrderDto> dtos = new ArrayList<>();
+        return dtos;
     }
 
     public List<PurchaseOrderDto> getCustomerOrdersByDate(String customerNumber){
