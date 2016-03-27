@@ -2,6 +2,7 @@ package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import org.hibersap.bapi.BapiRet2;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.config.MobileConfiguration;
@@ -49,7 +50,10 @@ public class MobileResource {
         tmpDir = new File(mobileConf.getPodDirectory());
     }
 
-    @RequestMapping(value = "/mobile/pods", method = RequestMethod.POST)
+    /**
+     * POST  /mobile/pods -> Upload scanned document, save to S3 and update SAP
+     */
+    @RequestMapping(value = "/mobile/pods", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public Callable<String> scanDocument(@RequestParam("podDocument") MultipartFile podDocument) throws Exception {
         log.debug("Service : [POST} /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
@@ -62,15 +66,8 @@ public class MobileResource {
 
         //create callable to continue long running process in different thread
         Callable<String> task = () -> {
-            try {
-                mobileService.submitPOD(podFile, originalExtension);
-                return "\t[" + podFile.getName() + "] - document submitted for processing";
-            }
-            catch (Exception e) {
-                //TODO Deal with edge case for failed POD creation, might have to store for later processing.
-                log.error("\t[" + podFile.getName() + "] - failed processing : " + e.getMessage(), e);
-                throw new IllegalStateException("task interrupted", e);
-            }
+            mobileService.submitPOD(podFile, originalExtension);
+            return "\t[" + podFile.getName() + "] - document submitted for processing";
         };
         return task;
     }

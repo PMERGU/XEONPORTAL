@@ -99,16 +99,5 @@ public class Application implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
-//        try{
-//            hiberSapService.getHandelingUnits(80108175);
-//        }catch (Exception e){
-//            log.error(e.getMessage(), e);
-//        }
-//        try{
-//            hiberSapService.getCustomerOrdersByDate("213");
-//        }catch (Exception e){
-//            log.error(e.getMessage(), e);
-//        }
-
     }
 }

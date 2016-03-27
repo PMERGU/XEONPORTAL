@@ -5,10 +5,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +34,12 @@ public class S3Service {
         s3client = new AmazonS3Client(awsCreds);
     }
 
-    public void uploadFile(String fileName, InputStream inputStream){
+    public String uploadFile(String fileName, InputStream inputStream){
         try {
             log.debug("Uploading a new object to S3 from a file\n");
-            s3client.putObject(new PutObjectRequest(s3Settings.getBucketName(), fileName,
+            PutObjectResult por = s3client.putObject(new PutObjectRequest(s3Settings.getBucketName(), fileName,
                     inputStream, new ObjectMetadata()));
-
+            return s3Settings.getBucketName() + " / " + fileName;
         } catch (AmazonServiceException ase) {
             log.error("Caught an AmazonServiceException, which " +
                     "means your request made it " +
@@ -53,6 +50,7 @@ public class S3Service {
             + "AWS Error Code:   " + ase.getErrorCode() + "\n"
             + "Error Type:       " + ase.getErrorType() + "\n"
             + "Request ID:       " + ase.getRequestId());
+            throw ase;
         } catch (AmazonClientException ace) {
             log.error("Caught an AmazonClientException, which " +
                     "means the client encountered " +
@@ -60,14 +58,15 @@ public class S3Service {
                     "communicate with S3, " +
                     "such as not being able to access the network. \n"
             + "Error Message: " + ace.getMessage());
+            throw ace;
         }
     }
 
-    public void uploadFile(String fileName, File file){
+    public String uploadFile(String fileName, File file){
         try {
             log.debug("Uploading a new object to S3 from a file\n");
             s3client.putObject(new PutObjectRequest(s3Settings.getBucketName(), fileName, file));
-
+            return s3Settings.getBucketName() + " / " + fileName;
         } catch (AmazonServiceException ase) {
             log.error("Caught an AmazonServiceException, which " +
                     "means your request made it " +
@@ -78,6 +77,7 @@ public class S3Service {
                     + "AWS Error Code:   " + ase.getErrorCode() + "\n"
                     + "Error Type:       " + ase.getErrorType() + "\n"
                     + "Request ID:       " + ase.getRequestId());
+            throw ase;
         } catch (AmazonClientException ace) {
             log.error("Caught an AmazonClientException, which " +
                     "means the client encountered " +
@@ -85,6 +85,7 @@ public class S3Service {
                     "communicate with S3, " +
                     "such as not being able to access the network. \n"
                     + "Error Message: " + ace.getMessage());
+            throw ace;
         }
     }
 

@@ -48,27 +48,43 @@ public class MobileService {
     private HiberSapService hiberSapService;
 
     @Async
-    public void submitPOD(File podFile, String extension) throws Exception {
+    public void submitPOD(File podFile, String extension){
         //first long running task - Submit document for processing
         Task task = ocrService.scanDocument(podFile.getPath()).getTask();
 
         //second long running task - Poll document for completion
         while(task.getStatus() != OcrSettings.TaskStatus.Completed){
             log.debug("\tsleeping for " + task.getEstimatedProcessingTime() + "s");
-            Thread.sleep(Integer.parseInt(task.getEstimatedProcessingTime())*100);
+            try {
+                Thread.sleep(Integer.parseInt(task.getEstimatedProcessingTime())*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             task = ocrService.getStatus(task.getId()).getTask();
         }
 
         //third long running task - get the barcode from the document sent in step 1
-        String barcode = ocrService.getCompletedBarcodeResult(task.getResultUrl());
-        log.debug("\t====> Found barcode : " + barcode);
+        String barcode = null;
+        try {
+            barcode = ocrService.getCompletedBarcodeResult(task.getResultUrl());
+            log.debug("\t====> Found barcode : " + barcode);
 
-        String s3Path = s3Settings.getFolderPod() + "/" + barcode + "." + extension;
+            //fourth long running task - upload POD to amazon S3
+            String s3Path = s3Settings.getFolderPod() + "/" + barcode + "." + extension;
+            String url = s3Service.uploadFile(s3Path, podFile);
+            log.debug("\tSubmitted pod " + barcode + " to S3 successfully : " + s3Path + ". Now updating SAP with URL....");
 
-        //fourth long running task - upload POD to amazon S3
-        s3Service.uploadFile(s3Path, podFile);
-        log.debug("\tSubmitted pod " + barcode + " to S3 successfully : " + s3Path);
-        podFile.delete();
+            try {
+                hiberSapService.updatePod(barcode, url);
+                log.debug("\tSap update successful for pod " + barcode);
+                podFile.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Hunumbers> getHandlingUnits(String barcode) throws Exception{
