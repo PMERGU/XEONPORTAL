@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('CompanyDetailController', function ($scope, $rootScope, $stateParams, DataUtils, entity, Company, Employee) {
+    .controller('CompanyDetailController', function ($scope, $rootScope, $stateParams, DataUtils, entity, Company, User) {
         $scope.company = entity;
         $scope.load = function (id) {
             Company.get({id: id}, function(result) {

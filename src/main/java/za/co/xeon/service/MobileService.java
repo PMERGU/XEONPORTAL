@@ -103,4 +103,7 @@ public class MobileService {
         return hiberSapService.updateDeliveredHandelingUnits(barcode, imHuitems);
     }
 
+    public List<BapiRet2> updatePod(String barcode, String url) throws Exception {
+        return hiberSapService.updatePod(barcode, url);
+    }
 }

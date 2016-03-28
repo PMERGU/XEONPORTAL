@@ -598,3 +598,27 @@ Error:  >Sat Mar 26 15:37:54,016<    >RfcGetException rc (7) message: The functi
 Error:  >Sat Mar 26 17:53:02,602<    >RfcGetException rc (7) message: The function module "Z_SET_HANDLING_UNITS" not released for 'remote' calls.
 <RfcGetException
 
+
+**** Error file opened at 20160327 110935 South Africa Standard Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Sun Mar 27 11:09:35,578<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Sun Mar 27 11:09:35 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       61
+ERRNO TEXT  Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

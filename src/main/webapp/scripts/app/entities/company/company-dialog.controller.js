@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('portalApp').controller('CompanyDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'DataUtils', 'entity', 'Company', 'Employee',
-        function($scope, $stateParams, $uibModalInstance, DataUtils, entity, Company, Employee) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'DataUtils', 'entity', 'Company', 'User',
+        function($scope, $stateParams, $uibModalInstance, DataUtils, entity, Company, User) {
 
         $scope.company = entity;
-        $scope.employees = Employee.query();
+        $scope.users = User.query();
         $scope.load = function(id) {
             Company.get({id : id}, function(result) {
                 $scope.company = result;

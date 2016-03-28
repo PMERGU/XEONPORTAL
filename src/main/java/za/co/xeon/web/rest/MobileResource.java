@@ -93,4 +93,10 @@ public class MobileResource {
         return mobileService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
     }
 
+    @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.PUT)
+    @Timed
+    public List<BapiRet2> updatePod(@PathVariable(value="barcode") String barcode, @RequestBody String url) throws Exception {
+        return mobileService.updatePod(barcode, url);
+    }
+
 }

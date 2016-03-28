@@ -132,12 +132,13 @@ public class HiberSapService {
     }
 
     public List<BapiRet2> updatePod(String barcode, String url) throws Exception {
+        log.debug("Updating sap url for [barcode:" + barcode + "] pointing to : " + url);
         String paddedNumber = "0000000000".substring(barcode.length()) + barcode;
         Session session = sessionManager.openSession();
         try {
             UpdatePodRFC rfc = new UpdatePodRFC(barcode, url);
             session.execute(rfc);
-            if(rfc.getReturn().get(0).getType() == 'E'){
+            if(rfc.getReturn().size() > 0 && rfc.getReturn().get(0).getType() == 'E'){
                 throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code " + rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
             }else{
                 return rfc.getReturn();

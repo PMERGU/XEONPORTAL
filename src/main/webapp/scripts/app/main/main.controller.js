@@ -44,11 +44,11 @@ angular.module('portalApp')
         function getOrders(){
             CustomerOrders.get({id : $scope.account.company.sapId }).$promise.then(function(data) {
                 $scope.deliveredOrders = data.filter(function (el) {
-                    return (el.PDSTK === "C");
+                    return (el.PDSTK === "B" || el.PDSTK === "C");
                 });
                 $scope.undeliveredOrders = data.filter(function (el) {
                     console.log(el.PDSTK);
-                    return (el.PDSTK !== "C");
+                    return (el.PDSTK === "A");
                 });
             });
         }
