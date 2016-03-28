@@ -50,12 +50,9 @@ public class MobileResource {
         tmpDir = new File(mobileConf.getPodDirectory());
     }
 
-    /**
-     * POST  /mobile/pods -> Upload scanned document, save to S3 and update SAP
-     */
-    @RequestMapping(value = "/mobile/pods", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.POST)
     @Timed
-    public Callable<String> scanDocument(@RequestParam("podDocument") MultipartFile podDocument) throws Exception {
+    public Callable<String> scanDocument(@PathVariable(value="barcode") String barcode, @RequestParam("podDocument") MultipartFile podDocument) throws Exception {
         log.debug("Service : [POST} /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
         String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));;
         String originalExtension = podDocument.getOriginalFilename().substring(podDocument.getOriginalFilename().indexOf(".")+1);
@@ -66,17 +63,10 @@ public class MobileResource {
 
         //create callable to continue long running process in different thread
         Callable<String> task = () -> {
-            mobileService.submitPOD(podFile, originalExtension);
+            mobileService.submitPOD(barcode, podFile, originalExtension);
             return "\t[" + podFile.getName() + "] - document submitted for processing";
         };
         return task;
-    }
-
-    @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)
-    @Timed
-    public List<Hunumbers> getHandlingUnits(@PathVariable(value="barcode") String barcode) throws Exception {
-        log.debug("Service [GET] /mobile/pod/" + barcode + "/handlingunits");
-        return mobileService.getHandlingUnits(barcode);
     }
 
     @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET)
@@ -86,14 +76,21 @@ public class MobileResource {
         return mobileService.getCustomerOrders(customerNumber);
     }
 
+    @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)
+    @Timed
+    public List<Hunumbers> getHandlingUnits(@PathVariable(value="barcode") String barcode) throws Exception {
+        log.debug("Service [GET] /mobile/pod/" + barcode + "/handlingunits");
+        return mobileService.getHandlingUnits(barcode);
+    }
+
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.PUT)
     @Timed
-    public List<BapiRet2> updateDeliveredHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
+    public List<BapiRet2> updateHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
         log.debug("Service [PUT] /mobile/pods/" + barcode + "/handlingunits");
         return mobileService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
     }
 
-    @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/mobile/pods/{barcode}/url", method = RequestMethod.PUT)
     @Timed
     public List<BapiRet2> updatePod(@PathVariable(value="barcode") String barcode, @RequestBody String url) throws Exception {
         return mobileService.updatePod(barcode, url);

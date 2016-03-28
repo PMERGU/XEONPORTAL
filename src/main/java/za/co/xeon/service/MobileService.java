@@ -48,7 +48,7 @@ public class MobileService {
     private HiberSapService hiberSapService;
 
     @Async
-    public void submitPOD(File podFile, String extension){
+    public void submitPOD(String barcode, File podFile, String extension){
         //first long running task - Submit document for processing
         Task task = ocrService.scanDocument(podFile.getPath()).getTask();
 
@@ -64,24 +64,30 @@ public class MobileService {
         }
 
         //third long running task - get the barcode from the document sent in step 1
-        String barcode = null;
+        String ocrBarcode = null;
         try {
-            barcode = ocrService.getCompletedBarcodeResult(task.getResultUrl());
-            log.debug("\t====> Found barcode : " + barcode);
+            ocrBarcode = ocrService.getCompletedBarcodeResult(task.getResultUrl());
+            if(barcode.equals(ocrBarcode)) {
+                log.debug("\t====> Found barcode : " + ocrBarcode);
 
-            //fourth long running task - upload POD to amazon S3
-            String s3Path = s3Settings.getFolderPod() + "/" + barcode + "." + extension;
-            String url = s3Service.uploadFile(s3Path, podFile);
-            log.debug("\tSubmitted pod " + barcode + " to S3 successfully : " + s3Path + ". Now updating SAP with URL....");
+                //fourth long running task - upload POD to amazon S3
+                String s3Path = s3Settings.getFolderPod() + "/" + ocrBarcode + "." + extension;
+                String url = s3Service.uploadFile(s3Path, podFile);
+                log.debug("\tSubmitted pod [barcode:" + ocrBarcode + "] to S3 successfully : " + s3Path + ". Now updating SAP with URL....");
 
-            try {
-                hiberSapService.updatePod(barcode, url);
-                log.debug("\tSap update successful for pod " + barcode);
-                podFile.delete();
-            } catch (Exception e) {
-                e.printStackTrace();
+                try {
+                    hiberSapService.updatePod(ocrBarcode, url);
+                    log.debug("\tSap update successful for pod " + ocrBarcode);
+                    podFile.delete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                log.error("Invalid barcode match received. Called with [barcode:" + barcode + "] and ocr'ed [barcode:" + ocrBarcode + "]. Storing to S3 a mismached POD...");
+                String s3Path = s3Settings.getFolderPod() + "/mismatched/" + ocrBarcode + "-vs-" + barcode + "." + extension;
+                String url = s3Service.uploadFile(s3Path, podFile);
+                log.error("\tSubmitted mismatched pod [barcode:" + ocrBarcode + " to S3 successfully : " + s3Path);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,11 +102,7 @@ public class MobileService {
     }
 
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception{
-        List<ImHuitem> imHuitems = new ArrayList<>();
-        for(HandlingUnitDto dto : handlingUnitUpdateDto.getHandlingUnits()){
-            imHuitems.add(new ImHuitem(barcode, dto.getHandlingUnit(), handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
-        }
-        return hiberSapService.updateDeliveredHandelingUnits(barcode, imHuitems);
+        return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
     }
 
     public List<BapiRet2> updatePod(String barcode, String url) throws Exception {

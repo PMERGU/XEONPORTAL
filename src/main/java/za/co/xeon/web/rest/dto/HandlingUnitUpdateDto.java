@@ -8,25 +8,15 @@ import java.util.List;
  * Created by Derick on 3/26/2016.
  */
 public class HandlingUnitUpdateDto implements Serializable{
-    private String barcode;
     private Date date;
     private List<HandlingUnitDto> handlingUnits;
 
     public HandlingUnitUpdateDto() {
     }
 
-    public HandlingUnitUpdateDto(String barcode, Date date, List<HandlingUnitDto> handlingUnits) {
-        this.barcode = barcode;
+    public HandlingUnitUpdateDto(Date date, List<HandlingUnitDto> handlingUnits) {
         this.date = date;
         this.handlingUnits = handlingUnits;
-    }
-
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
     }
 
     public Date getDate() {

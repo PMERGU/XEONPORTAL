@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
+import za.co.xeon.web.rest.dto.HandlingUnitDto;
+import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -57,32 +59,11 @@ public class HiberSapService {
         sessionManager = configuration.buildSessionManager();
     }
 
-//    public Map<String, PurchaseOrderDto> convertEvResultToPO(List<EvResult> results){
-//        Map<String, PurchaseOrderDto> poDtos = new HashMap<>();
-//        log.debug(results.get(0).getBstkd());
-    // =========== something not working here, it seems to create a hashmap and then below doesnt work. Think there is bug....
-//        for(EvResult evResult : results){
-//            String po = evResult.getBstkd();
-//            String so = evResult.getVbeln();
-//            String delivery = evResult.getDbeln();
-//            String shipment = evResult.getTknum();
-//
-//            if(poDtos.containsKey(po)){
-//                PurchaseOrderDto purchaseOrderDto = poDtos.get(po);
-//
-//            }else{
-//                poDtos.put(po, PurchaseOrderDto.newPurchaseOrder(so, SalesOrderDto.newSalesOrder(delivery, DeliveryDto.newDelivery(shipment, evResult))));
-//            }
-//
-//        }
-//        return poDtos;
-//    }
-
     public List<EvResult> getCustomerOrdersByDate(String customerNumber){
-        String paddedNumber = "0000000000".substring(customerNumber.length()) + customerNumber;
+        customerNumber = leftPad(customerNumber, 10);
         Session session = sessionManager.openSession();
         try {
-            CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(paddedNumber, null, null);
+            CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(customerNumber, null, null);
             session.execute(rfc);
 
 //            return convertEvResultToPO(rfc.getEvResult());
@@ -96,10 +77,10 @@ public class HiberSapService {
     }
 
     public HandlingUnitsRFC getHandelingUnits(String barcode){
-        String paddedNumber = "0000000000".substring(barcode.length()) + barcode;
+        barcode = leftPad(barcode, 10);
         Session session = sessionManager.openSession();
         try {
-            HandlingUnitsRFC rfc = new HandlingUnitsRFC(paddedNumber);
+            HandlingUnitsRFC rfc = new HandlingUnitsRFC(barcode);
             session.execute(rfc);
 
             return rfc;
@@ -111,11 +92,15 @@ public class HiberSapService {
         }
     }
 
-    public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, List<ImHuitem> handlingUnits) throws Exception {
-        String paddedNumber = "0000000000".substring(barcode.length()) + barcode;
+    public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
+        barcode = leftPad(barcode, 10);
         Session session = sessionManager.openSession();
         try {
-            UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(handlingUnits);
+            List<ImHuitem> imHuitems = new ArrayList<>();
+            for(HandlingUnitDto dto : handlingUnitUpdateDto.getHandlingUnits()){
+                imHuitems.add(new ImHuitem(barcode, dto.getHandlingUnit(), handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
+            }
+            UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 
             if(rfc.getReturn().get(0).getType() == 'E'){
@@ -132,8 +117,7 @@ public class HiberSapService {
     }
 
     public List<BapiRet2> updatePod(String barcode, String url) throws Exception {
-        log.debug("Updating sap url for [barcode:" + barcode + "] pointing to : " + url);
-        String paddedNumber = "0000000000".substring(barcode.length()) + barcode;
+        barcode = leftPad(barcode, 10);
         Session session = sessionManager.openSession();
         try {
             UpdatePodRFC rfc = new UpdatePodRFC(barcode, url);
@@ -149,6 +133,10 @@ public class HiberSapService {
         }finally {
             session.close();
         }
+    }
+
+    private String leftPad(String padMePlease, int length){
+        return org.apache.commons.lang.StringUtils.leftPad(padMePlease, length, "0");
     }
 
 }
