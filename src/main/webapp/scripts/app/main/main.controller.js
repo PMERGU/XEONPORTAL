@@ -20,7 +20,9 @@ angular.module('portalApp')
         Principal.identity().then(function(account) {
             $scope.account = account;
             $scope.isAuthenticated = Principal.isAuthenticated;
-            $scope.company = Company.get({id : account.company.id });
+            if (account.company.id !== null){
+                $scope.company = Company.get({id: account.company.id});
+            }
             getOrders();
             getCapturedPOs();
         });
@@ -42,15 +44,17 @@ angular.module('portalApp')
         };
 
         function getOrders(){
-            CustomerOrders.get({id : $scope.account.company.sapId }).$promise.then(function(data) {
-                $scope.deliveredOrders = data.filter(function (el) {
-                    return (el.PDSTK === "B" || el.PDSTK === "C");
+            if($scope.account.company.id !== null){
+                CustomerOrders.get({id : $scope.account.company.sapId }).$promise.then(function(data) {
+                    $scope.deliveredOrders = data.filter(function (el) {
+                        return (el.PDSTK === "B" || el.PDSTK === "C");
+                    });
+                    $scope.undeliveredOrders = data.filter(function (el) {
+                        console.log(el.PDSTK);
+                        return (el.PDSTK === "A");
+                    });
                 });
-                $scope.undeliveredOrders = data.filter(function (el) {
-                    console.log(el.PDSTK);
-                    return (el.PDSTK === "A");
-                });
-            });
+            }
         }
 
         function getCapturedPOs(){

@@ -7,7 +7,7 @@ angular.module('portalApp')
                 parent: 'entity',
                 url: '/purchaseOrders',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                     pageTitle: 'PurchaseOrders'
                 },
                 views: {
@@ -23,7 +23,7 @@ angular.module('portalApp')
                 parent: 'entity',
                 url: '/purchaseOrder/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                     pageTitle: 'PurchaseOrder'
                 },
                 views: {
@@ -39,10 +39,10 @@ angular.module('portalApp')
                 }
             })
             .state('purchaseOrder.new', {
-                parent: 'purchaseOrder',
+                parent: 'entity',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -82,7 +82,7 @@ angular.module('portalApp')
                 parent: 'purchaseOrder',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -105,7 +105,7 @@ angular.module('portalApp')
                 parent: 'purchaseOrder',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({

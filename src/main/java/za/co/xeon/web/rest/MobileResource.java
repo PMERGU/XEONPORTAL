@@ -2,10 +2,18 @@ package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import org.hibersap.bapi.BapiRet2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.config.MobileConfiguration;
+import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
 import za.co.xeon.external.ocr.Converters;
 import org.slf4j.Logger;
@@ -16,12 +24,19 @@ import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.Huitem;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
+import za.co.xeon.repository.CompanyRepository;
+import za.co.xeon.repository.UserRepository;
+import za.co.xeon.security.AuthoritiesConstants;
+import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MobileService;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
+import za.co.xeon.web.rest.util.PaginationUtil;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.servlet.annotation.MultipartConfig;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -36,6 +51,12 @@ import java.util.concurrent.Callable;
 @MultipartConfig(fileSizeThreshold = 5971520)
 public class MobileResource {
     private final static Logger log = LoggerFactory.getLogger(MobileResource.class);
+
+    @Inject
+    private UserRepository userRepository;
+
+    @Inject
+    private CompanyRepository companyRepository;
 
     @Autowired
     private MobileService mobileService;
@@ -69,11 +90,18 @@ public class MobileResource {
         return task;
     }
 
-    @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber) throws Exception {
+    public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber, Pageable pageable) throws Exception {
         log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
-        return mobileService.getCustomerOrders(customerNumber);
+        Page<EvResult> page = null;
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
+            return mobileService.getCustomerOrders(user.getCompany().getSapId());
+        }else {
+            return mobileService.getCustomerOrders(customerNumber);
+        }
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)
