@@ -13,7 +13,7 @@ angular.module('portalApp')
                 views: {
                     'content@': {
                         templateUrl: 'scripts/app/entities/purchaseOrder/purchaseOrders.html',
-                        controller: 'PurchaseOrderController'
+                        controller: 'PurchaseOrdersController'
                     }
                 },
                 resolve: {
@@ -39,42 +39,68 @@ angular.module('portalApp')
                 }
             })
             .state('purchaseOrder.new', {
-                parent: 'entity',
+                parent: 'site',
+                url: '/purchaseOrder/crud/new',
+                data: {
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
+                    pageTitle: 'Purchase Order'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/entities/purchaseOrder/purchaseOrder.html',
+                        controller: 'PurchaseOrderController'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'PurchaseOrder', function($stateParams, PurchaseOrder) {
+                        if($stateParams.id){
+                            return PurchaseOrder.get({id : $stateParams.id});
+                        }else{
+                            return undefined;
+                        }
+                    }],
+                    entityLines: ['$stateParams', 'PoLine', function($stateParams, PoLine) {
+                        if($stateParams.id){
+                            return PoLine.get({id : $stateParams.id});
+                        }else{
+                            return undefined;
+                        }
+                    }]
+                }
+
+            })
+            .state('purchaseOrder.poLine', {
+                parent: 'purchaseOrder.new',
                 url: '/new',
                 data: {
                     authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'scripts/app/entities/purchaseOrder/purchaseOrder-dialog.html',
-                        controller: 'PurchaseOrderDialogController',
+                        templateUrl: 'scripts/app/entities/purchaseOrder/poLine-dialog.html',
+                        controller: 'PoLineDialogController',
                         size: 'lg',
                         resolve: {
                             entity: function () {
                                 return {
-                                    state: null,
-                                    serviceLevel: null,
-                                    captureDate: null,
-                                    deliveryDate: null,
-                                    poNumber: null,
-                                    reference: null,
-                                    customerType: null,
-                                    shipToType: null,
-                                    telephone: null,
-                                    collective: null,
-                                    accountReference: null,
-                                    modeOfTransport: null,
-                                    carrierVesselName: null,
-                                    carrierVesselNumber: null,
-                                    pickUpType: null,
+                                    materialNumber: null,
+                                    orderQuantity: null,
+                                    unitOfMeasure: null,
+                                    warehouse: null,
+                                    length: null,
+                                    width: null,
+                                    height: null,
+                                    grossWeight: null,
+                                    netWeight: null,
+                                    batchNumber: null,
                                     id: null
                                 };
                             }
                         }
                     }).result.then(function(result) {
-                        $state.go('purchaseOrder', null, { reload: true });
+                        $state.go('purchaseOrder.new');
                     }, function() {
-                        $state.go('purchaseOrder');
+                        $state.go('purchaseOrder.new');
                     })
                 }]
             })

@@ -92,12 +92,12 @@ public class PurchaseOrderResource {
     public ResponseEntity<List<PurchaseOrder>> getAllPurchaseOrders(Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of PurchaseOrders");
         Page<PurchaseOrder> page = null;
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+            page = purchaseOrderService.findAll(pageable);
+        }else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             log.debug("Restricting PurchaseOrders lookup by username " + user.getLogin());
             page = purchaseOrderService.findAllByUser(user, pageable);
-        }else {
-            page = purchaseOrderService.findAll(pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

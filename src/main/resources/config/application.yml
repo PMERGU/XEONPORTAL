@@ -46,7 +46,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: port@localhost
+        from: hptest@xeon.co.za
     security:
         authentication:
             xauth:

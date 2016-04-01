@@ -37,7 +37,11 @@ spring:
             hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     mail:
-        host: localhost
+        host: smtp.office365.com
+        port: 587
+        username: hptest@xeon.co.za
+        password: Daqu1941
+        auth: true
     messages:
         cache-seconds: 1
     thymeleaf:

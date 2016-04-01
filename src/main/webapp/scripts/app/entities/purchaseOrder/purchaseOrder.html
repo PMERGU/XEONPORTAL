@@ -1,0 +1,320 @@
+<div>
+    <div small-header>
+        <div class="hpanel" style="margin-bottom: 15px;">
+            <div class="panel-body">
+                <h2 class="font-light m-b-xs">
+                    Create new Purchase Order {{purchaseOrder.id}}
+                </h2>
+                <div class="pull-right" style="margin-top: -40px;">
+                    <button class="btn btn-primary" ui-sref="party.new" ng-show="purchaseOrder.id">
+                        <span>{{purchaseOrder.state}}</span>
+                    </button>
+                    <button class="btn btn-default" ng-click="clear()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Clear Form</span>
+                    </button>
+                </div>
+                <!--<jh-alert></jh-alert>-->
+                <!--<jh-alert-error></jh-alert-error>-->
+            </div>
+        </div>
+    </div>
+    <div class="hpanel">
+        <div class="panel-body p-xl">
+            <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+                <div class="text-center">
+
+                    <a ng-click="wizard.show(1)" class="btn"
+                       ng-class="{ 'btn-primary': step == 1, 'btn-default': step != 1}">Step 1 - Details</a>
+                    <a ng-click="wizard.show(2)" class="btn"
+                       ng-class="{ 'btn-primary': step == 2, 'btn-default': step != 2}">Step 2 - Line Items</a>
+                    <a ng-click="wizard.show(3)" class="btn"
+                       ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 3}">Step 3 - Confirm</a>
+
+                </div>
+                <div ng-show="step == 1" class="p-m">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label" for="field_poNumber">Purchase Order Number</label>
+                                    <input type="text" class="form-control" name="poNumber" id="field_poNumber"
+                                           ng-model="purchaseOrder.poNumber"
+                                           required/>
+                                    <div ng-show="editForm.poNumber.$invalid">
+                                        <p class="help-block"
+                                           ng-show="editForm.poNumber.$error.required">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_reference">Reference</label>
+                                    <input type="text" class="form-control" name="reference" id="field_reference"
+                                           ng-model="purchaseOrder.reference"
+                                           required/>
+                                    <div ng-show="editForm.reference.$invalid">
+                                        <p class="help-block"
+                                           ng-show="editForm.reference.$error.required">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_accountReference">AccountReference</label>
+                                    <input type="text" class="form-control" name="accountReference"
+                                           id="field_accountReference"
+                                           ng-model="purchaseOrder.accountReference"
+                                           required/>
+                                    <div ng-show="editForm.accountReference.$invalid">
+                                        <p class="help-block"
+                                           ng-show="editForm.accountReference.$error.required">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_customerType">CustomerType</label>
+                                    <select class="form-control" name="customerType" ng-model="purchaseOrder.customerType"
+                                            id="field_customerType">
+                                        <option value="REGULAR">REGULAR</option>
+                                        <option value="ONE_TIME">ONE_TIME</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_telephone">Telephone</label>
+                                    <input type="text" class="form-control" name="telephone" id="field_telephone"
+                                           ng-model="purchaseOrder.telephone"
+                                           required/>
+                                    <div ng-show="editForm.telephone.$invalid">
+                                        <p class="help-block"
+                                           ng-show="editForm.telephone.$error.required">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_collective">Collective</label>
+                                    <input type="text" class="form-control" name="collective" id="field_collective"
+                                           ng-model="purchaseOrder.collective"
+                                           required/>
+                                    <div ng-show="editForm.collective.$invalid">
+                                        <p class="help-block"
+                                           ng-show="editForm.collective.$error.required">
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label" for="field_serviceLevel">Service Level</label>
+                                    <select class="form-control" name="serviceLevel" ng-model="purchaseOrder.serviceLevel"
+                                            id="field_serviceLevel">
+                                        <option value="ECONOMY">ECONOMY</option>
+                                        <option value="EXPRESS_AM">EXPRESS_AM</option>
+                                        <option value="EXPRESS_PM">EXPRESS_PM</option>
+                                        <option value="DEDICATED">DEDICATED</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_shipToType">ShipToType</label>
+                                    <select class="form-control" name="shipToType" ng-model="purchaseOrder.shipToType"
+                                            id="field_shipToType">
+                                        <option value="RETAIL">RETAIL</option>
+                                        <option value="STANDARD">STANDARD</option>
+                                        <option value="HOME_DROP_BOX">HOME_DROP_BOX</option>
+                                        <option value="HOME_CONNECTION">HOME_CONNECTION</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_modeOfTransport">ModeOfTransport</label>
+                                    <select class="form-control" name="modeOfTransport"
+                                            ng-model="purchaseOrder.modeOfTransport" id="field_modeOfTransport">
+                                        <option value="AIR_DELIVERIES">AIR_DELIVERIES</option>
+                                        <option value="AIR_TRANSFERS">AIR_TRANSFERS</option>
+                                        <option value="ROAD">ROAD</option>
+                                        <option value="SEA">SEA</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_carrierVesselName">CarrierVesselName</label>
+                                    <input type="text" class="form-control" name="carrierVesselName"
+                                           id="field_carrierVesselName"
+                                           ng-model="purchaseOrder.carrierVesselName"
+                                           required/>
+                                    <div ng-show="editForm.carrierVesselName.$invalid">
+                                        <p class="help-block"
+                                           ng-show="editForm.carrierVesselName.$error.required">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_carrierVesselNumber">CarrierVesselNumber</label>
+                                    <input type="text" class="form-control" name="carrierVesselNumber"
+                                           id="field_carrierVesselNumber"
+                                           ng-model="purchaseOrder.carrierVesselNumber"
+                                           required/>
+                                    <div ng-show="editForm.carrierVesselNumber.$invalid">
+                                        <p class="help-block"
+                                           ng-show="editForm.carrierVesselNumber.$error.required">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="field_pickUpType">PickUpType</label>
+                                    <select class="form-control" name="pickUpType" ng-model="purchaseOrder.pickUpType"
+                                            id="field_pickUpType">
+                                        <option value="RETAIL">RETAIL</option>
+                                        <option value="STANDARD">STANDARD</option>
+                                        <option value="HOME_DROP_BOX">HOME_DROP_BOX</option>
+                                        <option value="HOME_CONNECTION">HOME_CONNECTION</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label" for="field_deliveryDate">Delivery Date</label>
+                                    <div class="input-group">
+                                        <input id="field_deliveryDate" type="text" class="form-control"
+                                               uib-datepicker-popup="{{dateformat}}" ng-model="purchaseOrder.deliveryDate"
+                                               is-open="datePickerForDeliveryDate.status.opened" required/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="datePickerForDeliveryDateOpen($event)"><i
+                                            class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                    </div>
+                                    <div ng-show="editForm.deliveryDate.$invalid">
+                                        <p class="help-block"
+                                           ng-show="editForm.deliveryDate.$error.required">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="field_shipToParty">shipToParty</label>
+                                    <select class="form-control" id="field_shipToParty" name="shipToParty"
+                                            ng-model="purchaseOrder.shipToPartyId"
+                                            ng-options="party.id as party.id for party in shiptopartys | orderBy:'id'">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="field_pickUpParty">pickUpParty</label>
+                                    <select class="form-control" id="field_pickUpParty" name="pickUpParty"
+                                            ng-model="purchaseOrder.pickUpPartyId"
+                                            ng-options="party.id as party.id for party in pickuppartys | orderBy:'id'">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="field_employee">employee</label>
+                                    <select class="form-control" id="field_employee" name="employee"
+                                            ng-model="purchaseOrder.employeeId"
+                                            ng-options="employee.id as employee.name for employee in employees">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group">-->
+                        <!--<label class="control-label" for="field_captureDate">Capture Date</label>-->
+                        <!--<input type="datetime-local" class="form-control" name="captureDate" id="field_captureDate"-->
+                        <!--ng-model="purchaseOrder.captureDate"-->
+                        <!--/>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div ng-show="step == 2" class="p-m">
+                    <div class="table-responsive m-t">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Material Number</th>
+                                <th>Warehouse</th>
+                                <th>Batch Number</th>
+                                <th>Unit Of Measure</th>
+                                <th>Quantity</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="po in purchaseOrderLines">
+                                    <td>{{$index+1}}</td>
+                                    <td>
+                                        <div><strong>{{ po.materialNumber }}</strong></div>
+                                        <small>
+                                            <b>{{ po.height }}</b>m x <b>{{ po.length }}</b>m x <b>{{ po.width }}m</b> =  <b>{{(po.height * po.length * po.width) | number:0}}</b>m3 - -  <b>{{ po.grossWeight }}</b>kg [net:<b>{{ po.netWeight }}</b>kg]
+                                        </small>
+                                    </td>
+                                    <td>{{ po.warehouse }}</td>
+                                    <td>{{ po.batchNumber }}</td>
+                                    <td>{{ po.unitOfMeasure }}</td>
+                                    <td>{{ po.orderQuantity }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="6">
+                                        <button class="btn btn-primary pull-right" ui-sref="purchaseOrder.poLine">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row m-t">
+                        <div class="col-md-4 col-md-offset-8">
+                            <table class="table table-striped text-right">
+                                <tbody>
+                                <tr>
+                                    <td><strong>Total Weight :</strong></td>
+                                    <td>$1026.00</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total cubes :</strong></td>
+                                    <td>$235.98</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="m-t">
+                                <strong>** Please remember **</strong></br>
+                                Correct measurement and weight checks are crucial to ensure we can process your order as quick as possible.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="step == 3">
+                    <div class="row text-center m-t-lg m-b-lg">
+                        <div class="col-lg-12">
+                            <i class="pe-7s-check fa-5x text-muted"></i>
+                            <p class="small m-t-md">
+                                <strong>There are many</strong> variations of passages of Lorem Ipsum available, but the majority have suffered
+                            </p>
+                        </div>
+                        <div class="checkbox col-lg-12">
+                            <input icheck type="checkbox" ng-model="user.approve">
+                            Approve this form
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="text-right m-t-xs">
+                    <button ng-click="wizard.prev()" ng-disabled="step == 1" class="btn btn-default">
+                        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span>Previous</span>
+                    </button>
+                    <button ng-click="wizard.next()" ng-disabled="editForm.$invalid || isSaving || tep == 3" ng-hide="step == 3" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;<span>Next</span>
+                    </button>
+                    <button ng-click="submit()" ng-show="step == 3" class="btn btn-primary" ng-disabled="editForm.$invalid || isSaving">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
