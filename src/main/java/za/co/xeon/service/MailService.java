@@ -1,6 +1,7 @@
 package za.co.xeon.service;
 
 import za.co.xeon.config.JHipsterProperties;
+import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 
 import org.apache.commons.lang.CharEncoding;
@@ -103,6 +104,34 @@ public class MailService {
         String content = templateEngine.process("passwordResetEmail", context);
         String subject = messageSource.getMessage("email.reset.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendPoProcessedMail(User processedBy, PurchaseOrder purchaseOrder, String baseUrl) {
+        log.debug("Sending PO processed e-mail to '{}'", purchaseOrder.getUser().getEmail());
+        Locale locale = Locale.forLanguageTag(purchaseOrder.getUser().getLangKey());
+        Context context = new Context(locale);
+        context.setVariable("user", purchaseOrder.getUser());
+        context.setVariable("processedBy", processedBy);
+        context.setVariable("baseUrl", baseUrl);
+        context.setVariable("purchaseOrder", purchaseOrder);
+        String content = templateEngine.process("poProcessedEmail", context);
+        String subject = messageSource.getMessage("email.poProcessed.title", null, locale);
+        sendEmail(purchaseOrder.getUser().getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendPoCommentMail(User processedBy, PurchaseOrder purchaseOrder, String baseUrl) {
+        log.debug("Sending PO comment e-mail to '{}'", purchaseOrder.getUser().getEmail());
+        Locale locale = Locale.forLanguageTag(purchaseOrder.getUser().getLangKey());
+        Context context = new Context(locale);
+        context.setVariable("user", purchaseOrder.getUser());
+        context.setVariable("processedBy", processedBy);
+        context.setVariable("baseUrl", baseUrl);
+        context.setVariable("purchaseOrder", purchaseOrder);
+        String content = templateEngine.process("poCommentEmail", context);
+        String subject = messageSource.getMessage("email.poComment.title", null, locale);
+        sendEmail(purchaseOrder.getUser().getEmail(), subject, content, false, true);
     }
 
 }

@@ -1,21 +1,15 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainController', function ($scope, $cacheFactory, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder) {
-        $scope.deliveredOrders = [];
-        $scope.undeliveredOrders = [];
-
-        $scope.dominant = '#fff';
-        $scope.colors = {
-            dominant: '#fff',
-            palette: '#fff'
-        }
+    .controller('XeonMainController', function ($scope, $cacheFactory, $interval, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder) {
+        $scope.processed = [];
+        $scope.unprocessed = [];
 
         $scope.dtOptions = DTOptionsBuilder.newOptions()
             .withBootstrap()
             .withPaginationType('full_numbers')
             .withOption('rowCallback', rowCallback)
-            .withDisplayLength(13);
+            .withDisplayLength(10);
         $scope.dtColumnDefs = [
             DTColumnDefBuilder.newColumnDef(0),
             DTColumnDefBuilder.newColumnDef(1),
@@ -27,16 +21,11 @@ angular.module('portalApp')
         Principal.identity().then(function(account) {
             $scope.account = account;
             $scope.isAuthenticated = Principal.isAuthenticated;
-            if (account.company.id !== null){
-                $scope.company = Company.get({id: account.company.id});
-            }
-            getOrders();
             getCapturedPOs();
         });
 
         $scope.reloadData = function () {
-            var resetPaging = true;
-            getOrders();
+            getCapturedPOs();
         };
 
         function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -50,27 +39,18 @@ angular.module('portalApp')
             return nRow;
         };
 
-        function getOrders(){
-            if($scope.account.company.id !== null){
-                CustomerOrders.get({id : $scope.account.company.sapId }).$promise.then(function(data) {
-                    $scope.deliveredOrders = data.filter(function (el) {
-                        return (el.pdstk === "B" || el.pdstk === "C");
-                    });
-                    $scope.undeliveredOrders = data.filter(function (el) {
-                        console.log(el.PDSTK);
-                        return (el.pdstk === "A");
-                    });
-                });
-            }
-        }
-
         function getCapturedPOs(){
             PurchaseOrder.query().$promise.then(function(data) {
-                $scope.capturedPos = data;
-                $scope.posProcessed = data.filter(function (el) {
+                $scope.processed = data.filter(function (el) {
                     return (el.state === "PROCESSED");
+                });
+                $scope.unprocessed = data.filter(function (el) {
+                    return (el.state === "UNPROCESSED");
                 });
             });
         }
 
+        $interval(function(){
+            getCapturedPOs();
+        }, 60000);
     });

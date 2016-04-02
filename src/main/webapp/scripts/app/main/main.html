@@ -2,22 +2,23 @@
     <div class="row">
         <div class="col-lg-4 col-md-3 hidden-sm">
             <div class="hpanel hgreen">
-                <div class="panel-body">
-                    <img alt="logo" class=""
+                <div class="panel-body" ng-style="{'border-top': '2px solid ' + colors.palette[1]}">
+                    <img alt="logo" class="company-logo"
                          data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}"
-                         style="height: 150px; max-width: 100%;" ng-if="company.background"/>
-                    <h3><a href="">{{company.name}} - {{company.sapId}}</a></h3>
+                         style="height: 150px; max-width: 100%;" ng-if="company.background" color-thief color-thief-dominant="colors.dominant" color-thief-palette="colors.palette"/>
+                    <h3>{{company.name}}<span class="pull-right">{{company.sapId}}</span></h3>
+
                     <!--<div class="text-muted font-bold m-b-xs">California, LA</div>-->
                     <!--<p>-->
                     <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices-->
                     <!--accumsan.-->
                     <!--</p>-->
-                    <uib-progressbar value="65" type="success"
-                                     class="progress-small full progress-striped active"></uib-progressbar>
+                    <uib-progressbar value="100" type="success" ng-style="{'background-color': colors.dominant}"
+                                     class="progress-small full progress-striped active progressbar-company"></uib-progressbar>
                 </div>
                 <div class="border-right border-left">
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" ng-style="{'border-top': '2px solid ' + colors.palette[1]}">
                     <table class="table table-responsive hover">
                         <thead class="text-primary text-capitalize" style="font-weight: 600">
                             <tr>

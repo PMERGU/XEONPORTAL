@@ -1,12 +1,69 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    ['$rootScope', '$scope', '$stateParams', '$q', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User',
-        function ($rootScope, $scope, $stateParams, $q, entity, entityLines, PurchaseOrder, PoLine, Party, User) {
+    ['$rootScope', '$scope', '$stateParams', '$q', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal',
+        function ($rootScope, $scope, $stateParams, $q, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
+            var todaysDate = new Date();
             // Initial step
-            $scope.step = 2;
+            $scope.step = 1;
             $scope.purchaseOrder = entity;
             $scope.purchaseOrderLines = entityLines === undefined ? [] : entityLines;
+            $scope.dateformat = 'yyyy-MM-dd';
+            $scope.dateOptions = {
+                dateDisabled: disabled,
+                // maxDate: new Date(new Date(todaysDate).setMonth(todaysDate.getMonth()+2)),
+                // minDate: new Date(new Date(todaysDate).setDate(todaysDate.getDate+1)),
+                startingDay: 0
+            };
+
+            $scope.isXeon = false;
+            Principal.hasAuthority('ROLE_USER').then(function() {
+                $scope.isXeon = true;
+            });
+
+            // Disable weekend selection
+            function disabled(data) {
+                var date = data.date,
+                    mode = data.mode;
+                return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+            }
+
+            if($scope.purchaseOrder === undefined){
+                $scope.purchaseOrder = {
+                    accountReference: "1",
+                    carrierVesselName: "1",
+                    carrierVesselNumber: "1",
+                    collective: "1",
+                    customerType: "REGULAR",
+                    deliveryDate: new Date('2016-04-02'),
+                    employeeId: 1,
+                    modeOfTransport: "AIR_DELIVERIES",
+                    pickUpPartyId: 1,
+                    pickUpType: "STANDARD",
+                    poNumber: "1",
+                    reference: "1",
+                    serviceLevel: "ECONOMY",
+                    shipToPartyId: 1,
+                    shipToType: "HOME_DROP_BOX",
+                    telephone: "1"
+                };
+            }
+            if($scope.purchaseOrderLines.length === 0){
+                $scope.purchaseOrderLines = [{
+                    batchNumber: "123",
+                    grossWeight: 12,
+                    height: 1,
+                    id: null,
+                    length: 0.2,
+                    materialNumber: "123",
+                    netWeight: 11,
+                    orderQuantity: 123,
+                    unitOfMeasure: "123",
+                    warehouse: "123",
+                    width: 1
+                }];
+            }
+
             $scope.polines = PoLine.query();
             $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
             // $q.all([$scope.purchaseOrder.$promise, $scope.shiptopartys.$promise]).then(function() {
@@ -35,7 +92,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             var onSaveSuccess = function (result) {
                 $scope.$emit('portalApp:purchaseOrderUpdate', result);
-                $uibModalInstance.close(result);
                 $scope.isSaving = false;
             };
 

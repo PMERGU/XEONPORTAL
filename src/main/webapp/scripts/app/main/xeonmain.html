@@ -1,0 +1,79 @@
+<div ng-cloak>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="hpanel">
+                <div class="hpanel">
+                    <uib-tabset>
+                        <uib-tab>
+                            <uib-tab-heading>
+                                Un-processed&nbsp;
+                                <i class="fa fa-refresh btn btn-default btn-xs" ng-click="reloadData()"></i>
+                            </uib-tab-heading>
+                            <div class="panel-body">
+                                <div>
+                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Company</th>
+                                                <th>Captured By</th>
+                                                <th>Purchase Order</th>
+                                                <th>Mode of Transport</th>
+                                                <th>Reference</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="po in unprocessed">
+                                                <td>{{ po.id }}</td>
+                                                <td>{{ po.user.company.name }}</td>
+                                                <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
+                                                <td>{{ po.poNumber }}</td>
+                                                <td>{{ po.modeOfTransport }}</td>
+                                                <td>{{ po.reference }}</td>
+                                                <td>{{ po.state }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab>
+                            <uib-tab-heading>
+                                Processed
+                            </uib-tab-heading>
+                            <div class="panel-body">
+                                <div>
+                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Company</th>
+                                                <th>Captured By</th>
+                                                <th>Purchase Order</th>
+                                                <th>Mode of Transport</th>
+                                                <th>Reference</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="po in processed">
+                                            <td>{{ po.id }}</td>
+                                            <td>{{ po.user.company.name }}</td>
+                                            <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
+                                            <td>{{ po.poNumber }}</td>
+                                            <td>{{ po.modeOfTransport }}</td>
+                                            <td>{{ po.reference }}</td>
+                                            <td>{{ po.state }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                    </uib-tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

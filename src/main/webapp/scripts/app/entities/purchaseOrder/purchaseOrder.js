@@ -149,5 +149,51 @@ angular.module('portalApp')
                         $state.go('^');
                     })
                 }]
+            })
+            .state('purchaseOrder.process', {
+                parent: 'purchaseOrder.new',
+                url: '/process',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/purchaseOrder/purchaseOrder-process-dialog.html',
+                        controller: 'PurchaseOrderProcessController',
+                        size: 'md',
+                        resolve: {
+                            entity: ['PurchaseOrder', function(PurchaseOrder) {
+                                return PurchaseOrder.get({id : $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('purchaseOrder.new', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('purchaseOrder.comment', {
+                parent: 'purchaseOrder.new',
+                url: '/comment',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/purchaseOrder/purchaseOrder-comment-dialog.html',
+                        controller: 'PurchaseOrderCommentController',
+                        size: 'md',
+                        resolve: {
+                            entity: ['PurchaseOrder', function(PurchaseOrder) {
+                                return PurchaseOrder.get({id : $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('purchaseOrder.new', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
             });
     });

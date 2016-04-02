@@ -20,6 +20,14 @@ angular.module('portalApp')
                     return angular.toJson(data);
                 }
             },
+            'updateState': {
+                url: 'api/purchaseOrders/:id/state',
+                method: 'PUT'
+            },
+            'updateComment': {
+                url: 'api/purchaseOrders/:id/comment',
+                method: 'PUT'
+            },
             'save': {
                 method: 'POST',
                 transformRequest: function (data) {

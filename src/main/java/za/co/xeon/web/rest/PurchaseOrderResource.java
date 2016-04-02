@@ -5,10 +5,12 @@ import za.co.xeon.domain.Company;
 import za.co.xeon.domain.PoLine;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
+import za.co.xeon.domain.enumeration.PoState;
 import za.co.xeon.repository.PoLineRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
+import za.co.xeon.service.MailService;
 import za.co.xeon.service.PurchaseOrderService;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
@@ -31,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * REST controller for managing PurchaseOrder.
@@ -49,6 +52,10 @@ public class PurchaseOrderResource {
 
     @Inject
     private PoLineRepository poLineRepository;
+
+    @Inject
+    private MailService mailService;
+
     /**
      * POST  /purchaseOrders -> Create a new purchaseOrder.
      */
@@ -82,6 +89,56 @@ public class PurchaseOrderResource {
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("purchaseOrder", purchaseOrder.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * PUT  /purchaseOrders -> Updates an existing purchaseOrder.
+     */
+    @RequestMapping(value = "/purchaseOrders/{id}/state",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<PurchaseOrder> updatePurchaseOrderState(@PathVariable Long id, @Valid @RequestBody PoState state, HttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to update PurchaseOrder state : [id:{}] to {}", id, state);
+        PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        purchaseOrder.setState(state);
+        PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
+        String baseUrl = request.getScheme() + // "http"
+            "://" +                                // "://"
+            request.getServerName() +              // "myhost"
+            ":" +                                  // ":"
+            request.getServerPort() +              // "80"
+            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+        log.debug("baseurl: " + baseUrl);
+        mailService.sendPoProcessedMail(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get(), purchaseOrder, baseUrl);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createAlert("Marked as Processed and email sent to " + purchaseOrder.getUser().getFirstName() + " " + purchaseOrder.getUser().getLastName() + " from " + purchaseOrder.getUser().getCompany().getName() + " succesfully.", ""))
+            .body(result);
+    }
+
+    /**
+     * PUT  /purchaseOrders -> Updates an existing purchaseOrder.
+     */
+    @RequestMapping(value = "/purchaseOrders/{id}/comment",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<PurchaseOrder> updatePurchaseOrderComment(@PathVariable Long id, @Valid @RequestBody String comment, HttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to update PurchaseOrder comment : [id:{}] to {}", id, comment);
+        PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        purchaseOrder.setComment(comment);
+        PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
+        String baseUrl = request.getScheme() + // "http"
+            "://" +                                // "://"
+            request.getServerName() +              // "myhost"
+            ":" +                                  // ":"
+            request.getServerPort() +              // "80"
+            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+        log.debug("baseurl: " + baseUrl);
+        mailService.sendPoCommentMail(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get(), purchaseOrder, baseUrl);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createAlert("Comment email sent to " + purchaseOrder.getUser().getFirstName() + " " + purchaseOrder.getUser().getLastName() + " successfully.", ""))
             .body(result);
     }
 

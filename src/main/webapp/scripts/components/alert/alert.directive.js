@@ -4,9 +4,9 @@ angular.module('portalApp')
     .directive('jhAlert', function(AlertService) {
         return {
             restrict: 'E',
-            template: '<div class="alerts" ng-cloak="">' +
+            template: '<div class="alerts" ng-show="alerts.length > 0" ng-cloak="" style="margin-top: 15px">' +
                             '<div ng-repeat="alert in alerts" ng-class="[alert.position, {\'toast\': alert.toast}]">' +
-                                '<uib-alert ng-cloak="" type="{{alert.type}}" close="alert.close()"><pre>{{ alert.msg }}</pre></uib-alert>' +
+                                '<uib-alert ng-cloak="" type="{{alert.type}}" close="alert.close()"><pre style="background: transparent; border: 0px; margin: 0px; padding: 0px">{{ alert.msg }}</pre></uib-alert>' +
                             '</div>' +
                       '</div>',
             controller: ['$scope',

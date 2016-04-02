@@ -91,6 +91,10 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "carrier_vessel_number", nullable = false)
     private String carrierVesselNumber;
 
+    @NotNull
+    @Column(name = "comment", nullable = true)
+    private String comment;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "pick_up_type")
     private DeliveryType pickUpType;
@@ -268,6 +272,14 @@ public class PurchaseOrder implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override

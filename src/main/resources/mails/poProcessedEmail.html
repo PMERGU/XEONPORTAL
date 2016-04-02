@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title th:text="#{email.reset.title}">Xeon customer portal : password reset</title>
+        <title th:text="#{email.poProcessed.title}">Xeon customer portal : purchase order processed</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
     <body>
-        <p th:text="#{email.reset.greeting(${user.login})}">
+        <p th:text="#{email.poProcessed.greeting(${user.firstName},${user.lastName})}">
             Dear
         </p>
-        <p th:text="#{email.reset.text1}">
+        <p th:text="#{email.poProcessed.text1(${purchaseOrder.poNumber},${processedBy.firstName},${processedBy.lastName})}">
             For your Xeon Customer Portal account, a password reset was requested. Please click on the URL below to reset it:
         </p>
         <p>
-            <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}"
-               th:text="|${user.login}|">Reset Link</a>
+            <a th:href="@{|${baseUrl}/#/|}">View Customer Dashboard</a>
         </p>
         <p>
-            <span th:text="#{email.reset.text2}">Regards, </span>
+            <span th:text="#{email.poProcessed.text2}">Regards, </span>
             <br/>
             <em th:text="#{email.signature}">Xeon Team.</em>
         </p>

@@ -67,6 +67,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="comment" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="pick_up_type" type="varchar(255)"/>
 
             <column name="ship_to_party_id" type="bigint">

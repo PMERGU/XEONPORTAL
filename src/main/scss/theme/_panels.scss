@@ -52,6 +52,19 @@ div[small-header]{
                     background-color: rgb(52, 73, 94);
                 }
             }
+            &.btn-primary2{
+                background-color: rgba(68, 156, 174, 0.9);
+                border-color: #347989;
+                margin-top: -30px;
+                margin-right: 10px;
+                &:hover{
+                    background-color: rgb(75, 173, 193);
+                }
+            }
+            &.btn-default{
+                margin-top: -30px;
+                margin-right: 10px;
+            }
         }
     }
 }

@@ -57,9 +57,9 @@ jhipster:
             # security key (this key should be unique for your application, and kept secret)
             key: ef0fb5a581f640f3ab0243c46794389b0fe07805
     swagger:
-        title: portal API
-        description: portal API documentation
-        version: 0.0.1
+        title: Xeon Portal API
+        description: Customer portal API platform
+        version: 1.0.0
         termsOfServiceUrl:
         contact:
         license:

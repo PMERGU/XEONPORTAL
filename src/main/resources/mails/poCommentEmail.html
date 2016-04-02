@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{email.poComment.title}">Xeon portal : Purchase order comment</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p th:text="#{email.poComment.greeting(${user.firstName},${user.lastName})}">
+            Dear
+        </p>
+        <p th:text="#{email.poComment.text1(${processedBy.firstName},${processedBy.lastName},${purchaseOrder.poNumber})}">
+            Our team have left you a comment regarding the below PO.
+        </p>
+        <p th:text="#{email.poComment.text2(${purchaseOrder.comment})}">
+            Please view it
+        </p>
+        <p>
+            <a th:href="@{|${baseUrl}/#/purchaseOrder/crud/${purchaseOrder.id}|}">View Purchase Order</a>
+        </p>
+        <p>
+            <span th:text="#{email.poComment.text3}">Regards, </span>
+            <br/>
+            <em th:text="#{email.signature}">Xeon Team.</em>
+        </p>
+    </body>
+</html>

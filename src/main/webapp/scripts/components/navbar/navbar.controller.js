@@ -12,19 +12,21 @@ angular.module('portalApp')
             Auth.logout();
             $window.location.href = '/';
         };
-
-        MonitoringService.checkHealth().then(function (response) {
-            $.each(response, function(object, id){
-                if(this.status === 'DOWN'){
-                    $scope.servicesDown.push({name: object, result: this});
-                }
-            });
-        }, function (response) {
-            $.each(response.data, function(object, id){
-                if(this.status === 'DOWN'){
-                    $scope.servicesDown.push({name: object, result: this});
-                }
+        Principal.hasAuthority('ROLE_ADMIN').then(function() {
+            MonitoringService.checkHealth().then(function (response) {
+                $.each(response, function(object, id){
+                    if(this.status === 'DOWN'){
+                        $scope.servicesDown.push({name: object, result: this});
+                    }
+                });
+            }, function (response) {
+                $.each(response.data, function(object, id){
+                    if(this.status === 'DOWN'){
+                        $scope.servicesDown.push({name: object, result: this});
+                    }
+                });
             });
         });
+
 
     });

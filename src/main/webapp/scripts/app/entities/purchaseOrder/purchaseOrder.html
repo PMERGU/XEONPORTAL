@@ -2,19 +2,27 @@
     <div small-header>
         <div class="hpanel" style="margin-bottom: 15px;">
             <div class="panel-body">
-                <h2 class="font-light m-b-xs">
-                    Create new Purchase Order {{purchaseOrder.id}}
+                <h2 class="font-light m-b-xs" ng-show="purchaseOrder.id">
+                    Update Purchase Order : {{purchaseOrder.id}}
                 </h2>
-                <div class="pull-right" style="margin-top: -40px;">
-                    <button class="btn btn-primary" ui-sref="party.new" ng-show="purchaseOrder.id">
-                        <span>{{purchaseOrder.state}}</span>
-                    </button>
-                    <button class="btn btn-default" ng-click="clear()">
+                <h2 class="font-light m-b-xs" ng-hide="purchaseOrder.id">
+                    Create new Purchase Order
+                </h2>
+                <div class="pull-right" style="margin-top: -20px;">
+                    <button class="btn btn-default" ng-click="clear()" ng-hide="purchaseOrder.id">
                         <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Clear Form</span>
                     </button>
+                    <button class="btn btn-primary2" ui-sref="purchaseOrder.comment" has-authority="ROLE_USER" ng-show="purchaseOrder.id">
+                        <span>Comment</span>
+                    </button>
+                    <button class="btn btn-primary" ui-sref="purchaseOrder.process" ng-show="isXeon && purchaseOrder.id && purchaseOrder.state === 'UNPROCESSED'">
+                        <span>{{purchaseOrder.state}}</span>
+                    </button>
+                    <button class="btn btn-primary" ng-show="purchaseOrder.id && purchaseOrder.state === 'PROCESSED'">
+                        <span>Fully {{purchaseOrder.state.toLowerCase()}}</span>
+                    </button>
                 </div>
-                <!--<jh-alert></jh-alert>-->
-                <!--<jh-alert-error></jh-alert-error>-->
+                <jh-alert></jh-alert>
             </div>
         </div>
     </div>
@@ -181,7 +189,7 @@
                                     <label class="control-label" for="field_deliveryDate">Delivery Date</label>
                                     <div class="input-group">
                                         <input id="field_deliveryDate" type="text" class="form-control"
-                                               uib-datepicker-popup="{{dateformat}}" ng-model="purchaseOrder.deliveryDate"
+                                               uib-datepicker-popup="{{dateformat}}" ng-model="purchaseOrder.deliveryDate" datepicker-options="dateOptions"
                                                is-open="datePickerForDeliveryDate.status.opened" required/>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default"
@@ -199,24 +207,26 @@
                                 <div class="form-group">
                                     <label for="field_shipToParty">shipToParty</label>
                                     <select class="form-control" id="field_shipToParty" name="shipToParty"
-                                            ng-model="purchaseOrder.shipToPartyId"
-                                            ng-options="party.id as party.id for party in shiptopartys | orderBy:'id'">
+                                            ng-model="purchaseOrder.shipToParty.id"
+                                            ng-options="party.id as party.name for party in shiptopartys | orderBy:'id'">
                                         <option value=""></option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="field_pickUpParty">pickUpParty</label>
                                     <select class="form-control" id="field_pickUpParty" name="pickUpParty"
-                                            ng-model="purchaseOrder.pickUpPartyId"
-                                            ng-options="party.id as party.id for party in pickuppartys | orderBy:'id'">
+                                            ng-model="purchaseOrder.pickUpParty.id"
+                                            ng-options="party.id as party.name for party in pickuppartys | orderBy:'id'">
                                         <option value=""></option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="field_employee">employee</label>
-                                    <select class="form-control" id="field_employee" name="employee"
-                                            ng-model="purchaseOrder.employeeId"
-                                            ng-options="employee.id as employee.name for employee in employees">
+                                    <label for="field_employee">Captured By
+
+                                    </label>
+                                    <select class="form-control" id="field_employee" name="employee" ng-disabled="true"
+                                            ng-model="purchaseOrder.user.id"
+                                            ng-options="employee.id as employee.email for employee in employees">
                                         <option value=""></option>
                                     </select>
                                 </div>

@@ -74,3 +74,10 @@ $main-transition: all 0.1s ease-out 0s;
     font-weight: 600;
     margin-top: 2px;
 }
+
+.progressbar-company{
+    .progress-bar-success {
+        background-color: transparent;
+        border-right: 4px solid transparent;
+    }
+}
