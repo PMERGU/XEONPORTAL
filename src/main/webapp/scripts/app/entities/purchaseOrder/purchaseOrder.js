@@ -40,7 +40,7 @@ angular.module('portalApp')
             })
             .state('purchaseOrder.new', {
                 parent: 'site',
-                url: '/purchaseOrder/crud/new',
+                url: '/purchaseOrder/crud/{id}',
                 data: {
                     authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                     pageTitle: 'Purchase Order'
@@ -59,9 +59,9 @@ angular.module('portalApp')
                             return undefined;
                         }
                     }],
-                    entityLines: ['$stateParams', 'PoLine', function($stateParams, PoLine) {
+                    entityLines: ['$stateParams', 'PurchaseOrder', function($stateParams, PurchaseOrder) {
                         if($stateParams.id){
-                            return PoLine.get({id : $stateParams.id});
+                            return PurchaseOrder.getLines({id : $stateParams.id});
                         }else{
                             return undefined;
                         }

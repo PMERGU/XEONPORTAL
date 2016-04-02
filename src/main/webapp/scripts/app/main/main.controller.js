@@ -47,11 +47,11 @@ angular.module('portalApp')
             if($scope.account.company.id !== null){
                 CustomerOrders.get({id : $scope.account.company.sapId }).$promise.then(function(data) {
                     $scope.deliveredOrders = data.filter(function (el) {
-                        return (el.PDSTK === "B" || el.PDSTK === "C");
+                        return (el.pdstk === "B" || el.pdstk === "C");
                     });
                     $scope.undeliveredOrders = data.filter(function (el) {
                         console.log(el.PDSTK);
-                        return (el.PDSTK === "A");
+                        return (el.pdstk === "A");
                     });
                 });
             }

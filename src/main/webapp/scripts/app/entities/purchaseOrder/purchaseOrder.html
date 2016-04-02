@@ -23,13 +23,15 @@
             <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
                 <div class="text-center">
 
-                    <a ng-click="wizard.show(1)" class="btn"
-                       ng-class="{ 'btn-primary': step == 1, 'btn-default': step != 1}">Step 1 - Details</a>
-                    <a ng-click="wizard.show(2)" class="btn"
-                       ng-class="{ 'btn-primary': step == 2, 'btn-default': step != 2}">Step 2 - Line Items</a>
-                    <a ng-click="wizard.show(3)" class="btn"
-                       ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 3}">Step 3 - Confirm</a>
-
+                    <button ng-click="wizard.show(1)" style="width: 150px;margin: 0px 5px;" class="btn" ng-class="{ 'btn-primary': step == 1, 'btn-default': step != 1}">
+                        <span>Step 1 - Details</span>
+                    </button>
+                    <button ng-click="wizard.show(2)" style="width: 150px;margin: 0px 5px;" ng-disabled="editForm.$invalid" class="btn" ng-class="{ 'btn-primary': step == 2, 'btn-default': step != 2}">
+                        <span>Step 2 - Line Items</span>
+                    </button>
+                    <button ng-click="wizard.show(3)" style="width: 150px;margin: 0px 5px;" ng-disabled="editForm.$invalid" class="btn" ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 3}">
+                        <span>Step 3 - Confirm</span>
+                    </button>
                 </div>
                 <div ng-show="step == 1" class="p-m">
                     <div class="modal-body">
@@ -41,8 +43,9 @@
                                            ng-model="purchaseOrder.poNumber"
                                            required/>
                                     <div ng-show="editForm.poNumber.$invalid">
-                                        <p class="help-block"
+                                        <p class="help-block small-help-block pull-right"
                                            ng-show="editForm.poNumber.$error.required">
+                                            required
                                         </p>
                                     </div>
                                 </div>
@@ -52,8 +55,9 @@
                                            ng-model="purchaseOrder.reference"
                                            required/>
                                     <div ng-show="editForm.reference.$invalid">
-                                        <p class="help-block"
+                                        <p class="help-block small-help-block pull-right"
                                            ng-show="editForm.reference.$error.required">
+                                            required
                                         </p>
                                     </div>
                                 </div>
@@ -64,8 +68,9 @@
                                            ng-model="purchaseOrder.accountReference"
                                            required/>
                                     <div ng-show="editForm.accountReference.$invalid">
-                                        <p class="help-block"
+                                        <p class="help-block small-help-block pull-right"
                                            ng-show="editForm.accountReference.$error.required">
+                                            required
                                         </p>
                                     </div>
                                 </div>
@@ -83,8 +88,9 @@
                                            ng-model="purchaseOrder.telephone"
                                            required/>
                                     <div ng-show="editForm.telephone.$invalid">
-                                        <p class="help-block"
+                                        <p class="help-block small-help-block pull-right"
                                            ng-show="editForm.telephone.$error.required">
+                                            required
                                         </p>
                                     </div>
                                 </div>
@@ -94,8 +100,9 @@
                                            ng-model="purchaseOrder.collective"
                                            required/>
                                     <div ng-show="editForm.collective.$invalid">
-                                        <p class="help-block"
+                                        <p class="help-block small-help-block pull-right"
                                            ng-show="editForm.collective.$error.required">
+                                            required
                                         </p>
                                     </div>
                                 </div>
@@ -139,8 +146,9 @@
                                            ng-model="purchaseOrder.carrierVesselName"
                                            required/>
                                     <div ng-show="editForm.carrierVesselName.$invalid">
-                                        <p class="help-block"
+                                        <p class="help-block small-help-block pull-right"
                                            ng-show="editForm.carrierVesselName.$error.required">
+                                            required
                                         </p>
                                     </div>
                                 </div>
@@ -151,8 +159,9 @@
                                            ng-model="purchaseOrder.carrierVesselNumber"
                                            required/>
                                     <div ng-show="editForm.carrierVesselNumber.$invalid">
-                                        <p class="help-block"
+                                        <p class="help-block small-help-block pull-right"
                                            ng-show="editForm.carrierVesselNumber.$error.required">
+                                            required
                                         </p>
                                     </div>
                                 </div>
@@ -181,8 +190,9 @@
                                     </span>
                                     </div>
                                     <div ng-show="editForm.deliveryDate.$invalid">
-                                        <p class="help-block"
+                                        <p class="help-block small-help-block pull-right"
                                            ng-show="editForm.deliveryDate.$error.required">
+                                            required
                                         </p>
                                     </div>
                                 </div>
@@ -240,7 +250,8 @@
                                     <td>
                                         <div><strong>{{ po.materialNumber }}</strong></div>
                                         <small>
-                                            <b>{{ po.height }}</b>m x <b>{{ po.length }}</b>m x <b>{{ po.width }}m</b> =  <b>{{(po.height * po.length * po.width) | number:0}}</b>m3 - -  <b>{{ po.grossWeight }}</b>kg [net:<b>{{ po.netWeight }}</b>kg]
+                                            <b>{{ po.height }}</b>m x <b>{{ po.length }}</b>m x <b>{{ po.width }}m</b> =  <b>{{(po.height * po.length * po.width) | number:2}}</b>m3
+                                            - -  <b>{{ po.grossWeight }}</b>kg [net:<b>{{ po.netWeight }}</b>kg]
                                         </small>
                                     </td>
                                     <td>{{ po.warehouse }}</td>
@@ -265,11 +276,11 @@
                                 <tbody>
                                 <tr>
                                     <td><strong>Total Weight :</strong></td>
-                                    <td>$1026.00</td>
+                                    <td><strong>{{ totalWeight | number:2 }}</strong>kg</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Total cubes :</strong></td>
-                                    <td>$235.98</td>
+                                    <td><strong>{{ totalCubes | number:2 }}</strong>m3</td>
                                 </tr>
                                 </tbody>
                             </table>

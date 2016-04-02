@@ -67,3 +67,10 @@ $main-transition: all 0.1s ease-out 0s;
 @import "theme/landing";
 
 @import "loginpage";
+
+.small-help-block{
+    color: darken($color-red, 10%);
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-top: 2px;
+}

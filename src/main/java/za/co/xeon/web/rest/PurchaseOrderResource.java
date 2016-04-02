@@ -2,8 +2,10 @@ package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import za.co.xeon.domain.Company;
+import za.co.xeon.domain.PoLine;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
+import za.co.xeon.repository.PoLineRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
@@ -45,6 +47,8 @@ public class PurchaseOrderResource {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private PoLineRepository poLineRepository;
     /**
      * POST  /purchaseOrders -> Create a new purchaseOrder.
      */
@@ -100,6 +104,22 @@ public class PurchaseOrderResource {
             page = purchaseOrderService.findAllByUser(user, pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /poLines -> get all the poLines.
+     */
+    @RequestMapping(value = "/purchaseOrders/{id}/lines",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<PoLine>> getAllPoLines(@PathVariable Long id, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of PoLines");
+        PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        Page<PoLine> page = poLineRepository.findByPurchaseOrder(purchaseOrder, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/poLines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

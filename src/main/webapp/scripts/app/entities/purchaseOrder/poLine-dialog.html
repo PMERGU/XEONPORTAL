@@ -4,160 +4,158 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myPoLineLabel">Create or edit a PoLine</h4>
+        <h4 class="modal-title" id="myPoLineLabel" ng-show="!poLine.id">Create a line item</h4>
+        <h4 class="modal-title" id="myPoLineLabel" ng-show="poLine.id">Update line item</h4>
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
-        <div class="form-group">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="poLine.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_materialNumber">MaterialNumber</label>
-            <input type="text" class="form-control" name="materialNumber" id="field_materialNumber"
-                    ng-model="poLine.materialNumber"
-                    required />
-            <div ng-show="editForm.materialNumber.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.materialNumber.$error.required">
-                    This field is required.
-                </p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="field_materialNumber">MaterialNumber</label>
+                    <input type="text" class="form-control" name="materialNumber" id="field_materialNumber"
+                           ng-model="poLine.materialNumber"
+                           required />
+                    <div ng-show="editForm.materialNumber.$invalid">
+                        <p class="help-block small-help-block pull-right"
+                           ng-show="editForm.materialNumber.$error.required">
+                            required
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_orderQuantity">OrderQuantity</label>
+                    <input type="number" class="form-control" name="orderQuantity" id="field_orderQuantity"
+                           ng-model="poLine.orderQuantity"
+                           required />
+                    <div ng-show="editForm.orderQuantity.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.orderQuantity.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.orderQuantity.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_unitOfMeasure">UnitOfMeasure</label>
+                    <input type="text" class="form-control" name="unitOfMeasure" id="field_unitOfMeasure"
+                           ng-model="poLine.unitOfMeasure"
+                           required />
+                    <div ng-show="editForm.unitOfMeasure.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.unitOfMeasure.$error.required">
+                            required
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_warehouse">Warehouse</label>
+                    <input type="text" class="form-control" name="warehouse" id="field_warehouse"
+                           ng-model="poLine.warehouse"
+                           required />
+                    <div ng-show="editForm.warehouse.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.warehouse.$error.required">
+                            required
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_batchNumber">BatchNumber</label>
+                    <input type="text" class="form-control" name="batchNumber" id="field_batchNumber"
+                           ng-model="poLine.batchNumber"
+                    />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_orderQuantity">OrderQuantity</label>
-            <input type="number" class="form-control" name="orderQuantity" id="field_orderQuantity"
-                    ng-model="poLine.orderQuantity"
-                    required />
-            <div ng-show="editForm.orderQuantity.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.orderQuantity.$error.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.orderQuantity.$error.number">
-                    This field should be a number.
-                </p>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="field_length">Length</label>
+                    <input type="number" class="form-control" name="length" id="field_length"
+                           ng-model="poLine.length"
+                           required />
+                    <div ng-show="editForm.length.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.length.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.length.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_width">Width</label>
+                    <input type="number" class="form-control" name="width" id="field_width"
+                           ng-model="poLine.width"
+                           required />
+                    <div ng-show="editForm.width.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.width.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.width.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_height">Height</label>
+                    <input type="number" class="form-control" name="height" id="field_height"
+                           ng-model="poLine.height"
+                           required />
+                    <div ng-show="editForm.height.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.height.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.height.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_grossWeight">GrossWeight</label>
+                    <input type="number" class="form-control" name="grossWeight" id="field_grossWeight"
+                           ng-model="poLine.grossWeight"
+                           required />
+                    <div ng-show="editForm.grossWeight.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.grossWeight.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.grossWeight.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_netWeight">NetWeight</label>
+                    <input type="number" class="form-control" name="netWeight" id="field_netWeight"
+                           ng-model="poLine.netWeight"
+                           required />
+                    <div ng-show="editForm.netWeight.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.netWeight.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.netWeight.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_unitOfMeasure">UnitOfMeasure</label>
-            <input type="text" class="form-control" name="unitOfMeasure" id="field_unitOfMeasure"
-                    ng-model="poLine.unitOfMeasure"
-                    required />
-            <div ng-show="editForm.unitOfMeasure.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.unitOfMeasure.$error.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_warehouse">Warehouse</label>
-            <input type="text" class="form-control" name="warehouse" id="field_warehouse"
-                    ng-model="poLine.warehouse"
-                    required />
-            <div ng-show="editForm.warehouse.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.warehouse.$error.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_length">Length</label>
-            <input type="number" class="form-control" name="length" id="field_length"
-                    ng-model="poLine.length"
-                    required />
-            <div ng-show="editForm.length.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.length.$error.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.length.$error.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_width">Width</label>
-            <input type="number" class="form-control" name="width" id="field_width"
-                    ng-model="poLine.width"
-                    required />
-            <div ng-show="editForm.width.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.width.$error.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.width.$error.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_height">Height</label>
-            <input type="number" class="form-control" name="height" id="field_height"
-                    ng-model="poLine.height"
-                    required />
-            <div ng-show="editForm.height.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.height.$error.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.height.$error.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_grossWeight">GrossWeight</label>
-            <input type="number" class="form-control" name="grossWeight" id="field_grossWeight"
-                    ng-model="poLine.grossWeight"
-                    required />
-            <div ng-show="editForm.grossWeight.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.grossWeight.$error.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.grossWeight.$error.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_netWeight">NetWeight</label>
-            <input type="number" class="form-control" name="netWeight" id="field_netWeight"
-                    ng-model="poLine.netWeight"
-                    required />
-            <div ng-show="editForm.netWeight.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.netWeight.$error.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.netWeight.$error.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_batchNumber">BatchNumber</label>
-            <input type="text" class="form-control" name="batchNumber" id="field_batchNumber"
-                    ng-model="poLine.batchNumber"
-                     />
         </div>
 
-        <div class="form-group">
-            <label for="field_purchaseOrder">purchaseOrder</label>
-            <select class="form-control" id="field_purchaseOrder" name="purchaseOrder" ng-model="poLine.purchaseOrder" ng-options="purchaseOrder as purchaseOrder.reference for purchaseOrder in purchaseorders track by purchaseOrder.id">
-                <option value=""></option>
-            </select>
-        </div>
+
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

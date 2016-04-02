@@ -26,6 +26,10 @@ angular.module('portalApp')
                     data.deliveryDate = DateUtils.convertLocaleDateToServer(data.deliveryDate);
                     return angular.toJson(data);
                 }
+            },
+            'getLines': {
+                url: 'api/purchaseOrders/:id/lines',
+                method: 'GET', isArray: true
             }
         });
     });

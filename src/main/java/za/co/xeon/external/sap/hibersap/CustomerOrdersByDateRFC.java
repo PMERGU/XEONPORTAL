@@ -34,7 +34,7 @@ public class CustomerOrdersByDateRFC {
     /**
      * "Trace tool table type" */
     @Export
-    @Parameter("EV_RESULT")
+    @Parameter(value="EV_RESULT", type = ParameterType.TABLE_STRUCTURE)
     private List<EvResult> evResult;
 
     /**

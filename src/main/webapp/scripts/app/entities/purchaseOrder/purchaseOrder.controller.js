@@ -7,41 +7,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.step = 2;
             $scope.purchaseOrder = entity;
             $scope.purchaseOrderLines = entityLines === undefined ? [] : entityLines;
-            $scope.purchaseOrderLines = [{
-                batchNumber
-                    :
-                    "123",
-                grossWeight
-                    :
-                    123,
-                height
-                    :
-                    123,
-                id
-                    :
-                    null,
-                length
-                    :
-                    123,
-                materialNumber
-                    :
-                    "123",
-                netWeight
-                    :
-                    123,
-                orderQuantity
-                    :
-                    123,
-                unitOfMeasure
-                    :
-                    "123",
-                warehouse
-                    :
-                    "123",
-                width
-                    :
-                    123
-            }];
             $scope.polines = PoLine.query();
             $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
             // $q.all([$scope.purchaseOrder.$promise, $scope.shiptopartys.$promise]).then(function() {
@@ -125,6 +90,24 @@ angular.module('portalApp').controller('PurchaseOrderController',
             // listen for the event in the relevant $scope
             $rootScope.$on('portalApp:poLineUpdate', function (event, data) {
                 $scope.purchaseOrderLines.push(data);
+                calculateTotals($scope.purchaseOrderLines);
             });
 
+
+            function calculateTotals(lines){
+                $scope.totalWeight = 0;
+                $scope.totalCubes = 0;
+                $.each(lines, function(idx, line){
+                    console.log(line.grossWeight);
+                    $scope.totalWeight += parseFloat(line.grossWeight);
+                    $scope.totalCubes += (parseFloat(line.height) * parseFloat(line.length) * parseFloat(line.width));
+                })
+            }
+
+            $scope.$watch(function(scope) {return scope.purchaseOrderLines },
+                function(newLines, oldLines) {
+                    console.log("lines changed");
+                    calculateTotals(newLines);
+                }
+            );
         }]);
