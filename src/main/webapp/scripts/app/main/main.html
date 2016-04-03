@@ -70,6 +70,7 @@
                                             <th>Delivery No</th>
                                             <th>Shipment No</th>
                                             <th>Status</th>
+                                            <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -79,6 +80,14 @@
                                             <td>{{ order.dbeln }}</td>
                                             <td>{{ order.tknum }}</td>
                                             <td>{{ order.pdstk }}</td>
+                                            <td width="10px">
+                                                <button type="submit"
+                                                        ui-sref="home.orderdetail({order:order})"
+                                                        class="btn btn-info btn-sm">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                    <span class="hidden-xs hidden-sm"></span>
+                                                </button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>

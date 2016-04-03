@@ -27,6 +27,23 @@ angular.module('portalApp')
                 resolve: {
                 }
             })
+            .state('home.orderdetail', {
+                parent: 'home',
+                url: 'orderdetail',
+                data: {
+                    authorities: ['ROLE_CUSTOMER'],
+                    pageTitle: 'Order Details'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/main/orderDetail.html',
+                        controller: 'MainOrderDetailController'
+                    }
+                },
+                params: {
+                    order: null
+                }
+            })
             .state('xeonhome', {
                 parent: 'site',
                 url: '/xeon',

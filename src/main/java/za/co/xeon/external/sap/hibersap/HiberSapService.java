@@ -103,7 +103,9 @@ public class HiberSapService {
             UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 
-            if(rfc.getReturn().get(0).getType() == 'E'){
+            if(rfc.getReturn().isEmpty()) {
+                return null;
+            }else if(rfc.getReturn().get(0).getType() == 'E'){
                 throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code " + rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
             }else{
                 return rfc.getReturn();

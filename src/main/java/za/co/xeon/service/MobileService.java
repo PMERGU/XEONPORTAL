@@ -67,17 +67,20 @@ public class MobileService {
         String ocrBarcode = null;
         try {
             ocrBarcode = ocrService.getCompletedBarcodeResult(task.getResultUrl());
-            if(barcode.equals(ocrBarcode)) {
+            if(ocrBarcode == null || barcode.equals(ocrBarcode)) {
                 log.debug("\t====> Found barcode : " + ocrBarcode);
+                if(ocrBarcode == null) {
+                    log.error("\t Failed to get OCR barcode from POD, using barcode passed in : " + barcode);
+                }
 
                 //fourth long running task - upload POD to amazon S3
-                String s3Path = s3Settings.getFolderPod() + "/" + ocrBarcode + "." + extension;
+                String s3Path = s3Settings.getFolderPod() + "/" + barcode + "." + extension;
                 String url = s3Service.uploadFile(s3Path, podFile);
-                log.debug("\tSubmitted pod [barcode:" + ocrBarcode + "] to S3 successfully : " + s3Path + ". Now updating SAP with URL....");
+                log.debug("\tSubmitted pod [barcode:" + barcode + "] to S3 successfully : " + s3Path + ". Now updating SAP with URL....");
 
                 try {
-                    hiberSapService.updatePod(ocrBarcode, url);
-                    log.debug("\tSap update successful for pod " + ocrBarcode);
+                    hiberSapService.updatePod(barcode, url);
+                    log.debug("\tSap update successful for pod " + barcode);
                     podFile.delete();
                 } catch (Exception e) {
                     e.printStackTrace();

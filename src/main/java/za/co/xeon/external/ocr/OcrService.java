@@ -105,8 +105,11 @@ public class OcrService {
 
         XPathExpression expr = xPath.compile(xpathExpression);
         NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants. NODESET);
-
-        return nl.item(0).getNodeValue();
+        try {
+            return nl.item(0).getNodeValue();
+        }catch(NullPointerException npe){
+            return null;
+        }
     }
 
     public String getCompletedResult2(String resultUrl) throws Exception{

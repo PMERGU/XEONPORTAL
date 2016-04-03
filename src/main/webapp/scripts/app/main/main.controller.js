@@ -57,7 +57,6 @@ angular.module('portalApp')
                         return (el.pdstk === "B" || el.pdstk === "C");
                     });
                     $scope.undeliveredOrders = data.filter(function (el) {
-                        console.log(el.PDSTK);
                         return (el.pdstk === "A");
                     });
                 });
