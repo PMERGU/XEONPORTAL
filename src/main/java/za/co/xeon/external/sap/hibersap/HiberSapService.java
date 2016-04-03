@@ -104,7 +104,7 @@ public class HiberSapService {
             session.execute(rfc);
 
             if(rfc.getReturn().isEmpty()) {
-                return null;
+                return new ArrayList<>();
             }else if(rfc.getReturn().get(0).getType() == 'E'){
                 throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code " + rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
             }else{
