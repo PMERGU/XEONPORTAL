@@ -1,0 +1,111 @@
+# ===================================================================
+# Spring Boot configuration for the "prod" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+    profiles:
+        active: uat
+    devtools:
+        restart:
+            enabled: false
+        livereload:
+            enabled: false
+    datasource:
+        driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+        url: jdbc:mysql://localhost:6033/portal?useUnicode=true&characterEncoding=utf8
+        name:
+        username: portal
+        password: $ummer1974
+    jpa:
+        database-platform: org.hibernate.dialect.MySQLInnoDBDialect
+        database: MYSQL
+        show_sql: false
+        properties:
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: false
+            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+    mail:
+        host: smtp.office365.com
+        port: 587
+        username: hptest@xeon.co.za
+        password: Daqu1941
+        tls: true
+        protocal: smtp
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: smtp.office365.com
+    thymeleaf:
+        cache: true
+
+liquibase:
+    contexts: dev
+
+server:
+    port: 8080
+    compression:
+        enabled: true
+        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+
+# ===================================================================
+# Application specific properties
+# ===================================================================
+ocr:
+  application: SAP Integrator
+  password: j6txBszFf55dgs9tSgJLi9fN
+  uri: https://cloud.ocrsdk.com
+amazon:
+  s3:
+    bucketName: xeondocstore
+    accessKeyId: AKIAIXQWY62ESWPBJZLQ
+    secretKey: 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
+    url: https://936207874332.signin.aws.amazon.com/console
+    user: xeonbackend
+    folderPod: pod
+
+sap:
+  jco:
+    sysnr: "00"
+    user: "dpotgieter"
+    passwd: "mobile"
+    lang: "en"
+    poolCapacity: "3"
+    peakLimit: "10"
+    ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
+    client: "700"
+
+
+# ===================================================================
+# JHipster specific properties
+# ===================================================================
+
+jhipster:
+    http:
+        cache: # Used by the CachingHttpHeadersFilter
+            timeToLiveInDays: 31
+    cache: # Hibernate 2nd level cache, used by CacheConfiguration
+        timeToLiveSeconds: 3600
+        ehcache:
+            maxBytesLocalHeap: 128M
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: uat1@xeon.co.za
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: portal
