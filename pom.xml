@@ -728,8 +728,8 @@
             <id>linux</id>
             <activation>
                 <os>
-                    <arch>x86_64</arch>
-                    <family>linux</family>
+                    <arch>amd64</arch>
+                    <family>unix</family>
                 </os>
             </activation>
             <properties>
