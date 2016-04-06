@@ -32,19 +32,28 @@
                 <div class="text-center">
 
                     <button ng-click="wizard.show(1)" style="width: 150px;margin: 0px 5px;" class="btn" ng-class="{ 'btn-primary': step == 1, 'btn-default': step != 1}">
-                        <span>Step 1 - Details</span>
+                        <span>Step 1 - Order Details</span>
                     </button>
                     <button ng-click="wizard.show(2)" style="width: 150px;margin: 0px 5px;" ng-disabled="editForm.$invalid" class="btn" ng-class="{ 'btn-primary': step == 2, 'btn-default': step != 2}">
-                        <span>Step 2 - Line Items</span>
+                        <span>Step 2 - Delivery Details</span>
                     </button>
-                    <button ng-click="wizard.show(3)" style="width: 150px;margin: 0px 5px;" ng-disabled="editForm.$invalid" class="btn" ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 3}">
-                        <span>Step 3 - Confirm</span>
+                    <button ng-click="wizard.show(3)" style="width: 150px;margin: 0px 5px;" ng-disabled="editForm.$invalid" class="btn" ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 2}">
+                        <span>Step 3 - Cargo Details</span>
+                    </button>
+                    <button ng-click="wizard.show(4)" style="width: 150px;margin: 0px 5px;" ng-disabled="editForm.$invalid" class="btn" ng-class="{ 'btn-primary': step == 4, 'btn-default': step != 2}">
+                        <span>Step 4 - Line Items</span>
+                    </button>
+                    <button ng-click="wizard.show(5)" style="width: 150px;margin: 0px 5px;" ng-disabled="editForm.$invalid" class="btn" ng-class="{ 'btn-primary': step == 5, 'btn-default': step != 2}">
+                        <span>Step 5 - Line Items</span>
+                    </button>
+                    <button ng-click="wizard.show(6)" style="width: 150px;margin: 0px 5px;" ng-disabled="editForm.$invalid" class="btn" ng-class="{ 'btn-primary': step == 6, 'btn-default': step != 3}">
+                        <span>Step 6 - Confirm</span>
                     </button>
                 </div>
                 <div ng-show="step == 1" class="p-m">
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" for="field_poNumber">Purchase Order Number</label>
                                     <input type="text" class="form-control" name="poNumber" id="field_poNumber"
@@ -83,6 +92,77 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label" for="field_collective">Collective</label>
+                                    <input type="text" class="form-control" name="collective" id="field_collective"
+                                           ng-model="purchaseOrder.collective"
+                                           required/>
+                                    <div ng-show="editForm.collective.$invalid">
+                                        <p class="help-block small-help-block pull-right"
+                                           ng-show="editForm.collective.$error.required">
+                                            required
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="field_serviceLevel">Service Level</label>
+                                    <select class="form-control" name="serviceLevel" ng-model="purchaseOrder.serviceLevel"
+                                            id="field_serviceLevel">
+                                        <option value="ECONOMY">Economy</option>
+                                        <option value="EXPRESS_AM">Express AM</option>
+                                        <option value="EXPRESS_PM">Express PM</option>
+                                        <option value="DEDICATED_EXPRESS">Dedicated Express</option>
+                                        <option value="DEDICATED_ECONOMY">Dedicated Economy</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="step == 2" class="p-m">
+                    <div class="modal-body">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="step == 3" class="p-m">
+                    <div class="modal-body">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="step == 4" class="p-m">
+                    <div class="modal-body">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="step == 5">
+                    <div class="row text-center m-t-lg m-b-lg">
+                        <div class="col-lg-12">
+                            <i class="pe-7s-check fa-5x text-muted"></i>
+                            <p class="small m-t-md">
+                                <strong>There are many</strong> variations of passages of Lorem Ipsum available, but the majority have suffered
+                            </p>
+                        </div>
+                        <div class="checkbox col-lg-12">
+                            <input icheck type="checkbox" ng-model="user.approve">
+                            Approve this form
+                        </div>
+
+                    </div>
+
+                </div>
+                <div ng-show="step == 6" class="p-m">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+
+                                <div class="form-group">
                                     <label class="control-label" for="field_customerType">CustomerType</label>
                                     <select class="form-control" name="customerType" ng-model="purchaseOrder.customerType"
                                             id="field_customerType">
@@ -102,31 +182,11 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label" for="field_collective">Collective</label>
-                                    <input type="text" class="form-control" name="collective" id="field_collective"
-                                           ng-model="purchaseOrder.collective"
-                                           required/>
-                                    <div ng-show="editForm.collective.$invalid">
-                                        <p class="help-block small-help-block pull-right"
-                                           ng-show="editForm.collective.$error.required">
-                                            required
-                                        </p>
-                                    </div>
-                                </div>
+
                             </div>
 
                             <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="control-label" for="field_serviceLevel">Service Level</label>
-                                    <select class="form-control" name="serviceLevel" ng-model="purchaseOrder.serviceLevel"
-                                            id="field_serviceLevel">
-                                        <option value="ECONOMY">ECONOMY</option>
-                                        <option value="EXPRESS_AM">EXPRESS_AM</option>
-                                        <option value="EXPRESS_PM">EXPRESS_PM</option>
-                                        <option value="DEDICATED">DEDICATED</option>
-                                    </select>
-                                </div>
+
                                 <div class="form-group">
                                     <label class="control-label" for="field_shipToType">ShipToType</label>
                                     <select class="form-control" name="shipToType" ng-model="purchaseOrder.shipToType"
@@ -241,93 +301,12 @@
                         <!--</div>-->
                     </div>
                 </div>
-                <div ng-show="step == 2" class="p-m">
-                    <div class="table-responsive m-t">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Material Number</th>
-                                <th>Warehouse</th>
-                                <th>Batch Number</th>
-                                <th>Unit Of Measure</th>
-                                <th>Quantity</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="po in purchaseOrderLines">
-                                    <td>{{$index+1}}</td>
-                                    <td>
-                                        <div><strong>{{ po.materialNumber }}</strong></div>
-                                        <small>
-                                            <b>{{ po.height }}</b>m x <b>{{ po.length }}</b>m x <b>{{ po.width }}m</b> =  <b>{{(po.height * po.length * po.width) | number:2}}</b>m3
-                                            - -  <b>{{ po.grossWeight }}</b>kg [net:<b>{{ po.netWeight }}</b>kg]
-                                        </small>
-                                    </td>
-                                    <td>{{ po.warehouse }}</td>
-                                    <td>{{ po.batchNumber }}</td>
-                                    <td>{{ po.unitOfMeasure }}</td>
-                                    <td>{{ po.orderQuantity }}</td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="6">
-                                        <button class="btn btn-primary pull-right" ui-sref="purchaseOrder.poLine">
-                                            <span class="glyphicon glyphicon-plus"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row m-t">
-                        <div class="col-md-4 col-md-offset-8">
-                            <table class="table table-striped text-right">
-                                <tbody>
-                                <tr>
-                                    <td><strong>Total Weight :</strong></td>
-                                    <td><strong>{{ totalWeight | number:2 }}</strong>kg</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Total cubes :</strong></td>
-                                    <td><strong>{{ totalCubes | number:2 }}</strong>m3</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="m-t">
-                                <strong>** Please remember **</strong></br>
-                                Correct measurement and weight checks are crucial to ensure we can process your order as quick as possible.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div ng-show="step == 3">
-                    <div class="row text-center m-t-lg m-b-lg">
-                        <div class="col-lg-12">
-                            <i class="pe-7s-check fa-5x text-muted"></i>
-                            <p class="small m-t-md">
-                                <strong>There are many</strong> variations of passages of Lorem Ipsum available, but the majority have suffered
-                            </p>
-                        </div>
-                        <div class="checkbox col-lg-12">
-                            <input icheck type="checkbox" ng-model="user.approve">
-                            Approve this form
-                        </div>
-
-                    </div>
-
-                </div>
 
                 <div class="text-right m-t-xs">
                     <button ng-click="wizard.prev()" ng-disabled="step == 1" class="btn btn-default">
                         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span>Previous</span>
                     </button>
-                    <button ng-click="wizard.next()" ng-disabled="editForm.$invalid || isSaving || tep == 3" ng-hide="step == 3" class="btn btn-primary">
+                    <button ng-click="wizard.next()" ng-disabled="editForm.$invalid || isSaving" ng-hide="step == 3" class="btn btn-primary">
                         <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;<span>Next</span>
                     </button>
                     <button ng-click="submit()" ng-show="step == 3" class="btn btn-primary" ng-disabled="editForm.$invalid || isSaving">

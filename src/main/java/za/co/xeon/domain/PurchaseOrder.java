@@ -48,8 +48,16 @@ public class PurchaseOrder implements Serializable {
     private ZonedDateTime captureDate;
 
     @NotNull
-    @Column(name = "delivery_date", nullable = false)
+    @Column(name = "delivery_date", nullable = true)
     private LocalDate deliveryDate;
+
+    @NotNull
+    @Column(name = "collection_date", nullable = true)
+    private LocalDate collectionDate;
+
+    @NotNull
+    @Column(name = "collection_reference", nullable = true)
+    private String collectionReference;
 
     @NotNull
     @Column(name = "po_number", nullable = false)
@@ -68,7 +76,7 @@ public class PurchaseOrder implements Serializable {
     private DeliveryType shipToType;
 
     @NotNull
-    @Column(name = "telephone", nullable = false)
+    @Column(name = "telephone", nullable = true)
     private String telephone;
 
     @NotNull

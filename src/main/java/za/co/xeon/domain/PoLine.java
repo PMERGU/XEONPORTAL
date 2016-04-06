@@ -1,7 +1,10 @@
 package za.co.xeon.domain;
 
+import javafx.scene.paint.Material;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import za.co.xeon.domain.enumeration.MaterialType;
+import za.co.xeon.domain.enumeration.PoState;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -25,42 +28,47 @@ public class PoLine implements Serializable {
     @NotNull
     @Column(name = "material_number", nullable = false)
     private String materialNumber;
-    
+
     @NotNull
     @Column(name = "order_quantity", nullable = false)
     private Integer orderQuantity;
-    
+
     @NotNull
     @Column(name = "unit_of_measure", nullable = false)
     private String unitOfMeasure;
-    
+
     @NotNull
     @Column(name = "warehouse", nullable = false)
     private String warehouse;
-    
+
     @NotNull
     @Column(name = "length", nullable = false)
     private Integer length;
-    
+
     @NotNull
     @Column(name = "width", nullable = false)
     private Integer width;
-    
+
     @NotNull
     @Column(name = "height", nullable = false)
     private Integer height;
-    
+
     @NotNull
     @Column(name = "gross_weight", nullable = false)
     private Integer grossWeight;
-    
+
     @NotNull
     @Column(name = "net_weight", nullable = false)
     private Integer netWeight;
-    
+
     @Column(name = "batch_number")
     private String batchNumber;
-    
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "materialType", nullable = false)
+    private MaterialType materialType;
+
     @ManyToOne
     @JoinColumn(name = "purchase_order_id")
     private PurchaseOrder purchaseOrder;
@@ -76,7 +84,7 @@ public class PoLine implements Serializable {
     public String getMaterialNumber() {
         return materialNumber;
     }
-    
+
     public void setMaterialNumber(String materialNumber) {
         this.materialNumber = materialNumber;
     }
@@ -84,7 +92,7 @@ public class PoLine implements Serializable {
     public Integer getOrderQuantity() {
         return orderQuantity;
     }
-    
+
     public void setOrderQuantity(Integer orderQuantity) {
         this.orderQuantity = orderQuantity;
     }
@@ -92,7 +100,7 @@ public class PoLine implements Serializable {
     public String getUnitOfMeasure() {
         return unitOfMeasure;
     }
-    
+
     public void setUnitOfMeasure(String unitOfMeasure) {
         this.unitOfMeasure = unitOfMeasure;
     }
@@ -100,7 +108,7 @@ public class PoLine implements Serializable {
     public String getWarehouse() {
         return warehouse;
     }
-    
+
     public void setWarehouse(String warehouse) {
         this.warehouse = warehouse;
     }
@@ -108,7 +116,7 @@ public class PoLine implements Serializable {
     public Integer getLength() {
         return length;
     }
-    
+
     public void setLength(Integer length) {
         this.length = length;
     }
@@ -116,7 +124,7 @@ public class PoLine implements Serializable {
     public Integer getWidth() {
         return width;
     }
-    
+
     public void setWidth(Integer width) {
         this.width = width;
     }
@@ -124,7 +132,7 @@ public class PoLine implements Serializable {
     public Integer getHeight() {
         return height;
     }
-    
+
     public void setHeight(Integer height) {
         this.height = height;
     }
@@ -132,7 +140,7 @@ public class PoLine implements Serializable {
     public Integer getGrossWeight() {
         return grossWeight;
     }
-    
+
     public void setGrossWeight(Integer grossWeight) {
         this.grossWeight = grossWeight;
     }
@@ -140,7 +148,7 @@ public class PoLine implements Serializable {
     public Integer getNetWeight() {
         return netWeight;
     }
-    
+
     public void setNetWeight(Integer netWeight) {
         this.netWeight = netWeight;
     }
@@ -148,7 +156,7 @@ public class PoLine implements Serializable {
     public String getBatchNumber() {
         return batchNumber;
     }
-    
+
     public void setBatchNumber(String batchNumber) {
         this.batchNumber = batchNumber;
     }
@@ -159,6 +167,14 @@ public class PoLine implements Serializable {
 
     public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
         this.purchaseOrder = purchaseOrder;
+    }
+
+    public MaterialType getMaterialType() {
+        return materialType;
+    }
+
+    public void setMaterialType(MaterialType materialType) {
+        this.materialType = materialType;
     }
 
     @Override
