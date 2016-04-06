@@ -29,9 +29,11 @@
 
             <column name="capture_date" type="timestamp"/>
 
-            <column name="delivery_date" type="date">
-                <constraints nullable="false" />
-            </column>
+            <column name="delivery_date" type="date"/>
+
+            <column name="collection_date" type="date"/>
+
+            <column name="collection_reference" type="varchar(255)"/>
 
             <column name="po_number" type="varchar(255)">
                 <constraints nullable="false" />
@@ -45,9 +47,9 @@
 
             <column name="ship_to_type" type="varchar(255)"/>
 
-            <column name="telephone" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="pick_up_type" type="varchar(255)"/>
+
+            <column name="telephone" type="varchar(255)"/>
 
             <column name="collective" type="varchar(255)">
                 <constraints nullable="false" />
@@ -59,24 +61,30 @@
 
             <column name="mode_of_transport" type="varchar(255)"/>
 
-            <column name="carrier_vessel_name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="carrier_vessel_name" type="varchar(255)"/>
 
-            <column name="carrier_vessel_number" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="carrier_vessel_number" type="varchar(255)"/>
 
-            <column name="comment" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="pick_up_type" type="varchar(255)"/>
+            <column name="comment" type="varchar(255)"/>
 
             <column name="ship_to_party_id" type="bigint">
             </column>
             <column name="pick_up_party_id" type="bigint">
             </column>
+
+            <column name="cargo_classification" type="varchar(255)"/>
+
+            <column name="cargo_type" type="varchar(255)"/>
+
+            <column name="transport_party" type="varchar(255)"/>
+
+            <column name="vehicle_size" type="varchar(255)"/>
+
+            <column name="service_type" type="varchar(255)"/>
+
+            <column name="labour_required" type="integer"/>
+
+
             <column name="user_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>

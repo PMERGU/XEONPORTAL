@@ -96,7 +96,6 @@ public class PoLineResourceIntTest {
         poLine = new PoLine();
         poLine.setMaterialNumber(DEFAULT_MATERIAL_NUMBER);
         poLine.setOrderQuantity(DEFAULT_ORDER_QUANTITY);
-        poLine.setUnitOfMeasure(DEFAULT_UNIT_OF_MEASURE);
         poLine.setWarehouse(DEFAULT_WAREHOUSE);
         poLine.setLength(DEFAULT_LENGTH);
         poLine.setWidth(DEFAULT_WIDTH);
@@ -124,7 +123,6 @@ public class PoLineResourceIntTest {
         PoLine testPoLine = poLines.get(poLines.size() - 1);
         assertThat(testPoLine.getMaterialNumber()).isEqualTo(DEFAULT_MATERIAL_NUMBER);
         assertThat(testPoLine.getOrderQuantity()).isEqualTo(DEFAULT_ORDER_QUANTITY);
-        assertThat(testPoLine.getUnitOfMeasure()).isEqualTo(DEFAULT_UNIT_OF_MEASURE);
         assertThat(testPoLine.getWarehouse()).isEqualTo(DEFAULT_WAREHOUSE);
         assertThat(testPoLine.getLength()).isEqualTo(DEFAULT_LENGTH);
         assertThat(testPoLine.getWidth()).isEqualTo(DEFAULT_WIDTH);
@@ -158,24 +156,6 @@ public class PoLineResourceIntTest {
         int databaseSizeBeforeTest = poLineRepository.findAll().size();
         // set the field null
         poLine.setOrderQuantity(null);
-
-        // Create the PoLine, which fails.
-
-        restPoLineMockMvc.perform(post("/api/poLines")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(poLine)))
-                .andExpect(status().isBadRequest());
-
-        List<PoLine> poLines = poLineRepository.findAll();
-        assertThat(poLines).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkUnitOfMeasureIsRequired() throws Exception {
-        int databaseSizeBeforeTest = poLineRepository.findAll().size();
-        // set the field null
-        poLine.setUnitOfMeasure(null);
 
         // Create the PoLine, which fails.
 
@@ -361,7 +341,6 @@ public class PoLineResourceIntTest {
         // Update the poLine
         poLine.setMaterialNumber(UPDATED_MATERIAL_NUMBER);
         poLine.setOrderQuantity(UPDATED_ORDER_QUANTITY);
-        poLine.setUnitOfMeasure(UPDATED_UNIT_OF_MEASURE);
         poLine.setWarehouse(UPDATED_WAREHOUSE);
         poLine.setLength(UPDATED_LENGTH);
         poLine.setWidth(UPDATED_WIDTH);
@@ -380,8 +359,7 @@ public class PoLineResourceIntTest {
         assertThat(poLines).hasSize(databaseSizeBeforeUpdate);
         PoLine testPoLine = poLines.get(poLines.size() - 1);
         assertThat(testPoLine.getMaterialNumber()).isEqualTo(UPDATED_MATERIAL_NUMBER);
-        assertThat(testPoLine.getOrderQuantity()).isEqualTo(UPDATED_ORDER_QUANTITY);
-        assertThat(testPoLine.getUnitOfMeasure()).isEqualTo(UPDATED_UNIT_OF_MEASURE);
+        assertThat(testPoLine.getOrderQuantity()).isEqualTo(UPDATED_ORDER_QUANTITY);;
         assertThat(testPoLine.getWarehouse()).isEqualTo(UPDATED_WAREHOUSE);
         assertThat(testPoLine.getLength()).isEqualTo(UPDATED_LENGTH);
         assertThat(testPoLine.getWidth()).isEqualTo(UPDATED_WIDTH);

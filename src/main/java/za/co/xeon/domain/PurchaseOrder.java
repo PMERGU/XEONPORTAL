@@ -13,15 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
-import za.co.xeon.domain.enumeration.PoState;
-
-import za.co.xeon.domain.enumeration.ServiceLevel;
-
-import za.co.xeon.domain.enumeration.CustomerType;
-
-import za.co.xeon.domain.enumeration.DeliveryType;
-
-import za.co.xeon.domain.enumeration.ModeOfTransport;
+import za.co.xeon.domain.enumeration.*;
 
 /**
  * A PurchaseOrder.
@@ -47,16 +39,13 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "capture_date")
     private ZonedDateTime captureDate;
 
-    @NotNull
-    @Column(name = "delivery_date", nullable = true)
+    @Column(name = "delivery_date")
     private LocalDate deliveryDate;
 
-    @NotNull
-    @Column(name = "collection_date", nullable = true)
+    @Column(name = "collection_date")
     private LocalDate collectionDate;
 
-    @NotNull
-    @Column(name = "collection_reference", nullable = true)
+    @Column(name = "collection_reference")
     private String collectionReference;
 
     @NotNull
@@ -75,8 +64,11 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "ship_to_type")
     private DeliveryType shipToType;
 
-    @NotNull
-    @Column(name = "telephone", nullable = true)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pick_up_type")
+    private DeliveryType pickUpType;
+
+    @Column(name = "telephone")
     private String telephone;
 
     @NotNull
@@ -91,21 +83,15 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "mode_of_transport")
     private ModeOfTransport modeOfTransport;
 
-    @NotNull
-    @Column(name = "carrier_vessel_name", nullable = false)
+    @Column(name = "carrier_vessel_name")
     private String carrierVesselName;
 
-    @NotNull
-    @Column(name = "carrier_vessel_number", nullable = false)
+    @Column(name = "carrier_vessel_number")
     private String carrierVesselNumber;
 
     @NotNull
     @Column(name = "comment", nullable = true)
     private String comment;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "pick_up_type")
-    private DeliveryType pickUpType;
 
     @OneToMany(mappedBy = "purchaseOrder")
     @JsonIgnore
@@ -118,9 +104,97 @@ public class PurchaseOrder implements Serializable {
     @OneToOne
     private Party pickUpParty;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cargo_classification")
+    private CargoClassificationType cargoClassification;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cargo_type")
+    private CargoType cargoType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transport_party")
+    private TransportParty transportParty;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vehicle_size")
+    private VehicleSize vehicleSize;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "service_type")
+    private ServiceType serviceType;
+
+    @Column(name = "labour_required")
+    private String labourRequired;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public ServiceType getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public LocalDate getCollectionDate() {
+        return collectionDate;
+    }
+
+    public void setCollectionDate(LocalDate collectionDate) {
+        this.collectionDate = collectionDate;
+    }
+
+    public String getCollectionReference() {
+        return collectionReference;
+    }
+
+    public void setCollectionReference(String collectionReference) {
+        this.collectionReference = collectionReference;
+    }
+
+    public CargoClassificationType getCargoClassification() {
+        return cargoClassification;
+    }
+
+    public void setCargoClassification(CargoClassificationType cargoClassification) {
+        this.cargoClassification = cargoClassification;
+    }
+
+    public CargoType getCargoType() {
+        return cargoType;
+    }
+
+    public void setCargoType(CargoType cargoType) {
+        this.cargoType = cargoType;
+    }
+
+    public TransportParty getTransportParty() {
+        return transportParty;
+    }
+
+    public void setTransportParty(TransportParty transportParty) {
+        this.transportParty = transportParty;
+    }
+
+    public VehicleSize getVehicleSize() {
+        return vehicleSize;
+    }
+
+    public void setVehicleSize(VehicleSize vehicleSize) {
+        this.vehicleSize = vehicleSize;
+    }
+
+    public String getLabourRequired() {
+        return labourRequired;
+    }
+
+    public void setLabourRequired(String labourRequired) {
+        this.labourRequired = labourRequired;
+    }
 
     public Long getId() {
         return id;

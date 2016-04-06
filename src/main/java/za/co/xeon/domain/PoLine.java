@@ -25,48 +25,35 @@ public class PoLine implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
-    @Column(name = "material_number", nullable = false)
+    @Column(name = "material_number")
     private String materialNumber;
 
-    @NotNull
-    @Column(name = "order_quantity", nullable = false)
+    @Column(name = "order_quantity")
     private Integer orderQuantity;
 
-    @NotNull
-    @Column(name = "unit_of_measure", nullable = false)
-    private String unitOfMeasure;
-
-    @NotNull
-    @Column(name = "warehouse", nullable = false)
+    @Column(name = "warehouse")
     private String warehouse;
 
-    @NotNull
-    @Column(name = "length", nullable = false)
+    @Column(name = "length")
     private Integer length;
 
-    @NotNull
-    @Column(name = "width", nullable = false)
+    @Column(name = "width")
     private Integer width;
 
-    @NotNull
-    @Column(name = "height", nullable = false)
+    @Column(name = "height")
     private Integer height;
 
-    @NotNull
-    @Column(name = "gross_weight", nullable = false)
+    @Column(name = "gross_weight")
     private Integer grossWeight;
 
-    @NotNull
-    @Column(name = "net_weight", nullable = false)
+    @Column(name = "net_weight")
     private Integer netWeight;
 
     @Column(name = "batch_number")
     private String batchNumber;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "materialType", nullable = false)
+    @Column(name = "material_type")
     private MaterialType materialType;
 
     @ManyToOne
@@ -95,14 +82,6 @@ public class PoLine implements Serializable {
 
     public void setOrderQuantity(Integer orderQuantity) {
         this.orderQuantity = orderQuantity;
-    }
-
-    public String getUnitOfMeasure() {
-        return unitOfMeasure;
-    }
-
-    public void setUnitOfMeasure(String unitOfMeasure) {
-        this.unitOfMeasure = unitOfMeasure;
     }
 
     public String getWarehouse() {
@@ -203,7 +182,6 @@ public class PoLine implements Serializable {
             "id=" + id +
             ", materialNumber='" + materialNumber + "'" +
             ", orderQuantity='" + orderQuantity + "'" +
-            ", unitOfMeasure='" + unitOfMeasure + "'" +
             ", warehouse='" + warehouse + "'" +
             ", length='" + length + "'" +
             ", width='" + width + "'" +

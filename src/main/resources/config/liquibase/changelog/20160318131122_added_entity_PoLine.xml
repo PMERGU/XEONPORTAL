@@ -21,43 +21,25 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="material_number" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="material_number" type="varchar(255)"/>
 
-            <column name="order_quantity" type="integer">
-                <constraints nullable="false" />
-            </column>
+            <column name="order_quantity" type="integer"/>
 
-            <column name="unit_of_measure" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="warehouse" type="varchar(255)"/>
 
-            <column name="warehouse" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
+            <column name="length" type="integer"/>
 
-            <column name="length" type="integer">
-                <constraints nullable="false" />
-            </column>
+            <column name="width" type="integer"/>
 
-            <column name="width" type="integer">
-                <constraints nullable="false" />
-            </column>
+            <column name="height" type="integer"/>
 
-            <column name="height" type="integer">
-                <constraints nullable="false" />
-            </column>
+            <column name="gross_weight" type="integer"/>
 
-            <column name="gross_weight" type="integer">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="net_weight" type="integer">
-                <constraints nullable="false" />
-            </column>
+            <column name="net_weight" type="integer"/>
 
             <column name="batch_number" type="varchar(255)"/>
+
+            <column name="material_type" type="varchar(255)"/>
 
             <column name="purchase_order_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
