@@ -5,7 +5,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
         function ($rootScope, $scope, $stateParams, $q, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
             var todaysDate = new Date();
             // Initial step
-            $scope.step = 1;
+            $scope.step = 4;
             $scope.purchaseOrder = entity;
             $scope.purchaseOrderLines = entityLines === undefined ? [] : entityLines;
             $scope.dateformat = 'yyyy-MM-dd';
