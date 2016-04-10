@@ -22,6 +22,12 @@ public class TokenProvider {
         return new Token(token, expires);
     }
 
+    public Token createToken(UserDetails userDetails, int tokenValidity) {
+        long expires = System.currentTimeMillis() + 1000L * tokenValidity;
+        String token = userDetails.getUsername() + ":" + expires + ":" + computeSignature(userDetails, expires);
+        return new Token(token, expires);
+    }
+
     public String computeSignature(UserDetails userDetails, long expires) {
         StringBuilder signatureBuilder = new StringBuilder();
         signatureBuilder.append(userDetails.getUsername()).append(":");

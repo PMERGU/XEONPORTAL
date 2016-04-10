@@ -19,13 +19,11 @@
                     <thead>
                         <tr>
                             <th><span>ID</span></th>
+                            <th><span>Company</span></th>
                             <th><span>Name</span></th>
-                            <th><span>HouseNumber</span></th>
-                            <th><span>StreetName</span></th>
                             <th><span>District</span></th>
                             <th><span>PostalCode</span></th>
                             <th><span>City</span></th>
-                            <th><span>Country</span></th>
                             <th><span>Reference</span></th>
                             <th></th>
                         </tr>
@@ -33,13 +31,11 @@
                     <tbody>
                         <tr ng-repeat="party in partys track by party.id">
                             <td><a ui-sref="party.detail({id:party.id})">{{party.id}}</a></td>
+                            <td>{{party.company.name}}</td>
                             <td>{{party.name}}</td>
-                            <td>{{party.houseNumber}}</td>
-                            <td>{{party.streetName}}</td>
                             <td>{{party.district}}</td>
                             <td>{{party.postalCode}}</td>
                             <td>{{party.city}}</td>
-                            <td>{{party.country}}</td>
                             <td>{{party.reference}}</td>
                             <td class="text-right">
                                 <div class="btn-group flex-btn-group-container">

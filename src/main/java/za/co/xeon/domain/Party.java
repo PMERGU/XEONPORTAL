@@ -23,28 +23,40 @@ public class Party implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-    
+
     @Column(name = "house_number")
     private String houseNumber;
-    
+
     @Column(name = "street_name")
     private String streetName;
-    
+
     @Column(name = "district")
     private String district;
-    
+
     @Column(name = "postal_code")
     private Integer postalCode;
-    
+
     @Column(name = "city")
     private String city;
-    
+
     @Column(name = "country")
     private String country;
-    
+
     @Column(name = "reference")
     private String reference;
-    
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,7 +68,7 @@ public class Party implements Serializable {
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -64,7 +76,7 @@ public class Party implements Serializable {
     public String getHouseNumber() {
         return houseNumber;
     }
-    
+
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
@@ -72,7 +84,7 @@ public class Party implements Serializable {
     public String getStreetName() {
         return streetName;
     }
-    
+
     public void setStreetName(String streetName) {
         this.streetName = streetName;
     }
@@ -80,7 +92,7 @@ public class Party implements Serializable {
     public String getDistrict() {
         return district;
     }
-    
+
     public void setDistrict(String district) {
         this.district = district;
     }
@@ -88,7 +100,7 @@ public class Party implements Serializable {
     public Integer getPostalCode() {
         return postalCode;
     }
-    
+
     public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
     }
@@ -96,7 +108,7 @@ public class Party implements Serializable {
     public String getCity() {
         return city;
     }
-    
+
     public void setCity(String city) {
         this.city = city;
     }
@@ -104,7 +116,7 @@ public class Party implements Serializable {
     public String getCountry() {
         return country;
     }
-    
+
     public void setCountry(String country) {
         this.country = country;
     }
@@ -112,7 +124,7 @@ public class Party implements Serializable {
     public String getReference() {
         return reference;
     }
-    
+
     public void setReference(String reference) {
         this.reference = reference;
     }

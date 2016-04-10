@@ -15,7 +15,7 @@ angular.module('portalApp')
             .withBootstrap()
             .withPaginationType('full_numbers')
             .withOption('rowCallback', rowCallback)
-            .withDisplayLength(13);
+            .withDisplayLength(10);
         $scope.dtColumnDefs = [
             DTColumnDefBuilder.newColumnDef(0),
             DTColumnDefBuilder.newColumnDef(1),

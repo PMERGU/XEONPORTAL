@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('portalApp').controller('UserManagementDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'User', 
-        function($scope, $stateParams, $uibModalInstance, entity, User) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'User', 'Company',
+        function($scope, $stateParams, $uibModalInstance, entity, User, Company) {
 
         $scope.user = entity;
-        $scope.authorities = ["ROLE_USER", "ROLE_ADMIN"];
+        $scope.authorities = ["ROLE_USER", "ROLE_ADMIN", "ROLE_CUSTOMER"];
+        $scope.companies = Company.query();
+            
         var onSaveSuccess = function (result) {
             $scope.isSaving = false;
             $uibModalInstance.close(result);

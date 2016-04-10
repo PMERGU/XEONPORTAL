@@ -39,8 +39,17 @@
 
             <column name="reference" type="varchar(255)"/>
 
+            <column name="company_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="party"
+                                 constraintName="fk_party_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
 
         <loadData encoding="UTF-8"
                   file="config/liquibase/parties.csv"

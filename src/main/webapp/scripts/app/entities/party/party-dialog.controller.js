@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('portalApp').controller('PartyDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party',
-        function($scope, $stateParams, $uibModalInstance, entity, Party) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Company',
+        function($scope, $stateParams, $uibModalInstance, entity, Party, Company) {
 
         $scope.party = entity;
+        $scope.companies = Company.query();
+            
         $scope.load = function(id) {
             Party.get({id : id}, function(result) {
                 $scope.party = result;

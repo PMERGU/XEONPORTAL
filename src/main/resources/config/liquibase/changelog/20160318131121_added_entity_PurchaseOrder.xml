@@ -65,6 +65,10 @@
 
             <column name="carrier_vessel_number" type="varchar(255)"/>
 
+            <column name="carrier_vessel_origin" type="varchar(255)"/>
+
+            <column name="carrier_vessel_eta" type="varchar(255)"/>
+
             <column name="comment" type="varchar(255)"/>
 
             <column name="ship_to_party_id" type="bigint">
@@ -81,6 +85,13 @@
             <column name="vehicle_size" type="varchar(255)"/>
 
             <column name="service_type" type="varchar(255)"/>
+
+            <column name="special_instruction" type="varchar(2000)"/>
+
+            <column name="sold_to_party_id" type="bigint">
+            </column>
+
+            <column name="financial_controller" type="varchar(255)"/>
 
             <column name="labour_required" type="integer"/>
 
@@ -100,6 +111,12 @@
         <addForeignKeyConstraint baseColumnNames="pick_up_party_id"
                                  baseTableName="purchase_order"
                                  constraintName="fk_purchaseorder_pickupparty_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="party"/>
+
+        <addForeignKeyConstraint baseColumnNames="sold_to_party_id"
+                                 baseTableName="purchase_order"
+                                 constraintName="fk_purchaseorder_soldtoparty_id"
                                  referencedColumnNames="id"
                                  referencedTableName="party"/>
 

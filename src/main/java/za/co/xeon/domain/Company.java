@@ -43,6 +43,11 @@ public class Company implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<User> employees = new HashSet<>();
 
+    @OneToMany(mappedBy = "company")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Party> locations = new HashSet<>();
+
     public Company() {
     }
 
@@ -50,9 +55,20 @@ public class Company implements Serializable {
         this.id = id;
     }
 
-    public Company(Long id, String sapId) {
+    public Company(Long id, String name, String sapId) {
         this.id = id;
+        this.name = name;
         this.sapId = sapId;
+    }
+
+
+
+    public Set<Party> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Set<Party> locations) {
+        this.locations = locations;
     }
 
     public Long getId() {

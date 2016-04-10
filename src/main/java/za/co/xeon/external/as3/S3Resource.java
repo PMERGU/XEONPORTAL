@@ -1,18 +1,26 @@
 package za.co.xeon.external.as3;
 
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.amazonaws.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import za.co.xeon.security.AuthoritiesConstants;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by derick on 2016/02/16.
@@ -26,6 +34,7 @@ public class S3Resource {
     private S3Service s3Service;
 
     @RequestMapping(value = "/{fileName:.+}", method= RequestMethod.GET)
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<InputStreamResource> retrieveFile(@PathVariable("fileName") String fileName, HttpServletResponse response) {
         log.debug("Retrieving S3 file " + fileName);
             try {
@@ -41,6 +50,21 @@ public class S3Resource {
                 throw new RuntimeException("IOError writing file to output stream");
             }
     }
+
+    @RequestMapping(value = "/folder/{folderName}", method= RequestMethod.GET)
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<List<String>> retrieveListing(@PathVariable("folderName") String folderName, HttpServletResponse response) {
+        log.debug("Retrieving listing for bucket");
+        List<String> files = new ArrayList<>();
+
+        ObjectListing objectListing = s3Service.listFolder(folderName);
+
+        for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+            files.add(objectSummary.getKey());
+        }
+        return new ResponseEntity<>(files, HttpStatus.OK);
+    }
+
 
     @RequestMapping(method= RequestMethod.POST)
     public @ResponseBody

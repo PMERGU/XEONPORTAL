@@ -94,4 +94,13 @@ public class S3Service {
         S3Object s3Object = s3client.getObject(new GetObjectRequest(s3Settings.getBucketName(), fileName));
         return s3Object.getObjectContent();
     }
+
+    public ObjectListing listFolder(String folder){
+        log.debug(String.format("Trying to list folder contents from S3 : %s", folder));
+        ObjectListing listing = s3client.listObjects(new ListObjectsRequest()
+            .withBucketName(s3Settings.getBucketName())
+            .withPrefix(folder)
+        );
+        return listing;
+    }
 }

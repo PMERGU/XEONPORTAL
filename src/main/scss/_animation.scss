@@ -1,0 +1,22 @@
+/* Chrome, Safari, Opera */
+@-webkit-keyframes glower {
+    50% {
+        -webkit-box-shadow:0px 0px 10px 1px lighten($color-blue, 10%);
+        -moz-box-shadow: 0px 0px 10px 1px lighten($color-blue, 10%);
+        box-shadow:0px 0px 10px 1px lighten($color-blue, 10%);
+    }
+}
+
+/* Standard syntax */
+@keyframes glower {
+    50% {
+        -webkit-box-shadow:0px 0px 10px 1px lighten($color-blue, 10%);
+        -moz-box-shadow: 0px 0px 10px 1px lighten($color-blue, 10%);
+        box-shadow:0px 0px 10px 1px lighten($color-blue, 10%);
+    }
+}
+
+.animate-glower{
+    -webkit-animation: glower 2s ease-in 0.5s 1 alternate;
+    animation: glower 2s ease-in 0.5s 1 alternate;
+}

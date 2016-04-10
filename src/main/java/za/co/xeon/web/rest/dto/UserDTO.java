@@ -53,7 +53,7 @@ public class UserDTO {
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()),
-            (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getSapId())) : new Company())
+            (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getName(), user.getCompany().getSapId())) : new Company())
         );
     }
 

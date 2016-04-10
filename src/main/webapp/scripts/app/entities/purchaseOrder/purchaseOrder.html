@@ -33,34 +33,29 @@
             <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
                 <div class="text-center">
 
-                    <button ng-click="wizard.show(1)" style="width: 150px;margin: 0px 5px;" class="btn"
+                    <button ng-click="wizard.show(1)" style="width: 165px;margin: 0px 5px;" class="btn"
                             ng-class="{ 'btn-primary': step == 1, 'btn-default': step != 1}">
-                        <span>Step 1 - Order Details</span>
+                        <span>Step 1 - Details</span>
                     </button>
-                    <button ng-click="wizard.show(2)" style="width: 150px;margin: 0px 5px;"
-                            ng-disabled="editForm.$invalid" class="btn"
+                    <button ng-click="wizard.show(2)" style="width: 165px;margin: 0px 5px;"
+                            class="btn"
                             ng-class="{ 'btn-primary': step == 2, 'btn-default': step != 2}">
-                        <span>Step 2 - Transport Details</span>
+                        <span>Step 2 - Transport</span>
                     </button>
-                    <button ng-click="wizard.show(3)" style="width: 150px;margin: 0px 5px;"
+                    <button ng-click="wizard.show(3)" style="width: 165px;margin: 0px 5px;"
                             ng-disabled="editForm.$invalid" class="btn"
-                            ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 2}">
-                        <span>Step 3 - Cargo Details</span>
+                            ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 3}">
+                        <span>Step 3 - Cargo</span>
                     </button>
-                    <button ng-click="wizard.show(4)" style="width: 150px;margin: 0px 5px;"
+                    <button ng-click="wizard.show(4)" style="width: 165px;margin: 0px 5px;"
                             ng-disabled="editForm.$invalid" class="btn"
-                            ng-class="{ 'btn-primary': step == 4, 'btn-default': step != 2}">
-                        <span>Step 4 - Line Items</span>
+                            ng-class="{ 'btn-primary': step == 4, 'btn-default': step != 4}">
+                        <span>Step 4 - Instructions</span>
                     </button>
-                    <button ng-click="wizard.show(5)" style="width: 150px;margin: 0px 5px;"
+                    <button ng-click="wizard.show(5)" style="width: 165px;margin: 0px 5px;"
                             ng-disabled="editForm.$invalid" class="btn"
-                            ng-class="{ 'btn-primary': step == 5, 'btn-default': step != 2}">
-                        <span>Step 5 - Line Items</span>
-                    </button>
-                    <button ng-click="wizard.show(6)" style="width: 150px;margin: 0px 5px;"
-                            ng-disabled="editForm.$invalid" class="btn"
-                            ng-class="{ 'btn-primary': step == 6, 'btn-default': step != 3}">
-                        <span>Step 6 - Confirm</span>
+                            ng-class="{ 'btn-primary': step == 5, 'btn-default': step != 5}">
+                        <span>Step 5 - Confirm</span>
                     </button>
                 </div>
                 <div ng-show="step == 1" class="p-m">
@@ -143,7 +138,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="field_vehicleSize">Vehicle Size</label>
                                     <select class="form-control" name="vehicleSize" ng-model="purchaseOrder.vehicleSize"
-                                            id="field_vehicleSize">
+                                            id="field_vehicleSize" ng-required="requiredFields['vehicleSize']">
                                         <option value="LPV">LPV</option>
                                         <option value="ONE_TON">1 Ton</option>
                                         <option value="FOUR_TON">4 Ton</option>
@@ -154,10 +149,10 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="field_labourRequired">Labour Required</label>
+                                    <label class="control-label" for="field_labourRequired">Labour Count Needed</label>
                                     <input type="text" class="form-control" name="labourRequired"
                                            id="field_labourRequired"
-                                           ng-model="purchaseOrder.labourRequired"/>
+                                           ng-model="purchaseOrder.labourRequired" ng-required="requiredFields['vehicleSize']"/>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="field_transportParty">Transport Party</label>
@@ -181,14 +176,14 @@
                                     <div class="input-group">
                                         <select class="form-control" id="field_pickUpParty" name="pickUpParty"
                                                 ng-model="purchaseOrder.pickUpParty.id"
-                                                ng-options="party.id as party.name for party in pickuppartys | orderBy:'id'">
+                                                ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'id'">
                                             <option value=""></option>
                                         </select>
                                         <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"
-                                                ng-click="datePickerForCollectionDateeOpen($event)"><i
-                                            class="glyphicon glyphicon-plus"></i></button>
-                                    </span>
+                                            <button type="button" class="btn btn-default" ui-sref="purchaseOrder.newParty({for: 'pickup'})">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -204,15 +199,15 @@
                                 <div class="form-group">
                                     <label class="control-label" for="field_collectionDate">Collection Date</label>
                                     <div class="input-group">
-                                        <input id="field_collectionDate" type="text" class="form-control"
-                                               uib-datepicker-popup="{{dateformat}}"
-                                               ng-model="purchaseOrder.collectionDate" datepicker-options="dateOptions"
-                                               is-open="datePickerForCollectionDate.status.opened"/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"
-                                                ng-click="datePickerForCollectionDateeOpen($event)"><i
-                                            class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
+                                        <input id="field_collectionDate" type="text" class="form-control" name="collectionDate"
+                                               uib-datepicker-popup
+                                               ng-model="purchaseOrder.collectionDate" datepicker-options="dateOptions" ng-required="requiredFields['collectionDate']"
+                                               is-open="dpCollectionDate.opened"/>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default"
+                                                    ng-click="dpCollectionDateOpen($event)"><i
+                                                class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
                                     </div>
                                     <div ng-show="editForm.collectionDate.$invalid">
                                         <p class="help-block small-help-block pull-right"
@@ -224,7 +219,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="field_collectionReference">Collection Reference</label>
                                     <input type="text" class="form-control" name="collectionReference" id="field_collectionReference"
-                                           ng-model="purchaseOrder.collectionReference"
+                                           ng-model="purchaseOrder.collectionReference" ng-required="requiredFields['collectionReference']"
                                            />
                                     <div ng-show="editForm.collectionReference.$invalid">
                                         <p class="help-block small-help-block pull-right"
@@ -237,11 +232,18 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="field_shipToParty">Delivery To</label>
-                                    <select class="form-control" id="field_shipToParty" name="shipToParty"
-                                            ng-model="purchaseOrder.shipToParty.id"
-                                            ng-options="party.id as party.name for party in shiptopartys | orderBy:'id'">
-                                        <option value=""></option>
-                                    </select>
+                                    <div class="input-group">
+                                        <select class="form-control" id="field_shipToParty" name="shipToParty"
+                                                ng-model="purchaseOrder.shipToParty.id"
+                                                ng-options="party.id as (party.name + ' (' + party.city + ')') for party in shiptopartys | orderBy:'id'">
+                                            <option value=""></option>
+                                        </select>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ui-sref="purchaseOrder.newParty({for: 'dropoff'})">
+                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                </button>
+                                            </span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="field_shipToType">Delivery Type</label>
@@ -254,21 +256,18 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="field_deliveryDate">Delivery Date</label>
+                                    <label class="control-label" for="field_dropOffDate">Delivery Date</label>
                                     <div class="input-group">
-                                        <input id="field_deliveryDate" type="text" class="form-control"
-                                               uib-datepicker-popup="{{dateformat}}"
-                                               ng-model="purchaseOrder.deliveryDate" datepicker-options="dateOptions"
-                                               is-open="datePickerForDeliveryDate.status.opened" required/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"
-                                                ng-click="datePickerForDeliveryDateOpen($event)"><i
-                                            class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
+                                        <input type="text" id="field_dropOffDate" class="form-control" uib-datepicker-popup
+                                               ng-required="purchaseOrder['dropOffDate'] !== null" name="dropOffDate"  ng-required="requiredFields['dropOffDate']"
+                                               ng-model="purchaseOrder.dropOffDate" is-open="dpDropOff.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="dpDropOffOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
                                     </div>
-                                    <div ng-show="editForm.deliveryDate.$invalid">
+                                    <div ng-show="editForm.dropOffDate.$invalid">
                                         <p class="help-block small-help-block pull-right"
-                                           ng-show="editForm.deliveryDate.$error.required">
+                                           ng-show="editForm.dropOffDate.$error.required">
                                             required
                                         </p>
                                     </div>
@@ -339,7 +338,7 @@
 
                                     <tr>
                                         <td colspan="6">
-                                            <button class="btn btn-primary pull-right" ui-sref="purchaseOrder.poLine">
+                                            <button class="btn btn-primary pull-right" ui-sref="purchaseOrder.poLine({serviceType: purchaseOrder.serviceType})">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                             </button>
                                         </td>
@@ -375,9 +374,12 @@
                         </div>
                     </div>
                 </div>
-                <div ng-show="step == 4" class="p-m">
-                    <div class="modal-body">
-                        <div class="row">
+                <div ng-show="step == 4">
+                    <div class="row text-center m-t-lg m-b-lg">
+                        <div class="col-md-6">
+
+                        </div>
+                        <div class="col-md-6">
 
                         </div>
                     </div>
@@ -387,37 +389,26 @@
                         <div class="col-lg-12">
                             <i class="pe-7s-check fa-5x text-muted"></i>
                             <p class="small m-t-md">
-                                <strong>There are many</strong> variations of passages of Lorem Ipsum available, but the
-                                majority have suffered
+                                <strong>Please confirm</strong> all details are correct and approve by clicking on the submit button
                             </p>
                         </div>
                         <div class="checkbox col-lg-12">
-                            <input icheck type="checkbox" ng-model="user.approve">
-                            Approve this form
-                        </div>
-
-                    </div>
-
-                </div>
-                <div ng-show="step == 6" class="p-m">
-                    <div class="modal-body">
-                        <div class="row">
-
+                            <input icheck type="checkbox" ng-model="user.approve"/>
+                            Confirm new order
                         </div>
                     </div>
                 </div>
-
                 <div class="text-right m-t-xs">
                     <button ng-click="wizard.prev()" ng-disabled="step == 1" class="btn btn-default">
                         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span>Previous</span>
                     </button>
-                    <button ng-click="wizard.next()" ng-disabled="editForm.$invalid || isSaving" ng-hide="step == 3"
+                    <button ng-click="wizard.next()" ng-disabled="step >= 2 && editForm.$invalid || isSaving" ng-hide="step == 5"
                             class="btn btn-primary">
                         <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;<span>Next</span>
                     </button>
-                    <button ng-click="submit()" ng-show="step == 3" class="btn btn-primary"
+                    <button ng-click="submit()" ng-show="step == 5" class="btn btn-primary"
                             ng-disabled="editForm.$invalid || isSaving">
-                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Submit Order</span>
                     </button>
                 </div>
             </form>

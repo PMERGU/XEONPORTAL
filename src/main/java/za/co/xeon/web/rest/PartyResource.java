@@ -2,7 +2,11 @@ package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import za.co.xeon.domain.Party;
+import za.co.xeon.domain.User;
 import za.co.xeon.repository.PartyRepository;
+import za.co.xeon.repository.UserRepository;
+import za.co.xeon.security.AuthoritiesConstants;
+import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +31,12 @@ import java.util.Optional;
 public class PartyResource {
 
     private final Logger log = LoggerFactory.getLogger(PartyResource.class);
-        
+
     @Inject
     private PartyRepository partyRepository;
-    
+
+    @Inject
+    private UserRepository userRepository;
     /**
      * POST  /partys -> Create a new party.
      */
@@ -42,6 +48,10 @@ public class PartyResource {
         log.debug("REST request to save Party : {}", party);
         if (party.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("party", "idexists", "A new party cannot already have an ID")).body(null);
+        }
+        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            party.setCompany(user.getCompany());
         }
         Party result = partyRepository.save(party);
         return ResponseEntity.created(new URI("/api/partys/" + result.getId()))
@@ -76,8 +86,14 @@ public class PartyResource {
     @Timed
     public List<Party> getAllPartys() {
         log.debug("REST request to get all Partys");
-        return partyRepository.findAll();
-            }
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+            return partyRepository.findAll();
+        }else {
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            log.debug("Restricting Party lookup by username " + user.getLogin());
+            return partyRepository.findByCompany(user.getCompany());
+        }
+    }
 
     /**
      * GET  /partys/:id -> get the "id" party.
@@ -89,6 +105,12 @@ public class PartyResource {
     public ResponseEntity<Party> getParty(@PathVariable Long id) {
         log.debug("REST request to get Party : {}", id);
         Party party = partyRepository.findOne(id);
+        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            if(party.getCompany().getId() != user.getCompany().getId()){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
         return Optional.ofNullable(party)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -105,6 +127,13 @@ public class PartyResource {
     @Timed
     public ResponseEntity<Void> deleteParty(@PathVariable Long id) {
         log.debug("REST request to delete Party : {}", id);
+        Party party = partyRepository.findOne(id);
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            if(party.getCompany().getId() != user.getCompany().getId()){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
         partyRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("party", id.toString())).build();
     }

@@ -6,6 +6,10 @@
                     Purchase Order
                 </h2>
                 <jh-alert></jh-alert>
+                <small>List of all purchase orders you captured so far</small>
+                <button class="btn btn-primary pull-right" ui-sref="purchaseOrder.new">
+                    <span class="glyphicon glyphicon-plus"></span> <span>Create new Purchase Order</span>
+                </button>
             </div>
         </div>
     </div>
@@ -16,22 +20,11 @@
                 <thead>
                 <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
                     <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="serviceLevel"><span>ServiceLevel</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="captureDate"><span>CaptureDate</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="deliveryDate"><span>DeliveryDate</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="poNumber"><span>PoNumber</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="reference"><span>Reference</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="customerType"><span>CustomerType</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="shipToType"><span>ShipToType</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="telephone"><span>Telephone</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="collective"><span>Collective</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="accountReference"><span>AccountReference</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="modeOfTransport"><span>ModeOfTransport</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="carrierVesselName"><span>CarrierVesselName</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="carrierVesselNumber"><span>CarrierVesselNumber</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="pickUpType"><span>PickUpType</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="shipToPartyId"><span>ShipToParty</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="serviceType"><span>Service</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="serviceLevel"><span>ServiceLevel</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="pickUpPartyId"><span>PickUpParty</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="shipToPartyId"><span>ShipToParty</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="userFirstName"><span>Captured By</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="state"><span>State</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
@@ -40,28 +33,17 @@
                 <tbody>
                 <tr ng-repeat="purchaseOrder in purchaseOrders track by purchaseOrder.id">
                     <td><a ui-sref="purchaseOrder.detail({id:purchaseOrder.id})">{{purchaseOrder.id}}</a></td>
-                    <td translate="{{'portalApp.ServiceLevel.' + purchaseOrder.serviceLevel}}">{{purchaseOrder.serviceLevel}}</td>
-                    <td>{{purchaseOrder.captureDate | date:'medium'}}</td>
-                    <td>{{purchaseOrder.deliveryDate | date:'mediumDate'}}</td>
                     <td>{{purchaseOrder.poNumber}}</td>
-                    <td>{{purchaseOrder.reference}}</td>
-                    <td translate="{{'portalApp.CustomerType.' + purchaseOrder.customerType}}">{{purchaseOrder.customerType}}</td>
-                    <td translate="{{'portalApp.DeliveryType.' + purchaseOrder.shipToType}}">{{purchaseOrder.shipToType}}</td>
-                    <td>{{purchaseOrder.telephone}}</td>
-                    <td>{{purchaseOrder.collective}}</td>
-                    <td>{{purchaseOrder.accountReference}}</td>
-                    <td translate="{{'portalApp.ModeOfTransport.' + purchaseOrder.modeOfTransport}}">{{purchaseOrder.modeOfTransport}}</td>
-                    <td>{{purchaseOrder.carrierVesselName}}</td>
-                    <td>{{purchaseOrder.carrierVesselNumber}}</td>
-                    <td translate="{{'portalApp.DeliveryType.' + purchaseOrder.pickUpType}}">{{purchaseOrder.pickUpType}}</td>
+                    <td>{{purchaseOrder.serviceType}}</td>
+                    <td translate="{{'portalApp.ServiceLevel.' + purchaseOrder.serviceLevel}}">{{purchaseOrder.serviceLevel}}</td>
                     <td>
-                        <a ui-sref="party.detail({id:purchaseOrder.shipToPartyId})">{{purchaseOrder.shipToPartyId}}</a>
+                        <a ui-sref="party.detail({id:purchaseOrder.pickUpParty.id})">{{purchaseOrder.pickUpParty.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="party.detail({id:purchaseOrder.pickUpPartyId})">{{purchaseOrder.pickUpPartyId}}</a>
+                        <a ui-sref="party.detail({id:purchaseOrder.shipToParty.id})">{{purchaseOrder.shipToParty.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="user.detail({id:purchaseOrder.userId})">{{purchaseOrder.userFirstName}}</a>
+                        {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}
                     </td>
                     <td translate="{{'portalApp.PoState.' + purchaseOrder.state}}">{{purchaseOrder.state}}</td>
                     <td class="text-right">

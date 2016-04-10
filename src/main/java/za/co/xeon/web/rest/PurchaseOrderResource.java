@@ -68,6 +68,8 @@ public class PurchaseOrderResource {
         if (purchaseOrder.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("purchaseOrder", "idexists", "A new purchaseOrder cannot already have an ID")).body(null);
         }
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        purchaseOrder.setUser(user);
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         return ResponseEntity.created(new URI("/api/purchaseOrders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("purchaseOrders", result.getId().toString()))
@@ -175,6 +177,12 @@ public class PurchaseOrderResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of PoLines");
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
         Page<PoLine> page = poLineRepository.findByPurchaseOrder(purchaseOrder, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/poLines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -190,6 +198,12 @@ public class PurchaseOrderResource {
     public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable Long id) {
         log.debug("REST request to get PurchaseOrder : {}", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
         return Optional.ofNullable(purchaseOrder)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -206,6 +220,13 @@ public class PurchaseOrderResource {
     @Timed
     public ResponseEntity<Void> deletePurchaseOrder(@PathVariable Long id) {
         log.debug("REST request to delete PurchaseOrder : {}", id);
+        PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
         purchaseOrderService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("purchaseOrder", id.toString())).build();
     }

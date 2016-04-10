@@ -40,7 +40,7 @@ public class PurchaseOrder implements Serializable {
     private ZonedDateTime captureDate;
 
     @Column(name = "delivery_date")
-    private LocalDate deliveryDate;
+    private LocalDate dropOffDate;
 
     @Column(name = "collection_date")
     private LocalDate collectionDate;
@@ -89,6 +89,12 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "carrier_vessel_number")
     private String carrierVesselNumber;
 
+    @Column(name = "carrier_vessel_origin")
+    private String carrierVesselOrigin;
+
+    @Column(name = "carrier_vessel_eta")
+    private String carrierVesselEta;
+
     @NotNull
     @Column(name = "comment", nullable = true)
     private String comment;
@@ -128,9 +134,58 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "labour_required")
     private String labourRequired;
 
+    @Column(name = "special_instruction")
+    private String specialInstruction;
+
+    @OneToOne
+    private Party soldToParty;
+
+    @Column(name = "financial_controller")
+    private String financialController;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public String getCarrierVesselOrigin() {
+        return carrierVesselOrigin;
+    }
+
+    public void setCarrierVesselOrigin(String carrierVesselOrigin) {
+        this.carrierVesselOrigin = carrierVesselOrigin;
+    }
+
+    public String getCarrierVesselEta() {
+        return carrierVesselEta;
+    }
+
+    public void setCarrierVesselEta(String carrierVesselEta) {
+        this.carrierVesselEta = carrierVesselEta;
+    }
+
+    public String getSpecialInstruction() {
+        return specialInstruction;
+    }
+
+    public void setSpecialInstruction(String specialInstruction) {
+        this.specialInstruction = specialInstruction;
+    }
+
+    public Party getSoldToParty() {
+        return soldToParty;
+    }
+
+    public void setSoldToParty(Party soldToParty) {
+        this.soldToParty = soldToParty;
+    }
+
+    public String getFinancialController() {
+        return financialController;
+    }
+
+    public void setFinancialController(String financialController) {
+        this.financialController = financialController;
+    }
 
     public ServiceType getServiceType() {
         return serviceType;
@@ -228,12 +283,12 @@ public class PurchaseOrder implements Serializable {
         this.captureDate = captureDate;
     }
 
-    public LocalDate getDeliveryDate() {
-        return deliveryDate;
+    public LocalDate getDropOffDate() {
+        return dropOffDate;
     }
 
-    public void setDeliveryDate(LocalDate deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setDropOffDate(LocalDate dropOffDate) {
+        this.dropOffDate = dropOffDate;
     }
 
     public String getPoNumber() {
@@ -391,7 +446,7 @@ public class PurchaseOrder implements Serializable {
             ", state='" + state + "'" +
             ", serviceLevel='" + serviceLevel + "'" +
             ", captureDate='" + captureDate + "'" +
-            ", deliveryDate='" + deliveryDate + "'" +
+            ", deliveryDate='" + dropOffDate + "'" +
             ", poNumber='" + poNumber + "'" +
             ", reference='" + reference + "'" +
             ", customerType='" + customerType + "'" +

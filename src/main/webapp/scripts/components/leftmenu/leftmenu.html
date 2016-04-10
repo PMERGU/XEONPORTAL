@@ -51,6 +51,20 @@
             </ul>
         </li>
 
+        <li ng-class="{active: $state.includes('party')}" has-authority="ROLE_CUSTOMER">
+            <a href="#">
+                <span class="nav-label">Locations</span><span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('party')}">
+                <li ui-sref-active="active" >
+                    <a ui-sref="party" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span></a>
+                </li>
+                <li ui-sref-active="active" >
+                    <a ui-sref="party.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
+                </li>
+            </ul>
+        </li>
+
         <li>
             <a href="#">
                 <span class="nav-label">Profile</span><span class="fa arrow"></span>
@@ -74,16 +88,7 @@
                     <a ui-sref="company" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>&#xA0;<span >Company</span></a>
                 </li>
                 <li ui-sref-active="active" >
-                    <a ui-sref="employee" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>&#xA0;<span >Employee</span></a>
-                </li>
-                <li ui-sref-active="active" >
-                    <a ui-sref="party" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>&#xA0;<span >Party</span></a>
-                </li>
-                <li ui-sref-active="active" >
                     <a ui-sref="purchaseOrder" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>&#xA0;<span >Purchase order</span></a>
-                </li>
-                <li ui-sref-active="active" >
-                    <a ui-sref="poLine" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>&#xA0;<span >Po line</span></a>
                 </li>
                 <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
             </ul>

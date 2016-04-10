@@ -4,6 +4,7 @@ angular.module('portalApp')
     .controller('PartyController', function ($scope, $state, Party) {
 
         $scope.partys = [];
+
         $scope.loadAll = function() {
             Party.query(function(result) {
                $scope.partys = result;

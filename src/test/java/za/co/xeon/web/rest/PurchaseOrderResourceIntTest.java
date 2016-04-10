@@ -127,7 +127,7 @@ public class PurchaseOrderResourceIntTest {
         purchaseOrder.setState(DEFAULT_STATE);
         purchaseOrder.setServiceLevel(DEFAULT_SERVICE_LEVEL);
         purchaseOrder.setCaptureDate(DEFAULT_CAPTURE_DATE);
-        purchaseOrder.setDeliveryDate(DEFAULT_DELIVERY_DATE);
+        purchaseOrder.setDropOffDate(DEFAULT_DELIVERY_DATE);
         purchaseOrder.setPoNumber(DEFAULT_PO_NUMBER);
         purchaseOrder.setReference(DEFAULT_REFERENCE);
         purchaseOrder.setCustomerType(DEFAULT_CUSTOMER_TYPE);
@@ -158,7 +158,7 @@ public class PurchaseOrderResourceIntTest {
         assertThat(testPurchaseOrder.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testPurchaseOrder.getServiceLevel()).isEqualTo(DEFAULT_SERVICE_LEVEL);
         assertThat(testPurchaseOrder.getCaptureDate()).isEqualTo(DEFAULT_CAPTURE_DATE);
-        assertThat(testPurchaseOrder.getDeliveryDate()).isEqualTo(DEFAULT_DELIVERY_DATE);
+        assertThat(testPurchaseOrder.getDropOffDate()).isEqualTo(DEFAULT_DELIVERY_DATE);
         assertThat(testPurchaseOrder.getPoNumber()).isEqualTo(DEFAULT_PO_NUMBER);
         assertThat(testPurchaseOrder.getReference()).isEqualTo(DEFAULT_REFERENCE);
         assertThat(testPurchaseOrder.getCustomerType()).isEqualTo(DEFAULT_CUSTOMER_TYPE);
@@ -193,7 +193,7 @@ public class PurchaseOrderResourceIntTest {
     public void checkDeliveryDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = purchaseOrderRepository.findAll().size();
         // set the field null
-        purchaseOrder.setDeliveryDate(null);
+        purchaseOrder.setDropOffDate(null);
 
         restPurchaseOrderMockMvc.perform(post("/api/purchaseOrders")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -392,7 +392,7 @@ public class PurchaseOrderResourceIntTest {
         purchaseOrder.setState(UPDATED_STATE);
         purchaseOrder.setServiceLevel(UPDATED_SERVICE_LEVEL);
         purchaseOrder.setCaptureDate(UPDATED_CAPTURE_DATE);
-        purchaseOrder.setDeliveryDate(UPDATED_DELIVERY_DATE);
+        purchaseOrder.setDropOffDate(UPDATED_DELIVERY_DATE);
         purchaseOrder.setPoNumber(UPDATED_PO_NUMBER);
         purchaseOrder.setReference(UPDATED_REFERENCE);
         purchaseOrder.setCustomerType(UPDATED_CUSTOMER_TYPE);
@@ -417,7 +417,7 @@ public class PurchaseOrderResourceIntTest {
         assertThat(testPurchaseOrder.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testPurchaseOrder.getServiceLevel()).isEqualTo(UPDATED_SERVICE_LEVEL);
         assertThat(testPurchaseOrder.getCaptureDate()).isEqualTo(UPDATED_CAPTURE_DATE);
-        assertThat(testPurchaseOrder.getDeliveryDate()).isEqualTo(UPDATED_DELIVERY_DATE);
+        assertThat(testPurchaseOrder.getDropOffDate()).isEqualTo(UPDATED_DELIVERY_DATE);
         assertThat(testPurchaseOrder.getPoNumber()).isEqualTo(UPDATED_PO_NUMBER);
         assertThat(testPurchaseOrder.getReference()).isEqualTo(UPDATED_REFERENCE);
         assertThat(testPurchaseOrder.getCustomerType()).isEqualTo(UPDATED_CUSTOMER_TYPE);

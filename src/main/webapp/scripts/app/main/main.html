@@ -1,11 +1,55 @@
 <div ng-cloak>
     <div class="row">
+        <div class="col-md-4">
+            <div class="hpanel">
+                <div class="panel-body text-center h-180" style="padding: 5px;">
+                    <i class="icon-pi-cargo-trolley-1 fa-5x text-info"></i>
+
+                    <h1 class="m-xs">{{ capturedPos.length - posProcessed.length }}</h1>
+
+                    <h3 class="font-extra-bold no-margins text-info">
+                        In Progress
+                    </h3>
+                    <small>Your captured PO`s waiting to be processed by our team</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="hpanel">
+                <div class="panel-body text-center h-180" style="padding: 5px;">
+                    <i class="icon-pi-truck-3 fa-5x text-info"></i>
+
+                    <h1 class="m-xs">{{ (undeliveredOrders | unique: tknum).length }}</h1>
+
+                    <h3 class="font-extra-bold no-margins text-info">
+                        In Transit
+                    </h3>
+                    <small>In the processes of being delivered by our team</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="hpanel">
+                <div class="panel-body text-center h-180" style="padding: 5px;">
+                    <i class="icon-pi-hand-truck-4 fa-5x text-info"></i>
+
+                    <h1 class="m-xs">{{ (deliveredOrders | unique: tknum).length }}</h1>
+
+                    <h3 class="font-extra-bold no-margins text-info">
+                        Done
+                    </h3>
+                    <small>Done and dusted deliveries</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-4 col-md-3 hidden-sm">
             <div class="hpanel hgreen">
                 <div class="panel-body" ng-style="{'border-top': '2px solid ' + colors.palette[1]}">
                     <img alt="logo" class="company-logo"
                          data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}"
-                         style="height: 150px; max-width: 100%;" ng-if="company.background" color-thief color-thief-dominant="colors.dominant" color-thief-palette="colors.palette"/>
+                         style="max-height: 150px; max-width: 100%;display: block;margin-left: auto;margin-right: auto " ng-if="company.background" color-thief color-thief-dominant="colors.dominant" color-thief-palette="colors.palette"/>
                     <h3>{{company.name}}<span class="pull-right">{{company.sapId}}</span></h3>
 
                     <!--<div class="text-muted font-bold m-b-xs">California, LA</div>-->
@@ -13,25 +57,26 @@
                     <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices-->
                     <!--accumsan.-->
                     <!--</p>-->
-                    <uib-progressbar value="100" type="success" ng-style="{'background-color': colors.dominant}"
+                    <uib-progressbar value="100" type="success" ng-style="{'background-color': colors.palette[0]}"
                                      class="progress-small full progress-striped active progressbar-company"></uib-progressbar>
                 </div>
                 <div class="border-right border-left">
                 </div>
                 <div class="panel-body" ng-style="{'border-top': '2px solid ' + colors.palette[1]}">
+                    <h4>Purchase Orders - Un-processed</h4>
                     <table class="table table-responsive hover">
                         <thead class="text-primary text-capitalize" style="font-weight: 600">
                             <tr>
+                                <td>PO</td>
                                 <td>Order</td>
-                                <td>Date</td>
-                                <td>Actioned</td>
+                                <td>Ship to Party</td>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="po in capturedPos">
-                                <td>{{ po.pickUpType }} pickup via {{ po.modeOfTransport }}</td>
-                                <td>{{ po.captureDate }}</td>
-                                <td>{{ po.state }}</td>
+                            <tr ng-repeat="po in capturedPos | filter:{state:'UNPROCESSED'}">
+                                <td>{{ po.poNumber }}</td>
+                                <td>{{ po.serviceType }} <small>[{{ po.serviceLevel }}]</small></td>
+                                <td>{{ po.shipToParty.name }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -68,17 +113,17 @@
                                             <th>Purchase Order</th>
                                             <th>Sales Order</th>
                                             <th>Delivery No</th>
-                                            <th>Shipment No</th>
+                                            <th>Sold to Party</th>
                                             <th>Status</th>
                                             <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="order in undeliveredOrders">
-                                            <td>{{ order.bstkd }}</td>
+                                        <tr ng-repeat="order in undeliveredOrders | unique: tknum">
+                                            <td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td>
                                             <td>{{ order.vbeln }}</td>
                                             <td>{{ order.dbeln }}</td>
-                                            <td>{{ order.tknum }}</td>
+                                            <td>{{ order.skunnr }}</td>
                                             <td>{{ order.pdstk }}</td>
                                             <td width="10px">
                                                 <button type="submit"
@@ -106,17 +151,26 @@
                                                 <th>Purchase Order</th>
                                                 <th>Sales Order</th>
                                                 <th>Delivery No</th>
-                                                <th>Shipment No</th>
+                                                <th>Sold to Party</th>
                                                 <th>Status</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="order in deliveredOrders">
-                                                <td>{{ order.bstkd }}</td>
+                                            <tr ng-repeat="order in deliveredOrders | unique: tknum">
+                                                <td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td>
                                                 <td>{{ order.vbeln }}</td>
                                                 <td>{{ order.dbeln }}</td>
-                                                <td>{{ order.tknum }}</td>
+                                                <td>{{ order.skunnr }}</td>
                                                 <td>{{ order.pdstk }}</td>
+                                                <td width="10px">
+                                                    <button type="submit"
+                                                            ui-sref="home.orderdetail({order:order})"
+                                                            class="btn btn-info btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                        <span class="hidden-xs hidden-sm"></span>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

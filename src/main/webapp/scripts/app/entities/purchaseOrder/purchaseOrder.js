@@ -75,6 +75,9 @@ angular.module('portalApp')
                 data: {
                     authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
+                params: {
+                    serviceType: null  
+                },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/purchaseOrder/poLine-dialog.html',
@@ -93,6 +96,42 @@ angular.module('portalApp')
                                     grossWeight: null,
                                     netWeight: null,
                                     batchNumber: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function(result) {
+                        $state.go('purchaseOrder.new');
+                    }, function() {
+                        $state.go('purchaseOrder.new');
+                    })
+                }]
+            })
+            .state('purchaseOrder.newParty', {
+                parent: 'purchaseOrder.new',
+                url: '/newParty',
+                data: {
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
+                },
+                params: {
+                  for: null
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/purchaseOrder/party-dialog.html',
+                        controller: 'POPartyDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    name: null,
+                                    houseNumber: null,
+                                    streetName: null,
+                                    district: null,
+                                    postalCode: null,
+                                    city: null,
+                                    country: null,
+                                    reference: null,
                                     id: null
                                 };
                             }

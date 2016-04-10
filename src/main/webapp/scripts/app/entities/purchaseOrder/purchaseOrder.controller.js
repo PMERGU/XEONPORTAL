@@ -5,14 +5,17 @@ angular.module('portalApp').controller('PurchaseOrderController',
         function ($rootScope, $scope, $stateParams, $q, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
             var todaysDate = new Date();
             // Initial step
-            $scope.step = 4;
+            $scope.step = 2;
             $scope.purchaseOrder = entity;
             $scope.purchaseOrderLines = entityLines === undefined ? [] : entityLines;
             $scope.dateformat = 'yyyy-MM-dd';
+            $scope.requiredFields = {};
+
             $scope.dateOptions = {
                 dateDisabled: disabled,
+                formatYear: 'yy',
                 // maxDate: new Date(new Date(todaysDate).setMonth(todaysDate.getMonth()+2)),
-                // minDate: new Date(new Date(todaysDate).setDate(todaysDate.getDate+1)),
+                minDate: new Date(),
                 startingDay: 0
             };
 
@@ -28,24 +31,156 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
             }
 
+            $scope.$watch('purchaseOrder.serviceLevel', function(value){
+                console.debug("watch serviceLevel triggered with value : " + value);
+                switch (value){
+                    case "ECONOMY":
+                    case "EXPRESS_AM":
+                    case "EXPRESS_PM":
+                        hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
+                        break;
+                    case "DEDICATED_EXPRESS":
+                    case "DEDICATED_ECONOMY":
+                        hideOrShow([
+                            {name: 'vehicleSize', show: true, value: 'FOUR_TON'},
+                            {name: 'labourRequired', show: true, value: '1'}
+                        ]);
+                        break;
+                }
+            });
+            $scope.$watch('purchaseOrder.serviceType', function(value){
+                console.debug("watch serviceType triggered with value : " + value);
+                switch (value){
+                    case "COURIER":
+                        limitSelect([
+                            {name: 'transportParty', value: 'XEON'}
+                        ]);
+                        break;
+                    case "INBOUND":
+                        limitSelect([
+                            {name: 'transportParty', value: 'XEON', all: true}
+                        ]);
+                        break;
+                    case "OUTBOUND":
+                        limitSelect([
+                            {name: 'transportParty', value: 'XEON', all: true}
+                        ]);
+                        break;
+                }
+                transportPartyWatch("XEON");
+            });
+            
+            $scope.$watch('purchaseOrder.transportParty', transportPartyWatch);
+
+            function transportPartyWatch(value){
+                console.debug("watch transportParty triggered with value : " + value);
+                var serviceType = $scope.purchaseOrder.serviceType;
+                switch (value){
+                    case "XEON":
+                        hideOrShow([
+                            {name: 'pickUpType',
+                                show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
+                                value: "STANDARD"
+                            },
+                            {name: 'collectionDate',
+                                show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
+                                value: new Date()
+                            },
+                            {name: 'collectionReference',
+                                show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
+                                value: ""
+                            },
+                            {name: 'shipToType',
+                                show: serviceType === "COURIER" || serviceType === "OUTBOUND" ? true : false,
+                                value: "STANDARD"
+                            },
+                            {name: 'dropOffDate',
+                                show: serviceType === "OUTBOUND" ? true : false,
+                                value: new Date()
+                            }
+                        ]);
+                        break;
+                    case "CUSTOMER":
+                        hideOrShow([
+                            {name: 'pickUpType'},
+                            {name: 'collectionDate'},
+                            {name: 'collectionReference'},
+                            {name: 'shipToType'},
+                            {name: 'dropOffDate', show: true, value: new Date()}
+                        ]);
+                        break;
+                }
+            };
+
+            $scope.$watch('purchaseOrder.cargoClassification', function(value){
+                console.debug("watch cargoClassification triggered with value : " + value);
+                switch (value){
+                    case "NON_HAZARDOUS":
+                        hideOrShow([{name: 'cargoType'}]);
+                        break;
+                    case "HAZARDOUS":
+                        hideOrShow([{name: 'cargoType', show: true, value: "CORROSIVES"}]);
+                        break;
+                }
+            });
+
+            function hideOrShow(elements){
+                $.each(elements, function(idx, element) {
+                    var field = $('#' + 'field_' + element.name);
+                    if(field === undefined){
+                        alert("unknown field : " + element.name);
+                    }else{
+                        field.prop( "disabled", element.show === undefined ? true : !element.show);
+                        $scope.requiredFields[element.name] = element.show === undefined ? false : element.show;
+                        $scope.purchaseOrder[element.name] = element.value === undefined ? null : element.value;
+                        if(element.show === undefined ? true : !element.show){
+                            field.closest('.form-group').slideUp();
+                        }else{
+                            field.removeClass("animate-glower").addClass("animate-glower");
+                            field.closest('.form-group').slideDown();
+                        }
+                    }
+                })
+            }
+
+            function limitSelect(elements){
+                $.each(elements, function(idx, element) {
+                    var field = $('#' + 'field_' + element.name);
+                    if(field === undefined){
+                        alert("unknown field : " + element.name);
+                    }else{
+                        field.prop( "disabled", element.all === undefined ? true : !element.all);
+                        $scope.purchaseOrder[element.name] = element.value === undefined ? null : element.value;
+                    }
+                })
+            }
+
             if($scope.purchaseOrder === undefined){
                 $scope.purchaseOrder = {
-                    accountReference: "1",
-                    carrierVesselName: "1",
-                    carrierVesselNumber: "1",
-                    collective: "1",
-                    customerType: "REGULAR",
-                    deliveryDate: new Date('2016-04-02'),
-                    employeeId: 1,
-                    modeOfTransport: "AIR_DELIVERIES",
-                    pickUpPartyId: 1,
-                    pickUpType: "STANDARD",
                     poNumber: "1",
+                    accountReference: "1",
                     reference: "1",
+                    collective: "1",
+                    serviceType: "COURIER",
                     serviceLevel: "ECONOMY",
-                    shipToPartyId: 1,
+                    customerType: "REGULAR",
+                    transportParty: "XEON",
+                    vehicleSize: null,
+                    labourRequired: null,
+                    //STEP 2
+                    pickUpParty: {
+                        id: 1
+                    },
+                    pickUpType: "STANDARD",
+                    collectionDate: new Date(),
+                    shipToParty:{
+                        id: 1
+                    },
                     shipToType: "HOME_DROP_BOX",
-                    telephone: "1"
+                    dropOffDate: new Date(),
+                    //STEP 3
+                    cargoClassification: "NON_HAZARDOUS"
+
                 };
             }
             if($scope.purchaseOrderLines.length === 0){
@@ -111,23 +246,21 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.clear = function () {
                 $uibModalInstance.dismiss('cancel');
             };
-            $scope.datePickerForCaptureDate = {};
 
-            $scope.datePickerForCaptureDate.status = {
+            $scope.dpDropOff = {
                 opened: false
             };
 
-            $scope.datePickerForCaptureDateOpen = function ($event) {
-                $scope.datePickerForCaptureDate.status.opened = true;
+            $scope.dpDropOffOpen = function($event){
+                $scope.dpDropOff.opened = true;
             };
-            $scope.datePickerForDeliveryDate = {};
 
-            $scope.datePickerForDeliveryDate.status = {
+            $scope.dpCollectionDate = {
                 opened: false
             };
 
-            $scope.datePickerForDeliveryDateOpen = function ($event) {
-                $scope.datePickerForDeliveryDate.status.opened = true;
+            $scope.dpCollectionDateOpen = function($event){
+                $scope.dpCollectionDate.opened = true;
             };
 
             // Wizard functions
@@ -143,10 +276,24 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
             };
 
-            // listen for the event in the relevant $scope
+            // listen for poLine add event
             $rootScope.$on('portalApp:poLineUpdate', function (event, data) {
                 $scope.purchaseOrderLines.push(data);
                 calculateTotals($scope.purchaseOrderLines);
+            });
+
+            // listen for party create event
+            $rootScope.$on('portalApp:partyUpdate', function (event, data) {
+                switch(data.for){
+                    case("pickup"):
+                        $scope.pickuppartys.push(data);
+                        $scope.purchaseOrder.pickUpParty.id = data.id;
+                        break;
+                    case("dropoff"):
+                        $scope.shiptopartys.push(data);
+                        $scope.purchaseOrder.shipToParty.id = data.id;
+                        break;
+                }
             });
 
 
@@ -160,10 +307,10 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 })
             }
 
-            $scope.$watch(function(scope) {return scope.purchaseOrderLines },
-                function(newLines, oldLines) {
-                    console.log("lines changed");
-                    calculateTotals(newLines);
-                }
-            );
+            // $scope.$watch(function(scope) {return scope.purchaseOrderLines },
+            //     function(newLines, oldLines) {
+            //         console.log("lines changed");
+            //         calculateTotals(newLines);
+            //     }
+            // );
         }]);

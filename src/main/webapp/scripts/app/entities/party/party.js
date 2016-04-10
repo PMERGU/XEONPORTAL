@@ -7,7 +7,7 @@ angular.module('portalApp')
                 parent: 'entity',
                 url: '/partys',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                     pageTitle: 'Partys'
                 },
                 views: {
@@ -23,7 +23,7 @@ angular.module('portalApp')
                 parent: 'entity',
                 url: '/party/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                     pageTitle: 'Party'
                 },
                 views: {
@@ -42,7 +42,7 @@ angular.module('portalApp')
                 parent: 'party',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -75,7 +75,7 @@ angular.module('portalApp')
                 parent: 'party',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -98,7 +98,7 @@ angular.module('portalApp')
                 parent: 'party',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
