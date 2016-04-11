@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -70,9 +71,13 @@ public class PurchaseOrderResource {
         }
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         purchaseOrder.setUser(user);
+        purchaseOrder.setCaptureDate(ZonedDateTime.now());
+        purchaseOrder.setState(PoState.UNPROCESSED);
+        log.debug(" -------------------------------------------------------\n" + purchaseOrder.getPoLines().size());
+        log.debug(purchaseOrder.getPoLines().toString());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         return ResponseEntity.created(new URI("/api/purchaseOrders/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("purchaseOrders", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert("purchase order", result.getId().toString()))
             .body(result);
     }
 

@@ -95,11 +95,10 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "carrier_vessel_eta")
     private String carrierVesselEta;
 
-    @NotNull
-    @Column(name = "comment", nullable = true)
+    @Column(name = "comment")
     private String comment;
 
-    @OneToMany(mappedBy = "purchaseOrder")
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PoLine> poLines = new HashSet<>();

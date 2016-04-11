@@ -66,9 +66,12 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label" for="field_length">Length</label>
-                    <input type="number" class="form-control" name="length" id="field_length"
-                           ng-model="poLine.length" ng-required="requiredFields['length']"
-                           />
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="length" id="field_length"
+                               ng-model="poLine.length" ng-required="requiredFields['length']"
+                        />
+                        <span class="input-group-addon">cm</span>
+                    </div>
                     <div ng-show="editForm.length.$invalid">
                         <p class=" help-block small-help-block pull-right"
                            ng-show="editForm.length.$error.required">
@@ -82,9 +85,13 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="field_width">Width</label>
-                    <input type="number" class="form-control" name="width" id="field_width"
-                           ng-model="poLine.width" ng-required="requiredFields['width']"
-                           />
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="width" id="field_width"
+                               ng-model="poLine.width" ng-required="requiredFields['width']"
+                        />
+                        <span class="input-group-addon">cm</span>
+                    </div>
+
                     <div ng-show="editForm.width.$invalid">
                         <p class=" help-block small-help-block pull-right"
                            ng-show="editForm.width.$error.required">
@@ -98,9 +105,12 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="field_height">Height</label>
-                    <input type="number" class="form-control" name="height" id="field_height"
-                           ng-model="poLine.height" ng-required="requiredFields['height']"
-                           />
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="height" id="field_height"
+                               ng-model="poLine.height" ng-required="requiredFields['height']"
+                        />
+                        <span class="input-group-addon">cm</span>
+                    </div>
                     <div ng-show="editForm.height.$invalid">
                         <p class=" help-block small-help-block pull-right"
                            ng-show="editForm.height.$error.required">
@@ -114,9 +124,12 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="field_netWeight">NetWeight</label>
-                    <input type="number" class="form-control" name="netWeight" id="field_netWeight"
-                           ng-model="poLine.netWeight" ng-required="requiredFields['netWeight']"
-                           />
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="netWeight" id="field_netWeight"
+                               ng-model="poLine.netWeight" ng-required="requiredFields['netWeight']"
+                        />
+                        <span class="input-group-addon">kg</span>
+                    </div>
                     <div ng-show="editForm.netWeight.$invalid">
                         <p class=" help-block small-help-block pull-right"
                            ng-show="editForm.netWeight.$error.required">
@@ -130,9 +143,12 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="field_grossWeight">GrossWeight</label>
-                    <input type="number" class="form-control" name="grossWeight" id="field_grossWeight"
-                           ng-model="poLine.grossWeight" ng-required="requiredFields['grossWeight']"
-                           />
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="grossWeight" id="field_grossWeight"
+                               ng-model="poLine.grossWeight" ng-required="requiredFields['grossWeight']"
+                        />
+                        <span class="input-group-addon">kg</span>
+                    </div>
                     <div ng-show="editForm.grossWeight.$invalid">
                         <p class=" help-block small-help-block pull-right"
                            ng-show="editForm.grossWeight.$error.required">

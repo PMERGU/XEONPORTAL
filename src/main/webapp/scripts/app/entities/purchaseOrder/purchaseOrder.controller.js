@@ -1,13 +1,27 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    ['$rootScope', '$scope', '$stateParams', '$q', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal',
-        function ($rootScope, $scope, $stateParams, $q, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
-            var todaysDate = new Date();
-            // Initial step
-            $scope.step = 2;
+    ['$rootScope', '$scope', '$stateParams', '$state', '$q', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal',
+        function ($rootScope, $scope, $stateParams, $state, $q, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
             $scope.purchaseOrder = entity;
             $scope.purchaseOrderLines = entityLines === undefined ? [] : entityLines;
+
+            $scope.isXeon = false;
+            Principal.hasAuthority('ROLE_USER').then(function() {
+                $scope.isXeon = true;
+            });
+
+            $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
+            $scope.pickuppartys = Party.query({filter: 'purchaseorder-is-null'});
+
+            // $scope.load = function (id) {
+            //     PurchaseOrder.get({id: id}, function (result) {
+            //         $scope.purchaseOrder = result;
+            //     });
+            // };
+
+            // Initial step
+            $scope.step = 1;
             $scope.dateformat = 'yyyy-MM-dd';
             $scope.requiredFields = {};
 
@@ -18,11 +32,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 minDate: new Date(),
                 startingDay: 0
             };
-
-            $scope.isXeon = false;
-            Principal.hasAuthority('ROLE_USER').then(function() {
-                $scope.isXeon = true;
-            });
 
             // Disable weekend selection
             function disabled(data) {
@@ -69,7 +78,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
                 transportPartyWatch("XEON");
             });
-            
+
             $scope.$watch('purchaseOrder.transportParty', transportPartyWatch);
 
             function transportPartyWatch(value){
@@ -78,6 +87,10 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 switch (value){
                     case "XEON":
                         hideOrShow([
+                            {name: 'pickUpParty',
+                                show: true,
+                                value: null
+                            },
                             {name: 'pickUpType',
                                 show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
                                 value: "STANDARD"
@@ -90,12 +103,16 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                 show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
                                 value: ""
                             },
+                            {name: 'shipToParty',
+                                show:  true,
+                                value: null
+                            },
                             {name: 'shipToType',
                                 show: serviceType === "COURIER" || serviceType === "OUTBOUND" ? true : false,
                                 value: "STANDARD"
                             },
                             {name: 'dropOffDate',
-                                show: serviceType === "OUTBOUND" ? true : false,
+                                show: serviceType === "COURIER" || serviceType === "OUTBOUND" ? true : false,
                                 value: new Date()
                             }
                         ]);
@@ -157,6 +174,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             if($scope.purchaseOrder === undefined){
                 $scope.purchaseOrder = {
+                    state: "UNPROCESSED",
                     poNumber: "1",
                     accountReference: "1",
                     reference: "1",
@@ -168,18 +186,17 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     vehicleSize: null,
                     labourRequired: null,
                     //STEP 2
-                    pickUpParty: {
-                        id: 1
-                    },
+                    pickUpParty:  null,
                     pickUpType: "STANDARD",
                     collectionDate: new Date(),
-                    shipToParty:{
-                        id: 1
-                    },
+                    collectionReference: "1",
+                    shipToParty: null,
                     shipToType: "HOME_DROP_BOX",
                     dropOffDate: new Date(),
                     //STEP 3
-                    cargoClassification: "NON_HAZARDOUS"
+                    cargoClassification: "NON_HAZARDOUS",
+                    //STEP 4
+                    soldToParty: null
 
                 };
             }
@@ -199,46 +216,39 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }];
             }
 
-            $scope.polines = PoLine.query();
-            $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
-            // $q.all([$scope.purchaseOrder.$promise, $scope.shiptopartys.$promise]).then(function() {
-            //     if (!$scope.purchaseOrder.shipToPartyId) {
-            //         return $q.reject();
-            //     }
-            //     return Party.get({id : $scope.purchaseOrder.shipToPartyId}).$promise;
-            // }).then(function(shipToParty) {
-            //     $scope.shiptopartys.push(shipToParty);
-            // });
-            $scope.pickuppartys = Party.query({filter: 'purchaseorder-is-null'});
-            // $q.all([$scope.purchaseOrder.$promise, $scope.pickuppartys.$promise]).then(function() {
-            //     if (!$scope.purchaseOrder.pickUpPartyId) {
-            //         return $q.reject();
-            //     }
-            //     return Party.get({id : $scope.purchaseOrder.pickUpPartyId}).$promise;
-            // }).then(function(pickUpParty) {
-            //     $scope.pickuppartys.push(pickUpParty);
-            // });
-            $scope.employees = User.query();
-            $scope.load = function (id) {
-                PurchaseOrder.get({id: id}, function (result) {
-                    $scope.purchaseOrder = result;
-                });
-            };
-
             var onSaveSuccess = function (result) {
                 $scope.$emit('portalApp:purchaseOrderUpdate', result);
                 $scope.isSaving = false;
+                $state.go('purchaseOrder');
             };
 
             var onSaveError = function (result) {
+                console.log(result);
+                var msg = "Failed to create order :\n\n";
+                $.each(result.data.fieldErrors, function(idx, error){
+                    msg+= "Field " + error.field + " on " + error.objectName;
+                    switch (error.message){
+                        case "NotNull":
+                            msg+= " cant be null. Please enter a valid value";
+                            break;
+                        default:
+                            console.log("have not seen this error before : " + error.message);
+                    }
+                    msg+= "\n";
+                });
+                AlertService.error(msg);
                 $scope.isSaving = false;
             };
 
             $scope.save = function () {
                 $scope.isSaving = true;
+                console.log($scope.purchaseOrderLines);
+                $scope.purchaseOrder.poLines = $scope.purchaseOrderLines;
                 if ($scope.purchaseOrder.id != null) {
-                    PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
+                    console.log("not saving as yet...");
+                    // PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 } else {
+                    console.log($scope.purchaseOrder);
                     PurchaseOrder.save($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 }
             };
@@ -284,14 +294,16 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             // listen for party create event
             $rootScope.$on('portalApp:partyUpdate', function (event, data) {
+                $scope.pickuppartys.push(data);
                 switch(data.for){
                     case("pickup"):
-                        $scope.pickuppartys.push(data);
-                        $scope.purchaseOrder.pickUpParty.id = data.id;
+                        $scope.purchaseOrder.pickUpParty = { id: data.id };
                         break;
                     case("dropoff"):
-                        $scope.shiptopartys.push(data);
-                        $scope.purchaseOrder.shipToParty.id = data.id;
+                        $scope.purchaseOrder.shipToParty = { id: data.id };
+                        break;
+                    case("soldTo"):
+                        $scope.purchaseOrder.soldToParty = { id: data.id };
                         break;
                 }
             });

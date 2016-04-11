@@ -83,3 +83,11 @@ $main-transition: all 0.1s ease-out 0s;
         border-right: 4px solid transparent;
     }
 }
+
+.tc-green-dark{
+    color: darken($color-green, 10%);
+}
+
+.tc-red-dark{
+    color: $color-red-deep;
+}
