@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('portalApp').controller('PoLineDialogController',
-    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PoLine', 'PurchaseOrder', '$timeout',
-        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, PoLine, PurchaseOrder, $timeout) {
+    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PoLine', 'PurchaseOrder', '$timeout', '$log',
+        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, PoLine, PurchaseOrder, $timeout, $log) {
         $scope.serviceType = $stateParams.serviceType;
-        $scope.poLine = entity;
         $scope.requiredFields = {};
+        $scope.poLine = entity;
 
         $scope.load = function(id) {
             PoLine.get({id : id}, function(result) {
@@ -52,13 +52,15 @@ angular.module('portalApp').controller('PoLineDialogController',
                     ]);
                     break;
             }
-        }, 0);
+            $scope.poLine = $stateParams.poLine;
+            $log.debug($scope.poLine);
+        }, 50);
 
         function hideOrShow(elements){
             $.each(elements, function(idx, element) {
                 var field = $('#' + 'field_' + element.name);
                 if(field === undefined){
-                    alert("unknown field : " + element.name);
+                    $log.error("unknown field : " + element.name);
                 }else{
                     field.prop( "disabled", element.show === undefined ? true : !element.show);
                     $scope.requiredFields[element.name] = element.show === undefined ? false : element.show;

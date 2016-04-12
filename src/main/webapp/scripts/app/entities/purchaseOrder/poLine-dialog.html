@@ -4,8 +4,8 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myPoLineLabel" ng-show="!poLine.id">Create a line item</h4>
-        <h4 class="modal-title" id="myPoLineLabel" ng-show="poLine.id">Update line item</h4>
+        <h4 class="modal-title" id="myPoLineLabel" ng-show="!poLine.id">Create order line item</h4>
+        <h4 class="modal-title" id="myPoLineLabel" ng-show="poLine.id">Update order line item</h4>
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
@@ -24,10 +24,23 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label" for="field_materialType">Material Type</label>
+                    <select class="form-control" name="materialType" ng-model="poLine.materialType"
+                            id="field_materialType">
+                        <option value="EACH">ITEM</option>
+                        <option value="BOX">BOX</option>
+                        <option value="CRATE">CRATE</option>
+                        <option value="PACKAGE">PACKAGE</option>
+                        <option value="PALLET">PALLET</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label class="control-label" for="field_batchNumber">Batch Number</label>
                     <input type="text" class="form-control" name="batchNumber" id="field_batchNumber"
                            ng-model="poLine.batchNumber" ng-required="requiredFields['batchNumber']"
-                           />
+                    />
                     <div ng-show="editForm.batchNumber.$invalid">
                         <p class="help-block small-help-block pull-right"
                            ng-show="editForm.batchNumber.$error.required">
@@ -39,7 +52,7 @@
                     <label class="control-label" for="field_orderQuantity">Order Quantity</label>
                     <input type="number" class="form-control" name="orderQuantity" id="field_orderQuantity"
                            ng-model="poLine.orderQuantity" ng-required="requiredFields['orderQuantity']"
-                           />
+                    />
                     <div ng-show="editForm.orderQuantity.$invalid">
                         <p class=" help-block small-help-block pull-right"
                            ng-show="editForm.orderQuantity.$error.required">
@@ -51,16 +64,55 @@
                         </p>
                     </div>
                 </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <blockquote class="blockquote-warn">
+                    <p><strong>Please note,</strong> below info is per {{poLine.materialType}}</p>
+                </blockquote>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label" for="field_materialType">Material Type</label>
-                    <select class="form-control" name="materialType" ng-model="poLine.materialType"
-                            id="field_materialType">
-                        <option value="EACH">EACH</option>
-                        <option value="BOX">BOX</option>
-                        <option value="CRATE">CRATE</option>
-                        <option value="PACKAGE">PACKAGE</option>
-                        <option value="PALLET">PALLET</option>
-                    </select>
+                    <label class="control-label" for="field_netWeight">NetWeight</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="netWeight" id="field_netWeight"
+                               ng-model="poLine.netWeight" ng-required="requiredFields['netWeight']"
+                        />
+                        <span class="input-group-addon">kg</span>
+                    </div>
+                    <div ng-show="editForm.netWeight.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.netWeight.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.netWeight.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_grossWeight">GrossWeight</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="grossWeight" id="field_grossWeight"
+                               ng-model="poLine.grossWeight" ng-required="requiredFields['grossWeight']"
+                        />
+                        <span class="input-group-addon">kg</span>
+                    </div>
+                    <div ng-show="editForm.grossWeight.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.grossWeight.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.grossWeight.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -122,49 +174,20 @@
                         </p>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_netWeight">NetWeight</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="netWeight" id="field_netWeight"
-                               ng-model="poLine.netWeight" ng-required="requiredFields['netWeight']"
-                        />
-                        <span class="input-group-addon">kg</span>
-                    </div>
-                    <div ng-show="editForm.netWeight.$invalid">
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.netWeight.$error.required">
-                            required
-                        </p>
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.netWeight.$error.number">
-                            This field should be a number.
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_grossWeight">GrossWeight</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="grossWeight" id="field_grossWeight"
-                               ng-model="poLine.grossWeight" ng-required="requiredFields['grossWeight']"
-                        />
-                        <span class="input-group-addon">kg</span>
-                    </div>
-                    <div ng-show="editForm.grossWeight.$invalid">
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.grossWeight.$error.required">
-                            required
-                        </p>
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.grossWeight.$error.number">
-                            This field should be a number.
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
-
-
-
+        <div class="row">
+            <div class="col-md-12">
+                <blockquote>
+                    <dl class="dl-horizontal">
+                        <dt>Total gross weight : </dt>
+                        <dd>{{poLine.grossWeight * poLine.orderQuantity}}Kg</dd>
+                        <dt>Total cubes : </dt>
+                        <dd>{{ (poLine.width * poLine.height * poLine.length)/1000000 * poLine.orderQuantity}}m&sup2;</dd>
+                    </dl>
+                </blockquote>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

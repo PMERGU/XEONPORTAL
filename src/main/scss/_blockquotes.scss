@@ -1,0 +1,61 @@
+blockquote {
+    display: block;
+    background: $white;
+    padding: 15px 20px 15px 30px;
+    margin: 0 0 20px;
+    position: relative;
+    font-size: 16px;
+    line-height: 1.2;
+    color: darken($color-navy-blue, 10%);
+    text-align: justify;
+    a {
+        text-decoration: none;
+        background: #fff;
+        cursor: pointer;
+        padding: 0 3px;
+        color: $color-navy-blue;
+        &:hover {
+            color: $color-blue;
+        }
+    }
+    em {
+        font-style: italic;
+    }
+    p{
+        &:before {
+            content: "";
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background-image: -webkit-gradient(radial, left top, 10, 90% 0%, 150, from(#000), to(transparent));
+            background-image: -webkit-radial-gradient(right top, 150px 230px, #000, transparent);
+            background-image: -moz-radial-gradient(right top, farthest-corner, #000 0%, transparent 72%);
+            z-index: -2;
+        }
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background:  $color-navy-blue;
+            z-index: -1;
+        }
+    }
+    &.blockquote-primary{
+        border-left: 15px solid $color-navy-blue;
+    }
+    &.blockquote-info{
+        border-left: 15px solid $color-blue;
+
+    }
+    &.blockquote-warn{
+        border-left: 15px solid $color-red-deep;
+        strong{
+            color: $color-red-deep;
+        }
+    }
+}

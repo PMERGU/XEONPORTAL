@@ -69,6 +69,7 @@ $main-transition: all 0.1s ease-out 0s;
 @import "loginpage";
 @import "timeline";
 @import "animation";
+@import "blockquotes";
 
 .small-help-block{
     color: darken($color-red, 10%);

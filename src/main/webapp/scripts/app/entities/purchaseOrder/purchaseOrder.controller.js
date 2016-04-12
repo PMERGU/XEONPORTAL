@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    ['$rootScope', '$scope', '$stateParams', '$state', '$q', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal',
-        function ($rootScope, $scope, $stateParams, $state, $q, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
+    ['$rootScope', '$scope', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal',
+        function ($rootScope, $scope, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
             $scope.purchaseOrder = entity;
             $scope.purchaseOrderLines = entityLines === undefined ? [] : entityLines;
 
@@ -41,7 +41,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             }
 
             $scope.$watch('purchaseOrder.serviceLevel', function(value){
-                console.debug("watch serviceLevel triggered with value : " + value);
+                $log.debug("watch transportParty triggered with value : " + value);
                 switch (value){
                     case "ECONOMY":
                     case "EXPRESS_AM":
@@ -58,7 +58,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
             });
             $scope.$watch('purchaseOrder.serviceType', function(value){
-                console.debug("watch serviceType triggered with value : " + value);
+                $log.debug("watch transportParty triggered with value : " + value);
                 switch (value){
                     case "COURIER":
                         limitSelect([
@@ -82,14 +82,16 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.$watch('purchaseOrder.transportParty', transportPartyWatch);
 
             function transportPartyWatch(value){
-                console.debug("watch transportParty triggered with value : " + value);
+                $log.debug("watch transportParty triggered with value : " + value);
                 var serviceType = $scope.purchaseOrder.serviceType;
                 switch (value){
                     case "XEON":
                         hideOrShow([
                             {name: 'pickUpParty',
                                 show: true,
-                                value: null
+                                value: {
+                                    id: 1
+                                }
                             },
                             {name: 'pickUpType',
                                 show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
@@ -101,11 +103,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             },
                             {name: 'collectionReference',
                                 show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
-                                value: ""
+                                value: "ref"
                             },
                             {name: 'shipToParty',
                                 show:  true,
-                                value: null
+                                value: {
+                                    id: 1
+                                }
                             },
                             {name: 'shipToType',
                                 show: serviceType === "COURIER" || serviceType === "OUTBOUND" ? true : false,
@@ -130,7 +134,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             };
 
             $scope.$watch('purchaseOrder.cargoClassification', function(value){
-                console.debug("watch cargoClassification triggered with value : " + value);
+                $log.debug("watch cargoClassification triggered with value : " + value);
                 switch (value){
                     case "NON_HAZARDOUS":
                         hideOrShow([{name: 'cargoType'}]);
@@ -208,6 +212,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     id: null,
                     length: 0.2,
                     materialNumber: "123",
+                    materialType: "PACKAGE",
                     netWeight: 11,
                     orderQuantity: 123,
                     unitOfMeasure: "123",
@@ -223,7 +228,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             };
 
             var onSaveError = function (result) {
-                console.log(result);
+                $log.log(result);
                 var msg = "Failed to create order :\n\n";
                 $.each(result.data.fieldErrors, function(idx, error){
                     msg+= "Field " + error.field + " on " + error.objectName;
@@ -232,7 +237,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             msg+= " cant be null. Please enter a valid value";
                             break;
                         default:
-                            console.log("have not seen this error before : " + error.message);
+                            $log.log("have not seen this error before : " + error.message);
                     }
                     msg+= "\n";
                 });
@@ -242,13 +247,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             $scope.save = function () {
                 $scope.isSaving = true;
-                console.log($scope.purchaseOrderLines);
+                $log.log($scope.purchaseOrderLines);
                 $scope.purchaseOrder.poLines = $scope.purchaseOrderLines;
                 if ($scope.purchaseOrder.id != null) {
-                    console.log("not saving as yet...");
+                    $log.log("not saving as yet...");
                     // PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 } else {
-                    console.log($scope.purchaseOrder);
+                    $log.log($scope.purchaseOrder);
                     PurchaseOrder.save($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 }
             };
@@ -313,7 +318,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $scope.totalWeight = 0;
                 $scope.totalCubes = 0;
                 $.each(lines, function(idx, line){
-                    console.log(line.grossWeight);
+                    $log.log(line.grossWeight);
                     $scope.totalWeight += parseFloat(line.grossWeight);
                     $scope.totalCubes += (parseFloat(line.height) * parseFloat(line.length) * parseFloat(line.width));
                 })
@@ -321,7 +326,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             // $scope.$watch(function(scope) {return scope.purchaseOrderLines },
             //     function(newLines, oldLines) {
-            //         console.log("lines changed");
+            //         $log.log("lines changed");
             //         calculateTotals(newLines);
             //     }
             // );

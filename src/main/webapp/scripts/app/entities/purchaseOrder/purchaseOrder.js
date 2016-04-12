@@ -76,7 +76,8 @@ angular.module('portalApp')
                     authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                 },
                 params: {
-                    serviceType: null  
+                    serviceType: null,
+                    poLine: null
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -85,19 +86,23 @@ angular.module('portalApp')
                         size: 'lg',
                         resolve: {
                             entity: function () {
-                                return {
-                                    materialNumber: null,
-                                    orderQuantity: null,
-                                    unitOfMeasure: null,
-                                    warehouse: null,
-                                    length: null,
-                                    width: null,
-                                    height: null,
-                                    grossWeight: null,
-                                    netWeight: null,
-                                    batchNumber: null,
-                                    id: null
-                                };
+                                if($stateParams.poLine){
+                                    return $stateParams.poLine;
+                                }else{
+                                    return {
+                                        materialNumber: null,
+                                        orderQuantity: null,
+                                        unitOfMeasure: null,
+                                        warehouse: null,
+                                        length: null,
+                                        width: null,
+                                        height: null,
+                                        grossWeight: null,
+                                        netWeight: null,
+                                        batchNumber: null,
+                                        id: null
+                                    };
+                                }
                             }
                         }
                     }).result.then(function(result) {

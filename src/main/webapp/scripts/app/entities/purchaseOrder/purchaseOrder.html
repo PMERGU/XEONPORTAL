@@ -321,6 +321,7 @@
                                         <th>Batch Number</th>
                                         <th>Unit Of Measure</th>
                                         <th>Quantity</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -337,10 +338,15 @@
                                         <td>{{ po.batchNumber }}</td>
                                         <td>{{ po.unitOfMeasure }}</td>
                                         <td>{{ po.orderQuantity }}</td>
+                                        <td width="10px">
+                                            <button class="btn btn-primary pull-right" ui-sref="purchaseOrder.poLine({serviceType: purchaseOrder.serviceType, poLine: po})">
+                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                            </button>
+                                        </td>
                                     </tr>
 
                                     <tr>
-                                        <td colspan="6">
+                                        <td colspan="7">
                                             <button class="btn btn-primary pull-right" ui-sref="purchaseOrder.poLine({serviceType: purchaseOrder.serviceType})">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                             </button>
