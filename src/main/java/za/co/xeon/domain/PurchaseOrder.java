@@ -1,6 +1,8 @@
 package za.co.xeon.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.time.LocalDate;
@@ -21,6 +23,7 @@ import za.co.xeon.domain.enumeration.*;
 @Entity
 @Table(name = "purchase_order")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class PurchaseOrder implements Serializable {
 
     @Id
@@ -98,8 +101,7 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "comment")
     private String comment;
 
-    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PoLine> poLines = new HashSet<>();
 
@@ -142,9 +144,31 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "financial_controller")
     private String financialController;
 
+    @Column(name = "so_number")
+    private String soNumber;
+
+    @Column(name = "so_comment")
+    private String soComment;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public String getSoNumber() {
+        return soNumber;
+    }
+
+    public void setSoNumber(String soNumber) {
+        this.soNumber = soNumber;
+    }
+
+    public String getSoComment() {
+        return soComment;
+    }
+
+    public void setSoComment(String soComment) {
+        this.soComment = soComment;
+    }
 
     public String getCarrierVesselOrigin() {
         return carrierVesselOrigin;

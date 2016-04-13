@@ -39,6 +39,9 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="so_number" type="varchar(255)"/>
+            <column name="so_comment" type="varchar(2000)"/>
+
             <column name="reference" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -69,7 +72,7 @@
 
             <column name="carrier_vessel_eta" type="varchar(255)"/>
 
-            <column name="comment" type="varchar(255)"/>
+            <column name="comment" type="varchar(2000)"/>
 
             <column name="ship_to_party_id" type="bigint">
             </column>

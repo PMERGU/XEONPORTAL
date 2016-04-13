@@ -9,7 +9,7 @@ angular.module('portalApp')
         };
         $scope.confirmProcess = function (id) {
             $scope.purchaseOrder.state = 'PROCESSED';
-            PurchaseOrder.updateState({id: $scope.purchaseOrder.id}, "\"" + $scope.purchaseOrder.state + "\"",
+            PurchaseOrder.updateState({id: $scope.purchaseOrder.id}, $scope.purchaseOrder,
                 function () {
                     $uibModalInstance.close(true);
                 }

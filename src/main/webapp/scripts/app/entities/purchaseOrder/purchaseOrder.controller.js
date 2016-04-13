@@ -3,8 +3,53 @@
 angular.module('portalApp').controller('PurchaseOrderController',
     ['$rootScope', '$scope', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal',
         function ($rootScope, $scope, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
-            $scope.purchaseOrder = entity;
-            $scope.purchaseOrderLines = entityLines === undefined ? [] : entityLines;
+            if(entity === undefined){
+                $scope.purchaseOrder = {
+                    state: "UNPROCESSED",
+                    poNumber: "1",
+                    accountReference: "1",
+                    reference: "1",
+                    collective: "1",
+                    serviceType: "COURIER",
+                    serviceLevel: "ECONOMY",
+                    customerType: "REGULAR",
+                    transportParty: "XEON",
+                    vehicleSize: null,
+                    labourRequired: null,
+                    //STEP 2
+                    pickUpParty:  null,
+                    pickUpType: "STANDARD",
+                    collectionDate: new Date(),
+                    collectionReference: "1",
+                    shipToParty: null,
+                    shipToType: "HOME_DROP_BOX",
+                    dropOffDate: new Date(),
+                    //STEP 3
+                    cargoClassification: "NON_HAZARDOUS",
+                    poLines: [{
+                        rowId: 1,
+                        batchNumber: "123",
+                        grossWeight: 12,
+                        height: 100,
+                        id: null,
+                        length: 100,
+                        materialNumber: "123",
+                        materialType: "PACKAGE",
+                        netWeight: 11,
+                        orderQuantity: 10,
+                        unitOfMeasure: "123",
+                        warehouse: "123",
+                        width: 100
+                    }],
+                    //STEP 4
+                    soldToParty: null
+                };
+            }else{
+                $scope.purchaseOrder = entity;
+                $.each($scope.purchaseOrder.poLines, function(idx, po){
+                    $scope.purchaseOrder.poLines[idx].rowId = idx+1;
+                });
+            }
 
             $scope.isXeon = false;
             Principal.hasAuthority('ROLE_USER').then(function() {
@@ -40,8 +85,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
             }
 
-            $scope.$watch('purchaseOrder.serviceLevel', function(value){
-                $log.debug("watch transportParty triggered with value : " + value);
+            $scope.$watch('purchaseOrder.serviceLevel', serviceLevelWatch);
+            function serviceLevelWatch(value){
+                $log.debug("watch serviceLevel triggered with value : " + value);
                 switch (value){
                     case "ECONOMY":
                     case "EXPRESS_AM":
@@ -51,36 +97,37 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     case "DEDICATED_EXPRESS":
                     case "DEDICATED_ECONOMY":
                         hideOrShow([
-                            {name: 'vehicleSize', show: true, value: 'FOUR_TON'},
-                            {name: 'labourRequired', show: true, value: '1'}
+                            {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'FOUR_TON')},
+                            {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
                         ]);
                         break;
                 }
-            });
-            $scope.$watch('purchaseOrder.serviceType', function(value){
-                $log.debug("watch transportParty triggered with value : " + value);
+            };
+
+            $scope.$watch('purchaseOrder.serviceType', serviceTypeWatch);
+            function serviceTypeWatch(value){
+                $log.debug("watch serviceType triggered with value : " + value);
                 switch (value){
                     case "COURIER":
                         limitSelect([
-                            {name: 'transportParty', value: 'XEON'}
+                            {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')}
                         ]);
                         break;
                     case "INBOUND":
                         limitSelect([
-                            {name: 'transportParty', value: 'XEON', all: true}
+                            {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true}
                         ]);
                         break;
                     case "OUTBOUND":
                         limitSelect([
-                            {name: 'transportParty', value: 'XEON', all: true}
+                            {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true}
                         ]);
                         break;
                 }
-                transportPartyWatch("XEON");
-            });
+                transportPartyWatch(IFTET($scope.purchaseOrder.transportParty, 'XEON'));
+            };
 
             $scope.$watch('purchaseOrder.transportParty', transportPartyWatch);
-
             function transportPartyWatch(value){
                 $log.debug("watch transportParty triggered with value : " + value);
                 var serviceType = $scope.purchaseOrder.serviceType;
@@ -89,35 +136,31 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         hideOrShow([
                             {name: 'pickUpParty',
                                 show: true,
-                                value: {
-                                    id: 1
-                                }
+                                value: IFTET($scope.purchaseOrder.pickUpParty, {id: 1})
                             },
                             {name: 'pickUpType',
                                 show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
-                                value: "STANDARD"
+                                value: IFTET($scope.purchaseOrder.pickUpType, 'STANDARD')
                             },
                             {name: 'collectionDate',
                                 show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
-                                value: new Date()
+                                value: IFTET(new Date($scope.purchaseOrder.collectionDate))
                             },
                             {name: 'collectionReference',
                                 show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
-                                value: "ref"
+                                value: IFTET($scope.purchaseOrder.collectionReference, 'ref')
                             },
                             {name: 'shipToParty',
                                 show:  true,
-                                value: {
-                                    id: 1
-                                }
+                                value: IFTET($scope.purchaseOrder.shipToParty, {id: 1})
                             },
                             {name: 'shipToType',
                                 show: serviceType === "COURIER" || serviceType === "OUTBOUND" ? true : false,
-                                value: "STANDARD"
+                                value: IFTET($scope.purchaseOrder.shipToType, 'STANDARD')
                             },
                             {name: 'dropOffDate',
                                 show: serviceType === "COURIER" || serviceType === "OUTBOUND" ? true : false,
-                                value: new Date()
+                                value: IFTET(new Date($scope.purchaseOrder.dropOffDate))
                             }
                         ]);
                         break;
@@ -127,7 +170,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'collectionDate'},
                             {name: 'collectionReference'},
                             {name: 'shipToType'},
-                            {name: 'dropOffDate', show: true, value: new Date()}
+                            {name: 'dropOffDate', show: true, value: IFTET(new Date($scope.purchaseOrder.dropOffDate), new Date())}
                         ]);
                         break;
                 }
@@ -136,11 +179,12 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.$watch('purchaseOrder.cargoClassification', function(value){
                 $log.debug("watch cargoClassification triggered with value : " + value);
                 switch (value){
-                    case "NON_HAZARDOUS":
-                        hideOrShow([{name: 'cargoType'}]);
-                        break;
                     case "HAZARDOUS":
-                        hideOrShow([{name: 'cargoType', show: true, value: "CORROSIVES"}]);
+                        hideOrShow([{name: 'cargoType', show: true, value: IFTET($scope.purchaseOrder.shipToType, 'CORROSIVES')}]);
+                        break;
+                    case "NON_HAZARDOUS":
+                    default:
+                        hideOrShow([{name: 'cargoType'}]);
                         break;
                 }
             });
@@ -149,7 +193,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $.each(elements, function(idx, element) {
                     var field = $('#' + 'field_' + element.name);
                     if(field === undefined){
-                        alert("unknown field : " + element.name);
+                        $log.error("hideOrShow, unknown field : " + element.name);
                     }else{
                         field.prop( "disabled", element.show === undefined ? true : !element.show);
                         $scope.requiredFields[element.name] = element.show === undefined ? false : element.show;
@@ -176,59 +220,16 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 })
             }
 
-            if($scope.purchaseOrder === undefined){
-                $scope.purchaseOrder = {
-                    state: "UNPROCESSED",
-                    poNumber: "1",
-                    accountReference: "1",
-                    reference: "1",
-                    collective: "1",
-                    serviceType: "COURIER",
-                    serviceLevel: "ECONOMY",
-                    customerType: "REGULAR",
-                    transportParty: "XEON",
-                    vehicleSize: null,
-                    labourRequired: null,
-                    //STEP 2
-                    pickUpParty:  null,
-                    pickUpType: "STANDARD",
-                    collectionDate: new Date(),
-                    collectionReference: "1",
-                    shipToParty: null,
-                    shipToType: "HOME_DROP_BOX",
-                    dropOffDate: new Date(),
-                    //STEP 3
-                    cargoClassification: "NON_HAZARDOUS",
-                    //STEP 4
-                    soldToParty: null
-
-                };
-            }
-            if($scope.purchaseOrderLines.length === 0){
-                $scope.purchaseOrderLines = [{
-                    batchNumber: "123",
-                    grossWeight: 12,
-                    height: 1,
-                    id: null,
-                    length: 0.2,
-                    materialNumber: "123",
-                    materialType: "PACKAGE",
-                    netWeight: 11,
-                    orderQuantity: 123,
-                    unitOfMeasure: "123",
-                    warehouse: "123",
-                    width: 1
-                }];
-            }
-
             var onSaveSuccess = function (result) {
                 $scope.$emit('portalApp:purchaseOrderUpdate', result);
                 $scope.isSaving = false;
                 $state.go('purchaseOrder');
             };
-
+            $scope.closeAlert = function(index) {
+                $scope.purchaseOrder.comment = null;
+            };
             var onSaveError = function (result) {
-                $log.log(result);
+                $log.error(result);
                 var msg = "Failed to create order :\n\n";
                 $.each(result.data.fieldErrors, function(idx, error){
                     msg+= "Field " + error.field + " on " + error.objectName;
@@ -247,11 +248,10 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             $scope.save = function () {
                 $scope.isSaving = true;
-                $log.log($scope.purchaseOrderLines);
-                $scope.purchaseOrder.poLines = $scope.purchaseOrderLines;
+                $log.log($scope.purchaseOrder.poLines);
                 if ($scope.purchaseOrder.id != null) {
                     $log.log("not saving as yet...");
-                    // PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
+                    PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 } else {
                     $log.log($scope.purchaseOrder);
                     PurchaseOrder.save($scope.purchaseOrder, onSaveSuccess, onSaveError);
@@ -292,9 +292,22 @@ angular.module('portalApp').controller('PurchaseOrderController',
             };
 
             // listen for poLine add event
-            $rootScope.$on('portalApp:poLineUpdate', function (event, data) {
-                $scope.purchaseOrderLines.push(data);
-                calculateTotals($scope.purchaseOrderLines);
+            $rootScope.$on('portalApp:poLineUpdate', function (event, poLine) {
+                $log.debug("current row id : " + poLine.rowId);
+                if(poLine.rowId === null || poLine.rowId === undefined) {
+                    poLine.rowId = $scope.purchaseOrder.poLines.length+1;
+                    $log.debug("new Row id : " + poLine.rowId);
+                    $scope.purchaseOrder.poLines.push(poLine);
+                }else{
+                    $.each($scope.purchaseOrder.poLines, function(idx, po){
+                        if(po.rowId === poLine.rowId){
+                            $log.debug("Found match");
+                            angular.copy(poLine, $scope.purchaseOrder.poLines[idx]);
+                        }
+                    });
+                }
+                $log.debug($scope.purchaseOrder.poLines);
+                calculateTotals($scope.purchaseOrder.poLines);
             });
 
             // listen for party create event
@@ -319,15 +332,23 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $scope.totalCubes = 0;
                 $.each(lines, function(idx, line){
                     $log.log(line.grossWeight);
-                    $scope.totalWeight += parseFloat(line.grossWeight);
-                    $scope.totalCubes += (parseFloat(line.height) * parseFloat(line.length) * parseFloat(line.width));
+                    $scope.totalWeight += parseFloat(line.grossWeight * line.orderQuantity);
+                    $scope.totalCubes += parseFloat(((line.height * line.length * line.width)/1000000) * line.orderQuantity);
                 })
             }
 
-            // $scope.$watch(function(scope) {return scope.purchaseOrderLines },
-            //     function(newLines, oldLines) {
-            //         $log.log("lines changed");
-            //         calculateTotals(newLines);
-            //     }
-            // );
+            calculateTotals($scope.purchaseOrder.poLines);
+
+
+            function IFTET(ifThis, elseThat){
+                if(ifThis === undefined || ifThis === null){
+                    if(elseThat === undefined || elseThat === null){
+                        return null;
+                    }else{
+                        return elseThat;
+                    }
+                }else{
+                    return ifThis;
+                }
+            }
         }]);

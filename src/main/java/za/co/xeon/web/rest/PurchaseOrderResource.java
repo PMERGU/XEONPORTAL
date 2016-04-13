@@ -73,7 +73,9 @@ public class PurchaseOrderResource {
         purchaseOrder.setUser(user);
         purchaseOrder.setCaptureDate(ZonedDateTime.now());
         purchaseOrder.setState(PoState.UNPROCESSED);
-        log.debug(" -------------------------------------------------------\n" + purchaseOrder.getPoLines().size());
+        //set PO as parent to PO.poLines
+        purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
+        log.debug(" ------------------------------------------------------- : " + purchaseOrder.getPoLines().size());
         log.debug(purchaseOrder.getPoLines().toString());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         return ResponseEntity.created(new URI("/api/purchaseOrders/" + result.getId()))
@@ -90,9 +92,19 @@ public class PurchaseOrderResource {
     @Timed
     public ResponseEntity<PurchaseOrder> updatePurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder) throws URISyntaxException {
         log.debug("REST request to update PurchaseOrder : {}", purchaseOrder);
+        if(purchaseOrder.getState().equals(PoState.PROCESSED)){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("purchase order", purchaseOrder.getId().toString(), "Cant update an already processed order. Please contact Xeon customer team"))
+                .body(purchaseOrder);
+        }
         if (purchaseOrder.getId() == null) {
             return createPurchaseOrder(purchaseOrder);
         }
+        purchaseOrder.getPoLines().stream().forEach(line ->
+            line.setPurchaseOrder(purchaseOrder)
+        );
+        log.debug(" ------------------------------------------------------- : " + purchaseOrder.getPoLines().size());
+        log.debug(purchaseOrder.getPoLines().toString());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("purchaseOrder", purchaseOrder.getId().toString()))
@@ -106,10 +118,12 @@ public class PurchaseOrderResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PurchaseOrder> updatePurchaseOrderState(@PathVariable Long id, @Valid @RequestBody PoState state, HttpServletRequest request) throws URISyntaxException {
-        log.debug("REST request to update PurchaseOrder state : [id:{}] to {}", id, state);
+    public ResponseEntity<PurchaseOrder> updatePurchaseOrderState(@PathVariable Long id, @Valid @RequestBody PurchaseOrder statePO, HttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to update PurchaseOrder state : [id:{}] to {}", id, statePO.getState());
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        purchaseOrder.setState(state);
+        purchaseOrder.setState(statePO.getState());
+        purchaseOrder.setSoNumber(statePO.getSoNumber());
+        purchaseOrder.setSoComment(statePO.getSoComment());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         String baseUrl = request.getScheme() + // "http"
             "://" +                                // "://"
@@ -182,7 +196,7 @@ public class PurchaseOrderResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of PoLines");
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -203,7 +217,7 @@ public class PurchaseOrderResource {
     public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable Long id) {
         log.debug("REST request to get PurchaseOrder : {}", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -226,7 +240,7 @@ public class PurchaseOrderResource {
     public ResponseEntity<Void> deletePurchaseOrder(@PathVariable Long id) {
         log.debug("REST request to delete PurchaseOrder : {}", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);

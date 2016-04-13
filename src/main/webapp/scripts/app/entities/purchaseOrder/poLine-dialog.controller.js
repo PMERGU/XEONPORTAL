@@ -7,12 +7,6 @@ angular.module('portalApp').controller('PoLineDialogController',
         $scope.requiredFields = {};
         $scope.poLine = entity;
 
-        $scope.load = function(id) {
-            PoLine.get({id : id}, function(result) {
-                $scope.poLine = result;
-            });
-        };
-
         $timeout(function() {
             switch ($scope.serviceType){
                 case "COURIER":

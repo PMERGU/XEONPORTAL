@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder,Long> {
     Page<PurchaseOrder> findByUser(User user, Pageable pageable);
+
 }

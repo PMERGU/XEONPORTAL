@@ -1,4 +1,4 @@
-<form name="confirmForm" ng-submit="confirmProcess(purchaseOrder.id)">
+<form name="confirmForm" ng-submit="confirmProcess(purchaseOrder.id)" show-validation>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
@@ -6,14 +6,36 @@
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
-        <p>Are you sure you captured this PO in SAP?</p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="confirmForm.$invalid" class="btn btn-primary">
-            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span>Processed</span>
-        </button>
-    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p>To complete this order, please type a valid Sales Order as captured on SAP.</p>
+                <div class="input-group">
+                    <label class="control-label" for="field_soNumber">Sales order Number</label>
+                    <input type="text" class="form-control" name="soNumber" id="field_soNumber"
+                           ng-model="purchaseOrder.soNumber" ng-required="true"/>
+                    <div ng-show="editForm.soNumber.$invalid">
+                        <p class="help-block small-help-block pull-right"
+                           ng-show="editForm.soNumber.$error.required">
+                            required
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="field_soComment">Sales order comment
+                            <small>(will be added to email)</small>
+                        </label>
+                        <textarea class="form-control" rows="3" name="soComment" id="field_soComment"
+                                  ng-model="purchaseOrder.soComment"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+            </button>
+            <button type="submit" ng-disabled="confirmForm.$invalid" class="btn btn-primary">
+                <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span>Processed</span>
+            </button>
+        </div>
 </form>
