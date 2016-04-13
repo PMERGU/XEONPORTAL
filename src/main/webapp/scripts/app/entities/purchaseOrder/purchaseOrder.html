@@ -398,11 +398,19 @@
                                                 </small>
                                             </td>
                                             <td>{{ po.orderQuantity }}</td>
-                                            <td width="10px">
-                                                <button class="btn btn-primary pull-right"
-                                                        ui-sref="purchaseOrder.poLine({serviceType: purchaseOrder.serviceType, poLine: po})">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </button>
+                                            <td width="95px">
+                                                <div class="btn-group flex-btn-group-container">
+                                                    <button class="btn btn-primary"
+                                                            ui-sref="purchaseOrder.poLine({serviceType: purchaseOrder.serviceType, poLine: po})">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </button>
+                                                    <button type="button"
+                                                            ng-click="deletePoLine(po.rowId)"
+                                                            class="btn btn-danger">
+                                                        <span class="glyphicon glyphicon-remove-circle"></span>
+                                                        <span class="hidden-xs hidden-sm"></span>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
 

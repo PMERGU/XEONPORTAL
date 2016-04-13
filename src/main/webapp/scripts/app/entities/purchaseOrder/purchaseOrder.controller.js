@@ -85,6 +85,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
             }
 
+            $scope.deletePoLine = function(rowId){
+                $scope.purchaseOrder.poLines.splice(rowId-1, 1);
+                $.each($scope.purchaseOrder.poLines, function(idx, po){
+                    $scope.purchaseOrder.poLines[idx].rowId = idx+1;
+                });
+            }
+
             $scope.$watch('purchaseOrder.serviceLevel', serviceLevelWatch);
             function serviceLevelWatch(value){
                 $log.debug("watch serviceLevel triggered with value : " + value);
