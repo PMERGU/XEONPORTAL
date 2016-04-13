@@ -37,6 +37,8 @@ import javax.inject.Inject;
 import javax.servlet.annotation.MultipartConfig;
 import java.io.File;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -92,15 +94,18 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber, Pageable pageable) throws Exception {
+    public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber,
+                                            @RequestParam(value = "from") String from, @RequestParam(value = "to") String to,Pageable pageable) throws Exception {
         log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
         Page<EvResult> page = null;
         if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
-            return mobileService.getCustomerOrders(user.getCompany().getSapId());
+            return mobileService.getCustomerOrders(user.getCompany().getSapId(),
+                new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
         }else {
-            return mobileService.getCustomerOrders(customerNumber);
+            return mobileService.getCustomerOrders(customerNumber,
+                new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
         }
     }
 

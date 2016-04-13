@@ -18,15 +18,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
+import za.co.xeon.external.sap.hibersap.dto.ImDateR;
 import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * Created by derick on 2016/02/07.
@@ -59,11 +60,13 @@ public class HiberSapService {
         sessionManager = configuration.buildSessionManager();
     }
 
-    public List<EvResult> getCustomerOrdersByDate(String customerNumber){
+    public List<EvResult> getCustomerOrdersByDate(String customerNumber, Date from, Date to) throws ParseException {
         customerNumber = leftPad(customerNumber, 10);
         Session session = sessionManager.openSession();
         try {
-            CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(customerNumber, null, null);
+            List<ImDateR> dateRange = new ArrayList<>();
+            dateRange.add(new ImDateR("I", "BT", from, to));
+            CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(customerNumber, dateRange, null);
             session.execute(rfc);
 
 //            return convertEvResultToPO(rfc.getEvResult());

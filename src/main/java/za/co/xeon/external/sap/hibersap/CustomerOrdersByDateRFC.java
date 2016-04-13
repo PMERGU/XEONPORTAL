@@ -22,7 +22,7 @@ public class CustomerOrdersByDateRFC {
     /**
      * "Range Table for Data Element SYDATUM" */
     @Import
-    @Parameter("IM_DATE_R")
+    @Parameter(value = "IM_DATE_R", type = ParameterType.TABLE_STRUCTURE)
     private final List<ImDateR> imDateR;
 
     /**

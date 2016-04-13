@@ -19,7 +19,7 @@
                 <div class="panel-body text-center h-180" style="padding: 5px;">
                     <i class="icon-pi-truck-3 fa-5x text-info"></i>
 
-                    <h1 class="m-xs">{{ (undeliveredOrders | unique: tknum).length }}</h1>
+                    <h1 class="m-xs">{{ (undeliveredOrders | unique: 'dbeln').length }}</h1>
 
                     <h3 class="font-extra-bold no-margins text-info">
                         In Transit
@@ -33,7 +33,7 @@
                 <div class="panel-body text-center h-180" style="padding: 5px;">
                     <i class="icon-pi-hand-truck-4 fa-5x text-info"></i>
 
-                    <h1 class="m-xs">{{ (deliveredOrders | unique: tknum).length }}</h1>
+                    <h1 class="m-xs">{{ (deliveredOrders | unique: 'dbeln').length }}</h1>
 
                     <h3 class="font-extra-bold no-margins text-info">
                         Done
@@ -99,13 +99,15 @@
         <div class="col-lg-8 col-md-9 col-sm-12">
             <div class="hpanel">
                 <div class="hpanel">
+                    <input ng-disabled="loadingOrders" ng-show="ordersStep !== 0" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.next()" value="Next 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
+                    <input ng-disabled="loadingOrders" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.prev()" value="Prev 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
                     <uib-tabset>
                         <uib-tab>
                             <uib-tab-heading>
                                 Un-delivered&nbsp;
                                 <i class="fa fa-refresh btn btn-default btn-xs" ng-click="reloadData()"></i>
                             </uib-tab-heading>
-                            <div class="panel-body">
+                            <div class="panel-body" style="padding-top: 0px;">
                                 <div class="table-responsive">
                                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
                                         <thead>
@@ -119,7 +121,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="order in undeliveredOrders | unique: tknum">
+                                        <tr ng-repeat="order in undeliveredOrders | unique: 'dbeln'">
                                             <td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td>
                                             <td>{{ order.vbeln }}</td>
                                             <td>{{ order.dbeln }}</td>
@@ -143,7 +145,7 @@
                             <uib-tab-heading>
                                 Delivered
                             </uib-tab-heading>
-                            <div class="panel-body">
+                            <div class="panel-body" style="padding-top: 0px;">
                                 <div class="table-responsive">
                                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
                                         <thead>
@@ -157,7 +159,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="order in deliveredOrders | unique: tknum">
+                                            <tr ng-repeat="order in deliveredOrders | unique: 'dbeln'">
                                                 <td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td>
                                                 <td>{{ order.vbeln }}</td>
                                                 <td>{{ order.dbeln }}</td>

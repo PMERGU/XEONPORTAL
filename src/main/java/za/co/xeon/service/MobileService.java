@@ -21,7 +21,9 @@ import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -100,8 +102,8 @@ public class MobileService {
         return hiberSapService.getHandelingUnits(barcode).getHunumbers();
     }
 
-    public List<EvResult> getCustomerOrders(String customerNumber) throws Exception{
-        return hiberSapService.getCustomerOrdersByDate(customerNumber);
+    public List<EvResult> getCustomerOrders(String customerNumber, Date from, Date to) throws Exception{
+        return hiberSapService.getCustomerOrdersByDate(customerNumber, from, to);
     }
 
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception{

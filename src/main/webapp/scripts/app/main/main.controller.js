@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainController', function ($scope, $cacheFactory, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder) {
+    .controller('MainController', function ($scope, $cacheFactory, $log, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder) {
         $scope.deliveredOrders = [];
         $scope.undeliveredOrders = [];
+        $scope.ordersStep = 0;
+        $scope.todaysDate = new Date();
+        $scope.loadingOrders = false;
 
         $scope.dominant = '#fff';
         $scope.colors = {
@@ -24,19 +27,40 @@ angular.module('portalApp')
             DTColumnDefBuilder.newColumnDef(4)
         ];
 
+        $scope.ordersWizard = {
+            next: function () {
+                if($scope.ordersStep > 0){
+                    $log.debug("$scope.ordersStep : " + $scope.ordersStep);
+                    $scope.ordersStep--;
+                    getOrders(new Date(new Date($scope.todaysDate).setMonth($scope.todaysDate.getMonth() - $scope.ordersStep)))
+                }else{
+                    $log.debug("Already at step 0");
+                }
+            },
+            prev: function () {
+                $log.debug("$scope.ordersStep : " + $scope.ordersStep);
+                $scope.ordersStep++;
+                getOrders(new Date(new Date($scope.todaysDate).setMonth($scope.todaysDate.getMonth() - $scope.ordersStep)))
+            },
+            reset: function(){
+                $scope.ordersStep=0;
+                getOrders(new Date(new Date($scope.todaysDate).setMonth($scope.todaysDate.getMonth() - $scope.ordersStep)))
+            }
+        };
+
         Principal.identity().then(function(account) {
             $scope.account = account;
             $scope.isAuthenticated = Principal.isAuthenticated;
             if (account.company.id !== null){
                 $scope.company = Company.get({id: account.company.id});
             }
-            getOrders();
+            getOrders(new Date());
             getCapturedPOs();
         });
 
         $scope.reloadData = function () {
             var resetPaging = true;
-            getOrders();
+            getOrders(new Date());
         };
 
         function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -44,21 +68,27 @@ angular.module('portalApp')
             $('td', nRow).unbind('click');
             $('td', nRow).bind('click', function() {
                 $scope.$apply(function() {
-                    console.log(aData);
+                    $log.debug(aData);
                 });
             });
             return nRow;
         };
 
-        function getOrders(){
-            if($scope.account.company.id !== null){
-                CustomerOrders.get({id : $scope.account.company.sapId }).$promise.then(function(data) {
+        function getOrders(dateT){
+            $scope.loadingOrders = true;
+            if($scope.account.company.id !== null) {
+                CustomerOrders.get({
+                    id: $scope.account.company.sapId,
+                    from: new Date(new Date(dateT).setMonth(dateT.getMonth() - 1)),
+                    to: dateT
+                }).$promise.then(function (data) {
                     $scope.deliveredOrders = data.filter(function (el) {
                         return (el.pdstk === "B" || el.pdstk === "C");
                     });
                     $scope.undeliveredOrders = data.filter(function (el) {
                         return (el.pdstk === "A");
                     });
+                    $scope.loadingOrders = false;
                 });
             }
         }

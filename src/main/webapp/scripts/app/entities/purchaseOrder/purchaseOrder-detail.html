@@ -1,6 +1,6 @@
 
 <div>
-    <h2><span>PurchaseOrder</span> {{purchaseOrder.id}}</h2>
+    <h2><span>Purchase Order Details</span> {{purchaseOrder.id}}</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -153,6 +153,40 @@
                 <td>
                     <a class="form-control-static" ui-sref="user.detail({id:purchaseOrder.user})">{{purchaseOrder.firstName}}</a>
                 </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-responsive table-striped">
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>Material Type</th>
+                <th>Material Number</th>
+                <th>Batch Number</th>
+                <th>Gross Weight</th>
+                <th>Net Weight</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Height</th>
+                <th>Quantity</th>
+                <th>Total Weight</th>
+                <th>Total Cubes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="po in purchaseOrder.poLines">
+                <td>{{$index+1}}</td>
+                <td>{{ po.materialType }}</td>
+                <td>{{ po.materialNumber }}</td>
+                <td>{{ po.batchNumber }}</td>
+                <td>{{ po.grossWeight}}kg</td>
+                <td>{{ po.netWeight}}kg</td>
+                <td>{{ po.length}}cm</td>
+                <td>{{ po.width}}cm</td>
+                <td>{{ po.height}}cm</td>
+                <td>{{ po.orderQuantity }}</td>
+                <td>{{ po.grossWeight * po.orderQuantity }}kg</td>
+                <td>{{ (po.height * po.length * po.width)/1000000 * po.orderQuantity }}m&sup3;</td>
             </tr>
             </tbody>
         </table>
