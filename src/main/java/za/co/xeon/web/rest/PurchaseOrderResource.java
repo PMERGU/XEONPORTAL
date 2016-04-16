@@ -104,7 +104,7 @@ public class PurchaseOrderResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PurchaseOrder> updatePurchaseOrder(@gValid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
+    public ResponseEntity<PurchaseOrder> updatePurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update PurchaseOrder : {}", purchaseOrder);
         PurchaseOrder previous = purchaseOrderService.findOne(purchaseOrder.getId());
         if(previous.getState().equals(PoState.PROCESSED)) {
