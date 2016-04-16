@@ -21,17 +21,26 @@
                                                 <th>Mode of Transport</th>
                                                 <th>Reference</th>
                                                 <th>Status</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="po in unprocessed">
-                                                <td>{{ po.id }}</td>
+                                                <td><a ui-sref="purchaseOrder.detail({id:po.id})">{{po.id}}</a></td>
                                                 <td>{{ po.user.company.name }}</td>
                                                 <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
                                                 <td>{{ po.poNumber }}</td>
                                                 <td>{{ po.modeOfTransport }}</td>
                                                 <td>{{ po.reference }}</td>
                                                 <td>{{ po.state }}</td>
+                                                <td>
+                                                    <button type="submit"
+                                                            ui-sref="purchaseOrder.new({id:po.id})"
+                                                            class="btn btn-primary btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                        <span class="hidden-xs hidden-sm"></span>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -2,5 +2,6 @@
 
 angular.module('portalApp')
     .controller('MainOrderDetailController', function ($scope, $stateParams, Principal) {
-        console.log($stateParams);
+        console.log($stateParams.order);
+        $scope.order = $stateParams.order;
     });

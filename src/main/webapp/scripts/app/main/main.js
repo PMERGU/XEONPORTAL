@@ -7,7 +7,7 @@ angular.module('portalApp')
                 parent: 'site',
                 url: '/',
                 data: {
-                    authorities: ['ROLE_CUSTOMER'],
+                    authorities: ['ROLE_CUSTOMER','ROLE_USER','ROLE_ADMIN'],
                     pageTitle: 'Dashboard'
                 },
                 views: {

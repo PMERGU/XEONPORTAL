@@ -7,7 +7,7 @@ angular.module('portalApp').controller('UserManagementDialogController',
         $scope.user = entity;
         $scope.authorities = ["ROLE_USER", "ROLE_ADMIN", "ROLE_CUSTOMER"];
         $scope.companies = Company.query();
-            
+
         var onSaveSuccess = function (result) {
             $scope.isSaving = false;
             $uibModalInstance.close(result);
@@ -19,6 +19,7 @@ angular.module('portalApp').controller('UserManagementDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
+            console.log($scope.user);
             if ($scope.user.id != null) {
                 User.update($scope.user, onSaveSuccess, onSaveError);
             } else {

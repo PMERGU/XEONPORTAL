@@ -80,7 +80,7 @@ angular.module('portalApp')
                 CustomerOrders.get({
                     id: $scope.account.company.sapId,
                     from: new Date(new Date(dateT).setMonth(dateT.getMonth() - 1)),
-                    to: dateT
+                    to: new Date(new Date(dateT).setDate(dateT.getDate()+1)),
                 }).$promise.then(function (data) {
                     $scope.deliveredOrders = data.filter(function (el) {
                         return (el.pdstk === "B" || el.pdstk === "C");
