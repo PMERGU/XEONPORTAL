@@ -154,6 +154,18 @@ public class PurchaseOrder implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "xeon_user_id")
+    private User xeonUser;
+
+    public User getXeonUser() {
+        return xeonUser;
+    }
+
+    public void setXeonUser(User xeonUser) {
+        this.xeonUser = xeonUser;
+    }
+
     public String getSoNumber() {
         return soNumber;
     }

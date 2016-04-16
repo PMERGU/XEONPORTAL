@@ -7,6 +7,7 @@ import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.domain.enumeration.PoState;
 import za.co.xeon.repository.PoLineRepository;
+import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
@@ -49,6 +50,9 @@ public class PurchaseOrderResource {
     private PurchaseOrderService purchaseOrderService;
 
     @Inject
+    private PurchaseOrderRepository purchaseOrderRepository;
+
+    @Inject
     private UserRepository userRepository;
 
     @Inject
@@ -64,8 +68,14 @@ public class PurchaseOrderResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PurchaseOrder> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder) throws URISyntaxException {
+    public ResponseEntity<PurchaseOrder> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save PurchaseOrder : {}", purchaseOrder);
+        if(purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("purchaseOrder","poNumber",
+                    String.format("A PO with the number #%s already exists in the system. Please double check poNumber or double check the dashboard", purchaseOrder.getPoNumber())))
+                .body(purchaseOrder);
+        }
         if (purchaseOrder.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("purchaseOrder", "idexists", "A new purchaseOrder cannot already have an ID")).body(null);
         }
@@ -78,6 +88,10 @@ public class PurchaseOrderResource {
         log.debug(" ------------------------------------------------------- : " + purchaseOrder.getPoLines().size());
         log.debug(purchaseOrder.getPoLines().toString());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
+        mailService.sendCSUMail(user,
+            String.format("New PO created for %s", user.getCompany().getName()),
+            String.format("A new Purchase Order #%s has been created by %s %s for client %s. Please action and capture as soon as possible.", result.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
+            , null, null, getBaseUrl(request));
         return ResponseEntity.created(new URI("/api/purchaseOrders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("purchase order", result.getId().toString()))
             .body(result);
@@ -90,15 +104,29 @@ public class PurchaseOrderResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PurchaseOrder> updatePurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder) throws URISyntaxException {
+    public ResponseEntity<PurchaseOrder> updatePurchaseOrder(@gValid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update PurchaseOrder : {}", purchaseOrder);
+        PurchaseOrder previous = purchaseOrderService.findOne(purchaseOrder.getId());
+        if(previous.getState().equals(PoState.PROCESSED)) {
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("purchaseOrder","poNumber",
+                    String.format("This purchase order has already been processed and cant be updated.", purchaseOrder.getPoNumber())))
+                .body(purchaseOrder);
+        }else if(!previous.getPoNumber().equals(purchaseOrder.getPoNumber())){
+            if(purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null){
+                return ResponseEntity.badRequest()
+                    .headers(HeaderUtil.createFailureAlert("purchaseOrder","poNumber",
+                        String.format("A PO with the number #%s already exists in the system. Please double check poNumber or double check the dashboard", purchaseOrder.getPoNumber())))
+                    .body(purchaseOrder);
+            }
+        }
         if(purchaseOrder.getState().equals(PoState.PROCESSED)){
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("purchase order", purchaseOrder.getId().toString(), "Cant update an already processed order. Please contact Xeon customer team"))
                 .body(purchaseOrder);
         }
         if (purchaseOrder.getId() == null) {
-            return createPurchaseOrder(purchaseOrder);
+            return createPurchaseOrder(purchaseOrder, request);
         }
         purchaseOrder.getPoLines().stream().forEach(line ->
             line.setPurchaseOrder(purchaseOrder)
@@ -121,21 +149,27 @@ public class PurchaseOrderResource {
     public ResponseEntity<PurchaseOrder> updatePurchaseOrderState(@PathVariable Long id, @Valid @RequestBody PurchaseOrder statePO, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update PurchaseOrder state : [id:{}] to {}", id, statePO.getState());
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        User xeonUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
         purchaseOrder.setState(statePO.getState());
+        purchaseOrder.setXeonUser(xeonUser);
         purchaseOrder.setSoNumber(statePO.getSoNumber());
         purchaseOrder.setSoComment(statePO.getSoComment());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
-        String baseUrl = request.getScheme() + // "http"
+        if(statePO.getState().equals(PoState.PROCESSED)) {
+            mailService.sendPoProcessedMail(xeonUser, purchaseOrder, getBaseUrl(request));
+        }
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createAlert("Marked as Processed and email sent to " + purchaseOrder.getUser().getFirstName() + " " + purchaseOrder.getUser().getLastName() + " from " + purchaseOrder.getUser().getCompany().getName() + " succesfully.", ""))
+            .body(result);
+    }
+
+    public String getBaseUrl(HttpServletRequest request){
+        return request.getScheme() + // "http"
             "://" +                                // "://"
             request.getServerName() +              // "myhost"
             ":" +                                  // ":"
             request.getServerPort() +              // "80"
             request.getContextPath();              // "/myContextPath" or "" if deployed in root context
-        log.debug("baseurl: " + baseUrl);
-        mailService.sendPoProcessedMail(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get(), purchaseOrder, baseUrl);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createAlert("Marked as Processed and email sent to " + purchaseOrder.getUser().getFirstName() + " " + purchaseOrder.getUser().getLastName() + " from " + purchaseOrder.getUser().getCompany().getName() + " succesfully.", ""))
-            .body(result);
     }
 
     /**
@@ -180,6 +214,28 @@ public class PurchaseOrderResource {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             log.debug("Restricting PurchaseOrders lookup by username " + user.getLogin());
             page = purchaseOrderService.findAllByUser(user, pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /purchaseOrders -> get all the purchaseOrders.
+     */
+    @RequestMapping(value = "/purchaseOrders/state/{state}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<PurchaseOrder>> getAllPurchaseOrdersByState(@PathVariable PoState state, Pageable pageable) throws URISyntaxException {
+        log.debug("REST request to get getAllPurchaseOrdersByState by state " + state.name());
+        Page<PurchaseOrder> page = null;
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+            page = purchaseOrderRepository.findByState(state, pageable);
+        }else {
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            log.debug("Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin());
+            page = purchaseOrderRepository.findByUserAndState(user, state, pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -240,12 +296,21 @@ public class PurchaseOrderResource {
     public ResponseEntity<Void> deletePurchaseOrder(@PathVariable Long id) {
         log.debug("REST request to delete PurchaseOrder : {}", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
+        log.debug("PO state " + purchaseOrder.getState());
+
+        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))) {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-            if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
+            if (purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
+            if(purchaseOrder.getState().equals(PoState.PROCESSED)){
+                return ResponseEntity.badRequest()
+                    .headers(HeaderUtil.createFailureAlert("purchaseOrder","poNumber",
+                        String.format("This purchase order has already been processed and cant be deleted.")))
+                    .body(null);
+            }
         }
+
         purchaseOrderService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("purchaseOrder", id.toString())).build();
     }

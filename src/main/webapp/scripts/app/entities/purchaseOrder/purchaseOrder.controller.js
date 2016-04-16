@@ -22,7 +22,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     collectionDate: new Date(),
                     collectionReference: "1",
                     shipToParty: null,
-                    shipToType: "HOME_DROP_BOX",
+                    shipToType: "HOME_DROPBOX",
                     dropOffDate: new Date(),
                     //STEP 3
                     cargoClassification: "NON_HAZARDOUS",

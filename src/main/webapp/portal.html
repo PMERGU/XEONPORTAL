@@ -1,0 +1,244 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>portal</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="assets/pi-transport/style.css">
+        <!-- build:css assets/styles/vendor.css -->
+        <!-- bower:css -->
+        <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+        <link rel="stylesheet" href="bower_components/metisMenu/dist/metisMenu.css" />
+        <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+        <link rel="stylesheet" href="bower_components/pixeden-stroke-7-icon/pe-icon-7-stroke/dist/pe-icon-7-stroke.css" />
+        <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
+        <link rel="stylesheet" href="bower_components/angular-notify/dist/angular-notify.css" />
+        <link rel="stylesheet" href="bower_components/select2/select2.css" />
+        <link rel="stylesheet" href="bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
+        <link rel="stylesheet" href="bower_components/ladda/dist/ladda.min.css" />
+        <link rel="stylesheet" href="bower_components/clockpicker/dist/jquery-clockpicker.css" />
+        <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-/jquery.datetimepicker.css" />
+        <link rel="stylesheet" href="bower_components/datatables/media/css/jquery.dataTables.css" />
+        <link rel="stylesheet" href="bower_components/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.css" />
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css assets/styles/main.css -->
+        <link rel="stylesheet" href="assets/styles/main.css">
+        <!-- endbuild -->
+    </head>
+    <body ng-app="portalApp" class="{{$state.current.data.specialClass}} fixed-navbar" ng-class="{'hide-sidebar': isAuthenticated()}">
+        <!--[if lt IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <!-- Simple splash screen-->
+        <div class="splash">
+            <div class="color-line"></div>
+            <div class="splash-title"><h1>XEON Customer Portal</h1>
+                <p>Enabling critical views into our business platform.</p>
+                <img src="assets/images/loading-bars.svg" width="64" height="64"/>
+            </div>
+        </div>
+        <div show-if-authenticated>
+            <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
+
+            <!-- Top navigation -->
+            <div id="header" ui-view="navbar" ng-cloak=""></div>
+
+            <!-- right navigation -->
+            <aside id="menu" ui-view="leftmenu" ng-cloak=""></aside>
+
+            <!-- Main Wrapper -->
+            <div id="wrapper">
+                <div class="content">
+                    <div ui-view="content" animate-panel></div>
+                </div>
+                <!-- Footer -->
+                <footer class="footer" has-authority="ROLE_USER">
+                    <span class="pull-right">
+                        XEON Customer Portal
+                   </span>
+                    2016
+                </footer>
+            </div>
+        </div>
+        <div ui-view="login" animate-panel></div>
+
+        <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>-->
+
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-aria/angular-aria.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+        <script src="bower_components/json3/lib/json3.js"></script>
+        <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+        <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+        <script src="bower_components/metisMenu/dist/metisMenu.js"></script>
+        <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+        <script src="bower_components/iCheck/icheck.min.js"></script>
+        <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="bower_components/angular-notify/dist/angular-notify.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/select2/select2.js"></script>
+        <script src="bower_components/angular-ui-select3/src/select3.js"></script>
+        <script src="bower_components/angular-ui-sortable/sortable.js"></script>
+        <script src="bower_components/spin.js/spin.js"></script>
+        <script src="bower_components/ladda/dist/ladda.min.js"></script>
+        <script src="bower_components/angular-ladda/dist/angular-ladda.min.js"></script>
+        <script src="bower_components/clockpicker/dist/jquery-clockpicker.js"></script>
+        <script src="bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+        <script src="bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+        <script src="bower_components/eonasdan-bootstrap-/build/jquery.datetimepicker.full.min.js"></script>
+        <script src="bower_components/angular-gravatar/build/angular-gravatar.js"></script>
+        <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
+        <script src="bower_components/angular-datatables/dist/angular-datatables.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/colreorder/angular-datatables.colreorder.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/columnfilter/angular-datatables.columnfilter.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/light-columnfilter/angular-datatables.light-columnfilter.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/colvis/angular-datatables.colvis.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/fixedcolumns/angular-datatables.fixedcolumns.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/fixedheader/angular-datatables.fixedheader.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/scroller/angular-datatables.scroller.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/tabletools/angular-datatables.tabletools.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/buttons/angular-datatables.buttons.js"></script>
+        <script src="bower_components/angular-datatables/dist/plugins/select/angular-datatables.select.js"></script>
+        <script src="bower_components/color-thief/src/color-thief.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- THEME Directives-->
+        <script src="scripts/components/theme/homer.js"></script>
+
+    <!-- build:js({.tmp,src/main/webapp}) scripts/app.js -->
+    <script src="scripts/app/app.js"></script>
+    <script src="scripts/app/app.constants.js"></script>
+    <script src="scripts/components/auth/auth.service.js"></script>
+    <script src="scripts/components/auth/principal.service.js"></script>
+    <script src="scripts/components/auth/authority.directive.js"></script>
+    <script src="scripts/components/auth/services/account.service.js"></script>
+    <script src="scripts/components/auth/services/activate.service.js"></script>
+    <script src="scripts/components/auth/services/password.service.js"></script>
+    <script src="scripts/components/auth/services/register.service.js"></script>
+    <script src="scripts/components/form/form.directive.js"></script>
+    <script src="scripts/components/form/maxbytes.directive.js"></script>
+    <script src="scripts/components/form/minbytes.directive.js"></script>
+    <script src="scripts/components/form/uib-pager.config.js"></script>
+    <script src="scripts/components/form/uib-pagination.config.js"></script>
+    <script src="scripts/components/admin/audits.service.js"></script>
+    <script src="scripts/components/admin/logs.service.js"></script>
+    <script src="scripts/components/admin/configuration.service.js"></script>
+    <script src="scripts/components/admin/monitoring.service.js"></script>
+    <script src="scripts/components/interceptor/auth.interceptor.js"></script>
+    <script src="scripts/components/interceptor/errorhandler.interceptor.js"></script>
+    <script src="scripts/components/interceptor/notification.interceptor.js"></script>
+    <script src="scripts/components/navbar/navbar.directive.js"></script>
+    <script src="scripts/components/navbar/navbar.controller.js"></script>
+    <script src="scripts/components/leftmenu/leftmenu.directive.js"></script>
+    <script src="scripts/components/leftmenu/leftmenu.controller.js"></script>
+    <script src="scripts/components/user/user.service.js"></script>
+    <script src="scripts/components/util/truncate.filter.js"></script>
+    <script src="scripts/components/util/base64.service.js"></script>
+    <script src="scripts/components/util/capitalize.filter.js"></script>
+    <script src="scripts/components/alert/alert.service.js"></script>
+    <script src="scripts/components/alert/alert.directive.js"></script>
+    <script src="scripts/components/util/parse-links.service.js"></script>
+    <script src="scripts/components/util/date-util.service.js"></script>
+    <script src="scripts/components/util/data-util.service.js"></script>
+    <script src="scripts/components/util/sort.directive.js"></script>
+    <script src="scripts/app/account/account.js"></script>
+    <script src="scripts/app/account/activate/activate.js"></script>
+    <script src="scripts/app/account/activate/activate.controller.js"></script>
+    <script src="scripts/app/account/login/login.js"></script>
+    <script src="scripts/app/account/login/login.controller.js"></script>
+    <script src="scripts/app/account/password/password.js"></script>
+    <script src="scripts/app/account/password/password.controller.js"></script>
+    <script src="scripts/app/account/password/password.directive.js"></script>
+    <script src="scripts/app/account/register/register.js"></script>
+    <script src="scripts/app/account/register/register.controller.js"></script>
+    <script src="scripts/app/account/settings/settings.js"></script>
+    <script src="scripts/app/account/settings/settings.controller.js"></script>
+    <script src="scripts/app/account/reset/finish/reset.finish.controller.js"></script>
+    <script src="scripts/app/account/reset/finish/reset.finish.js"></script>
+    <script src="scripts/app/account/reset/request/reset.request.controller.js"></script>
+    <script src="scripts/app/account/reset/request/reset.request.js"></script>
+    <script src="scripts/app/admin/admin.js"></script>
+    <script src="scripts/app/admin/audits/audits.js"></script>
+    <script src="scripts/app/admin/audits/audits.controller.js"></script>
+    <script src="scripts/app/admin/configuration/configuration.js"></script>
+    <script src="scripts/app/admin/configuration/configuration.controller.js"></script>
+    <script src="scripts/app/admin/docs/docs.js"></script>
+    <script src="scripts/app/admin/health/health.js"></script>
+    <script src="scripts/app/admin/health/health.controller.js"></script>
+    <script src="scripts/app/admin/health/health.modal.controller.js"></script>
+    <script src="scripts/app/admin/logs/logs.js"></script>
+    <script src="scripts/app/admin/logs/logs.controller.js"></script>
+    <script src="scripts/app/admin/metrics/metrics.js"></script>
+    <script src="scripts/app/admin/metrics/metrics.controller.js"></script>
+    <script src="scripts/app/admin/metrics/metrics.modal.controller.js"></script>
+    <script src="scripts/app/admin/user-management/user-management-detail.controller.js"></script>
+    <script src="scripts/app/admin/user-management/user-management-dialog.controller.js"></script>
+    <script src="scripts/app/admin/user-management/user-management-delete-dialog.controller.js"></script>
+    <script src="scripts/app/admin/user-management/user-management.controller.js"></script>
+    <script src="scripts/app/admin/user-management/user-management.js"></script>
+    <script src="scripts/app/entities/entity.js"></script>
+    <script src="scripts/app/error/error.js"></script>
+    <script src="scripts/app/main/main.js"></script>
+    <script src="scripts/app/main/main.controller.js"></script>
+    <script src="scripts/app/main/orderDetail.controller.js"></script>
+    <script src="scripts/app/main/xeonmain.controller.js"></script>
+    <script src="scripts/components/auth/provider/auth.xauth.service.js"></script>
+    <script src="scripts/app/entities/company/company.js"></script>
+    <script src="scripts/app/entities/company/company.controller.js"></script>
+    <script src="scripts/app/entities/company/company-dialog.controller.js"></script>
+    <script src="scripts/app/entities/company/company-delete-dialog.controller.js"></script>
+    <script src="scripts/app/entities/company/company-detail.controller.js"></script>
+    <script src="scripts/components/entities/company/company.service.js"></script>
+    <script src="scripts/app/entities/party/party.js"></script>
+    <script src="scripts/app/entities/party/party.controller.js"></script>
+    <script src="scripts/app/entities/party/party-dialog.controller.js"></script>
+    <script src="scripts/app/entities/party/party-delete-dialog.controller.js"></script>
+    <script src="scripts/app/entities/party/party-detail.controller.js"></script>
+    <script src="scripts/components/entities/party/party.service.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/purchaseOrder.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/purchaseOrders.controller.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/purchaseOrder.controller.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/purchaseOrder-process-dialog.controller.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/purchaseOrder-comment-dialog.controller.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/purchaseOrder-delete-dialog.controller.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/purchaseOrder-detail.controller.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/party-dialog.controller.js"></script>
+    <script src="scripts/components/entities/purchaseOrder/purchaseOrder.service.js"></script>
+    <script src="scripts/app/entities/poLine/poLine.js"></script>
+    <script src="scripts/app/entities/poLine/poLine.controller.js"></script>
+    <script src="scripts/app/entities/poLine/poLine-dialog.controller.js"></script>
+    <script src="scripts/app/entities/poLine/poLine-delete-dialog.controller.js"></script>
+    <script src="scripts/app/entities/purchaseOrder/poLine-dialog.controller.js"></script>
+    <script src="scripts/components/entities/poLine/poLine.service.js"></script>
+    <script src="scripts/components/theme/theme.directives.js"></script>
+        <script src="scripts/components/util/colorThief.directive.js"></script>
+    <script src="scripts/components/mobile/orders.service.js"></script>
+        <script src="scripts/components/util/unique.filter.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

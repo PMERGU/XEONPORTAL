@@ -4,6 +4,7 @@ angular.module('portalApp')
     .controller('XeonMainController', function ($scope, $cacheFactory, $interval, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder) {
         $scope.processed = [];
         $scope.unprocessed = [];
+        $scope.inProgress = [];
 
         $scope.dtOptions = DTOptionsBuilder.newOptions()
             .withBootstrap()
@@ -43,6 +44,9 @@ angular.module('portalApp')
             PurchaseOrder.query().$promise.then(function(data) {
                 $scope.processed = data.filter(function (el) {
                     return (el.state === "PROCESSED");
+                });
+                $scope.inProgress = data.filter(function (el) {
+                    return (el.state === "PROCESSING");
                 });
                 $scope.unprocessed = data.filter(function (el) {
                     return (el.state === "UNPROCESSED");

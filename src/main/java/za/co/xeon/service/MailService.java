@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-
+import za.co.xeon.repository.UserRepository;
 
 
 import javax.inject.Inject;
@@ -44,6 +44,9 @@ public class MailService {
 
     @Inject
     private SpringTemplateEngine templateEngine;
+
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * System default email address that sends the e-mails.
@@ -132,6 +135,23 @@ public class MailService {
         String content = templateEngine.process("poCommentEmail", context);
         String subject = messageSource.getMessage("email.poComment.title", null, locale);
         sendEmail(purchaseOrder.getUser().getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendCSUMail(User processedBy, String title, String message, String link, String linkText, String baseUrl) {
+        log.debug("Sending csu e-mail");
+        Locale locale = Locale.forLanguageTag(processedBy.getLangKey());
+        Context context = new Context(locale);
+        context.setVariable("processedBy", processedBy);
+        context.setVariable("title", title);
+        context.setVariable("baseUrl", baseUrl);
+        context.setVariable("message", message);
+        if(link != null) {
+            context.setVariable("link", link);
+            context.setVariable("linkText", linkText);
+        }
+        String content = templateEngine.process("csuEmail", context);
+        sendEmail(messageSource.getMessage("email.csu.emailAddress", null, locale), title, content, false, true);
     }
 
 }

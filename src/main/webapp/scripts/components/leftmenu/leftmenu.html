@@ -37,13 +37,22 @@
         </li>
 
 
-        <li ng-class="{active: $state.includes('purchaseOrder')}" has-authority="ROLE_CUSTOMER">
+        <li ng-class="{active: $state.includes('purchaseOrder')}">
             <a href="#">
                 <span class="nav-label">Purchase Orders</span><span class="fa arrow"></span>
             </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('purchaseOrder')}">
                 <li ui-sref-active="active" >
-                    <a ui-sref="purchaseOrder" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span></a>
+                    <a ui-sref="purchaseOrder({queryType: 'ALL'})" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span></a>
+                </li>
+                <li ui-sref-active="active" has-authority="ROLE_USER" >
+                    <a ui-sref="purchaseOrder({queryType: 'PROCESSED'})" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >Un-processed</span></a>
+                </li>
+                <li ui-sref-active="active" has-authority="ROLE_USER" >
+                    <a ui-sref="purchaseOrder({queryType: 'PROCESSING'})" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >In Progress</span></a>
+                </li>
+                <li ui-sref-active="active" has-authority="ROLE_USER" >
+                    <a ui-sref="purchaseOrder({queryType: 'UNPROCESSED'})" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >Processed</span></a>
                 </li>
                 <li ui-sref-active="active" >
                     <a ui-sref="purchaseOrder.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
@@ -51,48 +60,34 @@
             </ul>
         </li>
 
-        <li ng-class="{active: $state.includes('party')}" has-authority="ROLE_CUSTOMER">
+        <li ng-class="{active: $state.includes('party')}">
+        <a href="#">
+            <span class="nav-label">Locations</span><span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level" ng-class="{in: $state.includes('party')}">
+            <li ui-sref-active="active" >
+                <a ui-sref="party" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span></a>
+            </li>
+            <li ui-sref-active="active" >
+                <a ui-sref="party.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
+            </li>
+        </ul>
+    </li>
+
+        <li ng-class="{active: $state.includes('Company')}" has-authority="ROLE_USER">
             <a href="#">
-                <span class="nav-label">Locations</span><span class="fa arrow"></span>
+                <span class="nav-label">Company</span><span class="fa arrow"></span>
             </a>
-            <ul class="nav nav-second-level" ng-class="{in: $state.includes('party')}">
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('Company')}">
                 <li ui-sref-active="active" >
-                    <a ui-sref="party" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span></a>
+                    <a ui-sref="company" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span></a>
                 </li>
                 <li ui-sref-active="active" >
-                    <a ui-sref="party.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
+                    <a ui-sref="company.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
                 </li>
             </ul>
         </li>
 
-        <li>
-            <a href="#">
-                <span class="nav-label">Profile</span><span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-second-level" ng-class="{in: $state.includes('entities')}">
-                <li ui-sref-active="active">
-                    <a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>&#xA0;<span>Profile</span></a>
-                </li>
-                <li ui-sref-active="active">
-                    <a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-lock"></span>&#xA0;<span>Password</span></a>
-                </li>
-            </ul>
-        </li>
-
-        <li ng-class="{active: $state.includes('entities')}" has-authority="ROLE_ADMIN">
-            <a href="#">
-                <span class="nav-label">Entities</span><span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-second-level" ng-class="{in: $state.includes('entities')}">
-                <li ui-sref-active="active" >
-                    <a ui-sref="company" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>&#xA0;<span >Company</span></a>
-                </li>
-                <li ui-sref-active="active" >
-                    <a ui-sref="purchaseOrder" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>&#xA0;<span >Purchase order</span></a>
-                </li>
-                <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
-            </ul>
-        </li>
         <li ng-class="{active: $state.includes('admin')}" has-authority="ROLE_ADMIN">
             <a href="#">
                 <span class="nav-label">Administration</span><span class="fa arrow"></span>
@@ -122,6 +117,20 @@
                 <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                 <li ng-hide="inProduction">
                     <a href='/h2-console' target="_tab" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-hdd"></span>&#xA0;<span>Database</span></a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#">
+                <span class="nav-label">Profile</span><span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('entities')}">
+                <li ui-sref-active="active">
+                    <a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>&#xA0;<span>Profile</span></a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-lock"></span>&#xA0;<span>Password</span></a>
                 </li>
             </ul>
         </li>

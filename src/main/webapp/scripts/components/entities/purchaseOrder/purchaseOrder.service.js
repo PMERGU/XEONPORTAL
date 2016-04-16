@@ -4,6 +4,9 @@ angular.module('portalApp')
     .factory('PurchaseOrder', function ($resource, DateUtils) {
         return $resource('api/purchaseOrders/:id', {}, {
             'query': { method: 'GET', isArray: true},
+            'queryByState': { 
+                url: 'api/purchaseOrders/state/:state',
+                method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

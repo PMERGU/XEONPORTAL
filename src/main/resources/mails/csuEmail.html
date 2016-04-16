@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{email.csu.title(${title})}">Xeon portal</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p>
+            Dear CSU Team,
+        </p>
+        <p th:text="#{email.csu.text1(${message})}">
+            An event has occurred, please check the portal dashboard
+        </p>
+        <p>
+            <span>Regards, </span>
+            <br/>
+            <em>Xeon Portal</em>
+        </p>
+    </body>
+</html>

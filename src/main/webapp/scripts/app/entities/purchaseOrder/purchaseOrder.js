@@ -6,6 +6,9 @@ angular.module('portalApp')
             .state('purchaseOrder', {
                 parent: 'entity',
                 url: '/purchaseOrders',
+                params: {
+                    queryType: null
+                },
                 data: {
                     authorities: ['ROLE_USER','ROLE_CUSTOMER'],
                     pageTitle: 'PurchaseOrders'
@@ -211,7 +214,9 @@ angular.module('portalApp')
                             }]
                         }
                     }).result.then(function(result) {
-                        $state.go('purchaseOrder.new', null, { reload: true });
+                        console.log("response");
+                        console.log(result);
+                        $state.go('purchaseOrder.new', {id: result.id}, { reload: true });
                     }, function() {
                         $state.go('^');
                     })

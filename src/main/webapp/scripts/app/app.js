@@ -17,7 +17,6 @@ angular.module('portalApp', ['LocalStorageModule',
                 Auth.authorize();
             }
 
-
         });
 
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {

@@ -91,6 +91,8 @@
 
             <column name="special_instruction" type="varchar(2000)"/>
 
+            <column name="xeon_user_id" type="bigint"/>
+
             <column name="sold_to_party_id" type="bigint">
             </column>
 
@@ -126,6 +128,12 @@
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="purchase_order"
                                  constraintName="fk_purchaseorder_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="xeon_user_id"
+                                 baseTableName="purchase_order"
+                                 constraintName="fk_purchaseorder_xeon_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 

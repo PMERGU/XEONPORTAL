@@ -42,6 +42,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
  * Created by derick on 2016/02/08.
@@ -97,16 +98,20 @@ public class MobileResource {
     public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber,
                                             @RequestParam(value = "from") String from, @RequestParam(value = "to") String to,Pageable pageable) throws Exception {
         log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
-        Page<EvResult> page = null;
+        Future<List<EvResult>> future;
         if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
-            return mobileService.getCustomerOrders(user.getCompany().getSapId(),
+             future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
                 new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
         }else {
-            return mobileService.getCustomerOrders(customerNumber,
+            future = mobileService.getCustomerOrders(customerNumber,
                 new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
         }
+        while (!future.isDone()) {
+            Thread.sleep(500);
+        }
+        return future.get();
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)

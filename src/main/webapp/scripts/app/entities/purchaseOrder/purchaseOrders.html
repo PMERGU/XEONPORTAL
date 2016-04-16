@@ -20,11 +20,12 @@
                 <thead>
                 <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
                     <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="poNumber"><span>PoNumber</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="poNumber"><span>Po Number</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="serviceType"><span>Service</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="serviceLevel"><span>ServiceLevel</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="pickUpPartyId"><span>PickUpParty</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="shipToPartyId"><span>ShipToParty</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="serviceLevel"><span>Service Level</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="captureDate"><span>Captured Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="pickUpPartyId"><span>Pick Up Party</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="shipToPartyId"><span>Ship To Party</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="userFirstName"><span>Captured By</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="state"><span>State</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
@@ -32,10 +33,14 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="purchaseOrder in purchaseOrders track by purchaseOrder.id">
-                    <td><a ui-sref="purchaseOrder.detail({id:purchaseOrder.id})">{{purchaseOrder.id}}</a></td>
+                    <td>
+                        <a has-authority="ROLE_USER" ui-sref="purchaseOrder.detail({id:purchaseOrder.id})">{{purchaseOrder.id}}</a>
+                        <a has-authority="ROLE_CUSTOMER" ui-sref="purchaseOrder.new({id:purchaseOrder.id})">{{purchaseOrder.id}}</a>
+                    </td>
                     <td>{{purchaseOrder.poNumber}}</td>
                     <td>{{purchaseOrder.serviceType}}</td>
                     <td translate="{{'portalApp.ServiceLevel.' + purchaseOrder.serviceLevel}}">{{purchaseOrder.serviceLevel}}</td>
+                    <td>{{purchaseOrder.captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
                     <td>
                         <a ui-sref="party.detail({id:purchaseOrder.pickUpParty.id})">{{purchaseOrder.pickUpParty.name}}</a>
                     </td>

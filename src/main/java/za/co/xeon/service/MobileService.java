@@ -1,6 +1,7 @@
 package za.co.xeon.service;
 
 import org.hibersap.bapi.BapiRet2;
+import org.springframework.scheduling.annotation.AsyncResult;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
 import za.co.xeon.external.as3.S3Service;
 import za.co.xeon.external.as3.S3Settings;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * Created by derick on 2016/02/07.
@@ -102,8 +104,9 @@ public class MobileService {
         return hiberSapService.getHandelingUnits(barcode).getHunumbers();
     }
 
-    public List<EvResult> getCustomerOrders(String customerNumber, Date from, Date to) throws Exception{
-        return hiberSapService.getCustomerOrdersByDate(customerNumber, from, to);
+    @Async
+    public Future<List<EvResult>> getCustomerOrders(String customerNumber, Date from, Date to) throws Exception{
+        return new AsyncResult<List<EvResult>>(hiberSapService.getCustomerOrdersByDate(customerNumber, from, to));
     }
 
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception{

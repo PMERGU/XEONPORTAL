@@ -16,4 +16,13 @@ angular.module('portalApp')
             );
         };
 
+        $scope.grabOrder = function(){
+            $scope.purchaseOrder.state = 'PROCESSING';
+            PurchaseOrder.updateState({id: $scope.purchaseOrder.id}, $scope.purchaseOrder,
+                function () {
+                    $uibModalInstance.close(true);
+                }
+            );
+        }
+
     });

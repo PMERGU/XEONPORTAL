@@ -49,6 +49,48 @@
                         </uib-tab>
                         <uib-tab>
                             <uib-tab-heading>
+                                In Progress&nbsp;
+                            </uib-tab-heading>
+                            <div class="panel-body">
+                                <div>
+                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Company</th>
+                                            <th>Captured By</th>
+                                            <th>Purchase Order</th>
+                                            <th>Mode of Transport</th>
+                                            <th>Reference</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="po in inProgress">
+                                            <td><a ui-sref="purchaseOrder.detail({id:po.id})">{{po.id}}</a></td>
+                                            <td>{{ po.user.company.name }}</td>
+                                            <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
+                                            <td>{{ po.poNumber }}</td>
+                                            <td>{{ po.modeOfTransport }}</td>
+                                            <td>{{ po.reference }}</td>
+                                            <td>{{ po.state }}</td>
+                                            <td>
+                                                <button type="submit"
+                                                        ui-sref="purchaseOrder.new({id:po.id})"
+                                                        class="btn btn-primary btn-sm">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                    <span class="hidden-xs hidden-sm"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab>
+                            <uib-tab-heading>
                                 Processed
                             </uib-tab-heading>
                             <div class="panel-body">
