@@ -216,7 +216,7 @@ angular.module('portalApp')
                     }).result.then(function(result) {
                         console.log("response");
                         console.log(result);
-                        $state.go('purchaseOrder.new', {id: result.id}, { reload: true });
+                        $state.go('purchaseOrder', null, { reload: true });
                     }, function() {
                         $state.go('^');
                     })
@@ -239,7 +239,7 @@ angular.module('portalApp')
                             }]
                         }
                     }).result.then(function(result) {
-                        $state.go('purchaseOrder.new', null, { reload: true });
+                        $state.go('purchaseOrder', null, { reload: true });
                     }, function() {
                         $state.go('^');
                     })
