@@ -54,7 +54,7 @@
                 <li ui-sref-active="active" has-authority="ROLE_USER" >
                     <a ui-sref="purchaseOrder({queryType: 'UNPROCESSED'})" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >Processed</span></a>
                 </li>
-                <li ui-sref-active="active" >
+                <li ui-sref-active="active" has-authority="ROLE_CUSTOMER" >
                     <a ui-sref="purchaseOrder.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
                 </li>
             </ul>

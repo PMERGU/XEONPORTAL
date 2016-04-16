@@ -35,7 +35,7 @@ security:
 
 jhipster:
     async:
-        corePoolSize: 2
+        corePoolSize: 4
         maxPoolSize: 50
         queueCapacity: 10000
     #cors: #By default CORS are not enabled. Uncomment to enable.
