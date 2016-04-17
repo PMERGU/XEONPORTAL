@@ -29,6 +29,8 @@
 
             <column name="capture_date" type="timestamp"/>
 
+            <column name="updated_date" type="timestamp"/>
+
             <column name="delivery_date" type="date"/>
 
             <column name="collection_date" type="date"/>

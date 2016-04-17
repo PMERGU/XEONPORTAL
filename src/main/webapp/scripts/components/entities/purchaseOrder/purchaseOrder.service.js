@@ -4,7 +4,7 @@ angular.module('portalApp')
     .factory('PurchaseOrder', function ($resource, DateUtils) {
         return $resource('api/purchaseOrders/:id', {}, {
             'query': { method: 'GET', isArray: true},
-            'queryByState': { 
+            'queryByState': {
                 url: 'api/purchaseOrders/state/:state',
                 method: 'GET', isArray: true},
             'get': {
@@ -15,6 +15,10 @@ angular.module('portalApp')
                     data.deliveryDate = DateUtils.convertLocaleDateFromServer(data.deliveryDate);
                     return data;
                 }
+            },
+            'getByPONumber': {
+                method: 'GET',
+                url: 'api/purchaseOrders/poNumber/:poNumber'
             },
             'update': {
                 method: 'PUT',

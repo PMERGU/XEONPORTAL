@@ -3,10 +3,10 @@
         <div class="hpanel" style="margin-bottom: 15px;">
             <div class="panel-body">
                 <h2 class="font-light m-b-xs">
-                    Order Details
+                    Order #{{orderGroup[0].dbeln}} Details
                 </h2>
                 <jh-alert></jh-alert>
-                <small>processing details as order proceeds from capture too completed</small>
+                <small>Detailed order view as it proceeds from capture to completed</small>
             </div>
         </div>
     </div>
@@ -17,50 +17,144 @@
                 <div id="timeline"></div>
 
                 <!-- This is the individual marker-->
-                <div class="marker mReceived timeline-icon done">
+                <div class="marker mReceived timeline-icon" ng-class="{'done': states['RECEIVED']}">
                     <i class="icon-pi-cargo-box-3"></i>
-                    <span style="text-align: center;margin-top: 40px;position: absolute;margin-left: -100%">Received</span>
+                    <i class="checkmark fa fa-check" ng-show="states['RECEIVED']"></i>
+                    <span style="margin-left: -105%;">Received</span>
                 </div>
                 <!-- / marker -->
 
                 <!-- This is the individual marker-->
-                <div class="marker mProcessed timeline-icon done">
+                <div class="marker mProcessed timeline-icon" ng-class="{'done': states['PROCESSED']}">
                     <i class="icon-pi-cargo-box-6"></i>
-                    <span style="text-align: center;margin-top: 40px;position: absolute;margin-left: -100%">Processed</span>
+                    <i class="checkmark fa fa-check" ng-show="states['PROCESSED']"></i>
+                    <span style="margin-left: -110%;">Processed</span>
                 </div>
                 <!-- / marker -->
 
                 <!-- This is the individual marker-->
-                <div class="marker mCollected timeline-icon done">
+                <div class="marker mCollected timeline-icon" ng-class="{'done': states['COLLECTED']}">
                     <i class="icon-pi-cargo-trolley-1"></i>
+                    <i class="checkmark fa fa-check" ng-show="states['COLLECTED']"></i>
 				</span>
-                    <span style="text-align: center;margin-top: 40px;position: absolute;margin-left: -100%">Collected</span>
+                    <span style="margin-left: -110%;">Collected</span>
                 </div>
                 <!-- / marker -->
 
                 <!-- This is the individual marker-->
-                <div class="marker mTransit timeline-icon active">
+                <div class="marker mTransit timeline-icon" ng-class="{'done': states['IN_TRANSIT']}">
                     <i class="icon-pi-truck-3"></i>
-                    <span style="text-align: center;margin-top: 40px;position: absolute;margin-left: -85%">Transit</span>
+                    <i class="checkmark fa fa-check" ng-show="states['IN_TRANSIT']"></i>
+                    <span style="margin-left: -88%;">Transit</span>
                 </div>
                 <!-- / marker -->
 
                 <!-- This is the individual marker-->
-                <div class="marker mDelivered timeline-icon">
+                <div class="marker mDelivered timeline-icon" ng-class="{'done': states['DELIVERED']}">
                     <i class="icon-pi-hand-truck-4"></i>
-                    <span style="text-align: center;margin-top: 40px;position: absolute;margin-left: -105%">Delivered</span>
+                    <i class="checkmark fa fa-check" ng-show="states['DELIVERED']"></i>
+                    <span style="margin-left: -110%;">Delivered</span>
                 </div>
                 <!-- / marker -->
 
                 <!-- This is the individual marker-->
-                <div class="marker mPod timeline-icon">
+                <div class="marker mPod timeline-icon" ng-class="{'done': states['POD']}">
                     <i class="icon-pi-checklist-1"></i>
-                    <span style="text-align: center;margin-top: 40px;position: absolute;margin-left: -70%">POD</span>
+                    <i class="checkmark fa fa-check" ng-show="states['POD']"></i>
+                    <span style="margin-left: -70%;">POD</span>
                 </div>
                 <!-- / marker -->
+            </div>
+        </div>
+    </div>
 
-
-
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="hpanel">
+                <div class="panel-heading">
+                    <h2 class="font-light m-b-xs">
+                       Details of your order
+                    </h2>
+                </div>
+                <div class="panel-body list">
+                    <div class="table-responsive project-list">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Step</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-hide="purchaseOrder.state === 'NOT_FOUND'">
+                                    <td>1</td>
+                                    <td>Order captured on portal
+                                        <br/>
+                                        <small>&nbsp; <i class="fa fa-user"></i> captured by {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}</small>
+                                    </td>
+                                    <td>{{purchaseOrder.captureDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                </tr>
+                                <tr ng-show="purchaseOrder.state === 'PROCESSING'">
+                                    <td>2</td>
+                                    <td>Order is being processed by Xeon Team
+                                        <br/>
+                                        <small>&nbsp; <i class="fa fa-bullseye"></i> assigned to {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}} </small>
+                                    </td>
+                                    <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                </tr>
+                                <tr ng-show="purchaseOrder.state === 'PROCESSED'">
+                                    <td>2</td>
+                                    <td>Order has been processed by our team
+                                        <br/>
+                                        <small>&nbsp; <i class="fa fa-user"></i> processed by {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}</small>
+                                    </td>
+                                    <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                </tr>
+                                <tr ng-show="states['COLLECTED']">
+                                    <td>3</td>
+                                    <td>Order has been collected and is in Transit
+                                    </td>
+                                    <td>{{orderGroup[0].datbg | date: 'yyyy-MM-dd'}} {{orderGroup[0].uatbg | date: 'mm:hh:ss'}}</td>
+                                </tr>
+                                <tr ng-show="states['DELIVERED']">
+                                    <td>3</td>
+                                    <td>Order has been delivered
+                                    </td>
+                                    <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{orderGroup[0].audat | date: 'mm:hh:ss'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="hpanel" ng-show="{{ purchaseOrder.comment }}">
+                <div class="panel-heading">
+                    <h2 class="font-light m-b-xs">
+                        Comments
+                    </h2>
+                </div>
+                <div class="panel-body list">
+                    <div class="col-md-12">
+                        <uib-alert type="info" close="closeAlert($index)" ng-show="purchaseOrder.comment"><strong>Comment : </strong>{{ purchaseOrder.comment }}</uib-alert>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="hpanel">
+                <div class="panel-heading">
+                    <h2 class="font-light m-b-xs">
+                        POD
+                    </h2>
+                </div>
+                <div class="panel-body list text-center" style="height: 240px">
+                    <h3>Order not yet completed</h3>
+                    <span class="fa-stack fa-5x icon-round-primary">
+                      <i class="fa fa-barcode fa-stack-2x" style="font-size: 170px;"></i>
+                      <i class="fa fa-ban fa-stack-2x fa-inverse" style="top:15px;left:20px"></i>
+                    </span>
+                </div>
             </div>
         </div>
     </div>

@@ -152,6 +152,7 @@ public class PurchaseOrderResource {
         User xeonUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
         purchaseOrder.setState(statePO.getState());
         purchaseOrder.setXeonUser(xeonUser);
+        purchaseOrder.setUpdatedDate(ZonedDateTime.now());
         purchaseOrder.setSoNumber(statePO.getSoNumber());
         purchaseOrder.setSoComment(statePO.getSoComment());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
@@ -237,8 +238,33 @@ public class PurchaseOrderResource {
             log.debug("Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin());
             page = purchaseOrderRepository.findByUserAndState(user, state, pageable);
         }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/purchaseOrders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /purchaseOrders -> get all the purchaseOrders.
+     */
+    @RequestMapping(value = "/purchaseOrders/poNumber/{poNumber}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    public ResponseEntity<PurchaseOrder> getAllPurchaseOrdersByPoNumber(@PathVariable String poNumber, Pageable pageable) throws URISyntaxException {
+        log.debug("REST request to get getAllPurchaseOrdersByPoNumber by poNumber " + poNumber);
+        PurchaseOrder purchaseOrder;
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+            purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
+        }else {
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            log.debug("Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin());
+            purchaseOrder = purchaseOrderRepository.findFirstByUserAndPoNumber(user, poNumber);
+        }
+        return Optional.ofNullable(purchaseOrder)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**

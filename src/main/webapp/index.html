@@ -182,18 +182,16 @@
 
                     <div class="col-md-4 custom-bkg bkg-dark-blue dark transparent02">
                         <div class="custom-heading">
-                            <h3>our locations</h3>
+                            <h3>Full Integrated</h3>
                         </div><!-- .custom-heading end -->
 
                         <p>
-                            Trucking Co. covers over 150 locations all over the
-                            globe plus numerous logistic partner companies from
-                            different areas of supply chain.
+                            Xeon logistics our full integrated Supply Chain Management solution will help your business become more sustainable, cost effective, integrated and innovative. Lets talk about what we can do for you
                         </p>
 
-                        <a class="read-more" href="website/locations.html">
+                        <a class="read-more" href="website/contact.html">
                             <span>
-                                View all locations
+                                Contact Us
                                 <i class="fa fa-map-marker"></i>
                             </span>
                         </a>
@@ -229,29 +227,6 @@
 
                             <div class="carousel-container">
                                 <div id="news-carousel" class="owl-carousel owl-carousel-navigation">
-                                    <div class="owl-item">
-                                        <a href="website/news-single.html">
-                                            <h4>First quartal 2015 revenue report released</h4>
-                                        </a>
-
-                                        <span class="date">may 22, 2015</span>
-                                    </div><!-- .owl-item end -->
-
-                                    <div class="owl-item">
-                                        <a href="website/news-single.html">
-                                            <h4>Trucking - Company of the Year 2014</h4>
-                                        </a>
-
-                                        <span class="date">may 22, 2015</span>
-                                    </div><!-- .owl-item end -->
-
-                                    <div class="owl-item">
-                                        <a href="website/news-single.html">
-                                            <h4>New vehicles in the fleet - see our new Scania trucks</h4>
-                                        </a>
-
-                                        <span class="date">may 22, 2015</span>
-                                    </div><!-- .owl-item end -->
                                 </div><!-- #news-carousel end -->
                             </div><!-- .carousel-container end -->
                         </div><!-- .news-carousel-container end -->
@@ -273,7 +248,92 @@
         <script>
             /* <![CDATA[ */
             jQuery(document).ready(function ($) {
+//                $.ajax({
+//                    url: "http://query.yahooapis.com/v1/public/yql",
+//                    jsonp: "callback",
+//
+//                    // tell jQuery we're expecting JSONP
+//                    dataType: "jsonp",
+//
+//                    // tell YQL what we want and that we want JSON
+//                    data: {
+//                        q: "use 'http://github.com/yql/yql-tables/raw/master/weather/weather.bylocation.xml' as t_weather;"
+//                        + "select * from t_weather where location='ottawa,canada' and unit='c'",
+//                        format: "json"
+//                    },
+//                    success: function( response ) {
+//                        var channel = response.query.results.weather.rss.channel;
+//                        $('#weather').append($('<h2/>').text(channel.description));
+//                        $.each(channel, function(index, item){
+//                            if (item.description) { $('#weather').append($('<p/>').html(item.description)); }
+//                        });
+//                    }
+//                });
+//            });
 
+                $.ajax({
+                    url: 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent("http://feeds.reuters.com/reuters/financialsNews"),
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        if (data.responseData.feed && data.responseData.feed.entries) {
+                            $.each(data.responseData.feed.entries, function (i, e) {
+                                var newsItem = [
+                                        '<div class="owl-item">',
+                                        '    <a href="' + e.link + '">',
+                                        '        <h4>' + e.title + '</h4>',
+                                        '    </a>',
+                                        '    <span class="date">' + e.publishedDate + '</span>',
+                                        '</div>'
+                                ].join("\n");
+                                $("#news-carousel").append(newsItem);
+                            });
+
+                            $('#news-carousel').owlCarousel({
+                                items: 1,
+                                loop: true,
+                                margin: 30,
+                                responsiveClass: true,
+                                mouseDrag: true,
+                                dots: false,
+                                autoheight: true,
+                                responsive: {
+                                    0: {
+                                        items: 1,
+                                        nav: true,
+                                        loop: true,
+                                        autoplay: true,
+                                        autoplayTimeout: 5000,
+                                        autoplayHoverPause: true,
+                                        responsiveClass: true,
+                                        autoHeight: true
+                                    },
+                                    600: {
+                                        items: 1,
+                                        nav: true,
+                                        loop: true,
+                                        autoplay: true,
+                                        autoplayTimeout: 5000,
+                                        autoplayHoverPause: true,
+                                        responsiveClass: true,
+                                        autoHeight: true
+                                    },
+                                    1000: {
+                                        items: 1,
+                                        nav: true,
+                                        loop: true,
+                                        autoplay: true,
+                                        autoplayTimeout: 5000,
+                                        autoplayHoverPause: true,
+                                        responsiveClass: true,
+                                        mouseDrag: true,
+                                        autoHeight: true
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
 
                 'use strict';
                 $('.page-content.column-img-bkg *[class^="col-"]').matchHeight({
@@ -319,49 +379,6 @@
                 $(document).ready(positioning);
                 $(window).resize(positioning);
 
-
-                $('#news-carousel').owlCarousel({
-                    items: 1,
-                    loop: true,
-                    margin: 30,
-                    responsiveClass: true,
-                    mouseDrag: true,
-                    dots: false,
-                    autoheight: true,
-                    responsive: {
-                        0: {
-                            items: 1,
-                            nav: true,
-                            loop: true,
-                            autoplay: true,
-                            autoplayTimeout: 3000,
-                            autoplayHoverPause: true,
-                            responsiveClass: true,
-                            autoHeight: true
-                        },
-                        600: {
-                            items: 1,
-                            nav: true,
-                            loop: true,
-                            autoplay: true,
-                            autoplayTimeout: 3000,
-                            autoplayHoverPause: true,
-                            responsiveClass: true,
-                            autoHeight: true
-                        },
-                        1000: {
-                            items: 1,
-                            nav: true,
-                            loop: true,
-                            autoplay: true,
-                            autoplayTimeout: 3000,
-                            autoplayHoverPause: true,
-                            responsiveClass: true,
-                            mouseDrag: true,
-                            autoHeight: true
-                        }
-                    }
-                });
             });
             /* ]]> */
         </script>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainController', function ($scope, $cacheFactory, $log, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder) {
+    .controller('MainController', function ($scope, $cacheFactory, $log, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder, CachedOrders) {
         $scope.deliveredOrders = [];
         $scope.undeliveredOrders = [];
         $scope.ordersStep = 0;
@@ -60,7 +60,7 @@ angular.module('portalApp')
 
         $scope.reloadData = function () {
             var resetPaging = true;
-            getOrders(new Date());
+            getOrders(new Date(), true);
         };
 
         function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -74,19 +74,21 @@ angular.module('portalApp')
             return nRow;
         };
 
-        function getOrders(dateT){
+        function getOrders(dateT, force){
             $scope.loadingOrders = true;
             if($scope.account.company.id !== null) {
-                CustomerOrders.get({
-                    id: $scope.account.company.sapId,
-                    from: new Date(new Date(dateT).setMonth(dateT.getMonth() - 1)),
-                    to: new Date(new Date(dateT).setDate(dateT.getDate()+1)),
-                }).$promise.then(function (data) {
+                CachedOrders.getOrders($scope.ordersStep,
+                    $scope.account.company.sapId,
+                    new Date(new Date(dateT).setMonth(dateT.getMonth() - 1)),
+                    // new Date(new Date(dateT).setDate(dateT.getDate() - 1)),
+                    new Date(new Date(dateT).setDate(dateT.getDate()+1)),
+                    force
+                ).then(function (data) {
                     $scope.deliveredOrders = data.filter(function (el) {
                         return (el.pdstk === "B" || el.pdstk === "C");
                     });
                     $scope.undeliveredOrders = data.filter(function (el) {
-                        return (el.pdstk === "A");
+                        return (el.pdstk === "A" || el.pdstk === "");
                     });
                     $scope.loadingOrders = false;
                 });

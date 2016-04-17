@@ -6,7 +6,7 @@ $color_mischka_approx: #cbd0df;
 
 #timeline-wrap {
     margin: 50px 10%;
-    top: 10px;
+    top: -4px;
     position: relative;
 
     #timeline {
@@ -37,10 +37,21 @@ $color_mischka_approx: #cbd0df;
         }
         i{
             font-size: 32px;
+            &.checkmark{
+                font-size: 20px;
+                color: darken($color-blue, 5%);
+                position: absolute;
+                top: -20px;
+                left: 35px;
+            }
         }
         span{
             color: $color-blue;
             font-size: 16px;
+            text-align: center;
+            margin-top: 40px;
+            position: absolute;
+            font-weight: 600;
         }
     }
 

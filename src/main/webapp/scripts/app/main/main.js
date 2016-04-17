@@ -41,7 +41,25 @@ angular.module('portalApp')
                     }
                 },
                 params: {
-                    order: null
+                    order: null,
+                    orderStep: null
+                },
+                resolve: {
+                    purchaseOrder: ['$stateParams', 'PurchaseOrder', function($stateParams, PurchaseOrder) {
+                        if($stateParams.order){
+                            return PurchaseOrder.getByPONumber({poNumber : $stateParams.order.bstkd}).$promise.then(function(purchaseOrder) {
+                                return purchaseOrder;
+                            }, function(errResponse) {
+                                console.log(errResponse);
+                                return undefined;
+                            });
+                        }else{
+                            return undefined;
+                        }
+                    }],
+                    orderGroup: ['$stateParams', 'PurchaseOrder', 'CachedOrders', function($stateParams, PurchaseOrder, CachedOrders) {
+                        return CachedOrders.getOrderGroup($stateParams.orderStep, $stateParams.order.dbeln);
+                    }]
                 }
             })
             .state('xeonhome', {

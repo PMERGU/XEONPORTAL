@@ -42,6 +42,9 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "capture_date")
     private ZonedDateTime captureDate;
 
+    @Column(name = "updated_date")
+    private ZonedDateTime updatedDate;
+
     @Column(name = "delivery_date")
     private LocalDate dropOffDate;
 
@@ -157,6 +160,14 @@ public class PurchaseOrder implements Serializable {
     @ManyToOne
     @JoinColumn(name = "xeon_user_id")
     private User xeonUser;
+
+    public ZonedDateTime getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(ZonedDateTime updatedDate) {
+        this.updatedDate = updatedDate;
+    }
 
     public User getXeonUser() {
         return xeonUser;
