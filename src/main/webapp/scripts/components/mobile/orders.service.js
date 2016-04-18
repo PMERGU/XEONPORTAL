@@ -11,6 +11,27 @@ angular.module('portalApp')
                     data = angular.fromJson(data);
                     return data;
                 }
+            },
+            'getPod': {
+                url: "api/mobile/pods/:poNumber",
+                method: 'GET',
+                headers: {
+                    accept: 'image/jpeg'
+                },
+                responseType: 'arraybuffer',
+                cache: true,
+                transformResponse: function (data) {
+                    var jpg;
+                    if (data) {
+                        jpg = new Blob([data], {
+                            type: 'image/jpeg'
+                        });
+                    }
+                    return {
+                        response: jpg,
+                        original: data  
+                    };
+                }
             }
         });
     });

@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainOrderDetailController', function ($scope, $stateParams, Principal, purchaseOrder, orderGroup, $log) {
-        $log.log(orderGroup);
-        $log.log(purchaseOrder);
+    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob) {
         purchaseOrder = purchaseOrder !== undefined ? purchaseOrder : {
             state: "NOT_FOUND"
         };
-        $log.log(purchaseOrder.state);
+        $scope.step = 1;
+
         $scope.purchaseOrder = purchaseOrder;
         $scope.orderGroup = orderGroup;
         $scope.states = {
@@ -17,7 +16,7 @@ angular.module('portalApp')
             "IN_TRANSIT": false,
             "DELIVERED": false,
             "POD": false,
-            "INVOICE": false,
+            "INVOICE": false
         };
 
         $scope.states["PROCESSED"] = purchaseOrder.state === "PROCESSED" ? true : false;
@@ -41,9 +40,28 @@ angular.module('portalApp')
         if($scope.orderGroup[0].pdstk === "B" || $scope.orderGroup[0].pdstk === "C" ){
             $scope.states["DELIVERED"] = true;
         }
-
+        $scope.states["DELIVERED"] = true;
         if($scope.states["DELIVERED"]){
             $scope.states["POD"] = true;
+        }
+
+        if($scope.states["POD"]){
+            $scope.podDate = new Date(new Date($scope.orderGroup[0].audat).setMinutes(new Date($scope.orderGroup[0].audat).getMinutes() + 17));
+            $scope.podMessge = "Loading proof of delivery...";
+            CustomerOrders.getPod({poNumber: $scope.orderGroup[0].dbeln}).$promise.then(function(imageBlob){
+                $scope.podMessge = "Click image to download";
+                var creator = $window.URL || $window.webkitURL;
+                var fileURL = creator.createObjectURL(imageBlob.response);
+                $scope.podBlob = imageBlob.response;
+                $scope.pod = $sce.trustAsResourceUrl(fileURL);
+            },function(err){
+                $scope.podMessge = "POD could not be found.";
+                $scope.states["POD"] = false;
+            });
+        }
+
+        $scope.downloadPod = function(){
+            FileSaver.saveAs($scope.podBlob, $scope.orderGroup[0].dbeln + '.jpg');
         }
 
     });

@@ -118,10 +118,16 @@
                                     <td>{{orderGroup[0].datbg | date: 'yyyy-MM-dd'}} {{orderGroup[0].uatbg | date: 'mm:hh:ss'}}</td>
                                 </tr>
                                 <tr ng-show="states['DELIVERED']">
-                                    <td>3</td>
+                                    <td>4</td>
                                     <td>Order has been delivered
                                     </td>
                                     <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{orderGroup[0].audat | date: 'mm:hh:ss'}}</td>
+                                </tr>
+                                <tr ng-show="states['POD']">
+                                    <td>5</td>
+                                    <td>POD uploaded and availible online
+                                    </td>
+                                    <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{podDate | date: 'mm:hh:ss'}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -149,11 +155,14 @@
                     </h2>
                 </div>
                 <div class="panel-body list text-center" style="height: 240px">
-                    <h3>Order not yet completed</h3>
-                    <span class="fa-stack fa-5x icon-round-primary">
+                    <h3 ng-hide="states['POD']">Order not yet completed</h3>
+                    <span ng-hide="states['POD']" class="fa-stack fa-5x icon-round-primary">
                       <i class="fa fa-barcode fa-stack-2x" style="font-size: 170px;"></i>
                       <i class="fa fa-ban fa-stack-2x fa-inverse" style="top:15px;left:20px"></i>
                     </span>
+
+                    <h3 ng-show="states['POD']">{{podMessge}}</h3>
+                    <img ng-show="pod" data-ng-src="{{pod}}" style="max-width: 100%;" ng-click="downloadPod()"/>
                 </div>
             </div>
         </div>

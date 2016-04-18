@@ -1,5 +1,6 @@
 package za.co.xeon.service;
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.hibersap.bapi.BapiRet2;
 import org.springframework.scheduling.annotation.AsyncResult;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
@@ -22,6 +23,7 @@ import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
 import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,6 +73,11 @@ public class MobileService {
         String ocrBarcode = null;
         try {
             ocrBarcode = ocrService.getCompletedBarcodeResult(task.getResultUrl());
+
+            ocrBarcode = org.apache.commons.lang.StringUtils.leftPad(ocrBarcode, 10, "0");
+            barcode = org.apache.commons.lang.StringUtils.leftPad(barcode, 10, "0");
+            log.debug("Padding both barcodes to 10 length [ocrBarcode:" + ocrBarcode + "] - [barcode:" + barcode + "]");
+
             if(ocrBarcode == null || barcode.equals(ocrBarcode)) {
                 log.debug("\t====> Found barcode : " + ocrBarcode);
                 if(ocrBarcode == null) {
@@ -115,5 +122,12 @@ public class MobileService {
 
     public List<BapiRet2> updatePod(String barcode, String url) throws Exception {
         return hiberSapService.updatePod(barcode, url);
+    }
+
+    public byte[] getPod(String barcode) throws Exception{
+        barcode = org.apache.commons.lang.StringUtils.leftPad(barcode, 10, "0");
+        String s3Path = s3Settings.getFolderPod() + "/" + barcode + ".jpg";
+        log.debug("Trying to retrieve pod " + s3Path);
+        return s3Service.retrieveFile(s3Path);
     }
 }

@@ -58,6 +58,9 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-datatables/dist/plugins/buttons/angular-datatables.buttons.js',
             'main/webapp/bower_components/angular-datatables/dist/plugins/select/angular-datatables.select.js',
             'main/webapp/bower_components/color-thief/src/color-thief.js',
+            'main/webapp/bower_components/blob-polyfill/Blob.js',
+            'main/webapp/bower_components/file-saver.js/FileSaver.js',
+            'main/webapp/bower_components/angular-file-saver/dist/angular-file-saver.bundle.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

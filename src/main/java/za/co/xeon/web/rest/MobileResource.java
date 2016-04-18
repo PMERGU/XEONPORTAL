@@ -1,7 +1,10 @@
 package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.apache.commons.io.IOUtils;
 import org.hibersap.bapi.BapiRet2;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +39,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.annotation.MultipartConfig;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -132,6 +137,32 @@ public class MobileResource {
     @Timed
     public List<BapiRet2> updatePod(@PathVariable(value="barcode") String barcode, @RequestBody String url) throws Exception {
         return mobileService.updatePod(barcode, url);
+    }
+
+    @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.GET)
+    @Timed
+    public ResponseEntity<ByteArrayResource> getPod(@PathVariable(value="barcode") String barcode) throws Exception {
+        try {
+            // get your file as InputStream
+            byte[] img = mobileService.getPod(barcode);
+            if(img != null) {
+                return ResponseEntity
+                    .ok()
+                    .contentLength(img.length)
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(new ByteArrayResource(img));
+            }else{
+                log.info(String.format("POD for barcode%s, could not be found on S3 bucket", barcode));
+                return ResponseEntity
+                    .badRequest()
+                    .body(null);
+            }
+        } catch (IOException ex) {
+            log.error(String.format("Error writing POD to output stream. barcode was %s", barcode), ex);
+            return ResponseEntity
+                .badRequest()
+                .body(null);
+        }
     }
 
 }

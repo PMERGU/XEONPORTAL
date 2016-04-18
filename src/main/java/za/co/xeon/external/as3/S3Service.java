@@ -6,6 +6,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -89,10 +91,14 @@ public class S3Service {
         }
     }
 
-    public InputStream retrieveFile(String fileName){
+    public byte[] retrieveFile(String fileName) throws AmazonS3Exception, IOException {
         log.debug(String.format("Trying to retrieve file from S3 : %s", fileName));
-        S3Object s3Object = s3client.getObject(new GetObjectRequest(s3Settings.getBucketName(), fileName));
-        return s3Object.getObjectContent();
+        if(s3client.doesObjectExist(s3Settings.getBucketName(), fileName)) {
+            S3Object s3Object = s3client.getObject(new GetObjectRequest(s3Settings.getBucketName(), fileName));
+            return IOUtils.toByteArray(s3Object.getObjectContent());
+        }else{
+            return null;
+        }
     }
 
     public ObjectListing listFolder(String folder){
@@ -104,3 +110,4 @@ public class S3Service {
         return listing;
     }
 }
+

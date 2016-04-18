@@ -176,7 +176,7 @@ gulp.task('watch', function() {
 gulp.task('wiredep', ['wiredep:test', 'wiredep:app']);
 
 gulp.task('wiredep:app', function () {
-    var stream = gulp.src(config.app + 'index.html')
+    var stream = gulp.src(config.app + 'portal.html')
         .pipe(plumber({errorHandler: handleErrors}))
         .pipe(wiredep({
             exclude: [/angular-i18n/]

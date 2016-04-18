@@ -33,23 +33,23 @@ public class S3Resource {
     @Autowired
     private S3Service s3Service;
 
-    @RequestMapping(value = "/{fileName:.+}", method= RequestMethod.GET)
-    @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<InputStreamResource> retrieveFile(@PathVariable("fileName") String fileName, HttpServletResponse response) {
-        log.debug("Retrieving S3 file " + fileName);
-            try {
-                // get your file as InputStream
-                InputStream is = s3Service.retrieveFile(fileName);
-                return ResponseEntity
-                        .ok()
-                        .contentLength(is.available())
-                        .contentType(MediaType.parseMediaType("application/octet-stream"))
-                        .body(new InputStreamResource(is));
-            } catch (IOException ex) {
-                log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
-                throw new RuntimeException("IOError writing file to output stream");
-            }
-    }
+//    @RequestMapping(value = "/{fileName:.+}", method= RequestMethod.GET)
+//    @Secured(AuthoritiesConstants.ADMIN)
+//    public ResponseEntity<InputStreamResource> retrieveFile(@PathVariable("fileName") String fileName, HttpServletResponse response) {
+//        log.debug("Retrieving S3 file " + fileName);
+//            try {
+//                // get your file as InputStream
+//                InputStream is = s3Service.retrieveFile(fileName);
+//                return ResponseEntity
+//                        .ok()
+//                        .contentLength(is.available())
+//                        .contentType(MediaType.parseMediaType("application/octet-stream"))
+//                        .body(new InputStreamResource(is));
+//            } catch (IOException ex) {
+//                log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
+//                throw new RuntimeException("IOError writing file to output stream");
+//            }
+//    }
 
     @RequestMapping(value = "/folder/{folderName}", method= RequestMethod.GET)
     @Secured(AuthoritiesConstants.ADMIN)
