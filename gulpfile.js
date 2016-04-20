@@ -45,12 +45,13 @@ gulp.task('clean', function () {
     return del([config.dist]);
 });
 
-gulp.task('test', ['wiredep:test', 'ngconstant:dev'], function(done) {
-    new KarmaServer({
-        configFile: __dirname + '/' + config.test + 'karma.conf.js',
-        singleRun: true
-    }, done).start();
-});
+gulp.task('test', ['wiredep:test', 'ngconstant:dev']);
+// , function(done) {
+//     new KarmaServer({
+//         configFile: __dirname + '/' + config.test + 'karma.conf.js',
+//         singleRun: true
+//     }, done).start();
+// });
 
 
 gulp.task('copy', function() {

@@ -24,7 +24,7 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-
+            <column name="type" type="varchar(255)"/>
             <column name="sap_id" type="varchar(255)">
                 <constraints nullable="false" />
             </column>

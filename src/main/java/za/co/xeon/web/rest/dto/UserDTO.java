@@ -43,6 +43,8 @@ public class UserDTO {
     @Size(min = 2, max = 5)
     private String langKey;
 
+    private String fcSapId;
+
     private Set<String> authorities;
 
     public UserDTO() {
@@ -52,13 +54,13 @@ public class UserDTO {
         this(user.getLogin(), null, user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()),
-            (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getName(), user.getCompany().getSapId())) : new Company())
+                .collect(Collectors.toSet()), user.getFcSapId(),
+            (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getName(), user.getCompany().getSapId(), user.getCompany().getType())) : new Company())
         );
     }
 
     public UserDTO(String login, String password, String firstName, String lastName,
-        String email, boolean activated, String langKey, Set<String> authorities, Company company) {
+        String email, boolean activated, String langKey, Set<String> authorities, String fcSapId, Company company) {
 
         this.login = login;
         this.password = password;
@@ -68,6 +70,7 @@ public class UserDTO {
         this.activated = activated;
         this.langKey = langKey;
         this.authorities = authorities;
+        this.fcSapId = fcSapId;
         this.company = company;
     }
 
@@ -105,6 +108,10 @@ public class UserDTO {
 
     public Company getCompany() {
         return company;
+    }
+
+    public String getFcSapId() {
+        return fcSapId;
     }
 
     @Override

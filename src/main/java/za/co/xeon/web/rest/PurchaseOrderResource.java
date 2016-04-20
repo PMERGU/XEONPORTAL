@@ -89,7 +89,7 @@ public class PurchaseOrderResource {
         log.debug(purchaseOrder.getPoLines().toString());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         mailService.sendCSUMail(user,
-            String.format("New PO created for %s", user.getCompany().getName()),
+            String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
             String.format("A new Purchase Order #%s has been created by %s %s for client %s. Please action and capture as soon as possible.", result.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
             , null, null, getBaseUrl(request));
         return ResponseEntity.created(new URI("/api/purchaseOrders/" + result.getId()))
@@ -158,10 +158,18 @@ public class PurchaseOrderResource {
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         if(statePO.getState().equals(PoState.PROCESSED)) {
             mailService.sendPoProcessedMail(xeonUser, purchaseOrder, getBaseUrl(request));
+            mailService.sendCSUMail(xeonUser,
+                String.format("Xeon Portal: PO #%s has been processed by %s", purchaseOrder.getPoNumber(), xeonUser.getFirstName()),
+                String.format("Please note that this PO was been captured and processed in SAP. %s %s from client %s has been informed via Email already.", purchaseOrder.getUser().getFirstName(), purchaseOrder.getUser().getLastName(), purchaseOrder.getUser().getCompany().getName()),
+                null, null, getBaseUrl(request));
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createAlert("Marked as Processed and email sent to " + purchaseOrder.getUser().getFirstName() + " " + purchaseOrder.getUser().getLastName() + " from " + purchaseOrder.getUser().getCompany().getName() + " succesfully.", ""))
+                .body(result);
         }
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createAlert("Marked as Processed and email sent to " + purchaseOrder.getUser().getFirstName() + " " + purchaseOrder.getUser().getLastName() + " from " + purchaseOrder.getUser().getCompany().getName() + " succesfully.", ""))
+            .headers(HeaderUtil.createAlert("Order grabbed by " + purchaseOrder.getXeonUser().getFirstName() + " " + purchaseOrder.getXeonUser().getLastName() + ". Please complete SAP captured ASAP.", ""))
             .body(result);
+
     }
 
     public String getBaseUrl(HttpServletRequest request){

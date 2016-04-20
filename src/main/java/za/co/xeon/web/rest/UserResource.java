@@ -6,6 +6,7 @@ import za.co.xeon.domain.User;
 import za.co.xeon.repository.AuthorityRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.AuthoritiesConstants;
+import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
 import za.co.xeon.service.UserService;
 import za.co.xeon.web.rest.dto.ManagedUserDTO;
@@ -89,6 +90,7 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createUser(@RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserDTO);
+        log.debug("fin : " + managedUserDTO.getFcSapId());
         if (userRepository.findOneByLogin(managedUserDTO.getLogin()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use"))
@@ -140,6 +142,7 @@ public class UserResource {
                 user.setEmail(managedUserDTO.getEmail());
                 user.setActivated(managedUserDTO.isActivated());
                 user.setLangKey(managedUserDTO.getLangKey());
+                user.setFcSapId(managedUserDTO.getFcSapId());
                 Set<Authority> authorities = user.getAuthorities();
                 authorities.clear();
                 managedUserDTO.getAuthorities().stream().forEach(
@@ -196,6 +199,18 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ANONYMOUS)){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "anonymous", "Cant delete a system user")).body(null);
+        }
+        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+            Authority auth = new Authority();
+            auth.setName(AuthoritiesConstants.ADMIN);
+            List<User> existingAdmins = userRepository.findAllByAuthorities(auth);
+            if (existingAdmins.size() == 1) {
+                return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "administrator", "You cant delete the last admin user. Please create a new admin before deleting this one")).body(null);
+            }
+        }
+
         userService.deleteUserInformation(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "A user is deleted with identifier " + login, login)).build();
     }

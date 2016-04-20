@@ -22,6 +22,7 @@
                         <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
                             <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                             <th jh-sort-by="name"><span>Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                            <th jh-sort-by="type"><span>Type</span> <span class="glyphicon glyphicon-sort"></span></th>
                             <th jh-sort-by="sapId"><span>SapId</span> <span class="glyphicon glyphicon-sort"></span></th>
                             <th jh-sort-by="background"><span>Background</span> <span class="glyphicon glyphicon-sort"></span></th>
                             <th></th>
@@ -31,6 +32,7 @@
                         <tr ng-repeat="company in companys track by company.id">
                             <td><a ui-sref="company.detail({id:company.id})">{{company.id}}</a></td>
                             <td>{{company.name}}</td>
+                            <td>{{company.type}}</td>
                             <td>{{company.sapId}}</td>
                             <td>
                                 <img data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}" style="max-height: 30px;" ng-if="company.background"/> {{company.backgroundContentType}} {{byteSize(company.background)}}

@@ -3,6 +3,8 @@ package za.co.xeon.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import za.co.xeon.domain.enumeration.CompanyType;
+import za.co.xeon.domain.enumeration.TransportParty;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -31,6 +33,10 @@ public class Company implements Serializable {
     @Column(name = "sap_id", nullable = false)
     private String sapId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private CompanyType type;
+
     @Lob
     @Column(name = "background")
     private byte[] background;
@@ -55,13 +61,20 @@ public class Company implements Serializable {
         this.id = id;
     }
 
-    public Company(Long id, String name, String sapId) {
+    public Company(Long id, String name, String sapId, CompanyType type) {
         this.id = id;
         this.name = name;
         this.sapId = sapId;
+        this.type = type;
     }
 
+    public CompanyType getType() {
+        return type;
+    }
 
+    public void setType(CompanyType type) {
+        this.type = type;
+    }
 
     public Set<Party> getLocations() {
         return locations;

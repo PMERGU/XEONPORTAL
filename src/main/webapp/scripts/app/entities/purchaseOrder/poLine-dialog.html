@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="field_materialType">Material Type</label>
-                    <select class="form-control" name="materialType" ng-model="poLine.materialType"
+                    <select class="form-control" name="materialType" ng-model="poLine.materialType" ng-required="requiredFields['materialType']"
                             id="field_materialType">
                         <option value="EACH">ITEM</option>
                         <option value="BOX">BOX</option>
@@ -33,6 +33,12 @@
                         <option value="PACKAGE">PACKAGE</option>
                         <option value="PALLET">PALLET</option>
                     </select>
+                    <div ng-show="editForm.materialType.$invalid">
+                        <p class="help-block small-help-block pull-right"
+                           ng-show="editForm.materialType.$error.required">
+                            required
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -69,12 +75,89 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <blockquote class="blockquote-warn">
+                <blockquote class="blockquote-warn" ng-show="poLine.materialType">
                     <p><strong>Please note,</strong> below info is per {{poLine.materialType}}</p>
                 </blockquote>
             </div>
         </div>
         <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="field_length">Length</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="length" id="field_length" ng-change="isGageLength()" ng-model-options='{ debounce: 1000 }'
+                               ng-model="poLine.length" ng-required="requiredFields['length']"
+                        />
+                        <span class="input-group-addon">cm</span>
+                    </div>
+                    <div ng-show="editForm.length.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.length.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.length.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                    <div ng-show="outOfGageL">
+                        <p class="help-block small-help-block pull-right">
+                            Out of gage
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_width">Width</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="width" id="field_width" ng-change="isGageWidth()" ng-model-options='{ debounce: 1000 }'
+                               ng-model="poLine.width" ng-required="requiredFields['width']"
+                        />
+                        <span class="input-group-addon">cm</span>
+                    </div>
+
+                    <div ng-show="editForm.width.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.width.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.width.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                    <div ng-show="outOfGageW">
+                        <p class="help-block small-help-block pull-right">
+                            Out of gage
+                        </p>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_height">Height</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="height" id="field_height" ng-change="isGageHeight()" ng-model-options='{ debounce: 1000 }'
+                               ng-model="poLine.height" ng-required="requiredFields['height']"
+                        />
+                        <span class="input-group-addon">cm</span>
+                    </div>
+                    <div ng-show="editForm.height.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.height.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.height.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                    <div ng-show="outOfGageH">
+                        <p class="help-block small-help-block pull-right">
+                            Out of gage
+                        </p>
+                    </div>
+
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label" for="field_netWeight">NetWeight</label>
@@ -115,65 +198,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="control-label" for="field_length">Length</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="length" id="field_length"
-                               ng-model="poLine.length" ng-required="requiredFields['length']"
-                        />
-                        <span class="input-group-addon">cm</span>
-                    </div>
-                    <div ng-show="editForm.length.$invalid">
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.length.$error.required">
-                            required
-                        </p>
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.length.$error.number">
-                            This field should be a number.
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_width">Width</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="width" id="field_width"
-                               ng-model="poLine.width" ng-required="requiredFields['width']"
-                        />
-                        <span class="input-group-addon">cm</span>
-                    </div>
-
-                    <div ng-show="editForm.width.$invalid">
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.width.$error.required">
-                            required
-                        </p>
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.width.$error.number">
-                            This field should be a number.
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_height">Height</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="height" id="field_height"
-                               ng-model="poLine.height" ng-required="requiredFields['height']"
-                        />
-                        <span class="input-group-addon">cm</span>
-                    </div>
-                    <div ng-show="editForm.height.$invalid">
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.height.$error.required">
-                            required
-                        </p>
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.height.$error.number">
-                            This field should be a number.
-                        </p>
-                    </div>
-                </div>
+        </div>
+        <div class="row" ng-show="outOfGage">
+            <div class="col-md-12 text-center tc-red-dark">
+                    <p><strong>This cargo seems to be out of gage , </strong></br>please note that additional charges may apply</p>
             </div>
         </div>
         <div class="row">
@@ -181,9 +209,9 @@
                 <blockquote>
                     <dl class="dl-horizontal">
                         <dt>Total gross weight : </dt>
-                        <dd>{{ (poLine.grossWeight * poLine.orderQuantity) | number:2 }}Kg</dd>
+                        <dd>{{ (poLine.grossWeight * poLine.orderQuantity) | number:3 }}Kg</dd>
                         <dt>Total cubes : </dt>
-                        <dd>{{ ((poLine.width * poLine.height * poLine.length)/1000000 * poLine.orderQuantity) | number:2 }}m&sup3;</dd>
+                        <dd>{{ ((poLine.width * poLine.height * poLine.length)/1000000 * poLine.orderQuantity) | number:3 }}m&sup3;</dd>
                     </dl>
                 </blockquote>
             </div>

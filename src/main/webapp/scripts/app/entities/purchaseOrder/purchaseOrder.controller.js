@@ -13,6 +13,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     serviceType: "COURIER",
                     serviceLevel: "ECONOMY",
                     customerType: "REGULAR",
+                    modeOfTransport: 'ROAD',
                     transportParty: "XEON",
                     vehicleSize: null,
                     labourRequired: null,
@@ -52,8 +53,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
             }
 
             $scope.isXeon = false;
-            Principal.hasAuthority('ROLE_USER').then(function() {
-                $scope.isXeon = true;
+            Principal.identity().then(function(user) {
+                $scope.user = user;
+                $scope.isXeon = user.company.type === "XEON";
             });
 
             $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
@@ -108,6 +110,27 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
                         ]);
                         break;
+                }
+            };
+
+            $scope.$watch('purchaseOrder.modeOfTransport', modeOfTransportWatch);
+            function modeOfTransportWatch(value){
+                $log.debug("watch modeOfTransport triggered with value : " + value);
+                switch (value){
+                    case "AIR_TRANSFERS":
+                    case "AIR_DELIVERIES":
+                    case "SEA":
+                        hideOrShow([
+                            {name: 'carrierVesselName', show: true, value: IFTET($scope.purchaseOrder.carrierVesselName, '')},
+                            {name: 'carrierVesselNumber', show: true, value: IFTET($scope.purchaseOrder.carrierVesselNumber, '')},
+                            {name: 'carrierVesselOrigin', show: true, value:IFTET($scope.purchaseOrder.carrierVesselOrigin, '')}
+                        ]);
+                        break;
+                    case "ROAD":
+                    default:
+                        hideOrShow([{name: 'carrierVesselName'},{name: 'carrierVesselNumber'},{name: 'carrierVesselOrigin'}]);
+                        break;
+                        
                 }
             };
 
@@ -313,7 +336,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         }
                     });
                 }
-                $log.debug($scope.purchaseOrder.poLines);
                 calculateTotals($scope.purchaseOrder.poLines);
             });
 

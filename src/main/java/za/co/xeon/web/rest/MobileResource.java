@@ -28,6 +28,7 @@ import za.co.xeon.external.sap.hibersap.dto.Huitem;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 import za.co.xeon.repository.CompanyRepository;
+import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
@@ -48,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 /**
  * Created by derick on 2016/02/08.
@@ -65,6 +67,9 @@ public class MobileResource {
 
     @Inject
     private CompanyRepository companyRepository;
+
+    @Inject
+    private PurchaseOrderRepository purchaseOrderRepository;
 
     @Autowired
     private MobileService mobileService;
@@ -103,11 +108,11 @@ public class MobileResource {
     public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber,
                                             @RequestParam(value = "from") String from, @RequestParam(value = "to") String to,Pageable pageable) throws Exception {
         log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         Future<List<EvResult>> future;
         if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
-            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
-             future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
+            future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
                 new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
         }else {
             future = mobileService.getCustomerOrders(customerNumber,
@@ -116,7 +121,14 @@ public class MobileResource {
         while (!future.isDone()) {
             Thread.sleep(500);
         }
-        return future.get();
+
+        Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
+            .filter(po -> po.getPoNumber() != null)
+            .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+
+        return future.get().stream().filter(
+            ev -> poMap.containsKey(ev.getBstkd())
+        ).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)

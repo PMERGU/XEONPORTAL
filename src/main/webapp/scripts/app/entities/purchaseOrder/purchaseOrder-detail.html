@@ -1,161 +1,287 @@
-
 <div>
-    <h2><span>Purchase Order Details</span> {{purchaseOrder.id}}</h2>
+    <h2><span>Purchase Order Details</span>: #{{purchaseOrder.id}} for {{purchaseOrder.user.company.name}}</h2>
     <div class="table-responsive">
+        <h3 class="text-info">{{ purchaseOrder.comment }}</h3>
         <table class="table table-striped">
             <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span>State</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static" translate="{{'portalApp.PoState.' + purchaseOrder.state}}">{{purchaseOrder.state}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>CaptureDate</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.captureDate | date:'medium'}}</span>
+                    </td>
+                </tr>
+                <tr><td></br></td></tr>
+
+                <tr>
+                    <td>
+                        <span>PoNumber</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.poNumber}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Reference</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.reference}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Account Reference</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.accountReference}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Collective</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.collective}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Service Type</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static" >{{purchaseOrder.serviceType}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Service Level</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.serviceLevel}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Vehicle Size</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.vehicleSize}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Labour Required</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.labourRequired}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Transport Party</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.transportParty}}</span>
+                    </td>
+                </tr>
+                <tr><td></br></td></tr>
+
+
+                <tr>
+                    <td>
+                        <span>PickUpType</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                              translate="{{'portalApp.DeliveryType.' + purchaseOrder.pickUpType}}">{{purchaseOrder.pickUpType}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Collection Date</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.collectionDate}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Collection Reference</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.collectionReference}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span>ShipToType</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                              translate="{{'portalApp.DeliveryType.' + purchaseOrder.shipToType}}">{{purchaseOrder.shipToType}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span>CustomerType</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                              translate="{{'portalApp.CustomerType.' + purchaseOrder.customerType}}">{{purchaseOrder.customerType}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>DeliveryDate</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.deliveryDate | date:'mediumDate'}}</span>
+                    </td>
+                </tr>
+                <tr><td></br></td></tr>
+
+                <!--<tr>-->
+                    <!--<td>-->
+                        <!--<span>Telephone</span>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<span class="form-control-static">{{purchaseOrder.telephone}}</span>-->
+                    <!--</td>-->
+                <!--</tr>-->
+
+                <tr>
+                    <td>
+                        <span>ModeOfTransport</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                              translate="{{'portalApp.ModeOfTransport.' + purchaseOrder.modeOfTransport}}">{{purchaseOrder.modeOfTransport}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>CarrierVesselName</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.carrierVesselName}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>CarrierVesselNumber</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{purchaseOrder.carrierVesselNumber}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span>Hazardous Cargo</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.cargoClassification}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Hazardous Classification</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.cargoType}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span>Company</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.user.company.name}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Captured By</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Ship up Party</h3>
+        <table class="jh-table table table-striped">
+            <thead>
             <tr>
-                <th>Field</th>
-                <th>Value</th>
+                <th><span>ID</span></th>
+                <th><span>Company</span></th>
+                <th><span>Name</span></th>
+                <th><span>District</span></th>
+                <th><span>PostalCode</span></th>
+                <th><span>City</span></th>
+                <th><span>Reference</span></th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>
-                    <span>State</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'portalApp.PoState.' + purchaseOrder.state}}">{{purchaseOrder.state}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>ServiceLevel</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'portalApp.ServiceLevel.' + purchaseOrder.serviceLevel}}">{{purchaseOrder.serviceLevel}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>CaptureDate</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.captureDate | date:'medium'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DeliveryDate</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.deliveryDate | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>PoNumber</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.poNumber}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Reference</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.reference}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>CustomerType</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'portalApp.CustomerType.' + purchaseOrder.customerType}}">{{purchaseOrder.customerType}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>ShipToType</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'portalApp.DeliveryType.' + purchaseOrder.shipToType}}">{{purchaseOrder.shipToType}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Telephone</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.telephone}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Collective</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.collective}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>AccountReference</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.accountReference}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>ModeOfTransport</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'portalApp.ModeOfTransport.' + purchaseOrder.modeOfTransport}}">{{purchaseOrder.modeOfTransport}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>CarrierVesselName</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.carrierVesselName}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>CarrierVesselNumber</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{purchaseOrder.carrierVesselNumber}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>PickUpType</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'portalApp.DeliveryType.' + purchaseOrder.pickUpType}}">{{purchaseOrder.pickUpType}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>shipToParty</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="party.detail({id:purchaseOrder.shipToPartyId})">{{purchaseOrder.shipToPartyId}}</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>pickUpParty</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="party.detail({id:purchaseOrder.pickUpPartyId})">{{purchaseOrder.pickUpPartyId}}</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Captured By</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="user.detail({id:purchaseOrder.user})">{{purchaseOrder.firstName}}</a>
-                </td>
+                <td>{{purchaseOrder.shipToParty.id}}</td>
+                <td>{{purchaseOrder.shipToParty.company.name}}</td>
+                <td>{{purchaseOrder.shipToParty.name}}</td>
+                <td>{{purchaseOrder.shipToParty.district}}</td>
+                <td>{{purchaseOrder.shipToParty.postalCode}}</td>
+                <td>{{purchaseOrder.shipToParty.city}}</td>
+                <td>{{purchaseOrder.shipToParty.reference}}</td>
             </tr>
             </tbody>
         </table>
+
+        <h3>Pick up Party</h3>
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr>
+                <th><span>ID</span></th>
+                <th><span>Company</span></th>
+                <th><span>Name</span></th>
+                <th><span>District</span></th>
+                <th><span>PostalCode</span></th>
+                <th><span>City</span></th>
+                <th><span>Reference</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{purchaseOrder.shipToParty.id}}</td>
+                <td>{{purchaseOrder.shipToParty.company.name}}</td>
+                <td>{{purchaseOrder.shipToParty.name}}</td>
+                <td>{{purchaseOrder.shipToParty.district}}</td>
+                <td>{{purchaseOrder.shipToParty.postalCode}}</td>
+                <td>{{purchaseOrder.shipToParty.city}}</td>
+                <td>{{purchaseOrder.shipToParty.reference}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3>Material</h3>
         <table class="table table-responsive table-striped">
             <thead>
             <tr>
@@ -188,6 +314,76 @@
                 <td>{{ po.grossWeight * po.orderQuantity }}kg</td>
                 <td>{{ (po.height * po.length * po.width)/1000000 * po.orderQuantity }}m&sup3;</td>
             </tr>
+            </tbody>
+        </table>
+
+        <h3>Special Instructions</h3>
+
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr>
+                <th><span>ID</span></th>
+                <th><span>Company</span></th>
+                <th><span>Name</span></th>
+                <th><span>District</span></th>
+                <th><span>PostalCode</span></th>
+                <th><span>City</span></th>
+                <th><span>Reference</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{purchaseOrder.soldToParty.id}}</td>
+                <td>{{purchaseOrder.soldToParty.company.name}}</td>
+                <td>{{purchaseOrder.soldToParty.name}}</td>
+                <td>{{purchaseOrder.soldToParty.district}}</td>
+                <td>{{purchaseOrder.soldToParty.postalCode}}</td>
+                <td>{{purchaseOrder.soldToParty.city}}</td>
+                <td>{{purchaseOrder.soldToParty.reference}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span>Sold to Party</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.soldToPartye}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Financial Controller</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.financialController}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Mode of Transport</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.modeOfTransport}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Special Instruction</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.specialInstruction}}
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -1,5 +1,6 @@
 package za.co.xeon.repository;
 
+import za.co.xeon.domain.Authority;
 import za.co.xeon.domain.User;
 
 import java.time.ZonedDateTime;
@@ -15,6 +16,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneByActivationKey(String activationKey);
+
+    List<User> findAllByAuthorities(Authority authority);
 
     List<User> findAllByActivatedIsFalseAndCreatedDateBefore(ZonedDateTime dateTime);
 

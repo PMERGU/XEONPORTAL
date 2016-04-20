@@ -87,6 +87,24 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label">Financial Controller ID</label>
+                    <input type="text" class="form-control" name="fcSapId"
+                           ng-model="user.fcSapId" ng-maxlength="20">
+
+                    <div ng-show="editForm.fcSapId.$invalid">
+                        <p class="help-block"
+                           ng-show="editForm.email.$error.required">
+                            This field is required.
+                        </p>
+
+                        <p class="help-block"
+                           ng-show="editForm.fcSapId.$error.maxlength"
+                           translate-value-max="20">
+                            This field cannot be longer than 20 characters.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Profiles</label>
                     <select class="form-control" multiple name="authority" ng-model="user.authorities" required
                             ng-options="authority for authority in authorities">

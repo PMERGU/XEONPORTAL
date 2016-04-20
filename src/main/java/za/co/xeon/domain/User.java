@@ -58,6 +58,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "lang_key", length = 5)
     private String langKey;
 
+    @Column(name = "fc_sap_id", length = 20)
+    private String fcSapId;
+
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     @JsonIgnore
@@ -92,6 +95,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    public String getFcSapId() {
+        return fcSapId;
+    }
+
+    public void setFcSapId(String fcSapId) {
+        this.fcSapId = fcSapId;
+    }
 
     public Long getId() {
         return id;

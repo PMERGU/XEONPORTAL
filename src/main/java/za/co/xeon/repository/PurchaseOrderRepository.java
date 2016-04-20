@@ -15,6 +15,7 @@ import java.util.List;
  */
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder,Long> {
     Page<PurchaseOrder> findByUser(User user, Pageable pageable);
+    List<PurchaseOrder> findByUser(User user);
     Page<PurchaseOrder> findByUserAndState(User user, PoState poState, Pageable pageable);
     Page<PurchaseOrder> findByState(PoState poState, Pageable pageable);
     PurchaseOrder findFirstByPoNumber(String poNumber);

@@ -26,6 +26,16 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label" for="field_type">Type</label>
+            <select class="form-control" name="type" required
+                    ng-model="company.type"
+                    id="field_type">
+                <option value="XEON">Xeon</option>
+                <option value="AGENT">Agent</option>
+                <option value="CONSUMER">Consumer</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label class="control-label" for="field_sapId">SapId</label>
             <input type="text" class="form-control" name="sapId" id="field_sapId"
                     ng-model="company.sapId"
