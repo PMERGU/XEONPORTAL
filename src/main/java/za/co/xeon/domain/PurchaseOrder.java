@@ -492,7 +492,7 @@ public class PurchaseOrder implements Serializable {
             ", state='" + state + "'" +
             ", serviceLevel='" + serviceLevel + "'" +
             ", captureDate='" + captureDate + "'" +
-            ", deliveryDate='" + dropOffDate + "'" +
+            ", dropOffDate='" + dropOffDate + "'" +
             ", poNumber='" + poNumber + "'" +
             ", reference='" + reference + "'" +
             ", customerType='" + customerType + "'" +

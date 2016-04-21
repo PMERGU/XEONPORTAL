@@ -18,6 +18,7 @@ import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
+import za.co.xeon.external.ftp.FtpService;
 import za.co.xeon.external.ocr.Converters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MobileService;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
+import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 
 import javax.annotation.PostConstruct;
@@ -77,6 +79,9 @@ public class MobileResource {
     @Autowired
     private MobileConfiguration mobileConf;
 
+    @Autowired
+    private FtpService ftpService;
+
     private static File tmpDir = null;
 
     @PostConstruct
@@ -101,6 +106,28 @@ public class MobileResource {
             return "\t[" + podFile.getName() + "] - document submitted for processing";
         };
         return task;
+    }
+
+    @RequestMapping(value = "/mobile/invoices/{deliveryNo}", method = RequestMethod.GET)
+    @Timed
+    public ResponseEntity<ByteArrayResource> downloadInvoice(@PathVariable(value="deliveryNo") String deliveryNo) throws Exception {
+        log.debug("Service : [GET} /mobile/invoices/" + deliveryNo);
+
+        byte[] pdf = ftpService.download(deliveryNo);
+        if(pdf != null) {
+            return ResponseEntity
+                .ok()
+                .contentLength(pdf.length)
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .body(new ByteArrayResource(pdf));
+        }else{
+            String msg = String.format("Invoice for deliveryNo %s, could not be found on ftp server", deliveryNo);
+            log.info(msg);
+            return ResponseEntity
+                .badRequest()
+                .headers(HeaderUtil.createFailureAlert(msg))
+                .body(null);
+        }
     }
 
     @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -164,7 +191,7 @@ public class MobileResource {
                     .contentType(MediaType.IMAGE_JPEG)
                     .body(new ByteArrayResource(img));
             }else{
-                log.info(String.format("POD for barcode%s, could not be found on S3 bucket", barcode));
+                log.info(String.format("POD for barcode %s, could not be found on S3 bucket", barcode));
                 return ResponseEntity
                     .badRequest()
                     .body(null);

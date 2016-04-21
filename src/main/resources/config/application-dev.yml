@@ -84,8 +84,13 @@ sap:
     peakLimit: "10"
     ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
 #    ashost: "128.87.245.163"
-
     client: "700"
+
+ftp:
+  host: 197.234.173.1
+  user: XeonInvoices
+  pass: kACpQg9B
+  folder: "/"
 
 # ===================================================================
 # JHipster specific properties

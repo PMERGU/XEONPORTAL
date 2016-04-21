@@ -33,4 +33,10 @@ public class HeaderUtil {
         headers.add("X-portalApp-params", entityName);
         return headers;
     }
+
+    public static HttpHeaders createFailureAlert(String defaultMessage) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-portalApp-error", defaultMessage);
+        return headers;
+    }
 }

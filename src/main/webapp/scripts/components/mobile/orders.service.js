@@ -13,7 +13,7 @@ angular.module('portalApp')
                 }
             },
             'getPod': {
-                url: "api/mobile/pods/:poNumber",
+                url: "api/mobile/pods/:deliveryNo",
                 method: 'GET',
                 headers: {
                     accept: 'image/jpeg'
@@ -28,8 +28,27 @@ angular.module('portalApp')
                         });
                     }
                     return {
-                        response: jpg,
-                        original: data  
+                        response: jpg
+                    };
+                }
+            },
+            'getInvoice': {
+                url: "api/mobile/invoices/:deliveryNo",
+                method: 'GET',
+                headers: {
+                    accept: 'application/pdf'
+                },
+                responseType: 'arraybuffer',
+                cache: true,
+                transformResponse: function (data) {
+                    var pdf;
+                    if (data) {
+                        pdf = new Blob([data], {
+                            type: 'application/pdf'
+                        });
+                    }
+                    return {
+                        response: pdf
                     };
                 }
             }

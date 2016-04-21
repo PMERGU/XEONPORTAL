@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob) {
+    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval) {
         purchaseOrder = purchaseOrder !== undefined ? purchaseOrder : {
             state: "NOT_FOUND"
         };
@@ -40,28 +40,61 @@ angular.module('portalApp')
         if($scope.orderGroup[0].pdstk === "B" || $scope.orderGroup[0].pdstk === "C" ){
             $scope.states["DELIVERED"] = true;
         }
-        $scope.states["DELIVERED"] = true;
+
         if($scope.states["DELIVERED"]){
             $scope.states["POD"] = true;
         }
 
+        $scope.podLoading = 0;
         if($scope.states["POD"]){
+            var stopLoading = $interval(function(){
+                if($scope.podLoading >= 100){
+                    $interval.cancel(stopLoading);
+                }
+                $scope.podLoading+=1;
+            }, 175);
             $scope.podDate = new Date(new Date($scope.orderGroup[0].audat).setMinutes(new Date($scope.orderGroup[0].audat).getMinutes() + 17));
             $scope.podMessge = "Loading proof of delivery...";
-            CustomerOrders.getPod({poNumber: $scope.orderGroup[0].dbeln}).$promise.then(function(imageBlob){
-                $scope.podMessge = "Click image to download";
+            CustomerOrders.getPod({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(imageBlob){
+                var stopLoading2 = $interval(function(){
+                    if($scope.podLoading >= 100){
+                        $interval.cancel(stopLoading2);
+                        $scope.states["POD_LOADED"] = true;
+                    }
+                    $scope.podLoading+=1;
+                }, 75);
                 var creator = $window.URL || $window.webkitURL;
                 var fileURL = creator.createObjectURL(imageBlob.response);
                 $scope.podBlob = imageBlob.response;
                 $scope.pod = $sce.trustAsResourceUrl(fileURL);
             },function(err){
                 $scope.podMessge = "POD could not be found.";
+                $scope.states["POD_LOADED"] = false;
                 $scope.states["POD"] = false;
+            });
+
+            $scope.states["INVOICE"] = true;
+        }
+
+        if($scope.states["INVOICE"]){
+            CustomerOrders.getInvoice({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(invoiceBlob){
+                var creator = $window.URL || $window.webkitURL;
+                var fileURL = creator.createObjectURL(invoiceBlob.response);
+                $scope.invoiceBlob = invoiceBlob.response;
+                $scope.states["INVOICE_LOADED"] = true;
+            },function(err){
+                $log.debug("Invoice could not be found.");
+                $scope.states["INVOICE_LOADED"] = false;
+                $scope.states["INVOICE"] = false;
             });
         }
 
         $scope.downloadPod = function(){
             FileSaver.saveAs($scope.podBlob, $scope.orderGroup[0].dbeln + '.jpg');
+        }
+
+        $scope.downloadInvoice = function(){
+            FileSaver.saveAs($scope.invoiceBlob, $scope.orderGroup[0].dbeln + '.pdf');
         }
 
     });

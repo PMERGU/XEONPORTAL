@@ -59,9 +59,17 @@
 
                 <!-- This is the individual marker-->
                 <div class="marker mPod timeline-icon" ng-class="{'done': states['POD']}">
-                    <i class="icon-pi-checklist-1"></i>
-                    <i class="checkmark fa fa-check" ng-show="states['POD']"></i>
+                    <i class="icon-pi-checklist-3"></i>
+                    <i class="checkmark fa fa-check" ng-show="states['POD_LOADED']"></i>
                     <span style="margin-left: -70%;">POD</span>
+                </div>
+                <!-- / marker -->
+
+                <!-- This is the individual marker-->
+                <div class="marker mInvoice timeline-icon" ng-class="{'done': states['INVOICE']}">
+                    <i class="icon-pi-payment-2"></i>
+                    <i class="checkmark fa fa-check" ng-show="states['INVOICE_LOADED']"></i>
+                    <span style="margin-left: -70%;">Invoice</span>
                 </div>
                 <!-- / marker -->
             </div>
@@ -103,17 +111,17 @@
                                     </td>
                                     <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
                                 </tr>
-                                <tr ng-show="purchaseOrder.state === 'PROCESSED'">
+                                <tr ng-show="states['PROCESSED']">
                                     <td>2</td>
                                     <td>Order has been processed by our team
                                         <br/>
-                                        <small>&nbsp; <i class="fa fa-user"></i> processed by {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}</small>
+                                        <small ng-show="purchaseOrder.xeonUser">&nbsp; <i class="fa fa-user"></i> processed by {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}</small>
                                     </td>
                                     <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
                                 </tr>
                                 <tr ng-show="states['COLLECTED']">
                                     <td>3</td>
-                                    <td>Order has been collected and is in Transit
+                                    <td>Order has been collected and is in transit
                                     </td>
                                     <td>{{orderGroup[0].datbg | date: 'yyyy-MM-dd'}} {{orderGroup[0].uatbg | date: 'mm:hh:ss'}}</td>
                                 </tr>
@@ -148,22 +156,39 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="hpanel">
-                <div class="panel-heading">
-                    <h2 class="font-light m-b-xs">
-                        POD
-                    </h2>
+            <div class="hpanel" style="margin-top: 70px;" ng-show="states['POD']">
+                <div class="panel-body" ng-hide="states['POD_LOADED']">
+                    <h4 style="text-align: center">Looking for POD, please be patient</h4>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <uib-progressbar class="full progress-striped active" max="100" value="podLoading" type="info"></uib-progressbar>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body list text-center" style="height: 240px">
-                    <h3 ng-hide="states['POD']">Order not yet completed</h3>
-                    <span ng-hide="states['POD']" class="fa-stack fa-5x icon-round-primary">
-                      <i class="fa fa-barcode fa-stack-2x" style="font-size: 170px;"></i>
-                      <i class="fa fa-ban fa-stack-2x fa-inverse" style="top:15px;left:20px"></i>
-                    </span>
-
-                    <h3 ng-show="states['POD']">{{podMessge}}</h3>
-                    <img ng-show="pod" data-ng-src="{{pod}}" style="max-width: 100%;" ng-click="downloadPod()"/>
-                </div>
+                <uib-tabset ng-show="states['POD_LOADED']">
+                    <uib-tab>
+                        <uib-tab-heading>
+                            Proof Of Delivery&nbsp;
+                        </uib-tab-heading>
+                        <div class="panel-body list text-center" style="padding-top: 0px;">
+                            <h3>Please click below to download POD</h3>
+                            <img data-ng-src="{{pod}}" style="max-width: 100%;" ng-click="downloadPod()"/>
+                        </div>
+                    </uib-tab>
+                    <uib-tab ng-show="states['INVOICE_LOADED']">
+                        <uib-tab-heading>
+                            Invoice&nbsp;
+                        </uib-tab-heading>
+                        <div class="panel-body" style="padding-top: 0px; text-align: center; height: 300px;">
+                            <h3>Please click below to download invoice</h3>
+                            <a href="" ng-click="downloadInvoice()">
+                                <span class="fa-stack fa-5x icon-round-primary" >
+                                  <i class="fa fa-download fa-stack-2x" style="padding-top:50px; font-size: 170px;"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
             </div>
         </div>
     </div>

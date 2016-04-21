@@ -20,13 +20,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <span>CaptureDate</span>
+                        <span>Capture Date</span>
                     </td>
                     <td>
                         <span class="form-control-static">{{purchaseOrder.captureDate | date:'medium'}}</span>
                     </td>
                 </tr>
-                <tr><td></br></td></tr>
+                <tr><td colspan="2"></br></td></tr>
 
                 <tr>
                     <td>
@@ -100,12 +100,12 @@
                         <span class="form-control-static">{{purchaseOrder.transportParty}}</span>
                     </td>
                 </tr>
-                <tr><td></br></td></tr>
+                <tr><td colspan="2"></br></td></tr>
 
 
                 <tr>
                     <td>
-                        <span>PickUpType</span>
+                        <span>Pick Up Type</span>
                     </td>
                     <td>
                         <span class="form-control-static"
@@ -131,7 +131,7 @@
 
                 <tr>
                     <td>
-                        <span>ShipToType</span>
+                        <span>Ship To Type</span>
                     </td>
                     <td>
                         <span class="form-control-static"
@@ -141,7 +141,7 @@
 
                 <tr>
                     <td>
-                        <span>CustomerType</span>
+                        <span>Customer Type</span>
                     </td>
                     <td>
                         <span class="form-control-static"
@@ -150,13 +150,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <span>DeliveryDate</span>
+                        <span>Delivery Date</span>
                     </td>
                     <td>
-                        <span class="form-control-static">{{purchaseOrder.deliveryDate | date:'mediumDate'}}</span>
+                        <span class="form-control-static">{{purchaseOrder.dropOffDate | date:'mediumDate'}}</span>
                     </td>
                 </tr>
-                <tr><td></br></td></tr>
+                <tr><td colspan="2"></br></td></tr>
 
                 <!--<tr>-->
                     <!--<td>-->
@@ -169,7 +169,7 @@
 
                 <tr>
                     <td>
-                        <span>ModeOfTransport</span>
+                        <span>Mode Of Transport</span>
                     </td>
                     <td>
                         <span class="form-control-static"
@@ -178,7 +178,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <span>CarrierVesselName</span>
+                        <span>Carrier Vessel Name</span>
                     </td>
                     <td>
                         <span class="form-control-static">{{purchaseOrder.carrierVesselName}}</span>
@@ -186,7 +186,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <span>CarrierVesselNumber</span>
+                        <span>Carrier Vessel Number</span>
                     </td>
                     <td>
                         <span class="form-control-static">{{purchaseOrder.carrierVesselNumber}}</span>
@@ -317,8 +317,8 @@
             </tbody>
         </table>
 
-        <h3>Special Instructions</h3>
-
+        <h2>Special Instructions</h2>
+        <h3>Sold to Party</h3>
         <table class="jh-table table table-striped">
             <thead>
             <tr>
@@ -352,14 +352,6 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <span>Sold to Party</span>
-                    </td>
-                    <td>
-                        {{purchaseOrder.soldToPartye}}
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <span>Financial Controller</span>
