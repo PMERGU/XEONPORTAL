@@ -5,6 +5,7 @@ angular.module('portalApp')
         $scope.processed = [];
         $scope.unprocessed = [];
         $scope.inProgress = [];
+        $scope.lastRefresh = new Date();
 
         $scope.dtOptions = DTOptionsBuilder.newOptions()
             .withBootstrap()
@@ -56,5 +57,6 @@ angular.module('portalApp')
 
         $interval(function(){
             getCapturedPOs();
+            $scope.lastRefresh = new Date();
         }, 60000);
     });

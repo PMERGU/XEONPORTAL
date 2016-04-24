@@ -57,7 +57,7 @@
                 <div class="form-group">
                     <label class="control-label" for="field_orderQuantity">Order Quantity</label>
                     <input type="number" class="form-control" name="orderQuantity" id="field_orderQuantity"
-                           ng-model="poLine.orderQuantity" ng-required="requiredFields['orderQuantity']"
+                           ng-model="poLine.orderQuantity" ng-required="requiredFields['orderQuantity']" min="1"
                     />
                     <div ng-show="editForm.orderQuantity.$invalid">
                         <p class=" help-block small-help-block pull-right"
@@ -102,7 +102,7 @@
                     </div>
                     <div ng-show="outOfGageL">
                         <p class="help-block small-help-block pull-right">
-                            Out of gage
+                            Out of gauge
                         </p>
                     </div>
                 </div>
@@ -127,7 +127,7 @@
                     </div>
                     <div ng-show="outOfGageW">
                         <p class="help-block small-help-block pull-right">
-                            Out of gage
+                            Out of gauge
                         </p>
                     </div>
 
@@ -152,7 +152,7 @@
                     </div>
                     <div ng-show="outOfGageH">
                         <p class="help-block small-help-block pull-right">
-                            Out of gage
+                            Out of gauge
                         </p>
                     </div>
 
@@ -201,7 +201,7 @@
         </div>
         <div class="row" ng-show="outOfGage">
             <div class="col-md-12 text-center tc-red-dark">
-                    <p><strong>This cargo seems to be out of gage , </strong></br>please note that additional charges may apply</p>
+                    <p><strong>This cargo seems to be out of gauge , </strong></br>please note that additional charges may apply</p>
             </div>
         </div>
         <div class="row">
