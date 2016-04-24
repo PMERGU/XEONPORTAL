@@ -839,7 +839,7 @@
             <id>prod</id>
             <properties>
                 <run.profiles>prod.win</run.profiles>
-                <sapjco.path>${project.basedir}/libs/win/sapjco3.jar</sapjco.path>
+                <sapjco.path>${project.basedir}/libs/linux/sapjco3.jar</sapjco.path>
                 <os.type>win</os.type>
                 <!--<logback.loglevel>INFO</logback.loglevel>-->
                 <logback.loglevel>DEBUG</logback.loglevel>
