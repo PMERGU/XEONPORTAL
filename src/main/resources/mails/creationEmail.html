@@ -205,7 +205,13 @@
                                     </p>
                                     <br/>
                                     <!-- Button : Begin -->
-                                    <p>
+                                    <p style="margin-bottom: 10px">
+                                        <table cellspacing="0" cellpadding="0" border="0" align="center" style="Margin: auto;">
+                                            <tr>
+                                                <td style="text-align: center;" class="" th:text="#{email.activation.text2(${user.login})}">
+                                                </td>
+                                            </tr>
+                                        </table>
                                         <table cellspacing="0" cellpadding="0" border="0" align="center" style="Margin: auto">
                                             <tr>
                                                 <td style="border-radius: 3px; background: #222222; text-align: center;" class="button-td">
@@ -217,12 +223,12 @@
                                         </table>
                                     </p>
                                     <br/>
-                                    <p th:text="#{email.activation.text2}">
+                                    <p th:text="#{email.activation.text3}">
 
                                     </p>
                                     <!-- Button : END -->
                                     <p>
-                                        <span th:text="#{email.activation.text3}">Regards, </span>
+                                        <span th:text="#{email.activation.text4}">Regards, </span>
                                         <br/>
                                         <em th:text="#{email.signature}">Xeon Team.</em>
                                     </p>

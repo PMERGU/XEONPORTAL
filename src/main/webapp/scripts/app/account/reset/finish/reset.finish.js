@@ -4,19 +4,20 @@ angular.module('portalApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('finishReset', {
-                parent: 'account',
+                parent: 'bare',
                 url: '/reset/finish?key',
                 data: {
-                    authorities: []
+                    authorities: [],
+                    pageTitle: 'Reset password'
                 },
                 views: {
-                    'content@': {
+                    'login@': {
                         templateUrl: 'scripts/app/account/reset/finish/reset.finish.html',
                         controller: 'ResetFinishController'
                     }
                 },
                 resolve: {
-                    
+
                 }
             });
     });
