@@ -83,15 +83,20 @@ sap:
     ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
     client: "700"
 
+ftp:
+  host: 197.234.173.1
+  user: XeonInvoices
+  pass: kACpQg9B
+  folder: "/"
+
+mobile:
+  podDirectory: /opt/data/portal/pod/
 
 # ===================================================================
 # JHipster specific properties
 # ===================================================================
 
 jhipster:
-    http:
-        cache: # Used by the CachingHttpHeadersFilter
-            timeToLiveInDays: 31
     cache: # Hibernate 2nd level cache, used by CacheConfiguration
         timeToLiveSeconds: 3600
         ehcache:

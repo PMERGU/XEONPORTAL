@@ -100,7 +100,7 @@
 
             <column name="financial_controller" type="varchar(255)"/>
 
-            <column name="labour_required" type="integer"/>
+            <column name="labour_required" type="varchar(255)"/>
 
 
             <column name="user_id" type="bigint"/>

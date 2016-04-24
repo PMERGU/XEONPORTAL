@@ -837,6 +837,13 @@
         </profile>
         <profile>
             <id>prod</id>
+            <properties>
+                <run.profiles>prod.win</run.profiles>
+                <sapjco.path>${project.basedir}/libs/win/sapjco3.jar</sapjco.path>
+                <os.type>win</os.type>
+                <!--<logback.loglevel>INFO</logback.loglevel>-->
+                <logback.loglevel>DEBUG</logback.loglevel>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
@@ -894,10 +901,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <properties>
-                <!-- log configuration -->
-                <logback.loglevel>INFO</logback.loglevel>
-            </properties>
         </profile>
     </profiles>
 

@@ -82,13 +82,6 @@ mobile:
 ---
 
 spring:
-    profiles: uat.linux
-mobile:
-  podDirectory: /opt/data/portal/pod/
-
----
-
-spring:
     profiles: dev.internal
 sap:
     jco:

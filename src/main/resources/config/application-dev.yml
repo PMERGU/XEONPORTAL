@@ -65,6 +65,7 @@ ocr:
   application: SAP Integrator
   password: j6txBszFf55dgs9tSgJLi9fN
   uri: https://cloud.ocrsdk.com
+
 amazon:
   s3:
     bucketName: xeondocstore

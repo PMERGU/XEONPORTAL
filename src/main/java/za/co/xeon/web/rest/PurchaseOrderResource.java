@@ -191,7 +191,10 @@ public class PurchaseOrderResource {
     public ResponseEntity<PurchaseOrder> updatePurchaseOrderComment(@PathVariable Long id, @Valid @RequestBody String comment, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update PurchaseOrder comment : [id:{}] to {}", id, comment);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        User xeonUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
         purchaseOrder.setComment(comment);
+        purchaseOrder.setXeonUser(xeonUser);
+        purchaseOrder.setUpdatedDate(ZonedDateTime.now());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         String baseUrl = request.getScheme() + // "http"
             "://" +                                // "://"
