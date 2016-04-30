@@ -79,13 +79,16 @@ sap:
   jco:
     sysnr: "00"
     user: "dpotgieter"
-    passwd: "mobile"
+#    passwd: "mobile"
+    passwd: "xeon"
     lang: "en"
     poolCapacity: "3"
     peakLimit: "10"
-    ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
+#    ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
+    ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.161/S/3200"
 #    ashost: "128.87.245.163"
-    client: "700"
+#    client: "700"
+    client: "200"
 
 ftp:
   host: 197.234.173.1
