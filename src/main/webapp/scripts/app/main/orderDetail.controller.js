@@ -30,7 +30,7 @@ angular.module('portalApp')
         $log.log("start date : " + $scope.orderGroup[0].datbg);
         $log.log("start time : " + $scope.orderGroup[0].uatbg);
 
-        if($scope.orderGroup[0].datbg !== undefined && $scope.orderGroup[0].datbg !== null && $scope.orderGroup[0].datbg !== ""){
+        if($scope.orderGroup[0].daten !== undefined && $scope.orderGroup[0].daten !== null && $scope.orderGroup[0].daten !== ""){
             $scope.states["RECEIVED"] = true;
             $scope.states["PROCESSED"] = true;
             $scope.states["COLLECTED"] = true;

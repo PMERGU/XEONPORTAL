@@ -64,16 +64,6 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="mode_of_transport" type="varchar(255)"/>
-
-            <column name="carrier_vessel_name" type="varchar(255)"/>
-
-            <column name="carrier_vessel_number" type="varchar(255)"/>
-
-            <column name="carrier_vessel_origin" type="varchar(255)"/>
-
-            <column name="carrier_vessel_eta" type="varchar(255)"/>
-
             <column name="comment" type="varchar(2000)"/>
 
             <column name="ship_to_party_id" type="bigint">
@@ -102,6 +92,27 @@
 
             <column name="labour_required" type="varchar(255)"/>
 
+            <column name="mode_of_transport" type="varchar(255)"/>
+
+            <column name="cv_name" type="varchar(255)"/>
+
+            <column name="cv_number" type="varchar(255)"/>
+
+            <column name="cv_origin" type="varchar(255)"/>
+
+            <!-- New fields -->
+            <column name="cv_eta" type="timestamp"/>
+            <column name="cv_container_no" type="varchar(255)"/>
+            <column name="cv_carrier_ref" type="varchar(255)"/>
+            <column name="cv_consol" type="varchar(255)"/>
+            <column name="cv_waybill" type="varchar(255)"/>
+            <column name="cv_waybill_issue" type="varchar(255)"/>
+            <column name="cv_house_waybill" type="varchar(255)"/>
+            <column name="cv_house_waybill_issue" type="varchar(255)"/>
+            <column name="cv_shipper" type="varchar(255)"/>
+            <column name="cv_etd" type="timestamp"/>
+            <column name="cv_destination" type="varchar(255)"/>
+            <column name="cv_commodity" type="varchar(255)"/>
 
             <column name="user_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->

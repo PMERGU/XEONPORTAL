@@ -121,16 +121,42 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     case "AIR_DELIVERIES":
                     case "SEA":
                         hideOrShow([
-                            {name: 'carrierVesselName', show: true, value: IFTET($scope.purchaseOrder.carrierVesselName, '')},
-                            {name: 'carrierVesselNumber', show: true, value: IFTET($scope.purchaseOrder.carrierVesselNumber, '')},
-                            {name: 'carrierVesselOrigin', show: true, value:IFTET($scope.purchaseOrder.carrierVesselOrigin, '')}
+                            {name: 'cvName', show: true, value: IFTET($scope.purchaseOrder.cvName, '')},
+                            {name: 'cvNumber', show: true, value: IFTET($scope.purchaseOrder.cvNumber, '')},
+                            {name: 'cvOrigin', show: true, value:IFTET($scope.purchaseOrder.cvOrigin, '')},
+                            {name: 'cvContainerNo', show: true, value:IFTET($scope.purchaseOrder.cvContainerNo, '')},
+                            {name: 'cvCarrierRef', show: true, value:IFTET($scope.purchaseOrder.cvCarrierRef, '')},
+                            {name: 'cvConsol', show: true, value:IFTET($scope.purchaseOrder.cvConsol, '')},
+                            {name: 'cvWaybill', show: true, value:IFTET($scope.purchaseOrder.cvWaybill, '')},
+                            {name: 'cvWaybillIssue', show: true, value:IFTET($scope.purchaseOrder.cvWaybillIssue, '')},
+                            {name: 'cvHouseWaybill', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybill, '')},
+                            {name: 'cvHouseWaybillIssue', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybillIssue, '')},
+                            {name: 'cvShipper', show: true, value:IFTET($scope.purchaseOrder.cvShipper, '')},
+                            {name: 'cvEtd', show: true, value:IFTET($scope.purchaseOrder.cvEtd, '')},
+                            {name: 'cvEta', show: true, value:IFTET($scope.purchaseOrder.cvEta, '')},
+                            {name: 'cvDestination', show: true, value:IFTET($scope.purchaseOrder.cvDestination, '')},
+                            {name: 'cvCommodity', show: true, value:IFTET($scope.purchaseOrder.cvCommodity, '')}
                         ]);
                         break;
                     case "ROAD":
                     default:
-                        hideOrShow([{name: 'carrierVesselName'},{name: 'carrierVesselNumber'},{name: 'carrierVesselOrigin'}]);
+                        hideOrShow([{name: 'cvName'},{name: 'cvNumber'},{name: 'cvOrigin'},
+                            {name: 'cvContainerNo'},
+                            {name: 'cvContainerNo'},
+                            {name: 'cvCarrierRef'},
+                            {name: 'cvConsol'},
+                            {name: 'cvWaybill'},
+                            {name: 'cvWaybillIssue'},
+                            {name: 'cvHouseWaybill'},
+                            {name: 'cvHouseWaybillIssue'},
+                            {name: 'cvShipper'},
+                            {name: 'cvEtd'},
+                            {name: 'cvEta'},
+                            {name: 'cvDestination'},
+                            {name: 'cvCommodity'}
+                        ]);
                         break;
-                        
+
                 }
             };
 

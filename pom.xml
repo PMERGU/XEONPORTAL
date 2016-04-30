@@ -839,7 +839,7 @@
             <id>prod</id>
             <properties>
                 <run.profiles>prod.win</run.profiles>
-                <sapjco.path>${project.basedir}/libs/linux/sapjco3.jar</sapjco.path>
+                <sapjco.path>${project.basedir}/libs/win/sapjco3.jar</sapjco.path>
                 <os.type>win</os.type>
                 <!--<logback.loglevel>INFO</logback.loglevel>-->
                 <logback.loglevel>DEBUG</logback.loglevel>
@@ -894,10 +894,19 @@
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
                             <executable>true</executable>
+                            <layout>jar</layout>
+                            <mainClass>za.co.xeon.Application</mainClass>
                             <arguments>
                                 <argument>--spring.profiles.active=prod</argument>
                             </arguments>
                         </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

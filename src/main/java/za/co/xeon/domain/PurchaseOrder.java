@@ -89,18 +89,6 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "mode_of_transport")
     private ModeOfTransport modeOfTransport;
 
-    @Column(name = "carrier_vessel_name")
-    private String carrierVesselName;
-
-    @Column(name = "carrier_vessel_number")
-    private String carrierVesselNumber;
-
-    @Column(name = "carrier_vessel_origin")
-    private String carrierVesselOrigin;
-
-    @Column(name = "carrier_vessel_eta")
-    private String carrierVesselEta;
-
     @Column(name = "comment")
     private String comment;
 
@@ -153,6 +141,51 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "so_comment")
     private String soComment;
 
+    @Column(name = "cv_name")
+    private String cvName;
+
+    @Column(name = "cv_number")
+    private String cvNumber;
+
+    @Column(name = "cv_origin")
+    private String cvOrigin;
+
+    @Column(name = "cv_eta")
+    private String cvEta;
+
+    @Column(name = "cv_container_no")
+    private String cvContainerNo;
+
+    @Column(name = "cv_carrier_ref")
+    private String cvCarrierRef;
+
+    @Column(name = "cv_consol")
+    private String cvConsol;
+
+    @Column(name = "cv_waybill")
+    private String cvWaybill;
+
+    @Column(name = "cv_waybill_issue")
+    private String cvWaybillIssue;
+
+    @Column(name = "cv_house_waybill")
+    private String cvHouseWaybill;
+
+    @Column(name = "cv_house_waybill_issue")
+    private String cvHouseWaybillIssue;
+
+    @Column(name = "cv_shipper")
+    private String cvShipper;
+
+    @Column(name = "cv_etd")
+    private String cvEtd;
+
+    @Column(name = "cv_destination")
+    private String cvDestination;
+
+    @Column(name = "cv_commodity")
+    private String cvCommodity;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -191,22 +224,6 @@ public class PurchaseOrder implements Serializable {
 
     public void setSoComment(String soComment) {
         this.soComment = soComment;
-    }
-
-    public String getCarrierVesselOrigin() {
-        return carrierVesselOrigin;
-    }
-
-    public void setCarrierVesselOrigin(String carrierVesselOrigin) {
-        this.carrierVesselOrigin = carrierVesselOrigin;
-    }
-
-    public String getCarrierVesselEta() {
-        return carrierVesselEta;
-    }
-
-    public void setCarrierVesselEta(String carrierVesselEta) {
-        this.carrierVesselEta = carrierVesselEta;
     }
 
     public String getSpecialInstruction() {
@@ -401,22 +418,6 @@ public class PurchaseOrder implements Serializable {
         this.modeOfTransport = modeOfTransport;
     }
 
-    public String getCarrierVesselName() {
-        return carrierVesselName;
-    }
-
-    public void setCarrierVesselName(String carrierVesselName) {
-        this.carrierVesselName = carrierVesselName;
-    }
-
-    public String getCarrierVesselNumber() {
-        return carrierVesselNumber;
-    }
-
-    public void setCarrierVesselNumber(String carrierVesselNumber) {
-        this.carrierVesselNumber = carrierVesselNumber;
-    }
-
     public DeliveryType getPickUpType() {
         return pickUpType;
     }
@@ -465,6 +466,126 @@ public class PurchaseOrder implements Serializable {
         this.comment = comment;
     }
 
+    public String getCvName() {
+        return cvName;
+    }
+
+    public void setCvName(String cvName) {
+        this.cvName = cvName;
+    }
+
+    public String getCvNumber() {
+        return cvNumber;
+    }
+
+    public void setCvNumber(String cvNumber) {
+        this.cvNumber = cvNumber;
+    }
+
+    public String getCvOrigin() {
+        return cvOrigin;
+    }
+
+    public void setCvOrigin(String cvOrigin) {
+        this.cvOrigin = cvOrigin;
+    }
+
+    public String getCvEta() {
+        return cvEta;
+    }
+
+    public void setCvEta(String cvEta) {
+        this.cvEta = cvEta;
+    }
+
+    public String getCvContainerNo() {
+        return cvContainerNo;
+    }
+
+    public void setCvContainerNo(String cvContainerNo) {
+        this.cvContainerNo = cvContainerNo;
+    }
+
+    public String getCvCarrierRef() {
+        return cvCarrierRef;
+    }
+
+    public void setCvCarrierRef(String cvCarrierRef) {
+        this.cvCarrierRef = cvCarrierRef;
+    }
+
+    public String getCvConsol() {
+        return cvConsol;
+    }
+
+    public void setCvConsol(String cvConsol) {
+        this.cvConsol = cvConsol;
+    }
+
+    public String getCvWaybill() {
+        return cvWaybill;
+    }
+
+    public void setCvWaybill(String cvWaybill) {
+        this.cvWaybill = cvWaybill;
+    }
+
+    public String getCvWaybillIssue() {
+        return cvWaybillIssue;
+    }
+
+    public void setCvWaybillIssue(String cvWaybillIssue) {
+        this.cvWaybillIssue = cvWaybillIssue;
+    }
+
+    public String getCvHouseWaybill() {
+        return cvHouseWaybill;
+    }
+
+    public void setCvHouseWaybill(String cvHouseWaybill) {
+        this.cvHouseWaybill = cvHouseWaybill;
+    }
+
+    public String getCvHouseWaybillIssue() {
+        return cvHouseWaybillIssue;
+    }
+
+    public void setCvHouseWaybillIssue(String cvHouseWaybillIssue) {
+        this.cvHouseWaybillIssue = cvHouseWaybillIssue;
+    }
+
+    public String getCvShipper() {
+        return cvShipper;
+    }
+
+    public void setCvShipper(String cvShipper) {
+        this.cvShipper = cvShipper;
+    }
+
+    public String getCvEtd() {
+        return cvEtd;
+    }
+
+    public void setCvEtd(String cvEtd) {
+        this.cvEtd = cvEtd;
+    }
+
+    public String getCvDestination() {
+        return cvDestination;
+    }
+
+    public void setCvDestination(String cvDestination) {
+        this.cvDestination = cvDestination;
+    }
+
+    public String getCvCommodity() {
+        return cvCommodity;
+    }
+
+    public void setCvCommodity(String cvCommodity) {
+        this.cvCommodity = cvCommodity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -501,8 +622,6 @@ public class PurchaseOrder implements Serializable {
             ", collective='" + collective + "'" +
             ", accountReference='" + accountReference + "'" +
             ", modeOfTransport='" + modeOfTransport + "'" +
-            ", carrierVesselName='" + carrierVesselName + "'" +
-            ", carrierVesselNumber='" + carrierVesselNumber + "'" +
             ", pickUpType='" + pickUpType + "'" +
             '}';
     }
