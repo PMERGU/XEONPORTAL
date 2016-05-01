@@ -20,7 +20,7 @@ angular.module('portalApp')
                 }
 
                 // Set it to undefined by default to allow the provider's default count overwrite this if needed
-                var paletteCount = undefined;
+                var paletteCount = 3;
 
                 // Everytime the image loads, calculate the colors again
                 element.on('load', function () {

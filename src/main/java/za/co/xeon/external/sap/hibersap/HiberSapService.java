@@ -16,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import za.co.xeon.external.sap.hibersap.dto.EvResult;
-import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
-import za.co.xeon.external.sap.hibersap.dto.ImDateR;
-import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
+import za.co.xeon.external.sap.hibersap.dto.*;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
@@ -56,7 +53,7 @@ public class HiberSapService {
                 .setProperty(DestinationDataProvider.JCO_PEAK_LIMIT,    s3Settings.getPeakLimit());
 
         AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
-        configuration.addBapiClasses( CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, UpdateHandlingUnitsRFC.class, UpdatePodRFC.class);
+        configuration.addBapiClasses( CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, UpdateHandlingUnitsRFC.class, UpdatePodRFC.class, ReceivedHandlingUnitsRFC.class);
         sessionManager = configuration.buildSessionManager();
     }
 
@@ -115,6 +112,28 @@ public class HiberSapService {
             }
         }catch(Exception e){
             log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
+            throw e;
+        }finally {
+            session.close();
+        }
+    }
+
+    public List<BapiRet2> pickupHandelingUnits(String barcode, List<ImHuupdate> imHuitems) throws Exception {
+        barcode = leftPad(barcode, 10);
+        Session session = sessionManager.openSession();
+        try {
+            ReceivedHandlingUnitsRFC rfc = new ReceivedHandlingUnitsRFC(imHuitems);
+            session.execute(rfc);
+
+            if(rfc.getReturn().isEmpty()) {
+                return new ArrayList<>();
+            }else if(rfc.getReturn().get(0).getType() == 'E'){
+                throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code " + rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
+            }else{
+                return rfc.getReturn();
+            }
+        }catch(Exception e){
+            log.error("Couldnt complete pickupHandelingUnits : + " + e.getMessage(), e);
             throw e;
         }finally {
             session.close();

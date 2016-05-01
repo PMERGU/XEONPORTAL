@@ -646,3 +646,8 @@ COUNTER     6
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20160430 135142 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Sat Apr 30 13:51:42,313<    >RfcGetException rc (7) message: Client 700 is not available. Please choose an existing client
+<RfcGetException
+

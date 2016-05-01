@@ -24,10 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
-import za.co.xeon.external.sap.hibersap.dto.EvResult;
-import za.co.xeon.external.sap.hibersap.dto.Huitem;
-import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
-import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
+import za.co.xeon.external.sap.hibersap.dto.*;
 import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
@@ -170,6 +167,13 @@ public class MobileResource {
     public List<BapiRet2> updateHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
         log.debug("Service [PUT] /mobile/pods/" + barcode + "/handlingunits");
         return mobileService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
+    }
+
+    @RequestMapping(value = "/mobile/pickups/{barcode}/handlingunits", method = RequestMethod.PUT)
+    @Timed
+    public List<BapiRet2> pickupHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody List<ImHuupdate> imHuupdates) throws Exception {
+        log.debug("Service [PUT] /mobile/pickups/" + barcode + "/handlingunits");
+        return mobileService.pickupHandelingUnits(barcode, imHuupdates);
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/url", method = RequestMethod.PUT)

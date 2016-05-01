@@ -14,11 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import za.co.xeon.external.sap.hibersap.dto.EvResult;
+import za.co.xeon.external.sap.hibersap.dto.*;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
-import za.co.xeon.external.sap.hibersap.dto.Huitem;
-import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
-import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
@@ -118,6 +115,10 @@ public class MobileService {
 
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception{
         return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
+    }
+
+    public List<BapiRet2> pickupHandelingUnits(String barcode, List<ImHuupdate> imHuupdates) throws Exception{
+        return hiberSapService.pickupHandelingUnits(barcode, imHuupdates);
     }
 
     public List<BapiRet2> updatePod(String barcode, String url) throws Exception {

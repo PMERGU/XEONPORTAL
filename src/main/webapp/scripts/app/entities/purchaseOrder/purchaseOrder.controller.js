@@ -119,6 +119,24 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 switch (value){
                     case "AIR_TRANSFERS":
                     case "AIR_DELIVERIES":
+                        hideOrShow([
+                            {name: 'cvName', show: true, value: IFTET($scope.purchaseOrder.cvName, '')},
+                            {name: 'cvNumber', show: true, value: IFTET($scope.purchaseOrder.cvNumber, '')},
+                            {name: 'cvOrigin', show: true, value:IFTET($scope.purchaseOrder.cvOrigin, '')},
+                            {name: 'cvContainerNo'},
+                            {name: 'cvCarrierRef'},
+                            {name: 'cvConsol', show: true, value:IFTET($scope.purchaseOrder.cvConsol, '')},
+                            {name: 'cvWaybill', show: true, value:IFTET($scope.purchaseOrder.cvWaybill, '')},
+                            {name: 'cvWaybillIssue', show: true, value:IFTET($scope.purchaseOrder.cvWaybillIssue, '')},
+                            {name: 'cvHouseWaybill', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybill, '')},
+                            {name: 'cvHouseWaybillIssue', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybillIssue, '')},
+                            {name: 'cvShipper', show: true, value:IFTET($scope.purchaseOrder.cvShipper, '')},
+                            {name: 'cvEtd', show: true, value:IFTET($scope.purchaseOrder.cvEtd, '')},
+                            {name: 'cvEta', show: true, value:IFTET($scope.purchaseOrder.cvEta, '')},
+                            {name: 'cvDestination', show: true, value:IFTET($scope.purchaseOrder.cvDestination, '')},
+                            {name: 'cvCommodity', show: true, value:IFTET($scope.purchaseOrder.cvCommodity, '')}
+                        ]);
+                        break;
                     case "SEA":
                         hideOrShow([
                             {name: 'cvName', show: true, value: IFTET($scope.purchaseOrder.cvName, '')},
