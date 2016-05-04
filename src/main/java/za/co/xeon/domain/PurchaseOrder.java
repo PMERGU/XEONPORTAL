@@ -151,7 +151,7 @@ public class PurchaseOrder implements Serializable {
     private String cvOrigin;
 
     @Column(name = "cv_eta")
-    private String cvEta;
+    private ZonedDateTime cvEta;
 
     @Column(name = "cv_container_no")
     private String cvContainerNo;
@@ -178,7 +178,7 @@ public class PurchaseOrder implements Serializable {
     private String cvShipper;
 
     @Column(name = "cv_etd")
-    private String cvEtd;
+    private ZonedDateTime cvEtd;
 
     @Column(name = "cv_destination")
     private String cvDestination;
