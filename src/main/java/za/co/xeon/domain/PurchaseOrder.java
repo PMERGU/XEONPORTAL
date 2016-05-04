@@ -490,11 +490,11 @@ public class PurchaseOrder implements Serializable {
         this.cvOrigin = cvOrigin;
     }
 
-    public String getCvEta() {
+    public ZonedDateTime getCvEta() {
         return cvEta;
     }
 
-    public void setCvEta(String cvEta) {
+    public void setCvEta(ZonedDateTime cvEta) {
         this.cvEta = cvEta;
     }
 
@@ -562,11 +562,11 @@ public class PurchaseOrder implements Serializable {
         this.cvShipper = cvShipper;
     }
 
-    public String getCvEtd() {
+    public ZonedDateTime getCvEtd() {
         return cvEtd;
     }
 
-    public void setCvEtd(String cvEtd) {
+    public void setCvEtd(ZonedDateTime cvEtd) {
         this.cvEtd = cvEtd;
     }
 
