@@ -689,7 +689,7 @@
             </activation>
             <properties>
                 <run.profiles>dev.win</run.profiles>
-                <sapjco.path>${project.basedir}/libs/win/sapjco3.jar</sapjco.path>
+                <sapjco.path>${project.basedir}/lib/win/sapjco3.jar</sapjco.path>
                 <os.type>win</os.type>
                 <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
@@ -715,7 +715,7 @@
             </activation>
             <properties>
                 <run.profiles>dev.mac</run.profiles>
-                <sapjco.path>${project.basedir}/libs/mac/sapjco3.jar</sapjco.path>
+                <sapjco.path>${project.basedir}/lib/mac/sapjco3.jar</sapjco.path>
                 <os.type>mac</os.type>
                 <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
@@ -741,7 +741,7 @@
             </activation>
             <properties>
                 <run.profiles>uat.linux</run.profiles>
-                <sapjco.path>${project.basedir}/libs/linux/sapjco3.jar</sapjco.path>
+                <sapjco.path>${project.basedir}/lib/linux/sapjco3.jar</sapjco.path>
                 <os.type>linux</os.type>
                 <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
@@ -839,7 +839,7 @@
             <id>prod</id>
             <properties>
                 <run.profiles>prod.win</run.profiles>
-                <sapjco.path>${project.basedir}/libs/win/sapjco3.jar</sapjco.path>
+                <sapjco.path>${project.basedir}/lib/win/sapjco3.jar</sapjco.path>
                 <os.type>win</os.type>
                 <!--<logback.loglevel>INFO</logback.loglevel>-->
                 <logback.loglevel>DEBUG</logback.loglevel>
@@ -890,23 +890,34 @@
                         </configuration>
                     </plugin>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <copy file="${project.basedir}/lib/win/sapjco3.jar"
+                                              todir="${project.build.directory}/${project.build.finalName}/WEB-INF/lib"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
                             <executable>true</executable>
-                            <layout>jar</layout>
-                            <mainClass>za.co.xeon.Application</mainClass>
+                            <layout>WAR</layout>
                             <arguments>
                                 <argument>--spring.profiles.active=prod</argument>
                             </arguments>
                         </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                 </plugins>
             </build>
