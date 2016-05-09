@@ -123,19 +123,19 @@
                                     <td>3</td>
                                     <td>Order has been collected and is in transit
                                     </td>
-                                    <td>{{orderGroup[0].daten | date: 'yyyy-MM-dd'}} {{orderGroup[0].uaten | date: 'mm:hh:ss'}}</td>
+                                    <td>{{orderGroup[0].daten | date: 'yyyy-MM-dd'}} {{orderGroup[0].uaten | date: 'hh:mm'}}</td>
                                 </tr>
                                 <tr ng-show="states['DELIVERED']">
                                     <td>4</td>
                                     <td>Order has been delivered
                                     </td>
-                                    <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{orderGroup[0].audat | date: 'mm:hh:ss'}}</td>
+                                    <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{orderGroup[0].audat | date: 'hh:mm'}}</td>
                                 </tr>
                                 <tr ng-show="states['POD']">
                                     <td>5</td>
                                     <td>POD uploaded and availible online
                                     </td>
-                                    <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{podDate | date: 'mm:hh:ss'}}</td>
+                                    <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}</td>
                                 </tr>
                             </tbody>
                         </table>

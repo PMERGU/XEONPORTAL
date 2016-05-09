@@ -158,4 +158,8 @@ public class ImHuupdate {
     public String getGewei() {
         return gewei;
     }
+
+    public void setExtIdHu2(String extIdHu2) {
+        this.extIdHu2 = extIdHu2;
+    }
 }

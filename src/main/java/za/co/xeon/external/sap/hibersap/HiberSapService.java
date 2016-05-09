@@ -98,7 +98,8 @@ public class HiberSapService {
         try {
             List<ImHuitem> imHuitems = new ArrayList<>();
             for(HandlingUnitDto dto : handlingUnitUpdateDto.getHandlingUnits()){
-                imHuitems.add(new ImHuitem(barcode, dto.getHandlingUnit(), handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
+                String handlingUnits = org.apache.commons.lang.StringUtils.leftPad(dto.getHandlingUnit(), 20, "0");
+                imHuitems.add(new ImHuitem(barcode, handlingUnits, handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
             }
             UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
@@ -122,6 +123,9 @@ public class HiberSapService {
         barcode = leftPad(barcode, 10);
         Session session = sessionManager.openSession();
         try {
+            imHuitems.stream().forEach(imHuupdate ->
+                imHuupdate.setExtIdHu2(org.apache.commons.lang.StringUtils.leftPad(imHuupdate.getExtIdHu2(), 20, "0"))
+            );
             ReceivedHandlingUnitsRFC rfc = new ReceivedHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 
