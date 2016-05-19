@@ -51,6 +51,11 @@ public class ImHuupdate {
     private String vegr2;
 
     /**
+     * "The step number in the tracking process" */
+    @Parameter("VEGR3")
+    private java.lang.String vegr3;
+
+    /**
      * "Handling Unit's 2nd External Identification"
      */
     @Parameter("EXT_ID_HU_2")
@@ -68,7 +73,7 @@ public class ImHuupdate {
     @Parameter("GEWEI")
     private String gewei;
 
-    public ImHuupdate(String exidv, java.math.BigDecimal laeng, java.math.BigDecimal breit, java.math.BigDecimal hoehe, String meabm, String vegr1, String vegr2, String extIdHu2, java.math.BigDecimal brgew, String gewei) {
+    public ImHuupdate(String exidv, java.math.BigDecimal laeng, java.math.BigDecimal breit, java.math.BigDecimal hoehe, String meabm, String vegr1, String vegr2, String vegr3, String extIdHu2, java.math.BigDecimal brgew, String gewei) {
         this.exidv = exidv;
         this.laeng = laeng;
         this.breit = breit;
@@ -76,6 +81,7 @@ public class ImHuupdate {
         this.meabm = meabm;
         this.vegr1 = vegr1;
         this.vegr2 = vegr2;
+        this.vegr3 = vegr3;
         this.extIdHu2 = extIdHu2;
         this.brgew = brgew;
         this.gewei = gewei;
@@ -136,6 +142,13 @@ public class ImHuupdate {
      */
     public String getVegr2() {
         return vegr2;
+    }
+
+    /**
+     * @return "Vegr3" - "The second status for tracking"
+     */
+    public String getVegr3() {
+        return vegr3;
     }
 
     /**
