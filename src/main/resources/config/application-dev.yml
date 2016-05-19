@@ -62,8 +62,8 @@ server:
 # Application specific properties
 # ===================================================================
 ocr:
-  application: SAP Integrator
-  password: j6txBszFf55dgs9tSgJLi9fN
+  application: TestApplication 1
+  password: nnoZ0x8e6Z+bX1QQ9C/dXjx0
   uri: https://cloud.ocrsdk.com
 
 amazon:
