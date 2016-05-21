@@ -102,13 +102,9 @@ public class HiberSapService {
         try {
             List<ImHuitem> imHuitems = new ArrayList<>();
             log.debug(String.format("[%s] - hu count returned : %s", barcode, handlingUnitUpdateDto.getHandlingUnits().size()));
-            for(HandlingUnitDto dto : handlingUnitUpdateDto.getHandlingUnits()){
-                log.debug(String.format("[%s] - dto.getHandlingUnit() : %s", barcode, dto.getHandlingUnit()));
-                String handlingUnits = org.apache.commons.lang.StringUtils.leftPad(dto.getHandlingUnit(), 20, "0");
-                log.debug(String.format("[%s] - handlingUnits : %s", barcode, handlingUnits));
-                imHuitems.add(new ImHuitem(barcode, handlingUnits, handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
-            }
-            log.debug(String.format("[%s] - imHuitems count : %s", barcode, imHuitems.size()));
+            handlingUnitUpdateDto.getHandlingUnits().stream().forEach(handlingUnitDto ->
+                handlingUnitDto.setHandlingUnit(org.apache.commons.lang.StringUtils.leftPad(handlingUnitDto.getHandlingUnit(), 20, "0"))
+            );
             UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 
@@ -133,8 +129,12 @@ public class HiberSapService {
         Session session = sessionManager.openSession();
         try {
             imHuitems.stream().forEach(imHuupdate ->
-                imHuupdate.setExtIdHu2(org.apache.commons.lang.StringUtils.leftPad(imHuupdate.getExtIdHu2(), 20, "0"))
+                imHuupdate.setExidv(org.apache.commons.lang.StringUtils.leftPad(imHuupdate.getExidv(), 20, "0"))
             );
+
+            for(ImHuupdate tmp : imHuitems) {
+                log.debug(String.format("[%s] - imHuupdate.getExidv(): %s, imHuupdate.getExtIdHu2(): %s", barcode, tmp.getExidv(), tmp.getExtIdHu2()));
+            };
             ReceivedHandlingUnitsRFC rfc = new ReceivedHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 

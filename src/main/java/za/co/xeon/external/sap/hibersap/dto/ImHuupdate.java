@@ -154,8 +154,8 @@ public class ImHuupdate {
         return extIdHu2;
     }
 
-    public void setExtIdHu2(String extIdHu2) {
-        this.extIdHu2 = extIdHu2;
+    public void setExidv(String exidv) {
+        this.exidv = exidv;
     }
 
     /**
