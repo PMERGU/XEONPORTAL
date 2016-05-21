@@ -105,6 +105,11 @@ public class HiberSapService {
             handlingUnitUpdateDto.getHandlingUnits().stream().forEach(handlingUnitDto ->
                 handlingUnitDto.setHandlingUnit(org.apache.commons.lang.StringUtils.leftPad(handlingUnitDto.getHandlingUnit(), 20, "0"))
             );
+            if(log.isDebugEnabled()) {
+                for (HandlingUnitDto tmp : handlingUnitUpdateDto.getHandlingUnits()) {
+                    log.debug(String.format("[%s] - ImHuitem.getHuExid(): %s", barcode, tmp.getHandlingUnit()));
+                };
+            }
             UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 
@@ -131,10 +136,11 @@ public class HiberSapService {
             imHuitems.stream().forEach(imHuupdate ->
                 imHuupdate.setExidv(org.apache.commons.lang.StringUtils.leftPad(imHuupdate.getExidv(), 20, "0"))
             );
-
-            for(ImHuupdate tmp : imHuitems) {
-                log.debug(String.format("[%s] - imHuupdate.getExidv(): %s, imHuupdate.getExtIdHu2(): %s", barcode, tmp.getExidv(), tmp.getExtIdHu2()));
-            };
+            if(log.isDebugEnabled()) {
+                for (ImHuupdate tmp : imHuitems) {
+                    log.debug(String.format("[%s] - imHuupdate.getExidv(): %s, imHuupdate.getExtIdHu2(): %s", barcode, tmp.getExidv(), tmp.getExtIdHu2()));
+                };
+            }
             ReceivedHandlingUnitsRFC rfc = new ReceivedHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 
