@@ -1,6 +1,7 @@
 package za.co.xeon.external.sap.hibersap;
 
 import org.hibersap.bapi.BapiRet2;
+import org.thymeleaf.util.MapUtils;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.dto.DeliveryDto;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
@@ -82,7 +83,9 @@ public class HiberSapService {
         try {
             HandlingUnitsRFC rfc = new HandlingUnitsRFC(barcode);
             session.execute(rfc);
-
+            rfc.getHunumbers().stream().forEach(hunumbers ->
+                hunumbers.setHuExid(Long.valueOf(hunumbers.getHuExid()).toString())
+            );
             return rfc;
         }catch(Exception e){
             log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
@@ -94,13 +97,18 @@ public class HiberSapService {
 
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
         barcode = leftPad(barcode, 10);
+        log.debug(String.format("[%s] - updateDeliveredHandelingUnits", barcode));
         Session session = sessionManager.openSession();
         try {
             List<ImHuitem> imHuitems = new ArrayList<>();
+            log.debug(String.format("[%s] - hu count returned : %s", barcode, handlingUnitUpdateDto.getHandlingUnits().size()));
             for(HandlingUnitDto dto : handlingUnitUpdateDto.getHandlingUnits()){
+                log.debug(String.format("[%s] - dto.getHandlingUnit() : %s", barcode, dto.getHandlingUnit()));
                 String handlingUnits = org.apache.commons.lang.StringUtils.leftPad(dto.getHandlingUnit(), 20, "0");
+                log.debug(String.format("[%s] - handlingUnits : %s", barcode, handlingUnits));
                 imHuitems.add(new ImHuitem(barcode, handlingUnits, handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
             }
+            log.debug(String.format("[%s] - imHuitems count : %s", barcode, imHuitems.size()));
             UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 
@@ -121,6 +129,7 @@ public class HiberSapService {
 
     public List<BapiRet2> pickupHandelingUnits(String barcode, List<ImHuupdate> imHuitems) throws Exception {
         barcode = leftPad(barcode, 10);
+        log.debug(String.format("[%s] - pickupHandelingUnits called with %s hu`s", barcode, imHuitems.size()));
         Session session = sessionManager.openSession();
         try {
             imHuitems.stream().forEach(imHuupdate ->

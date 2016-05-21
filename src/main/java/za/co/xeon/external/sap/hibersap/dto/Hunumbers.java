@@ -26,4 +26,7 @@ public class Hunumbers {
         return huExid;
     }
 
+    public void setHuExid(String huExid) {
+        this.huExid = huExid;
+    }
 }

@@ -12,7 +12,7 @@ public class ImHuupdate {
      * "External Handling Unit Identification"
      */
     @Parameter("EXIDV")
-    private String exidv;
+    private java.lang.String exidv;
 
     /**
      * "Length"
@@ -36,22 +36,23 @@ public class ImHuupdate {
      * "Unit of dimension for length/width/height"
      */
     @Parameter("MEABM")
-    private String meabm;
+    private java.lang.String meabm;
 
     /**
      * "The first status for tracking"
      */
     @Parameter("VEGR1")
-    private String vegr1;
+    private java.lang.String vegr1;
 
     /**
      * "The second status for tracking"
      */
     @Parameter("VEGR2")
-    private String vegr2;
+    private java.lang.String vegr2;
 
     /**
-     * "The step number in the tracking process" */
+     * "The step number in the tracking process"
+     */
     @Parameter("VEGR3")
     private java.lang.String vegr3;
 
@@ -59,7 +60,7 @@ public class ImHuupdate {
      * "Handling Unit's 2nd External Identification"
      */
     @Parameter("EXT_ID_HU_2")
-    private String extIdHu2;
+    private java.lang.String extIdHu2;
 
     /**
      * "Total Weight of Handling Unit"
@@ -71,9 +72,9 @@ public class ImHuupdate {
      * "Weight Unit"
      */
     @Parameter("GEWEI")
-    private String gewei;
+    private java.lang.String gewei;
 
-    public ImHuupdate(String exidv, java.math.BigDecimal laeng, java.math.BigDecimal breit, java.math.BigDecimal hoehe, String meabm, String vegr1, String vegr2, String vegr3, String extIdHu2, java.math.BigDecimal brgew, String gewei) {
+    public ImHuupdate(java.lang.String exidv, java.math.BigDecimal laeng, java.math.BigDecimal breit, java.math.BigDecimal hoehe, java.lang.String meabm, java.lang.String vegr1, java.lang.String vegr2, java.lang.String vegr3, java.lang.String extIdHu2, java.math.BigDecimal brgew, java.lang.String gewei) {
         this.exidv = exidv;
         this.laeng = laeng;
         this.breit = breit;
@@ -87,18 +88,13 @@ public class ImHuupdate {
         this.gewei = gewei;
     }
 
-    public ImHuupdate(String exidv, String extIdHu2) {
-        this.exidv = exidv;
-        this.extIdHu2 = extIdHu2;
-    }
-
     public ImHuupdate() {
     }
 
     /**
      * @return "Exidv" - "External Handling Unit Identification"
      */
-    public String getExidv() {
+    public java.lang.String getExidv() {
         return exidv;
     }
 
@@ -126,36 +122,40 @@ public class ImHuupdate {
     /**
      * @return "Meabm" - "Unit of dimension for length/width/height"
      */
-    public String getMeabm() {
+    public java.lang.String getMeabm() {
         return meabm;
     }
 
     /**
      * @return "Vegr1" - "The first status for tracking"
      */
-    public String getVegr1() {
+    public java.lang.String getVegr1() {
         return vegr1;
     }
 
     /**
      * @return "Vegr2" - "The second status for tracking"
      */
-    public String getVegr2() {
+    public java.lang.String getVegr2() {
         return vegr2;
     }
 
     /**
-     * @return "Vegr3" - "The second status for tracking"
+     * @return "Vegr3" - "The step number in the tracking process"
      */
-    public String getVegr3() {
+    public java.lang.String getVegr3() {
         return vegr3;
     }
 
     /**
      * @return "ExtIdHu2" - "Handling Unit's 2nd External Identification"
      */
-    public String getExtIdHu2() {
+    public java.lang.String getExtIdHu2() {
         return extIdHu2;
+    }
+
+    public void setExtIdHu2(String extIdHu2) {
+        this.extIdHu2 = extIdHu2;
     }
 
     /**
@@ -168,11 +168,7 @@ public class ImHuupdate {
     /**
      * @return "Gewei" - "Weight Unit"
      */
-    public String getGewei() {
+    public java.lang.String getGewei() {
         return gewei;
-    }
-
-    public void setExtIdHu2(String extIdHu2) {
-        this.extIdHu2 = extIdHu2;
     }
 }
