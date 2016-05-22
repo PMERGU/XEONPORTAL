@@ -82,9 +82,9 @@ public class MobileService {
                 }
 
                 //fourth long running task - upload POD to amazon S3
-                String s3Path = s3Settings.getFolderPod() + "/" + barcode + "." + extension;
-                String url = s3Service.uploadFile(s3Path, podFile);
-                log.debug("\tSubmitted pod [barcode:" + barcode + "] to S3 successfully : " + s3Path + ". Now updating SAP with URL....");
+
+                String url = s3Service.uploadFile(s3Settings.getPodPath(barcode, extension), podFile);
+                log.debug("\t[" + barcode + "] - Submitted pod to S3 successfully : " + s3Settings.getPodPath(barcode, extension) + ". Now updating SAP with URL [" + url + "]");
 
                 try {
                     hiberSapService.updatePod(barcode, url);
@@ -97,7 +97,7 @@ public class MobileService {
                 log.error("Invalid barcode match received. Called with [barcode:" + barcode + "] and ocr'ed [barcode:" + ocrBarcode + "]. Storing to S3 a mismached POD...");
                 String s3Path = s3Settings.getFolderPod() + "/mismatched/" + ocrBarcode + "-vs-" + barcode + "." + extension;
                 String url = s3Service.uploadFile(s3Path, podFile);
-                log.error("\tSubmitted mismatched pod [barcode:" + ocrBarcode + " to S3 successfully : " + s3Path);
+                log.error("\tSubmitted mismatched pod [barcode:" + ocrBarcode + " to S3 successfully : " + url);
             }
         } catch (Exception e) {
             e.printStackTrace();

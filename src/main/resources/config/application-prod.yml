@@ -77,6 +77,7 @@ ftp:
 
 mobile:
   podDirectory: /opt/data/portal/pod/
+  httpServerName: http://prod1.xeon.co.za/
 
 jhipster:
     http:

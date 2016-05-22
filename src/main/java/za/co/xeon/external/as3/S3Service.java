@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import za.co.xeon.config.MobileConfiguration;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -29,6 +30,9 @@ public class S3Service {
 
     @Autowired
     private S3Settings s3Settings;
+
+    @Autowired
+    private MobileConfiguration mobileConfiguration;
 
     @PostConstruct
     public void init(){
@@ -68,7 +72,7 @@ public class S3Service {
         try {
             log.debug("Uploading a new object to S3 from a file\n");
             s3client.putObject(new PutObjectRequest(s3Settings.getBucketName(), fileName, file));
-            return s3Settings.getBucketName() + " / " + fileName;
+            return mobileConfiguration.getHttpServerName() + "api/mobile/pods/" + fileName;
         } catch (AmazonServiceException ase) {
             log.error("Caught an AmazonServiceException, which " +
                     "means your request made it " +

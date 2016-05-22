@@ -15,7 +15,9 @@ public class S3Settings {
     private String secretKey;
     private String folderPod;
 
-
+    public String getPodPath(String barcode, String extension){
+        return getFolderPod() + "/" + barcode + "." + extension;
+    }
     public S3Settings() {
     }
 

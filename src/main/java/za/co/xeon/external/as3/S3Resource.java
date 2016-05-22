@@ -51,34 +51,34 @@ public class S3Resource {
 //            }
 //    }
 
-    @RequestMapping(value = "/folder/{folderName}", method= RequestMethod.GET)
-    @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<List<String>> retrieveListing(@PathVariable("folderName") String folderName, HttpServletResponse response) {
-        log.debug("Retrieving listing for bucket");
-        List<String> files = new ArrayList<>();
-
-        ObjectListing objectListing = s3Service.listFolder(folderName);
-
-        for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-            files.add(objectSummary.getKey());
-        }
-        return new ResponseEntity<>(files, HttpStatus.OK);
-    }
-
-
-    @RequestMapping(method= RequestMethod.POST)
-    public @ResponseBody
-    String uploadFile(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file){
-        if (!file.isEmpty()) {
-            try{
-                s3Service.uploadFile(fileName, file.getInputStream());
-
-                return "You successfully uploaded " + fileName + "!";
-            } catch (Exception e) {
-                return "You failed to upload " + fileName + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + fileName + " because the file was empty. Please include a multipart file.";
-        }
-    }
+//    @RequestMapping(value = "/folder/{folderName}", method= RequestMethod.GET)
+//    @Secured(AuthoritiesConstants.ADMIN)
+//    public ResponseEntity<List<String>> retrieveListing(@PathVariable("folderName") String folderName, HttpServletResponse response) {
+//        log.debug("Retrieving listing for bucket");
+//        List<String> files = new ArrayList<>();
+//
+//        ObjectListing objectListing = s3Service.listFolder(folderName);
+//
+//        for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+//            files.add(objectSummary.getKey());
+//        }
+//        return new ResponseEntity<>(files, HttpStatus.OK);
+//    }
+//
+//
+//    @RequestMapping(method= RequestMethod.POST)
+//    public @ResponseBody
+//    String uploadFile(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file){
+//        if (!file.isEmpty()) {
+//            try{
+//                s3Service.uploadFile(fileName, file.getInputStream());
+//
+//                return "You successfully uploaded " + fileName + "!";
+//            } catch (Exception e) {
+//                return "You failed to upload " + fileName + " => " + e.getMessage();
+//            }
+//        } else {
+//            return "You failed to upload " + fileName + " because the file was empty. Please include a multipart file.";
+//        }
+//    }
 }

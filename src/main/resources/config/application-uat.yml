@@ -91,6 +91,7 @@ ftp:
 
 mobile:
   podDirectory: /opt/data/portal/pod/
+  httpServerName: http://uat1.xeon.co.za:8080/
 
 # ===================================================================
 # JHipster specific properties

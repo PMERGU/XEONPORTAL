@@ -14,10 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
+import za.co.xeon.external.as3.S3Service;
+import za.co.xeon.external.as3.S3Settings;
 import za.co.xeon.external.ftp.FtpService;
 import za.co.xeon.external.ocr.Converters;
 import org.slf4j.Logger;
@@ -79,6 +82,12 @@ public class MobileResource {
     @Autowired
     private FtpService ftpService;
 
+    @Autowired
+    private S3Service s3Service;
+
+    @Autowired
+    private S3Settings s3Settings;
+
     private static File tmpDir = null;
 
     @PostConstruct
@@ -107,105 +116,140 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/invoices/{deliveryNo}", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<ByteArrayResource> downloadInvoice(@PathVariable(value="deliveryNo") String deliveryNo) throws Exception {
+    public Callable<ResponseEntity<ByteArrayResource>> downloadInvoice(@PathVariable(value="deliveryNo") String deliveryNo) throws Exception {
         log.debug("Service : [GET} /mobile/invoices/" + deliveryNo);
 
-        byte[] pdf = ftpService.download(deliveryNo);
-        if(pdf != null) {
-            return ResponseEntity
-                .ok()
-                .contentLength(pdf.length)
-                .contentType(MediaType.parseMediaType("application/pdf"))
-                .body(new ByteArrayResource(pdf));
-        }else{
-            String msg = String.format("Invoice for deliveryNo %s, could not be found on ftp server", deliveryNo);
-            log.info(msg);
-            return ResponseEntity
-                .badRequest()
-                .headers(HeaderUtil.createFailureAlert(msg))
-                .body(null);
-        }
+        return new Callable<ResponseEntity<ByteArrayResource>>() {
+            public ResponseEntity<ByteArrayResource> call() throws Exception {
+                byte[] pdf = ftpService.download(deliveryNo);
+                if(pdf != null) {
+                    return ResponseEntity
+                        .ok()
+                        .contentLength(pdf.length)
+                        .contentType(MediaType.parseMediaType("application/pdf"))
+                        .body(new ByteArrayResource(pdf));
+                }else{
+                    String msg = String.format("Invoice for deliveryNo %s, could not be found on ftp server", deliveryNo);
+                    log.info(msg);
+                    return ResponseEntity
+                        .badRequest()
+                        .headers(HeaderUtil.createFailureAlert(msg))
+                        .body(null);
+                }
+            }
+        };
+
     }
 
     @RequestMapping(value = "/mobile/customers/{customerNumber}/orders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<EvResult> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber,
+    public Callable<List<EvResult>> getCustomerOrders(@PathVariable(value="customerNumber") String customerNumber,
                                             @RequestParam(value = "from") String from, @RequestParam(value = "to") String to,Pageable pageable) throws Exception {
         log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        Future<List<EvResult>> future;
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
-            log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
-            future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
-                new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
-        }else {
-            future = mobileService.getCustomerOrders(customerNumber,
-                new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
-        }
-        while (!future.isDone()) {
-            Thread.sleep(500);
-        }
 
-        Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
-            .filter(po -> po.getPoNumber() != null)
-            .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+        return new Callable<List<EvResult>>() {
+            public List<EvResult> call() throws Exception {
+                User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+                Future<List<EvResult>> future;
+                if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+                    log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
+                    future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
+                        new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+                }else {
+                    future = mobileService.getCustomerOrders(customerNumber,
+                        new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+                }
+                while (!future.isDone()) {
+                    Thread.sleep(500);
+                }
 
-        return future.get().stream().filter(
-            ev -> poMap.containsKey(ev.getBstkd())
-        ).collect(Collectors.toList());
+                Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
+                    .filter(po -> po.getPoNumber() != null)
+                    .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+
+                return future.get().stream().filter(
+                    ev -> poMap.containsKey(ev.getBstkd())
+                ).collect(Collectors.toList());
+            }
+        };
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)
     @Timed
-    public List<Hunumbers> getHandlingUnits(@PathVariable(value="barcode") String barcode) throws Exception {
+    public Callable<List<Hunumbers>> getHandlingUnits(@PathVariable(value="barcode") String barcode) throws Exception {
         log.debug("Service [GET] /mobile/pod/" + barcode + "/handlingunits");
-        return mobileService.getHandlingUnits(barcode);
+        return new Callable<List<Hunumbers>>() {
+            public List<Hunumbers> call() throws Exception {
+                return mobileService.getHandlingUnits(barcode);
+            }
+        };
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.PUT)
     @Timed
-    public List<BapiRet2> updateHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
+    public Callable<List<BapiRet2>> updateHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
         log.debug("Service [PUT] /mobile/pods/" + barcode + "/handlingunits");
-        return mobileService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
+
+        return new Callable<List<BapiRet2>>() {
+            public List<BapiRet2> call() throws Exception {
+                return mobileService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
+            }
+        };
     }
 
     @RequestMapping(value = "/mobile/pickups/{barcode}/handlingunits", method = RequestMethod.PUT)
     @Timed
-    public List<BapiRet2> pickupHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody List<ImHuupdate> imHuupdates) throws Exception {
+    public Callable<List<BapiRet2>> pickupHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody List<ImHuupdate> imHuupdates) throws Exception {
         log.debug("Service [PUT] /mobile/pickups/" + barcode + "/handlingunits");
-        return mobileService.pickupHandelingUnits(barcode, imHuupdates);
+
+        return new Callable<List<BapiRet2>>() {
+            public List<BapiRet2> call() throws Exception {
+                return mobileService.pickupHandelingUnits(barcode, imHuupdates);
+            }
+        };
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}/url", method = RequestMethod.PUT)
     @Timed
-    public List<BapiRet2> updatePod(@PathVariable(value="barcode") String barcode, @RequestBody String url) throws Exception {
-        return mobileService.updatePod(barcode, url);
+    public Callable<List<BapiRet2>> updatePod(@PathVariable(value="barcode") String barcode, @RequestBody String url) throws Exception {
+        log.debug("Service [PUT] /mobile/pods/" + barcode + "/url - " + url);
+        return new Callable<List<BapiRet2>>() {
+            public List<BapiRet2> call() throws Exception {
+                return mobileService.updatePod(barcode, url);
+            }
+        };
     }
 
     @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<ByteArrayResource> getPod(@PathVariable(value="barcode") String barcode) throws Exception {
-        try {
-            // get your file as InputStream
-            byte[] img = mobileService.getPod(barcode);
-            if(img != null) {
-                return ResponseEntity
-                    .ok()
-                    .contentLength(img.length)
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(new ByteArrayResource(img));
-            }else{
-                log.info(String.format("POD for barcode %s, could not be found on S3 bucket", barcode));
-                return ResponseEntity
-                    .badRequest()
-                    .body(null);
+    public Callable<ResponseEntity<ByteArrayResource>> getPod(@PathVariable(value="barcode") String barcode) throws Exception {
+        return new Callable<ResponseEntity<ByteArrayResource>>() {
+            public ResponseEntity<ByteArrayResource> call() throws Exception {
+                try {
+                    // get your file as InputStream
+                    byte[] img = mobileService.getPod(barcode);
+                    if(img != null) {
+                        return ResponseEntity
+                            .ok()
+                            .contentLength(img.length)
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(new ByteArrayResource(img));
+                    }else{
+                        log.info(String.format("POD for barcode %s, could not be found on S3 bucket", barcode));
+                        return ResponseEntity
+                            .badRequest()
+                            .body(null);
+                    }
+                } catch (IOException ex) {
+                    log.error(String.format("Error writing POD to output stream. barcode was %s", barcode), ex);
+                    return ResponseEntity
+                        .badRequest()
+                        .body(null);
+                }
             }
-        } catch (IOException ex) {
-            log.error(String.format("Error writing POD to output stream. barcode was %s", barcode), ex);
-            return ResponseEntity
-                .badRequest()
-                .body(null);
-        }
+        };
     }
+
+
 
 }
