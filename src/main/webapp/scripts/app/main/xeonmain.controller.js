@@ -42,16 +42,14 @@ angular.module('portalApp')
         };
 
         function getCapturedPOs(){
-            PurchaseOrder.query().$promise.then(function(data) {
-                $scope.processed = data.filter(function (el) {
-                    return (el.state === "PROCESSED");
-                });
-                $scope.inProgress = data.filter(function (el) {
-                    return (el.state === "PROCESSING");
-                });
-                $scope.unprocessed = data.filter(function (el) {
-                    return (el.state === "UNPROCESSED");
-                });
+            PurchaseOrder.queryByState({state: "PROCESSED"}).$promise.then(function(data) {
+                $scope.processed = data;
+            });
+            PurchaseOrder.queryByState({state: "PROCESSING"}).$promise.then(function(data) {
+                $scope.inProgress = data;
+            });
+            PurchaseOrder.queryByState({state: "UNPROCESSED"}).$promise.then(function(data) {
+                $scope.unprocessed = data;
             });
         }
 

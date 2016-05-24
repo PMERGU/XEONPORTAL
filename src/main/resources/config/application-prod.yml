@@ -80,6 +80,10 @@ mobile:
   httpServerName: http://prod1.xeon.co.za/
 
 jhipster:
+    async:
+        corePoolSize: 8
+        maxPoolSize: 50
+        queueCapacity: 10000
     http:
         cache: # Used by the CachingHttpHeadersFilter
             timeToLiveInDays: 31
@@ -88,7 +92,7 @@ jhipster:
         ehcache:
             maxBytesLocalHeap: 256M
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: hptest@xeon.co.za
+        from: portal@xeon.co.za
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:

@@ -96,11 +96,14 @@ angular.module('portalApp')
         }
 
         function getCapturedPOs(){
-            PurchaseOrder.query().$promise.then(function(data) {
+            PurchaseOrder.queryByState({state: "PROCESSED"}).$promise.then(function(data) {
+                $scope.posProcessed = data;
+            });
+            PurchaseOrder.queryByState({state: "PROCESSING"}).$promise.then(function(data) {
+                $scope.posInProgress = data;
+            });
+            PurchaseOrder.queryByState({state: "UNPROCESSED"}).$promise.then(function(data) {
                 $scope.capturedPos = data;
-                $scope.posProcessed = data.filter(function (el) {
-                    return (el.state === "PROCESSED");
-                });
             });
         }
 

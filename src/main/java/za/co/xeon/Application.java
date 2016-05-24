@@ -2,6 +2,10 @@ package za.co.xeon;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.context.annotation.Bean;
 import za.co.xeon.config.Constants;
 import za.co.xeon.config.JHipsterProperties;
 
@@ -25,6 +29,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import org.apache.catalina.connector.Connector;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
@@ -95,6 +100,19 @@ public class Application implements CommandLineRunner{
               log.error("No profile has been set, loading default");
               app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEFAULT);
         }
+    }
+
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer() {
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+        factory.addConnectorCustomizers(new TomcatConnectorCustomizer() {
+
+            @Override
+            public void customize(Connector connector) {
+                connector.setAsyncTimeout(180000);
+            }
+        });
+        return factory;
     }
 
     @Override

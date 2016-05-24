@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
@@ -97,7 +99,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.POST)
     @Timed
-    public Callable<String> scanDocument(@PathVariable(value="barcode") String barcode, @RequestParam("podDocument") MultipartFile podDocument) throws Exception {
+    public String scanDocument(@PathVariable(value="barcode") String barcode, @RequestParam("podDocument") MultipartFile podDocument) throws Exception {
         log.debug("Service : [POST} /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
         String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));;
         String originalExtension = podDocument.getOriginalFilename().substring(podDocument.getOriginalFilename().indexOf(".")+1);
@@ -107,11 +109,8 @@ public class MobileResource {
         log.debug("\t[" + originalFileName + "] - received file and saved to tmp folder : " + tmpDir.getAbsolutePath());
 
         //create callable to continue long running process in different thread
-        Callable<String> task = () -> {
-            mobileService.submitPOD(barcode, podFile, originalExtension);
-            return "\t[" + podFile.getName() + "] - document submitted for processing";
-        };
-        return task;
+        mobileService.submitPOD(barcode, podFile, originalExtension);
+        return "\t[" + podFile.getName() + "] - document submitted for processing";
     }
 
     @RequestMapping(value = "/mobile/invoices/{deliveryNo}", method = RequestMethod.GET)
@@ -147,30 +146,28 @@ public class MobileResource {
                                             @RequestParam(value = "from") String from, @RequestParam(value = "to") String to,Pageable pageable) throws Exception {
         log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders");
 
-        return new Callable<List<EvResult>>() {
-            public List<EvResult> call() throws Exception {
-                User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-                Future<List<EvResult>> future;
-                if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
-                    log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
-                    future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
-                        new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
-                }else {
-                    future = mobileService.getCustomerOrders(customerNumber,
-                        new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
-                }
-                while (!future.isDone()) {
-                    Thread.sleep(500);
-                }
-
-                Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
-                    .filter(po -> po.getPoNumber() != null)
-                    .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-
-                return future.get().stream().filter(
-                    ev -> poMap.containsKey(ev.getBstkd())
-                ).collect(Collectors.toList());
+        return () -> {
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            Future<List<EvResult>> future;
+            if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+                log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
+                future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+            }else {
+                future = mobileService.getCustomerOrders(customerNumber,
+                    new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
             }
+            while (!future.isDone()) {
+                Thread.sleep(500);
+            }
+
+            Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
+                .filter(po -> po.getPoNumber() != null)
+                .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+
+            return future.get().stream().filter(
+                ev -> poMap.containsKey(ev.getBstkd())
+            ).collect(Collectors.toList());
         };
     }
 

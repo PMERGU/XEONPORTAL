@@ -99,12 +99,16 @@ mobile:
 # ===================================================================
 
 jhipster:
+    async:
+        corePoolSize: 2
+        maxPoolSize: 50
+        queueCapacity: 10000
     cache: # Hibernate 2nd level cache, used by CacheConfiguration
         timeToLiveSeconds: 3600
         ehcache:
             maxBytesLocalHeap: 128M
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: hptest@xeon.co.za
+        from: portal@xeon.co.za
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:
