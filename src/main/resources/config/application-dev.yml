@@ -39,8 +39,8 @@ spring:
     mail:
         host: smtp.office365.com
         port: 587
-        username: hptest@xeon.co.za
-        password: Daqu1941
+        username: portal@xeon.co.za
+        password: Haqo6518
         tls: true
         protocal: smtp
         properties.mail.smtp:

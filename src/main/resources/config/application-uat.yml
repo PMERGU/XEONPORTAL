@@ -36,8 +36,8 @@ spring:
     mail:
         host: smtp.office365.com
         port: 587
-        username: hptest@xeon.co.za
-        password: Daqu1941
+        username: portal@xeon.co.za
+        password: Haqo6518
         tls: true
         protocal: smtp
         properties.mail.smtp:
@@ -63,6 +63,7 @@ ocr:
   application: TestApplication 1
   password: nnoZ0x8e6Z+bX1QQ9C/dXjx0
   uri: https://cloud.ocrsdk.com
+
 amazon:
   s3:
     bucketName: xeondocstore
