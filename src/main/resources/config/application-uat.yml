@@ -20,10 +20,10 @@ spring:
             enabled: false
     datasource:
         driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://localhost:6033/portal?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://uatdb.xeon.co.za:3066/portal?useUnicode=true&characterEncoding=utf8
         name:
         username: portal
-        password: $ummer1974
+        password: Summer1974
     jpa:
         database-platform: org.hibernate.dialect.MySQLInnoDBDialect
         database: MYSQL

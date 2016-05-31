@@ -22,6 +22,7 @@
     </appender>
 -->
 
+    <logger name="global" level="INFO"/>
     <logger name="za.co.xeon" level="@logback.loglevel@"/>
 
     <logger name="javax.activation" level="WARN"/>

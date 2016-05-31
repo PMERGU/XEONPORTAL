@@ -8,10 +8,10 @@ spring:
             enabled: false
     datasource:
         driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: should be replaced by aws confirm on the server where it is created, due to dynamic db creation as part of cloud formation
+        url: jdbc:mysql://proddb.xeon.co.za:3066/portal?useUnicode=true&characterEncoding=utf8
         name:
-        username:
-        password:
+        username: portal
+        password: Summer1974
     jpa:
         database-platform: org.hibernate.dialect.MySQLInnoDBDialect
         database: MYSQL
