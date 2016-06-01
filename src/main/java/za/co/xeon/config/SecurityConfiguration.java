@@ -83,7 +83,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/api/**").authenticated()
             .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
@@ -95,11 +94,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/liquibase/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/health/**").permitAll()
             .antMatchers("/v2/api-docs/**").permitAll()
             .antMatchers("/configuration/security").permitAll()
             .antMatchers("/configuration/ui").permitAll()
             .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/protected/**").authenticated() 
+            .antMatchers("/protected/**").authenticated()
         .and()
             .apply(securityConfigurerAdapter());
 

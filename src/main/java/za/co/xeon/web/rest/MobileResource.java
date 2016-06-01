@@ -99,6 +99,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.POST)
     @Timed
+    @Secured(AuthoritiesConstants.MOBILE)
     public String scanDocument(@PathVariable(value="barcode") String barcode, @RequestParam("podDocument") MultipartFile podDocument) throws Exception {
         log.debug("Service : [POST} /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
         String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));;
@@ -173,6 +174,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.GET)
     @Timed
+    @Secured(AuthoritiesConstants.MOBILE)
     public Callable<List<Hunumbers>> getHandlingUnits(@PathVariable(value="barcode") String barcode) throws Exception {
         log.debug("Service [GET] /mobile/pod/" + barcode + "/handlingunits");
         return new Callable<List<Hunumbers>>() {
@@ -184,6 +186,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/pods/{barcode}/handlingunits", method = RequestMethod.PUT)
     @Timed
+    @Secured(AuthoritiesConstants.MOBILE)
     public Callable<List<BapiRet2>> updateHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
         log.debug("Service [PUT] /mobile/pods/" + barcode + "/handlingunits");
 
@@ -196,6 +199,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/pickups/{barcode}/handlingunits", method = RequestMethod.PUT)
     @Timed
+    @Secured(AuthoritiesConstants.MOBILE)
     public Callable<List<BapiRet2>> pickupHandelingUnits(@PathVariable(value="barcode") String barcode, @RequestBody List<ImHuupdate> imHuupdates) throws Exception {
         log.debug("Service [PUT] /mobile/pickups/" + barcode + "/handlingunits");
 
@@ -208,6 +212,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/pods/{barcode}/url", method = RequestMethod.PUT)
     @Timed
+    @Secured(AuthoritiesConstants.MOBILE)
     public Callable<List<BapiRet2>> updatePod(@PathVariable(value="barcode") String barcode, @RequestBody String url) throws Exception {
         log.debug("Service [PUT] /mobile/pods/" + barcode + "/url - " + url);
         return new Callable<List<BapiRet2>>() {
@@ -219,6 +224,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.GET)
     @Timed
+    @Secured(AuthoritiesConstants.MOBILE)
     public Callable<ResponseEntity<ByteArrayResource>> getPod(@PathVariable(value="barcode") String barcode) throws Exception {
         return new Callable<ResponseEntity<ByteArrayResource>>() {
             public ResponseEntity<ByteArrayResource> call() throws Exception {
