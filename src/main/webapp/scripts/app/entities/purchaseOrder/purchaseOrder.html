@@ -530,8 +530,21 @@
                                 <div class="form-group">
                                     <label class="control-label" for="field_cvEta" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel ETA</label>
                                     <label class="control-label" for="field_cvEta" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Flight ETA</label>
-                                    <input type="text" class="form-control" name="cvEta" id="field_cvEta"
-                                           ng-required="requiredFields['cvEta']" ng-model="purchaseOrder.cvEta"/>
+
+                                    <div class="input-group">
+                                        <input id="field_cvEta" type="text" class="form-control"
+                                               name="cvEta"
+                                               uib-datepicker-popup
+                                               ng-model="purchaseOrder.cvEta"
+                                               datepicker-options="dateOptions"
+                                               ng-required="requiredFields['cvEta']"
+                                               is-open="dpEta.opened"/>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default"
+                                                        ng-click="dpEtaOpen($event)"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                    </div>
                                     <div ng-show="editForm.cvEta.$invalid">
                                         <p class="help-block small-help-block pull-right" ng-show="editForm.cvEta.$error.required">
                                             required
@@ -622,8 +635,20 @@
                                 <div class="form-group">
                                     <label class="control-label" for="field_cvEtd" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel ETD</label>
                                     <label class="control-label" for="field_cvEtd" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Flight ETD</label>
-                                    <input type="text" class="form-control" name="cvEtd" id="field_cvEtd"
-                                           ng-required="requiredFields['cvEtd']" ng-model="purchaseOrder.cvEtd"/>
+                                    <div class="input-group">
+                                        <input id="field_cvEtd" type="text" class="form-control"
+                                               name="cvEtd"
+                                               uib-datepicker-popup
+                                               ng-model="purchaseOrder.cvEtd"
+                                               datepicker-options="dateOptions"
+                                               ng-required="requiredFields['cvEtd']"
+                                               is-open="dpEtd.opened"/>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default"
+                                                        ng-click="dpEtdOpen($event)"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                    </div>
                                     <div ng-show="editForm.cvEtd.$invalid">
                                         <p class="help-block small-help-block pull-right" ng-show="editForm.cvEtd.$error.required">
                                             required

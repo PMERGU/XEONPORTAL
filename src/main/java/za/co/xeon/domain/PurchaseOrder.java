@@ -151,7 +151,7 @@ public class PurchaseOrder implements Serializable {
     private String cvOrigin;
 
     @Column(name = "cv_eta")
-    private ZonedDateTime cvEta;
+    private LocalDate cvEta;
 
     @Column(name = "cv_container_no")
     private String cvContainerNo;
@@ -178,7 +178,7 @@ public class PurchaseOrder implements Serializable {
     private String cvShipper;
 
     @Column(name = "cv_etd")
-    private ZonedDateTime cvEtd;
+    private LocalDate cvEtd;
 
     @Column(name = "cv_destination")
     private String cvDestination;
@@ -490,11 +490,11 @@ public class PurchaseOrder implements Serializable {
         this.cvOrigin = cvOrigin;
     }
 
-    public ZonedDateTime getCvEta() {
+    public LocalDate getCvEta() {
         return cvEta;
     }
 
-    public void setCvEta(ZonedDateTime cvEta) {
+    public void setCvEta(LocalDate cvEta) {
         this.cvEta = cvEta;
     }
 
@@ -562,11 +562,11 @@ public class PurchaseOrder implements Serializable {
         this.cvShipper = cvShipper;
     }
 
-    public ZonedDateTime getCvEtd() {
+    public LocalDate getCvEtd() {
         return cvEtd;
     }
 
-    public void setCvEtd(ZonedDateTime cvEtd) {
+    public void setCvEtd(LocalDate cvEtd) {
         this.cvEtd = cvEtd;
     }
 

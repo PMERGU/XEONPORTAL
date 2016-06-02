@@ -3,13 +3,14 @@
 angular.module('portalApp').controller('PurchaseOrderController',
     ['$rootScope', '$scope', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal',
         function ($rootScope, $scope, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
-            if(entity === undefined){
+            function resetPo(){
+                $log.debug("clearing po");
                 $scope.purchaseOrder = {
                     state: "UNPROCESSED",
-                    poNumber: "1",
-                    accountReference: "1",
-                    reference: "1",
-                    collective: "1",
+                    poNumber: "",
+                    accountReference: "",
+                    reference: "",
+                    collective: "",
                     serviceType: "COURIER",
                     serviceLevel: "ECONOMY",
                     customerType: "REGULAR",
@@ -21,30 +22,19 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     pickUpParty:  null,
                     pickUpType: "STANDARD",
                     collectionDate: new Date(),
-                    collectionReference: "1",
+                    collectionReference: "",
                     shipToParty: null,
                     shipToType: "HOME_DROPBOX",
                     dropOffDate: new Date(),
                     //STEP 3
                     cargoClassification: "NON_HAZARDOUS",
-                    poLines: [{
-                        rowId: 1,
-                        batchNumber: "123",
-                        grossWeight: 12,
-                        height: 100,
-                        id: null,
-                        length: 100,
-                        materialNumber: "123",
-                        materialType: "PACKAGE",
-                        netWeight: 11,
-                        orderQuantity: 10,
-                        unitOfMeasure: "123",
-                        warehouse: "123",
-                        width: 100
-                    }],
+                    poLines: [],
                     //STEP 4
                     soldToParty: null
                 };
+            }
+            if(entity === undefined){
+                resetPo();
             }else{
                 $scope.purchaseOrder = entity;
                 $.each($scope.purchaseOrder.poLines, function(idx, po){
@@ -296,6 +286,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             var onSaveSuccess = function (result) {
                 $scope.$emit('portalApp:purchaseOrderUpdate', result);
+                resetPo();
                 $scope.isSaving = false;
                 $state.go('purchaseOrder');
             };
@@ -344,6 +335,22 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $scope.dpDropOff.opened = true;
             };
 
+            $scope.dpEta = {
+                opened: false
+            };
+
+            $scope.dpEtaOpen = function($event){
+                $scope.dpEta.opened = true;
+            };
+
+            $scope.dpEtd = {
+                opened: false
+            };
+
+            $scope.dpEtdOpen = function($event){
+                $scope.dpEtd.opened = true;
+            };
+
             $scope.dpCollectionDate = {
                 opened: false
             };
@@ -368,7 +375,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             // listen for poLine add event
             $rootScope.$on('portalApp:poLineUpdate', function (event, poLine) {
                 $log.debug("current row id : " + poLine.rowId);
-                if(poLine.rowId === null || poLine.rowId === undefined) {
+                if(poLine.rowId === null || poLine.rowId === undefined || $scope.purchaseOrder.poLines.length == 0) {
                     poLine.rowId = $scope.purchaseOrder.poLines.length+1;
                     $log.debug("new Row id : " + poLine.rowId);
                     $scope.purchaseOrder.poLines.push(poLine);

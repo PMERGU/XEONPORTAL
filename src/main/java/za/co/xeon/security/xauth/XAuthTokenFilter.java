@@ -1,5 +1,6 @@
 package za.co.xeon.security.xauth;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,7 +47,9 @@ public class XAuthTokenFilter extends GenericFilterBean {
             }
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            if(ExceptionUtils.indexOfThrowable(ex, org.apache.catalina.connector.ClientAbortException.class) == -1){
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

@@ -56,4 +56,5 @@
                   separator=";"
                   tableName="party"/>
     </changeSet>
+
 </databaseChangeLog>
