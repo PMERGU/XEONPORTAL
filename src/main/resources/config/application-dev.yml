@@ -73,7 +73,7 @@ amazon:
     secretKey: GZoZtt1FDeIbOa41tyC1y+NasWT76qo7vHQoa4vq
     url: https://936207874332.signin.aws.amazon.com/console
     user: xeonbackend
-    folderPod: pod
+    folderPod: pod-dev
 
 sap:
   jco:

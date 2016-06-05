@@ -50,9 +50,9 @@ public class UserXAuthTokenController {
                 authority.getAuthority().equals(AuthoritiesConstants.ADMIN) || authority.getAuthority().equals(AuthoritiesConstants.USER)
             ).count() > 0) {
             log.debug("Providing long lived token for Xeon/Admin user.");
-            return tokenProvider.createToken(details, (60 * 60 * 10));// auth token valid for 10 hours
+            return tokenProvider.createToken(details, (60 * 60 * 12));// auth token valid for 10 hours
         } else {
-            return tokenProvider.createToken(details);
+            return tokenProvider.createToken(details, (60 * 60));
         }
 
     }

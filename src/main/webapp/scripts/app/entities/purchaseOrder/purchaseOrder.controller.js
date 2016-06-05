@@ -63,10 +63,10 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.requiredFields = {};
 
             $scope.dateOptions = {
-                dateDisabled: disabled,
+                //dateDisabled: disabled,
                 formatYear: 'yy',
                 // maxDate: new Date(new Date(todaysDate).setMonth(todaysDate.getMonth()+2)),
-                minDate: new Date(),
+                //minDate: new Date(),
                 startingDay: 0
             };
 
@@ -82,6 +82,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $.each($scope.purchaseOrder.poLines, function(idx, po){
                     $scope.purchaseOrder.poLines[idx].rowId = idx+1;
                 });
+                calculateTotals($scope.purchaseOrder.poLines);
             }
 
             $scope.$watch('purchaseOrder.serviceLevel', serviceLevelWatch);
