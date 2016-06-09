@@ -1,7 +1,10 @@
 package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import za.co.xeon.domain.Party;
+import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.repository.PartyRepository;
 import za.co.xeon.repository.UserRepository;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import za.co.xeon.web.rest.util.PaginationUtil;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -84,15 +88,18 @@ public class PartyResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Party> getAllPartys() {
+    public ResponseEntity<List<Party>> getAllPartys(Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get all Partys");
+        Page<Party> page = null;
         if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
-            return partyRepository.findAll();
+            page = partyRepository.findAll(pageable);
         }else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             log.debug("Restricting Party lookup by username " + user.getLogin());
-            return partyRepository.findByCompany(user.getCompany());
+            page = partyRepository.findByCompany(user.getCompany(), pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/partys");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**

@@ -26,12 +26,14 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     shipToParty: null,
                     shipToType: "HOME_DROPBOX",
                     dropOffDate: new Date(),
+
                     //STEP 3
                     cargoClassification: "NON_HAZARDOUS",
                     poLines: [],
                     //STEP 4
                     soldToParty: null
                 };
+                $scope.purchaseOrder.poLines.length = 0;
             }
             if(entity === undefined){
                 resetPo();
@@ -118,12 +120,12 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'cvCarrierRef'},
                             {name: 'cvConsol', show: true, value:IFTET($scope.purchaseOrder.cvConsol, '')},
                             {name: 'cvWaybill', show: true, value:IFTET($scope.purchaseOrder.cvWaybill, '')},
-                            {name: 'cvWaybillIssue', show: true, value:IFTET($scope.purchaseOrder.cvWaybillIssue, '')},
                             {name: 'cvHouseWaybill', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybill, '')},
-                            {name: 'cvHouseWaybillIssue', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybillIssue, '')},
+                            {name: 'cvWaybillIssue', show: true, value:IFTET(new Date($scope.purchaseOrder.cvWaybillIssue), '')},
+                            {name: 'cvHouseWaybillIssue', show: true, value:IFTET(new Date($scope.purchaseOrder.cvHouseWaybillIssue), '')},
                             {name: 'cvShipper', show: true, value:IFTET($scope.purchaseOrder.cvShipper, '')},
-                            {name: 'cvEtd', show: true, value:IFTET($scope.purchaseOrder.cvEtd, '')},
-                            {name: 'cvEta', show: true, value:IFTET($scope.purchaseOrder.cvEta, '')},
+                            {name: 'cvEtd', show: true, value:IFTET(new Date($scope.purchaseOrder.cvEtd), '')},
+                            {name: 'cvEta', show: true, value:IFTET(new Date($scope.purchaseOrder.cvEta), '')},
                             {name: 'cvDestination', show: true, value:IFTET($scope.purchaseOrder.cvDestination, '')},
                             {name: 'cvCommodity', show: true, value:IFTET($scope.purchaseOrder.cvCommodity, '')}
                         ]);
@@ -137,12 +139,12 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'cvCarrierRef', show: true, value:IFTET($scope.purchaseOrder.cvCarrierRef, '')},
                             {name: 'cvConsol', show: true, value:IFTET($scope.purchaseOrder.cvConsol, '')},
                             {name: 'cvWaybill', show: true, value:IFTET($scope.purchaseOrder.cvWaybill, '')},
-                            {name: 'cvWaybillIssue', show: true, value:IFTET($scope.purchaseOrder.cvWaybillIssue, '')},
                             {name: 'cvHouseWaybill', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybill, '')},
-                            {name: 'cvHouseWaybillIssue', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybillIssue, '')},
+                            {name: 'cvWaybillIssue', show: true, value:IFTET(new Date($scope.purchaseOrder.cvWaybillIssue), '')},
+                            {name: 'cvHouseWaybillIssue', show: true, value:IFTET(new Date($scope.purchaseOrder.cvHouseWaybillIssue), '')},
                             {name: 'cvShipper', show: true, value:IFTET($scope.purchaseOrder.cvShipper, '')},
-                            {name: 'cvEtd', show: true, value:IFTET($scope.purchaseOrder.cvEtd, '')},
-                            {name: 'cvEta', show: true, value:IFTET($scope.purchaseOrder.cvEta, '')},
+                            {name: 'cvEtd', show: true, value:IFTET(new Date($scope.purchaseOrder.cvEtd), '')},
+                            {name: 'cvEta', show: true, value:IFTET(new Date($scope.purchaseOrder.cvEta), '')},
                             {name: 'cvDestination', show: true, value:IFTET($scope.purchaseOrder.cvDestination, '')},
                             {name: 'cvCommodity', show: true, value:IFTET($scope.purchaseOrder.cvCommodity, '')}
                         ]);
@@ -313,13 +315,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
             };
 
             $scope.save = function () {
+                $log.debug("Saving po to backend");
                 $scope.isSaving = true;
-                $log.log($scope.purchaseOrder.poLines);
+                $log.debug($scope.purchaseOrder.poLines);
+                $log.debug($scope.purchaseOrder);
                 if ($scope.purchaseOrder.id != null) {
-                    $log.log("not saving as yet...");
                     PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 } else {
-                    $log.log($scope.purchaseOrder);
                     PurchaseOrder.save($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 }
             };
@@ -328,36 +330,50 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $uibModalInstance.dismiss('cancel');
             };
 
-            $scope.dpDropOff = {
-                opened: false
+            $scope.clearPO = function () {
+                $log.debug("clearing po");
+                resetPo();
+                entity = undefined;
+                $scope.step = 1;
             };
 
-            $scope.dpDropOffOpen = function($event){
-                $scope.dpDropOff.opened = true;
-            };
-
-            $scope.dpEta = {
-                opened: false
-            };
-
-            $scope.dpEtaOpen = function($event){
-                $scope.dpEta.opened = true;
-            };
-
-            $scope.dpEtd = {
-                opened: false
-            };
-
-            $scope.dpEtdOpen = function($event){
-                $scope.dpEtd.opened = true;
-            };
-
-            $scope.dpCollectionDate = {
-                opened: false
-            };
-
-            $scope.dpCollectionDateOpen = function($event){
-                $scope.dpCollectionDate.opened = true;
+            $scope.dateSetup = {
+                dpDropOff: {
+                    opened: false,
+                    open: function($event){
+                        $scope.dateSetup.dpDropOff.opened = true;
+                    }
+                },
+                dpEta: {
+                    opened: false,
+                    open: function($event){
+                        $scope.dateSetup.dpEta.opened = true;
+                    }
+                },
+                dpEtd: {
+                    opened: false,
+                    open: function($event){
+                        $scope.dateSetup.dpEtd.opened = true;
+                    }
+                },
+                dpCollectionDate: {
+                    opened: false,
+                    open: function($event){
+                        $scope.dateSetup.dpCollectionDate.opened = true;
+                    }
+                },
+                dpWaybillIssue: {
+                    opened: false,
+                    open: function($event){
+                        $scope.dateSetup.dpWaybillIssue.opened = true;
+                    }
+                },
+                dpHouseWaybillIssue: {
+                    opened: false,
+                    open: function($event){
+                        $scope.dateSetup.dpHouseWaybillIssue.opened = true;
+                    }
+                }
             };
 
             // Wizard functions
@@ -373,8 +389,12 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
             };
 
+            if($rootScope.poLineUpdateBroadcast != undefined){
+                $log.debug("clearning previous registered poLineUpdateBroadcast event");
+                $rootScope.poLineUpdateBroadcast();
+            }
             // listen for poLine add event
-            $rootScope.$on('portalApp:poLineUpdate', function (event, poLine) {
+            $rootScope.poLineUpdateBroadcast = $rootScope.$on('portalApp:poLineUpdate', function (event, poLine) {
                 $log.debug("current row id : " + poLine.rowId);
                 if(poLine.rowId === null || poLine.rowId === undefined || $scope.purchaseOrder.poLines.length == 0) {
                     poLine.rowId = $scope.purchaseOrder.poLines.length+1;
@@ -391,8 +411,12 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 calculateTotals($scope.purchaseOrder.poLines);
             });
 
+            if($rootScope.partyUpdateBroadcast != undefined){
+                $log.debug("clearning previous registered partyUpdateBroadcast event");
+                $rootScope.partyUpdateBroadcast();
+            }
             // listen for party create event
-            $rootScope.$on('portalApp:partyUpdate', function (event, data) {
+            $rootScope.partyUpdateBroadcast = $rootScope.$on('portalApp:partyUpdate', function (event, data) {
                 $scope.pickuppartys.push(data);
                 switch(data.for){
                     case("pickup"):
@@ -407,12 +431,10 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
             });
 
-
             function calculateTotals(lines){
                 $scope.totalWeight = 0;
                 $scope.totalCubes = 0;
                 $.each(lines, function(idx, line){
-                    $log.log(line.grossWeight);
                     $scope.totalWeight += parseFloat(line.grossWeight * line.orderQuantity);
                     $scope.totalCubes += parseFloat(((line.height * line.length * line.width)/1000000) * line.orderQuantity);
                 })
@@ -421,7 +443,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             calculateTotals($scope.purchaseOrder.poLines);
 
 
-            function IFTET(ifThis, elseThat){
+            function IFTET(ifThis, elseThat, debug){
                 if(ifThis === undefined || ifThis === null){
                     if(elseThat === undefined || elseThat === null){
                         return null;

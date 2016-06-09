@@ -1,12 +1,18 @@
 'use strict';
 
 angular.module('portalApp').controller('PartyDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Company',
-        function($scope, $stateParams, $uibModalInstance, entity, Party, Company) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Company', 'Principal',
+        function($scope, $stateParams, $uibModalInstance, entity, Party, Company, Principal) {
 
         $scope.party = entity;
         $scope.companies = Company.query();
-            
+
+        $scope.isXeon = false;
+        Principal.identity().then(function(user) {
+            $scope.user = user;
+            $scope.isXeon = user.company.type === "XEON";
+        });
+
         $scope.load = function(id) {
             Party.get({id : id}, function(result) {
                 $scope.party = result;

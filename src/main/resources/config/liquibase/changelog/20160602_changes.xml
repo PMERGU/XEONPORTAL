@@ -14,4 +14,13 @@
                         tableName="purchase_order"/>
     </changeSet>
 
+    <changeSet author="derick" id="changeset_2">
+        <modifyDataType columnName="cv_waybill_issue"
+                        newDataType="date"
+                        tableName="purchase_order"/>
+        <modifyDataType columnName="cv_house_waybill_issue"
+                        newDataType="date"
+                        tableName="purchase_order"/>
+    </changeSet>
+
 </databaseChangeLog>

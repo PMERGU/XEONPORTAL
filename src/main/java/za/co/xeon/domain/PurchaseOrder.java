@@ -166,13 +166,13 @@ public class PurchaseOrder implements Serializable {
     private String cvWaybill;
 
     @Column(name = "cv_waybill_issue")
-    private String cvWaybillIssue;
+    private LocalDate cvWaybillIssue;
 
     @Column(name = "cv_house_waybill")
     private String cvHouseWaybill;
 
     @Column(name = "cv_house_waybill_issue")
-    private String cvHouseWaybillIssue;
+    private LocalDate cvHouseWaybillIssue;
 
     @Column(name = "cv_shipper")
     private String cvShipper;
@@ -530,11 +530,11 @@ public class PurchaseOrder implements Serializable {
         this.cvWaybill = cvWaybill;
     }
 
-    public String getCvWaybillIssue() {
+    public LocalDate getCvWaybillIssue() {
         return cvWaybillIssue;
     }
 
-    public void setCvWaybillIssue(String cvWaybillIssue) {
+    public void setCvWaybillIssue(LocalDate cvWaybillIssue) {
         this.cvWaybillIssue = cvWaybillIssue;
     }
 
@@ -546,11 +546,11 @@ public class PurchaseOrder implements Serializable {
         this.cvHouseWaybill = cvHouseWaybill;
     }
 
-    public String getCvHouseWaybillIssue() {
+    public LocalDate getCvHouseWaybillIssue() {
         return cvHouseWaybillIssue;
     }
 
-    public void setCvHouseWaybillIssue(String cvHouseWaybillIssue) {
+    public void setCvHouseWaybillIssue(LocalDate cvHouseWaybillIssue) {
         this.cvHouseWaybillIssue = cvHouseWaybillIssue;
     }
 

@@ -16,7 +16,7 @@
                             Create new Purchase Order
                         </h2>
                         <div class="pull-right" style="margin-top: -20px;">
-                            <button class="btn btn-default" ng-click="clear()" ng-hide="purchaseOrder.id">
+                            <button class="btn btn-default" ng-click="clearPO()" ng-hide="purchaseOrder.id">
                                 <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Clear Form</span>
                             </button>
                             <button class="btn btn-primary2" ui-sref="purchaseOrder.comment" has-authority="ROLE_USER"
@@ -198,7 +198,7 @@
                                             <select class="form-control" id="field_pickUpParty" name="pickUpParty"
                                                     ng-required="requiredFields['pickUpParty']"
                                                     ng-model="purchaseOrder.pickUpParty.id"
-                                                    ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'id'">
+                                                    ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'name'">
                                             </select>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
@@ -234,10 +234,10 @@
                                                    ng-model="purchaseOrder.collectionDate"
                                                    datepicker-options="dateOptions"
                                                    ng-required="requiredFields['collectionDate']"
-                                                   is-open="dpCollectionDate.opened"/>
+                                                   is-open="dateSetup.dpCollectionDate.opened"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
-                                                        ng-click="dpCollectionDateOpen($event)"><i
+                                                        ng-click="dateSetup.dpCollectionDate.open($event)"><i
                                                     class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </div>
@@ -271,7 +271,7 @@
                                             <select class="form-control" id="field_shipToParty" name="shipToParty"
                                                     ng-required="requiredFields['shipToParty']"
                                                     ng-model="purchaseOrder.shipToParty.id"
-                                                    ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'id'">
+                                                    ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'name'">
                                             </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default"
@@ -305,12 +305,12 @@
                                                    uib-datepicker-popup
                                                    ng-required="purchaseOrder['dropOffDate'] !== null"
                                                    name="dropOffDate" ng-required="requiredFields['dropOffDate']"
-                                                   ng-model="purchaseOrder.dropOffDate" is-open="dpDropOff.opened"
+                                                   ng-model="purchaseOrder.dropOffDate" is-open="dateSetup.dpDropOff.opened"
                                                    datepicker-options="dateOptions" ng-required="true"
                                                    close-text="Close"/>
                                               <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
-                                                        ng-click="dpDropOffOpen()"><i
+                                                        ng-click="dateSetup.dpDropOff.open()"><i
                                                     class="glyphicon glyphicon-calendar"></i></button>
                                               </span>
                                         </div>
@@ -467,7 +467,7 @@
                                     <div class="input-group">
                                         <select class="form-control" id="field_soldToParty" name="soldToParty" ng-required="user.company.type === 'AGENT'"
                                                 ng-model="purchaseOrder.soldToParty.id"
-                                                ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'id'">
+                                                ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'name'">
                                             <option value=""></option>
                                         </select>
                                             <span class="input-group-btn">
@@ -517,8 +517,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="field_cvName" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel Name</label>
-                                    <label class="control-label" for="field_cvName" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Flight Name</label>
+                                    <label class="control-label" for="field_cvName" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel - Voyage</label>
+                                    <label class="control-label" for="field_cvName" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Carrier</label>
                                     <input type="text" class="form-control" name="cvName" id="field_cvName"
                                            ng-required="requiredFields['cvName']" ng-model="purchaseOrder.cvName"/>
                                     <div ng-show="editForm.cvName.$invalid">
@@ -538,10 +538,10 @@
                                                ng-model="purchaseOrder.cvEta"
                                                datepicker-options="dateOptions"
                                                ng-required="requiredFields['cvEta']"
-                                               is-open="dpEta.opened"/>
+                                               is-open="dateSetup.dpEta.opened"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
-                                                        ng-click="dpEtaOpen($event)"><i
+                                                        ng-click="dateSetup.dpEta.open($event)"><i
                                                     class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                     </div>
@@ -552,7 +552,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="field_cvOrigin" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel Origin</label>
+                                    <label class="control-label" for="field_cvOrigin" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Port of load</label>
                                     <label class="control-label" for="field_cvOrigin" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Flight Origin</label>
                                     <input type="text" class="form-control" name="cvOrigin" id="field_cvOrigin"
                                            ng-required="requiredFields['cvOrigin']" ng-model="purchaseOrder.cvOrigin"/>
@@ -642,10 +642,10 @@
                                                ng-model="purchaseOrder.cvEtd"
                                                datepicker-options="dateOptions"
                                                ng-required="requiredFields['cvEtd']"
-                                               is-open="dpEtd.opened"/>
+                                               is-open="dateSetup.dpEtd.opened"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
-                                                        ng-click="dpEtdOpen($event)"><i
+                                                        ng-click="dateSetup.dpEtd.open($event)"><i
                                                     class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                     </div>
@@ -657,7 +657,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label" for="field_cvDestination" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel Destination</label>
+                                    <label class="control-label" for="field_cvDestination" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Port of discharge</label>
                                     <label class="control-label" for="field_cvDestination" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Flight Destination</label>
                                     <input type="text" class="form-control" name="cvDestination" id="field_cvDestination"
                                            ng-required="requiredFields['cvDestination']" ng-model="purchaseOrder.cvDestination"/>
@@ -681,10 +681,23 @@
                                 <div class="form-group">
                                     <label class="control-label" for="field_cvWaybillIssue" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Master Ocean Way Bill Issue</label>
                                     <label class="control-label" for="field_cvWaybillIssue" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Master Air Way Bill Issue</label>
-                                    <input type="text" class="form-control" name="cvWaybillIssue" id="field_cvWaybillIssue"
-                                           ng-required="requiredFields['cvWaybillIssue']" ng-model="purchaseOrder.cvWaybillIssue"/>
+                                    <div class="input-group">
+                                        <input id="field_cvWaybillIssue" type="text" class="form-control"
+                                               name="cvWaybillIssue"
+                                               uib-datepicker-popup
+                                               ng-model="purchaseOrder.cvWaybillIssue"
+                                               datepicker-options="dateOptions"
+                                               ng-required="requiredFields['cvWaybillIssue']"
+                                               is-open="dateSetup.dpWaybillIssue.opened"/>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default"
+                                                        ng-click="dateSetup.dpWaybillIssue.open($event)"><i
+                                                class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                    </div>
                                     <div ng-show="editForm.cvWaybillIssue.$invalid">
-                                        <p class="help-block small-help-block pull-right" ng-show="editForm.cvWaybillIssue.$error.required">
+                                        <p class="help-block small-help-block pull-right"
+                                           ng-show="editForm.cvWaybillIssue.$error.required">
                                             required
                                         </p>
                                     </div>
@@ -703,10 +716,23 @@
                                 <div class="form-group">
                                     <label class="control-label" for="field_cvHouseWaybillIssue" ng-show="purchaseOrder.modeOfTransport === 'SEA'">House Ocean Way Bill Issue</label>
                                     <label class="control-label" for="field_cvHouseWaybillIssue" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">House Air Way Bill Issue</label>
-                                    <input type="text" class="form-control" name="cvHouseWaybillIssue" id="field_cvHouseWaybillIssue"
-                                           ng-required="requiredFields['cvHouseWaybillIssue']" ng-model="purchaseOrder.cvHouseWaybillIssue"/>
+                                    <div class="input-group">
+                                        <input id="field_cvHouseWaybillIssue" type="text" class="form-control"
+                                               name="cvHouseWaybillIssue"
+                                               uib-datepicker-popup
+                                               ng-model="purchaseOrder.cvHouseWaybillIssue"
+                                               datepicker-options="dateOptions"
+                                               ng-required="requiredFields['cvHouseWaybillIssue']"
+                                               is-open="dateSetup.dpHouseWaybillIssue.opened"/>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default"
+                                                        ng-click="dateSetup.dpHouseWaybillIssue.open($event)"><i
+                                                class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                    </div>
                                     <div ng-show="editForm.cvHouseWaybillIssue.$invalid">
-                                        <p class="help-block small-help-block pull-right" ng-show="editForm.cvHouseWaybillIssue.$error.required">
+                                        <p class="help-block small-help-block pull-right"
+                                           ng-show="editForm.cvHouseWaybillIssue.$error.required">
                                             required
                                         </p>
                                     </div>

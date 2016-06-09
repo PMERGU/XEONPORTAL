@@ -227,7 +227,7 @@ public class PurchaseOrderResource {
             log.debug("Restricting PurchaseOrders lookup by username " + user.getLogin());
             page = purchaseOrderService.findAllByUser(user, pageable);
         }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/purchaseOrders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

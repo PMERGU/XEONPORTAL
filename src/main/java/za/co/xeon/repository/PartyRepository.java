@@ -16,5 +16,5 @@ import java.util.List;
  * Spring Data JPA repository for the Party entity.
  */
 public interface PartyRepository extends JpaRepository<Party,Long> {
-    List<Party> findByCompany(Company company);
+    Page<Party> findByCompany(Company company, Pageable pageable);
 }
