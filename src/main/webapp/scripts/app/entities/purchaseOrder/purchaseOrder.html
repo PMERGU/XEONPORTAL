@@ -517,7 +517,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="field_cvName" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel - Voyage</label>
+                                    <label class="control-label" for="field_cvName" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Carrier</label>
                                     <label class="control-label" for="field_cvName" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Carrier</label>
                                     <input type="text" class="form-control" name="cvName" id="field_cvName"
                                            ng-required="requiredFields['cvName']" ng-model="purchaseOrder.cvName"/>
@@ -552,7 +552,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="field_cvOrigin" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Port of load</label>
+                                    <label class="control-label" for="field_cvOrigin" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Port of Load</label>
                                     <label class="control-label" for="field_cvOrigin" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Flight Origin</label>
                                     <input type="text" class="form-control" name="cvOrigin" id="field_cvOrigin"
                                            ng-required="requiredFields['cvOrigin']" ng-model="purchaseOrder.cvOrigin"/>
@@ -622,7 +622,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="field_cvNumber" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel Number</label>
+                                    <label class="control-label" for="field_cvNumber" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Vessel / Voyage</label>
                                     <label class="control-label" for="field_cvNumber" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Flight Number</label>
                                     <input type="text" class="form-control" name="cvNumber" id="field_cvNumber"
                                            ng-required="requiredFields['cvNumber']" ng-model="purchaseOrder.cvNumber"/>
@@ -657,7 +657,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label" for="field_cvDestination" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Port of discharge</label>
+                                    <label class="control-label" for="field_cvDestination" ng-show="purchaseOrder.modeOfTransport === 'SEA'">Port of Discharge</label>
                                     <label class="control-label" for="field_cvDestination" ng-hide="purchaseOrder.modeOfTransport === 'SEA'">Flight Destination</label>
                                     <input type="text" class="form-control" name="cvDestination" id="field_cvDestination"
                                            ng-required="requiredFields['cvDestination']" ng-model="purchaseOrder.cvDestination"/>
