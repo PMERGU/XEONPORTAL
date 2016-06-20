@@ -106,6 +106,10 @@ public class HiberSapService {
                 log.debug(String.format("[%s] - ImHuitem.getHuExid(): %s", barcode, org.apache.commons.lang.StringUtils.leftPad(dto.getHandlingUnit(), 20, "0")));
                 imHuitems.add(new ImHuitem(barcode, org.apache.commons.lang.StringUtils.leftPad(dto.getHandlingUnit(), 20, "0"), handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
             };
+            if(imHuitems.size() == 0){
+                log.debug(String.format("[%s] - hu count 0, so making a new imHuitem record with just barcode....nothing else...damn you fairwell!!!", barcode));
+                imHuitems.add(new ImHuitem(barcode, "", new Date(), new Date()));
+            }
             UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(imHuitems);
             session.execute(rfc);
 
