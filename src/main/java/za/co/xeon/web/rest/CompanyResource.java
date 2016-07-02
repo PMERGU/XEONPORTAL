@@ -1,8 +1,13 @@
 package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.transaction.annotation.Transactional;
 import za.co.xeon.domain.Company;
+import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
+import za.co.xeon.domain.dto.CompanyDto;
 import za.co.xeon.repository.CompanyRepository;
+import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -30,14 +35,17 @@ import java.util.Optional;
 public class CompanyResource {
 
     private final Logger log = LoggerFactory.getLogger(CompanyResource.class);
-        
+
     @Inject
     private CompanyRepository companyRepository;
-    
+
+    @Inject
+    private PurchaseOrderRepository purchaseRepository;
+
     /**
-     * POST  /companys -> Create a new company.
+     * POST  /companies -> Create a new company.
      */
-    @RequestMapping(value = "/companys",
+    @RequestMapping(value = "/companies",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -47,15 +55,15 @@ public class CompanyResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("company", "idexists", "A new company cannot already have an ID")).body(null);
         }
         Company result = companyRepository.save(company);
-        return ResponseEntity.created(new URI("/api/companys/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/companies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("company", result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /companys -> Updates an existing company.
+     * PUT  /companies -> Updates an existing company.
      */
-    @RequestMapping(value = "/companys",
+    @RequestMapping(value = "/companies",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -71,24 +79,37 @@ public class CompanyResource {
     }
 
     /**
-     * GET  /companys -> get all the companys.
+     * GET  /companies -> get all the companys.
      */
-    @RequestMapping(value = "/companys",
+    @RequestMapping(value = "/companies",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Company>> getAllCompanys(Pageable pageable)
+    public ResponseEntity<List<Company>> getAllCompanies(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Companys");
-        Page<Company> page = companyRepository.findAll(pageable); 
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companys");
+        Page<Company> page = companyRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companies");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET  /companys/:id -> get the "id" company.
+     * GET  /typeahead/companies/:name -> get all the companys for typeahead.
      */
-    @RequestMapping(value = "/companys/{id}",
+    @RequestMapping(value = "/typeahead/companies/{name}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<Company> getAllCompaniesStartingWith(@PathVariable String name)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Companys");
+        return companyRepository.findByNameStartingWithOrderByName(name);
+    }
+
+    /**
+     * GET  /companies/:id -> get the "id" company.
+     */
+    @RequestMapping(value = "/companies/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -103,9 +124,50 @@ public class CompanyResource {
     }
 
     /**
-     * DELETE  /companys/:id -> delete the "id" company.
+     * GET  /companies/:id/image -> get the "id" company.
      */
-    @RequestMapping(value = "/companys/{id}",
+    @RequestMapping(value = "/companies/{id}/image",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<CompanyDto> getCompanyLogo(@PathVariable Long id) {
+        log.debug("REST request to get Company : {}", id);
+        return Optional.ofNullable(CompanyDto.map(companyRepository.findOne(id)))
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /companies/:id/users -> get all users in company.
+     */
+    @RequestMapping(value = "/companies/{id}/users",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional
+    public List<User> getAllUsersByCompany(@PathVariable Long id)
+        throws URISyntaxException {
+        return companyRepository.findOne(id).getEmployees();
+    }
+
+    /**
+     * GET  /companies/:id/purchaseOrders -> get all users in company.
+     */
+    @RequestMapping(value = "/companies/{id}/purchaseOrders",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional
+    public List<PurchaseOrder> getAllPurchaseOrdersByCompany(@PathVariable Long id) throws URISyntaxException {
+        return purchaseRepository.findByUserId_Company(companyRepository.findOne(id));
+    }
+
+    /**
+     * DELETE  /companies/:id -> delete the "id" company.
+     */
+    @RequestMapping(value = "/companies/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

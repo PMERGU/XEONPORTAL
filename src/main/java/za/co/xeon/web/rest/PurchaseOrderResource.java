@@ -70,6 +70,7 @@ public class PurchaseOrderResource {
     @Timed
     public ResponseEntity<PurchaseOrder> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save PurchaseOrder : {}", purchaseOrder);
+        //validations
         if(purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null){
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("purchaseOrder","poNumber",
@@ -77,16 +78,31 @@ public class PurchaseOrderResource {
                 .body(purchaseOrder);
         }
         if (purchaseOrder.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("purchaseOrder", "idexists", "A new purchaseOrder cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("purchaseOrder", "id", "A new purchaseOrder cannot already have an ID")).body(null);
         }
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+
+        //captured by logic
+        User user;
+        User capturedBy; //when a xeon user captures a order on behalf of a customer
+        if(SecurityUtils.isUserCustomer()){
+            user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        }else{
+            user = userRepository.findOneByLogin(purchaseOrder.getUser().getLogin()).get();
+            capturedBy = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            log.debug("PO captured by %s against customer %s", capturedBy.getLogin(), user.getLogin());
+            purchaseOrder.setCapturedBy(capturedBy);
+        }
+
+        //logic
         purchaseOrder.setUser(user);
         purchaseOrder.setCaptureDate(ZonedDateTime.now());
         purchaseOrder.setState(PoState.UNPROCESSED);
+
         //set PO as parent to PO.poLines
         purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
-        log.debug(" ------------------------------------------------------- : " + purchaseOrder.getPoLines().size());
+        log.debug(" purchaseOrder.getPoLines().size() : %d", purchaseOrder.getPoLines().size());
         log.debug(purchaseOrder.getPoLines().toString());
+
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         mailService.sendCSUMail(user,
             String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
@@ -128,11 +144,10 @@ public class PurchaseOrderResource {
         if (purchaseOrder.getId() == null) {
             return createPurchaseOrder(purchaseOrder, request);
         }
-        purchaseOrder.getPoLines().stream().forEach(line ->
-            line.setPurchaseOrder(purchaseOrder)
-        );
-        log.debug(" ------------------------------------------------------- : " + purchaseOrder.getPoLines().size());
+        purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
+        log.debug(" purchaseOrder.getPoLines().size() : " + purchaseOrder.getPoLines().size());
         log.debug(purchaseOrder.getPoLines().toString());
+
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("purchaseOrder", purchaseOrder.getId().toString()))
@@ -220,7 +235,7 @@ public class PurchaseOrderResource {
     public ResponseEntity<List<PurchaseOrder>> getAllPurchaseOrders(Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of PurchaseOrders");
         Page<PurchaseOrder> page = null;
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        if(SecurityUtils.isUserXeonOrAdmin()){
             page = purchaseOrderService.findAll(pageable);
         }else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
@@ -242,7 +257,7 @@ public class PurchaseOrderResource {
     public ResponseEntity<List<PurchaseOrder>> getAllPurchaseOrdersByState(@PathVariable PoState state, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get getAllPurchaseOrdersByState by state " + state.name());
         Page<PurchaseOrder> page = null;
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        if(SecurityUtils.isUserXeonOrAdmin()){
             page = purchaseOrderRepository.findByState(state, pageable);
         }else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
@@ -264,7 +279,7 @@ public class PurchaseOrderResource {
     public ResponseEntity<PurchaseOrder> getAllPurchaseOrdersByPoNumber(@PathVariable String poNumber, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get getAllPurchaseOrdersByPoNumber by poNumber " + poNumber);
         PurchaseOrder purchaseOrder;
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        if(SecurityUtils.isUserXeonOrAdmin()){
             purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
         }else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
@@ -289,7 +304,7 @@ public class PurchaseOrderResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of PoLines");
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
+        if(!(SecurityUtils.isUserXeonOrAdmin())){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -310,7 +325,7 @@ public class PurchaseOrderResource {
     public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable Long id) {
         log.debug("REST request to get PurchaseOrder : {}", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
+        if(!(SecurityUtils.isUserXeonOrAdmin())){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             if(purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -335,7 +350,7 @@ public class PurchaseOrderResource {
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
         log.debug("PO state " + purchaseOrder.getState());
 
-        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))) {
+        if(!(SecurityUtils.isUserXeonOrAdmin())) {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             if (purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);

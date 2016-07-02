@@ -194,6 +194,10 @@ public class PurchaseOrder implements Serializable {
     @JoinColumn(name = "xeon_user_id")
     private User xeonUser;
 
+    @ManyToOne
+    @JoinColumn(name = "captured_by")
+    private User capturedBy;
+
     public ZonedDateTime getUpdatedDate() {
         return updatedDate;
     }
@@ -586,6 +590,14 @@ public class PurchaseOrder implements Serializable {
         this.cvCommodity = cvCommodity;
     }
 
+    public User getCapturedBy() {
+        return capturedBy;
+    }
+
+    public void setCapturedBy(User capturedBy) {
+        this.capturedBy = capturedBy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -610,19 +622,55 @@ public class PurchaseOrder implements Serializable {
     public String toString() {
         return "PurchaseOrder{" +
             "id=" + id +
-            ", state='" + state + "'" +
-            ", serviceLevel='" + serviceLevel + "'" +
-            ", captureDate='" + captureDate + "'" +
-            ", dropOffDate='" + dropOffDate + "'" +
-            ", poNumber='" + poNumber + "'" +
-            ", reference='" + reference + "'" +
-            ", customerType='" + customerType + "'" +
-            ", shipToType='" + shipToType + "'" +
-            ", telephone='" + telephone + "'" +
-            ", collective='" + collective + "'" +
-            ", accountReference='" + accountReference + "'" +
-            ", modeOfTransport='" + modeOfTransport + "'" +
-            ", pickUpType='" + pickUpType + "'" +
+            ", state=" + state +
+            ", serviceLevel=" + serviceLevel +
+            ", captureDate=" + captureDate +
+            ", updatedDate=" + updatedDate +
+            ", dropOffDate=" + dropOffDate +
+            ", collectionDate=" + collectionDate +
+            ", collectionReference='" + collectionReference + '\'' +
+            ", poNumber='" + poNumber + '\'' +
+            ", reference='" + reference + '\'' +
+            ", customerType=" + customerType +
+            ", shipToType=" + shipToType +
+            ", pickUpType=" + pickUpType +
+            ", telephone='" + telephone + '\'' +
+            ", collective='" + collective + '\'' +
+            ", accountReference='" + accountReference + '\'' +
+            ", modeOfTransport=" + modeOfTransport +
+            ", comment='" + comment + '\'' +
+            ", poLines=" + poLines +
+            ", shipToParty=" + shipToParty +
+            ", pickUpParty=" + pickUpParty +
+            ", cargoClassification=" + cargoClassification +
+            ", cargoType=" + cargoType +
+            ", transportParty=" + transportParty +
+            ", vehicleSize=" + vehicleSize +
+            ", serviceType=" + serviceType +
+            ", labourRequired='" + labourRequired + '\'' +
+            ", specialInstruction='" + specialInstruction + '\'' +
+            ", soldToParty=" + soldToParty +
+            ", financialController='" + financialController + '\'' +
+            ", soNumber='" + soNumber + '\'' +
+            ", soComment='" + soComment + '\'' +
+            ", cvName='" + cvName + '\'' +
+            ", cvNumber='" + cvNumber + '\'' +
+            ", cvOrigin='" + cvOrigin + '\'' +
+            ", cvEta=" + cvEta +
+            ", cvContainerNo='" + cvContainerNo + '\'' +
+            ", cvCarrierRef='" + cvCarrierRef + '\'' +
+            ", cvConsol='" + cvConsol + '\'' +
+            ", cvWaybill='" + cvWaybill + '\'' +
+            ", cvWaybillIssue=" + cvWaybillIssue +
+            ", cvHouseWaybill='" + cvHouseWaybill + '\'' +
+            ", cvHouseWaybillIssue=" + cvHouseWaybillIssue +
+            ", cvShipper='" + cvShipper + '\'' +
+            ", cvEtd=" + cvEtd +
+            ", cvDestination='" + cvDestination + '\'' +
+            ", cvCommodity='" + cvCommodity + '\'' +
+            ", user=" + user +
+            ", xeonUser=" + xeonUser +
+            ", capturedBy=" + capturedBy +
             '}';
     }
 }

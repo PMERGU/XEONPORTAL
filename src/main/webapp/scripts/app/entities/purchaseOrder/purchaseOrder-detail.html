@@ -264,10 +264,18 @@
                 </tr>
                 <tr>
                     <td>
-                        <span>Captured By</span>
+                        <span>User</span>
                     </td>
                     <td>
                         {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}
+                    </td>
+                </tr>
+                <tr ng-show="purchaseOrder.capturedBy">
+                    <td>
+                        <span>Captured By</span>
+                    </td>
+                    <td>
+                        {{purchaseOrder.capturedBy.firstName}} {{purchaseOrder.capturedBy.lastName}}
                     </td>
                 </tr>
             </tbody>

@@ -42,6 +42,11 @@
                 <span class="nav-label">Purchase Orders</span><span class="fa arrow"></span>
             </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('purchaseOrder')}">
+                <li ui-sref-active="active">
+                    <a ui-sref="purchaseOrder.new" data-toggle="collapse" data-target=".navbar-collapse.in">
+                        <span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span>
+                    </a>
+                </li>
                 <li ui-sref-active="active" >
                     <a ui-sref="purchaseOrder({queryType: 'ALL'})" data-toggle="collapse" data-target=".navbar-collapse.in">
                         <span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span>
@@ -62,29 +67,36 @@
                         <span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span>Un-processed</span>
                     </a>
                 </li>
-                <li ui-sref-active="active" has-authority="ROLE_CUSTOMER" >
-                    <a ui-sref="purchaseOrder.new" data-toggle="collapse" data-target=".navbar-collapse.in">
-                        <span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span>
-                    </a>
+            </ul>
+        </li>
+
+        <li ng-class="{active: $state.includes('salesOrder')}" has-authority="ROLE_USER">
+            <a href="#">
+                <span class="nav-label">Sales Orders</span><span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('salesOrder')}">
+                <li ui-sref-active="active" >
+                    <a ui-sref="salesOrders" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View all SO</span></a>
                 </li>
             </ul>
         </li>
 
-        <li ng-class="{active: $state.includes('party')}">
-        <a href="#">
-            <span class="nav-label">Locations</span><span class="fa arrow"></span>
-        </a>
-        <ul class="nav nav-second-level" ng-class="{in: $state.includes('party')}">
-            <li ui-sref-active="active" >
-                <a ui-sref="party" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span></a>
-            </li>
-            <li ui-sref-active="active" >
-                <a ui-sref="party.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
-            </li>
-        </ul>
-    </li>
 
-        <li ng-class="{active: $state.includes('Company')}" has-authority="ROLE_USER">
+        <li ng-class="{active: $state.includes('party')}">
+            <a href="#">
+                <span class="nav-label">Locations</span><span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('party')}">
+                <li ui-sref-active="active" >
+                    <a ui-sref="party" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span></a>
+                </li>
+                <li ui-sref-active="active" >
+                    <a ui-sref="party.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
+                </li>
+            </ul>
+        </li>
+
+        <li ng-class="{active: $state.includes('company')}" has-authority="ROLE_USER">
             <a href="#">
                 <span class="nav-label">Company</span><span class="fa arrow"></span>
             </a>

@@ -23,4 +23,9 @@
                         tableName="purchase_order"/>
     </changeSet>
 
+    <changeSet author="derick" id="changeset_3">
+        <addColumn tableName="purchase_order">
+            <column name="captured_by" type="bigint"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

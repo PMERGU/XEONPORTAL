@@ -9,9 +9,7 @@ import za.co.xeon.domain.enumeration.TransportParty;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A Company.
@@ -39,6 +37,7 @@ public class Company implements Serializable {
 
     @Lob
     @Column(name = "background")
+    @JsonIgnore
     private byte[] background;
 
     @Column(name = "background_content_type")
@@ -47,12 +46,12 @@ public class Company implements Serializable {
     @OneToMany(mappedBy = "company")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<User> employees = new HashSet<>();
+    private List<User> employees = new ArrayList<>();
 
     @OneToMany(mappedBy = "company")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Party> locations = new HashSet<>();
+    private List<Party> locations = new ArrayList<>();
 
     public Company() {
     }
@@ -76,11 +75,11 @@ public class Company implements Serializable {
         this.type = type;
     }
 
-    public Set<Party> getLocations() {
+    public List<Party> getLocations() {
         return locations;
     }
 
-    public void setLocations(Set<Party> locations) {
+    public void setLocations(List<Party> locations) {
         this.locations = locations;
     }
 
@@ -124,11 +123,11 @@ public class Company implements Serializable {
         this.backgroundContentType = backgroundContentType;
     }
 
-    public Set<User> getEmployees() {
+    public List<User> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Set<User> employees) {
+    public void setEmployees(List<User> employees) {
         this.employees = employees;
     }
 

@@ -153,21 +153,26 @@ public class MobileResource {
                 log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
                 future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
                     new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+
+                Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
+                    .filter(po -> po.getPoNumber() != null)
+                    .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+
+                return future.get().stream().filter(
+                    ev -> poMap.containsKey(ev.getBstkd())
+                ).collect(Collectors.toList());
             }else {
                 future = mobileService.getCustomerOrders(customerNumber,
                     new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
-            }
-            while (!future.isDone()) {
-                Thread.sleep(500);
-            }
 
-            Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
-                .filter(po -> po.getPoNumber() != null)
-                .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+                Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(companyRepository.findBySapId(customerNumber)).stream()
+                    .filter(po -> po.getPoNumber() != null)
+                    .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
 
-            return future.get().stream().filter(
-                ev -> poMap.containsKey(ev.getBstkd())
-            ).collect(Collectors.toList());
+                return future.get().stream().filter(
+                    ev -> poMap.containsKey(ev.getBstkd())
+                ).collect(Collectors.toList());
+            }
         };
     }
 

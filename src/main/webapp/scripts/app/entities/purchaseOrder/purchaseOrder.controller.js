@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    ['$rootScope', '$scope', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal',
-        function ($rootScope, $scope, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal) {
+    ['$rootScope', '$scope', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal', 'Company', 'currentUser',
+        function ($rootScope, $scope, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal, Company, currentUser) {
+            $scope.user = currentUser;
+            $scope.isXeon = currentUser.company.type === "XEON";
+
             function resetPo(){
                 $log.debug("clearing po");
                 $scope.purchaseOrder = {
@@ -31,24 +34,51 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     cargoClassification: "NON_HAZARDOUS",
                     poLines: [],
                     //STEP 4
-                    soldToParty: null
+                    soldToParty: null,
+                    //extras
+                    company: null,
+                    capturedBy: null
                 };
                 $scope.purchaseOrder.poLines.length = 0;
             }
+
             if(entity === undefined){
                 resetPo();
+
+                //code below is for the 'capture as another user feature'
+                if($scope.isXeon){
+                    $scope.capturedAs = {
+                        company: null,
+                        employee: null
+                    };
+                    $scope.companies = Company.query();
+                    //WATCH when company is selected (for capture as company employee feature)
+                    $scope.$watch(function() {
+                        return $scope.capturedAs.company
+                    }, function (company) {
+                        $scope.capturedAs.employee = null;
+                        if(company != null && company != undefined) {
+                            $log.debug(company);
+                            $log.debug("Selected company id : " + company.id);
+                            $scope.employees = Company.getUsers({id: company.id});
+                        }
+                    });
+
+                    //Tied to the above code, refreshed the screen once employee is set
+                    $scope.$watch(function() {
+                        return $scope.capturedAs.employee
+                    }, function (employee) {
+                        $scope.clearPO();
+                        $scope.purchaseOrder.user = employee;
+                        $scope.user = employee;
+                    });
+                }
             }else{
                 $scope.purchaseOrder = entity;
                 $.each($scope.purchaseOrder.poLines, function(idx, po){
                     $scope.purchaseOrder.poLines[idx].rowId = idx+1;
                 });
             }
-
-            $scope.isXeon = false;
-            Principal.identity().then(function(user) {
-                $scope.user = user;
-                $scope.isXeon = user.company.type === "XEON";
-            });
 
             $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
             $scope.pickuppartys = Party.query({filter: 'purchaseorder-is-null'});
@@ -455,3 +485,4 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
             }
         }]);
+

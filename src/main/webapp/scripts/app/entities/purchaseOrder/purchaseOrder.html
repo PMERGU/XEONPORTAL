@@ -14,6 +14,9 @@
                         </h2>
                         <h2 class="font-light m-b-xs" ng-hide="purchaseOrder.id">
                             Create new Purchase Order
+                            <span has-authority="ROLE_USER">on behalf of </span>
+                            <span ng-show="capturedAs.employee" class="text-info" >{{capturedAs.employee.firstName + ' ' + capturedAs.employee.lastName}}</span> for
+                            <span ng-show="capturedAs.employee" class="text-info">{{capturedAs.company.name}}</span>
                         </h2>
                         <div class="pull-right" style="margin-top: -20px;">
                             <button class="btn btn-default" ng-click="clearPO()" ng-hide="purchaseOrder.id">
@@ -35,6 +38,9 @@
                                 <span>Fully {{purchaseOrder.state.toLowerCase()}}</span>
                             </button>
                         </div>
+                        <div class="pull-right" style="position: absolute;right: 26px;bottom: -13px;" has-authority="ROLE_USER">
+                            {{ isXeon == true ? 'XEON' : '' }}
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -51,8 +57,35 @@
         </div>
     </div>
     <div class="hpanel">
-        <div class="panel-body p-xl">
-            <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+        <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+            <div class="panel-heading hbuilt" ng-show="isXeon && !purchaseOrder.id">
+                <div class="row">
+                    <div class="col-md-2 text-right">
+                        <h3>Company</h3>
+                    </div>
+                    <div class="col-md-3 text-right" style="margin-top: 10px;margin-bottom: 10px;">
+                        <ui-select ng-model="capturedAs.company" title="Choose a company">
+                            <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="company in companies | orderBy:'name'">
+                                <span ng-bind-html="company.name | highlight: $select.search"></span>
+                                <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-2 text-right" ng-show="employees">
+                        <h3>Employee</h3>
+                    </div>
+                    <div class="col-md-3 text-right" style="margin-top: 10px;margin-bottom: 10px;" ng-show="employees">
+                        <ui-select ng-model="capturedAs.employee" title="Choose a employee">
+                            <ui-select-match placeholder="Select or search for employee">{{$select.selected.firstName + ' ' + $select.selected.lastName}}</ui-select-match>
+                            <ui-select-choices repeat="employee in employees | filter: $select.search">
+                                <span ng-bind-html="employee.firstName + ' ' + employee.lastName | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body p-xl" ng-show="purchaseOrder.id || (!isXeon || (isXeon && capturedAs.employee))">
                 <div class="text-center">
 
                     <input ng-click="wizard.show(1)" style="width: 165px;margin: 0px 5px;" class="btn" type="button"
@@ -795,8 +828,8 @@
                         <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Submit Order</span>
                     </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 

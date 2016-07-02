@@ -87,4 +87,20 @@ public final class SecurityUtils {
         }
         return false;
     }
+
+    public static boolean isUserXeon(){
+        return isCurrentUserInRole(AuthoritiesConstants.USER);
+    }
+
+    public static boolean isUserAdmin(){
+        return isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    }
+
+    public static boolean isUserCustomer(){
+        return isCurrentUserInRole(AuthoritiesConstants.CUSTOMER);
+    }
+
+    public static boolean isUserXeonOrAdmin(){
+        return isUserXeon() || isUserAdmin();
+    }
 }

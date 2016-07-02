@@ -27,11 +27,11 @@ angular.module('portalApp')
                 resolve: {
                 }
             })
-            .state('home.orderdetail', {
-                parent: 'home',
-                url: 'orderdetail',
+            .state('orderdetail', {
+                parent: 'site',
+                url: '/orderdetail/{deliveryNo}',
                 data: {
-                    authorities: ['ROLE_CUSTOMER'],
+                    authorities: ['ROLE_CUSTOMER', 'ROLE_USER'],
                     pageTitle: 'Order Details'
                 },
                 views: {
@@ -73,6 +73,22 @@ angular.module('portalApp')
                     'content@': {
                         templateUrl: 'scripts/app/main/xeonmain.html',
                         controller: 'XeonMainController'
+                    }
+                },
+                resolve: {
+                }
+            })
+            .state('salesOrders', {
+                parent: 'site',
+                url: '/salesOrders',
+                data: {
+                    authorities: ['ROLE_USER','ROLE_ADMIN'],
+                    pageTitle: 'Sales Orders'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/main/salesOrders.html',
+                        controller: 'SalesOrdersController'
                     }
                 },
                 resolve: {

@@ -92,6 +92,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PurchaseOrder> assignedPurchaseOrders = new HashSet<>();
 
+    @OneToMany(mappedBy = "capturedBy")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<PurchaseOrder> capturedPurchaseOrders = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
@@ -226,6 +231,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAssignedPurchaseOrders(Set<PurchaseOrder> assignedPurchaseOrders) {
         this.assignedPurchaseOrders = assignedPurchaseOrders;
+    }
+
+    public Set<PurchaseOrder> getCapturedPurchaseOrders() {
+        return capturedPurchaseOrders;
+    }
+
+    public void setCapturedPurchaseOrders(Set<PurchaseOrder> capturedPurchaseOrders) {
+        this.capturedPurchaseOrders = capturedPurchaseOrders;
     }
 
     @Override

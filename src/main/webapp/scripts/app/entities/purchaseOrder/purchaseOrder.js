@@ -68,7 +68,10 @@ angular.module('portalApp')
                         }else{
                             return undefined;
                         }
-                    }]
+                    }],
+                    currentUser: ['$stateParams', 'Principal', function($stateParams, Principal) {
+                        return Principal.identity();
+                    }],
                 }
 
             })

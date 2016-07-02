@@ -2,6 +2,7 @@ package za.co.xeon.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import za.co.xeon.domain.Company;
 import za.co.xeon.domain.PurchaseOrder;
 
 import org.springframework.data.jpa.repository.*;
@@ -16,6 +17,7 @@ import java.util.List;
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder,Long> {
     Page<PurchaseOrder> findByUser(User user, Pageable pageable);
     List<PurchaseOrder> findByUser(User user);
+    List<PurchaseOrder> findByUserId_Company(Company company);
     Page<PurchaseOrder> findByUserAndState(User user, PoState poState, Pageable pageable);
     Page<PurchaseOrder> findByState(PoState poState, Pageable pageable);
     PurchaseOrder findFirstByPoNumber(String poNumber);

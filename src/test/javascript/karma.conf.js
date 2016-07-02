@@ -33,8 +33,6 @@ module.exports = function (config) {
             'main/webapp/bower_components/sweetalert/dist/sweetalert.min.js',
             'main/webapp/bower_components/angular-notify/dist/angular-notify.js',
             'main/webapp/bower_components/angular-animate/angular-animate.js',
-            'main/webapp/bower_components/select2/select2.js',
-            'main/webapp/bower_components/angular-ui-select3/src/select3.js',
             'main/webapp/bower_components/angular-ui-sortable/sortable.js',
             'main/webapp/bower_components/spin.js/spin.js',
             'main/webapp/bower_components/ladda/dist/ladda.min.js',
@@ -61,6 +59,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/blob-polyfill/Blob.js',
             'main/webapp/bower_components/file-saver.js/FileSaver.js',
             'main/webapp/bower_components/angular-file-saver/dist/angular-file-saver.bundle.js',
+            'main/webapp/bower_components/angular-ui-select/dist/select.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

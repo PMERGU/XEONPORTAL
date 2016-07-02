@@ -1,0 +1,135 @@
+<div>
+    <div small-header>
+        <div class="hpanel" style="margin-bottom: 15px;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="font-light m-b-xs">
+                            Sales orders
+                        </h2>
+                        <jh-alert></jh-alert>
+                        <small>All sales orders captured in SAP against a specific customer</small>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-6 text-right">
+                            <h2>Company</h2>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 15px;margin-bottom: 10px;">
+                            <ui-select ng-model="selected.company" title="Choose a company">
+                                <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="company in companies | orderBy:'name'">
+                                    <span ng-bind-html="company.name | highlight: $select.search"></span>
+                                    <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hpanel" ng-show="selected.company">
+        <div class="panel-body">
+            <input ng-disabled="loadingOrders" ng-show="ordersStep !== 0" type="button"
+                   class="btn btn-primary pull-right" ng-click="ordersWizard.next()" value="Next 30 days"
+                   style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
+            <input ng-disabled="loadingOrders" type="button" class="btn btn-primary pull-right"
+                   ng-click="ordersWizard.prev()" value="Prev 30 days"
+                   style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
+
+            <uib-tabset>
+                <uib-tab>
+                    <uib-tab-heading>
+                        Undelivered&nbsp;
+                        <i class="fa fa-refresh btn btn-default btn-xs" ng-click="reloadData(true)"></i>
+                    </uib-tab-heading>
+                    <div class="panel-body" style="padding-top: 0px;">
+                        <div class="table-responsive">
+                            <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"
+                                   class="table table-striped hover" style="width: 100% !important;">
+                                <thead>
+                                <tr>
+                                    <th>Purchase Order</th>
+                                    <th>Employee</th>
+                                    <th>Captured By</th>
+                                    <th>Sales Order</th>
+                                    <th>Delivery No</th>
+                                    <th>Sold to Party</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="order in undeliveredOrders | unique: 'dbeln'">
+                                    <td>{{ order.bstkd }}
+                                        <small ng-show="order.bezei">[{{ order.bezei }}]</small>
+                                    </td>
+                                    <td>{{ purchaseOrders[order.bstkd].user.firstName + ' ' + purchaseOrders[order.bstkd].user.lastName }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
+                                    <td>{{ order.vbeln }}</td>
+                                    <td>{{ order.dbeln }}</td>
+                                    <td>{{ order.skunnr }}</td>
+                                    <td>{{ order.pdstk }}</td>
+                                    <td width="10px">
+                                        <button type="submit"
+                                                ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep})"
+                                                class="btn btn-info btn-sm">
+                                            <span class="glyphicon glyphicon-eye-open"></span>
+                                            <span class="hidden-xs hidden-sm"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab>
+                    <uib-tab-heading>
+                        Delivered
+                    </uib-tab-heading>
+                    <div class="panel-body" style="padding-top: 0px;">
+                        <div class="table-responsive">
+                            <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"
+                                   class="table table-striped hover" style="width: 100% !important;">
+                                <thead>
+                                <tr>
+                                    <th>Purchase Order</th>
+                                    <th>Employee</th>
+                                    <th>Captured By</th>
+                                    <th>Sales Order</th>
+                                    <th>Delivery No</th>
+                                    <th>Sold to Party</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="order in deliveredOrders | unique: 'dbeln'">
+                                    <td>{{ order.bstkd }}
+                                        <small ng-show="order.bezei">[{{ order.bezei }}]</small>
+                                    </td>
+                                    <td>{{ purchaseOrders[order.bstkd].user.firstName + ' ' + purchaseOrders[order.bstkd].user.lastName }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
+                                    <td>{{ order.vbeln }}</td>
+                                    <td>{{ order.dbeln }}</td>
+                                    <td>{{ order.skunnr }}</td>
+                                    <td>{{ order.pdstk }}</td>
+                                    <td width="10px">
+                                        <button type="submit"
+                                                ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep})"
+                                                class="btn btn-info btn-sm">
+                                            <span class="glyphicon glyphicon-eye-open"></span>
+                                            <span class="hidden-xs hidden-sm"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+    </div>
+</div>
