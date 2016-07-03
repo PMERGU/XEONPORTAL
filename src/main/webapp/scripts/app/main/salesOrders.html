@@ -52,10 +52,12 @@
                                     <th>Purchase Order</th>
                                     <th>Employee</th>
                                     <th>Captured By</th>
+                                    <th>Capture Date</th>
+                                    <th>Pickup Party</th>
+                                    <th>Ship to Party</th>
                                     <th>Sales Order</th>
                                     <th>Delivery No</th>
-                                    <th>Sold to Party</th>
-                                    <th>Status</th>
+                                    <th>Consignee</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -66,10 +68,12 @@
                                     </td>
                                     <td>{{ purchaseOrders[order.bstkd].user.firstName + ' ' + purchaseOrders[order.bstkd].user.lastName }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.name + ' (' + purchaseOrders[order.bstkd].pickUpParty.city + ')' }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].shipToParty.name + ' (' + purchaseOrders[order.bstkd].shipToParty.city + ')' }}</td>
                                     <td>{{ order.vbeln }}</td>
                                     <td>{{ order.dbeln }}</td>
                                     <td>{{ order.skunnr }}</td>
-                                    <td>{{ order.pdstk }}</td>
                                     <td width="10px">
                                         <button type="submit"
                                                 ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep})"
@@ -97,9 +101,12 @@
                                     <th>Purchase Order</th>
                                     <th>Employee</th>
                                     <th>Captured By</th>
+                                    <th>Capture Date</th>
+                                    <th>Pickup Party</th>
+                                    <th>Ship to Party</th>
                                     <th>Sales Order</th>
                                     <th>Delivery No</th>
-                                    <th>Sold to Party</th>
+                                    <th>Consignee</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
@@ -111,6 +118,9 @@
                                     </td>
                                     <td>{{ purchaseOrders[order.bstkd].user.firstName + ' ' + purchaseOrders[order.bstkd].user.lastName }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.name + ' (' + purchaseOrders[order.bstkd].pickUpParty.city + ')' }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].shipToParty.name + ' (' + purchaseOrders[order.bstkd].shipToParty.city + ')' }}</td>
                                     <td>{{ order.vbeln }}</td>
                                     <td>{{ order.dbeln }}</td>
                                     <td>{{ order.skunnr }}</td>
