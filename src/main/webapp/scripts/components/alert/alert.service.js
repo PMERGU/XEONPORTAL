@@ -23,7 +23,7 @@ angular.module('portalApp')
             toast = this.toast,
             alertId = 0, // unique id for each alert. Starts from 0.
             alerts = [],
-            timeout = 12000; // default timeout
+            timeout = 120000; // default timeout
 
             function isToast() {
                 return toast;

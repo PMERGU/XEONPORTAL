@@ -358,7 +358,7 @@ public class PurchaseOrderResource {
             if(purchaseOrder.getState().equals(PoState.PROCESSED)){
                 return ResponseEntity.badRequest()
                     .headers(HeaderUtil.createFailureAlert("purchaseOrder","poNumber",
-                        String.format("This purchase order has already been processed and cant be deleted.")))
+                        String.format("This purchase order has already been process and can’t be edited. Please contact Xeon CSU.")))
                     .body(null);
             }
         }

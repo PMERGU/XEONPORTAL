@@ -68,7 +68,6 @@ public class UserResource {
     @Inject
     private MailService mailService;
 
-
     @Inject
     private AuthorityRepository authorityRepository;
 

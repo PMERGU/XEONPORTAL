@@ -5,10 +5,10 @@
                 <div class="panel-body text-center h-180" style="padding: 5px;">
                     <i class="icon-pi-cargo-trolley-1 fa-5x text-info"></i>
 
-                    <h1 class="m-xs">{{ posInProgress.length }}</h1>
+                    <h1 class="m-xs">{{ pos.unprocessed.length + pos.processing.length}}</h1>
 
                     <h3 class="font-extra-bold no-margins text-info">
-                        In Progress
+                       In Progress
                     </h3>
                     <small>Your captured PO`s waiting to be processed by our team</small>
                 </div>
@@ -73,7 +73,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="po in capturedPos | filter:{state:'UNPROCESSED'}">
+                            <tr ng-repeat="po in pos.unprocessed">
                                 <td>{{ po.poNumber }}</td>
                                 <td>{{ po.serviceType }} <small>[{{ po.serviceLevel }}]</small></td>
                                 <td>{{ po.shipToParty.name }}</td>
@@ -84,13 +84,13 @@
                 <div class="panel-footer contact-footer">
                     <div class="row">
                         <div class="col-md-4 border-right">
-                            <div class="contact-stat"><span>Purchase Orders: </span> <strong>{{capturedPos.length}}</strong></div>
+                            <div class="contact-stat"><span>Purchase Orders: </span> <strong>{{pos.processed.length + pos.processing.length + pos.unprocessed.length}}</strong></div>
                         </div>
                         <div class="col-md-4 border-right">
-                            <div class="contact-stat"><span>Processed: </span> <strong>{{posProcessed.length}}</strong></div>
+                            <div class="contact-stat"><span>Processing: </span> <strong>{{pos.processing.length}}</strong></div>
                         </div>
                         <div class="col-md-4">
-                            <div class="contact-stat"><span>Unprocessed: </span> <strong>{{ posInProgress.length }}</strong></div>
+                            <div class="contact-stat"><span>Unprocessed: </span> <strong>{{ pos.unprocessed.length }}</strong></div>
                         </div>
                     </div>
                 </div>

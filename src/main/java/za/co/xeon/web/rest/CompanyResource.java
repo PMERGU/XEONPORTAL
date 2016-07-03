@@ -8,6 +8,7 @@ import za.co.xeon.domain.User;
 import za.co.xeon.domain.dto.CompanyDto;
 import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.PurchaseOrderRepository;
+import za.co.xeon.repository.UserRepository;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -41,6 +42,9 @@ public class CompanyResource {
 
     @Inject
     private PurchaseOrderRepository purchaseRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * POST  /companies -> Create a new company.
@@ -146,10 +150,10 @@ public class CompanyResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> getAllUsersByCompany(@PathVariable Long id)
         throws URISyntaxException {
-        return companyRepository.findOne(id).getEmployees();
+        return userRepository.findAllByCompany(companyRepository.findOne(id));
     }
 
     /**
@@ -159,7 +163,7 @@ public class CompanyResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PurchaseOrder> getAllPurchaseOrdersByCompany(@PathVariable Long id) throws URISyntaxException {
         return purchaseRepository.findByUserId_Company(companyRepository.findOne(id));
     }

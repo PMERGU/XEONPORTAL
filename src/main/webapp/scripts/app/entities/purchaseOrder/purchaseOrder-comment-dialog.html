@@ -4,8 +4,8 @@
                 ng-click="clear()">&times;</button>
         <h4 class="modal-title">Send comment to client</h4>
     </div>
+    <jh-alert-error></jh-alert-error>
     <div class="modal-body">
-        <jh-alert-error></jh-alert-error>
         <p>Please type a comment to {{ purchaseOrder.user.firstName }} {{ purchaseOrder.user.lastName }} from {{ purchaseOrder.user.company.name }} below:</p>
         <div class="form-group">
             <textarea class="form-control" rows="3" name="comment" id="field_comment"

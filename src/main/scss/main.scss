@@ -92,3 +92,9 @@ $main-transition: all 0.1s ease-out 0s;
 .tc-red-dark{
     color: $color-red-deep;
 }
+
+pre {
+    white-space: normal;
+    word-break: break-word;
+    word-wrap: normal;
+}
