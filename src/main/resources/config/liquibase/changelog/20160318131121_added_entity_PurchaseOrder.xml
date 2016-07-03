@@ -155,6 +155,4 @@
                   separator=";"
                   tableName="purchase_order"/>
     </changeSet>
-
-
 </databaseChangeLog>
