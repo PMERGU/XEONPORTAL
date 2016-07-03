@@ -117,6 +117,7 @@
             <column name="user_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
+
         <dropDefaultValue tableName="purchase_order" columnName="capture_date" columnDataType="datetime"/>
 
 
