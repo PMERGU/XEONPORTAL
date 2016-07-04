@@ -42,7 +42,8 @@ angular.module('portalApp')
                 },
                 params: {
                     order: null,
-                    orderStep: null
+                    orderStep: null,
+                    company: null
                 },
                 resolve: {
                     purchaseOrder: ['$stateParams', 'PurchaseOrder', function($stateParams, PurchaseOrder) {
@@ -58,7 +59,7 @@ angular.module('portalApp')
                         }
                     }],
                     orderGroup: ['$stateParams', 'PurchaseOrder', 'CachedOrders', function($stateParams, PurchaseOrder, CachedOrders) {
-                        return CachedOrders.getOrderGroup($stateParams.orderStep, $stateParams.order.dbeln);
+                        return CachedOrders.getOrderGroup($stateParams.orderStep, $stateParams.company.sapId, $stateParams.order.dbeln);
                     }]
                 }
             })

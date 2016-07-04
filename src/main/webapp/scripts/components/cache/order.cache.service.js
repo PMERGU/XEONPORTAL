@@ -6,12 +6,13 @@ angular.module('portalApp')
         return {
             getOrders: function(key, sapId, from, to, force) {
                 $log.debug(key + ' - ' + sapId + ' - ' + force);
+                key = key + '-' + sapId;
                 if (!force && cache.get(key)) {
                     return cache.get(key);
                 }
 
                 var promise = CustomerOrders.get({
-                    id: 213,
+                    id: sapId,
                     from: from,
                     to: to,
                 }).$promise.then(function (data) {
@@ -22,8 +23,9 @@ angular.module('portalApp')
                 cache.put(key, promise);
                 return promise;
             },
-            getOrderGroup: function(key, dbeln){
+            getOrderGroup: function(key, sapId, dbeln){
                 $log.debug(key + ' - ' + dbeln);
+                key = key + '-' + sapId;
                 var group = [];
                 cache.get(key).then(function(orders){
                     $.each(orders, function(idx, order){
