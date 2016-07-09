@@ -98,3 +98,32 @@ pre {
     word-break: break-word;
     word-wrap: normal;
 }
+
+.ui-select-toggle{
+    color: #555555;
+    background-color: rgba(52, 152, 219, 0.05);;
+}
+.ui-select-choices-content{
+    padding-top:0px;
+
+    .ui-select-choices-group-label{
+        color: black;
+        font-size: 14px;
+        font-weight: 700;
+        background-color: rgba(66, 139, 202, 0.25);
+        border-top: 1px solid rgba(52, 73, 94, 0.47);
+        border-bottom: 1px solid rgba(52, 73, 94, 0.37);
+
+        .ui-select-choices-row {
+            padding: 2px 12px 2px;
+            margin: 0;
+            cursor: pointer;
+            min-height: 1em;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+}
+}

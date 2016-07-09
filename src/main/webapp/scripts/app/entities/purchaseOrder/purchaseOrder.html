@@ -227,11 +227,11 @@
                                             <select class="form-control" id="field_pickUpParty" name="pickUpParty"
                                                     ng-required="requiredFields['pickUpParty']"
                                                     ng-model="purchaseOrder.pickUpParty.id"
-                                                    ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'name'">
+                                                    ng-options="party.id as (party.name + ' (' + party.area.city + ', ' + ('0000'+party.area.postalCode).slice(-4) + ')') for party in pickuppartys | orderBy:'name'">
                                             </select>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
-                                                        ui-sref="purchaseOrder.newParty({for: 'pickup'})">
+                                                        ui-sref="purchaseOrder.newParty({for: 'pickup', company: capturedAs.company})">
                                                     <i class="glyphicon glyphicon-plus"></i>
                                                 </button>
                                             </span>
@@ -300,7 +300,7 @@
                                             <select class="form-control" id="field_shipToParty" name="shipToParty"
                                                     ng-required="requiredFields['shipToParty']"
                                                     ng-model="purchaseOrder.shipToParty.id"
-                                                    ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'name'">
+                                                    ng-options="party.id as (party.name + ' (' + party.area.city + ', ' + ('0000'+party.area.postalCode).slice(-4) + ')') for party in pickuppartys | orderBy:'name'">
                                             </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default"
@@ -496,7 +496,7 @@
                                     <div class="input-group">
                                         <select class="form-control" id="field_soldToParty" name="soldToParty" ng-required="user.company.type === 'AGENT'"
                                                 ng-model="purchaseOrder.soldToParty.id"
-                                                ng-options="party.id as (party.name + ' (' + party.city + ')') for party in pickuppartys | orderBy:'name'">
+                                                ng-options="party.id as (party.name + ' (' + party.area.city + ', ' + ('0000'+party.area.postalCode).slice(-4) + ')') for party in pickuppartys | orderBy:'name'">
                                             <option value=""></option>
                                         </select>
                                             <span class="input-group-btn">

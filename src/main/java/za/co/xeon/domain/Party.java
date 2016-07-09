@@ -30,17 +30,9 @@ public class Party implements Serializable {
     @Column(name = "street_name")
     private String streetName;
 
-    @Column(name = "district")
-    private String district;
-
-    @Column(name = "postal_code")
-    private Integer postalCode;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "country")
-    private String country;
+    @ManyToOne
+    @JoinColumn(name = "postal_code_id")
+    private PostalArea area;
 
     @Column(name = "reference")
     private String reference;
@@ -89,36 +81,12 @@ public class Party implements Serializable {
         this.streetName = streetName;
     }
 
-    public String getDistrict() {
-        return district;
+    public PostalArea getArea() {
+        return area;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public Integer getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(Integer postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public void setArea(PostalArea area) {
+        this.area = area;
     }
 
     public String getReference() {
@@ -156,10 +124,6 @@ public class Party implements Serializable {
             ", name='" + name + "'" +
             ", houseNumber='" + houseNumber + "'" +
             ", streetName='" + streetName + "'" +
-            ", district='" + district + "'" +
-            ", postalCode='" + postalCode + "'" +
-            ", city='" + city + "'" +
-            ", country='" + country + "'" +
             ", reference='" + reference + "'" +
             '}';
     }

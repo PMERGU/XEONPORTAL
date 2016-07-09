@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('portalApp').controller('PartyDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Company', 'Principal',
-        function($scope, $stateParams, $uibModalInstance, entity, Party, Company, Principal) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Company', 'Principal', 'Area', '$log',
+        function($scope, $stateParams, $uibModalInstance, entity, Party, Company, Principal, Area, $log) {
 
         $scope.party = entity;
         $scope.companies = Company.query();
@@ -18,6 +18,21 @@ angular.module('portalApp').controller('PartyDialogController',
                 $scope.party = result;
             });
         };
+
+        $scope.searchArea = function(search){
+            $log.debug("filtering ");
+            if(Number(search)){
+                $log.debug("number : " + search);
+                search = 'postalCode:' + search;
+            }else{
+                $log.debug("alpha : " + search);
+                search = 'suburb:' + search;
+            }
+
+            Area.query({search}).$promise.then(function(data){
+                $scope.filteredAreas = data;
+            });
+        }
 
         var onSaveSuccess = function (result) {
             $scope.$emit('portalApp:partyUpdate', result);

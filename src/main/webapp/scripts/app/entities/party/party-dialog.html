@@ -15,67 +15,75 @@
                     <input type="text" class="form-control" id="id" name="id"
                            ng-model="party.id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="control-label" for="field_name">Name</label>
-                    <input type="text" class="form-control" name="name" id="field_name"
-                           ng-model="party.name"
-                           required />
+                    <input type="text" class="form-control" name="name" id="field_name" ng-model="party.name" required />
                     <div ng-show="editForm.name.$invalid">
-                        <p class="help-block small-help-block pull-right"
-                           ng-show="editForm.name.$error.required">
-                            required
-                        </p>
+                        <p class="help-block small-help-block pull-right" ng-show="editForm.name.$error.required">required</p>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="control-label" for="field_houseNumber">HouseNumber</label>
-                    <input type="text" class="form-control" name="houseNumber" id="field_houseNumber"
-                           ng-model="party.houseNumber"
-                    />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_streetName">StreetName</label>
-                    <input type="text" class="form-control" name="streetName" id="field_streetName"
-                           ng-model="party.streetName"
-                    />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_district">District</label>
-                    <input type="text" class="form-control" name="district" id="field_district"
-                           ng-model="party.district"
-                    />
+                    <input type="text" class="form-control" name="houseNumber" id="field_houseNumber" ng-model="party.houseNumber"/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label" for="field_postalCode">PostalCode</label>
-                    <input type="number" class="form-control" name="postalCode" id="field_postalCode"
-                           ng-model="party.postalCode"
-                    />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_city">City</label>
-                    <input type="text" class="form-control" name="city" id="field_city"
-                           ng-model="party.city"
-                    />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_country">Country</label>
-                    <input type="text" class="form-control" name="country" id="field_country"
-                           ng-model="party.country"
-                    />
-                </div>
-                <div class="form-group">
                     <label class="control-label" for="field_reference">Reference</label>
-                    <input type="text" class="form-control" name="reference" id="field_reference"
-                           ng-model="party.reference"
-                    />
+                    <input type="text" class="form-control" name="reference" id="field_reference" ng-model="party.reference" />
                 </div>
                 <div class="form-group" ng-show="isXeon">
                     <label>Company</label>
                     <select class="form-control" name="company" ng-model="party.company" ng-required="isXeon"
                             ng-options="company as company.name for company in companies track by company.id">
                     </select>
+                </div>
+                <div class="form-group" ng-show="!isXeon" style="height: 57px;">
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_streetName">StreetName</label>
+                    <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="party.streetName" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <blockquote class="blockquote-primary">
+                    <p><strong>Postal Area : </strong>
+                    </p>
+                </blockquote>
+            </div>
+            <div class="col-md-9">
+                <ui-select ng-model="party.area" style="padding-top:10px">
+                    <ui-select-match placeholder="Search for area...">{{$select.selected.suburb + ', ' + $select.selected.city + ' ' + $select.selected.province + ', ' + ("0000"+$select.selected.postalCode).slice(-4) }}</ui-select-match>
+                    <ui-select-choices repeat="area in filteredAreas track by area.id" group-by="'province'" refresh="searchArea($select.search)" minimum-input-length="4">
+                        <span ng-bind-html="area.suburb | highlight: $select.search"></span>
+                        <small ng-bind-html="area.city + ' ' + area.province + ', ' + ('0000' + area.postalCode).slice(-4) | highlight: $select.search"></small>
+                    </ui-select-choices>
+                    <ui-select-no-choice class="alert-error">
+                        <span ng-show="$select.search.length >= 4">Unfortunately we could not find the suburb you are searching for</span>
+                    </ui-select-no-choice>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="id">Suburb</label> <input type="text" class="form-control" ng-model="party.area.suburb" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="id">Province</label> <input type="text" class="form-control" ng-model="party.area.province" readonly />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="id">City</label> <input type="text" class="form-control" ng-model="party.area.city" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="id">Country</label> <input type="text" class="form-control" readonly value="{{('0000'+party.area.postalCode).slice(-4)}}"/>
                 </div>
             </div>
         </div>

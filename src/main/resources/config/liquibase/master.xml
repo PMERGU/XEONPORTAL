@@ -12,5 +12,6 @@
     <include file="classpath:config/liquibase/changelog/20160318131122_added_entity_PoLine.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20160602_changes.xml" relativeToChangelogFile="false"/>
-
+    <include file="classpath:config/liquibase/changelog/20160705_added_entity_PostalCodes.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160709_changes.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

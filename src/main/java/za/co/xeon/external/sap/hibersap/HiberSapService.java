@@ -121,7 +121,8 @@ public class HiberSapService {
                 return rfc.getReturn();
             }
         }catch(Exception e){
-            log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
+            log.error("Couldnt complete updateDeliveredHandelingUnits : + " + e.getMessage(), e);
+            e.printStackTrace();
             throw e;
         }finally {
             session.close();
@@ -153,6 +154,7 @@ public class HiberSapService {
             }
         }catch(Exception e){
             log.error("Couldnt complete pickupHandelingUnits : + " + e.getMessage(), e);
+            e.printStackTrace();
             throw e;
         }finally {
             session.close();

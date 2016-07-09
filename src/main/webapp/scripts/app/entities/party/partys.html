@@ -21,7 +21,7 @@
                         <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                         <th jh-sort-by="company.name"><span>Company Name</span> <span class="glyphicon glyphicon-sort"></span></th>
                         <th jh-sort-by="name"><span>Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="district"><span>District</span> <span class="glyphicon glyphicon-sort"></span></th>
+                        <th jh-sort-by="suburb"><span>Suburb</span> <span class="glyphicon glyphicon-sort"></span></th>
                         <th jh-sort-by="postalCode"><span>PostalCode</span> <span class="glyphicon glyphicon-sort"></span></th>
                         <th jh-sort-by="city"><span>City</span> <span class="glyphicon glyphicon-sort"></span></th>
                         <th jh-sort-by="reference"><span>Reference</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -33,9 +33,9 @@
                             <td><a ui-sref="party.detail({id:party.id})">{{party.id}}</a></td>
                             <td>{{party.company.name}}</td>
                             <td>{{party.name}}</td>
-                            <td>{{party.district}}</td>
-                            <td>{{party.postalCode}}</td>
-                            <td>{{party.city}}</td>
+                            <td>{{party.area.suburb}}</td>
+                            <td>{{('0000' + party.area.postalCode).slice(-4)}}</td>
+                            <td>{{party.area.city}}</td>
                             <td>{{party.reference}}</td>
                             <td class="text-right">
                                 <div class="btn-group flex-btn-group-container">

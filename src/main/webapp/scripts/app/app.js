@@ -4,7 +4,7 @@ angular.module('portalApp', ['LocalStorageModule',
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload', 'ngSanitize',
     // jhipster-needle-angularjs-add-module JHipster will add new module here
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar', 'ui.gravatar',
-        'datatables', 'datatables.bootstrap', 'ngFileSaver', 'ui.select'])
+        'datatables', 'datatables.bootstrap', 'ngFileSaver', 'ui.select', 'angular-cache'])
 
     .run(function ($rootScope, $location, $window, $http, $state,  Auth, Principal, ENV, VERSION) {
         $rootScope.ENV = ENV;
@@ -52,6 +52,9 @@ angular.module('portalApp', ['LocalStorageModule',
         // Optimize load start with remove binding information inside the DOM element
         //TODO: change to prod for prod...need to do this automatigally
         $compileProvider.debugInfoEnabled(ENV === 'prod' ? false: true);
+    })
+    .config(function (CacheFactoryProvider) {
+        angular.extend(CacheFactoryProvider.defaults, { maxAge: 15 * 60 * 1000 });
     })
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider,  httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
         // uncomment below to make alerts look like toast
