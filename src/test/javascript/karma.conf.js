@@ -25,7 +25,6 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-ui-router/release/angular-ui-router.js',
             'main/webapp/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
             'main/webapp/bower_components/json3/lib/json3.js',
-            'main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'main/webapp/bower_components/metisMenu/dist/metisMenu.js',
             'main/webapp/bower_components/jquery-ui/jquery-ui.js',
@@ -61,6 +60,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-file-saver/dist/angular-file-saver.bundle.js',
             'main/webapp/bower_components/angular-ui-select/dist/select.js',
             'main/webapp/bower_components/angular-cache/dist/angular-cache.js',
+            'main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

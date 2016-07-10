@@ -63,6 +63,41 @@ angular.module('portalApp')
                     }]
                 }
             })
+            .state('orderdetail.attachment', {
+                parent: 'orderdetail',
+                url: '/attachment',
+                data: {
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
+                },
+                params: {
+                    for: null,
+                    company: null
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/main/attachment-dialog.html',
+                        controller: 'AttachmentDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    name: null,
+                                    houseNumber: null,
+                                    streetName: null,
+                                    area: {},
+                                    reference: null,
+                                    company: $stateParams.company,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function(result) {
+                        $state.go('orderdetail');
+                    }, function() {
+                        $state.go('orderdetail');
+                    })
+                }]
+            })
             .state('xeonhome', {
                 parent: 'site',
                 url: '/xeon',

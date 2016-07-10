@@ -36,7 +36,7 @@
                 <div class="marker mCollected timeline-icon" ng-class="{'done': states['COLLECTED']}">
                     <i class="icon-pi-cargo-trolley-1"></i>
                     <i class="checkmark fa fa-check" ng-show="states['COLLECTED']"></i>
-				</span>
+                    </span>
                     <span style="margin-left: -110%;">Collected</span>
                 </div>
                 <!-- / marker -->
@@ -77,118 +77,152 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="hpanel">
-                <div class="panel-heading">
-                    <h2 class="font-light m-b-xs">
-                       Details of your order
-                    </h2>
-                </div>
                 <div class="panel-body list">
-                    <div class="table-responsive project-list">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Step</th>
-                                    <th>Description</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-hide="purchaseOrder.state === 'NOT_FOUND'">
-                                    <td>1</td>
-                                    <td>Order captured on portal
-                                        <br/>
-                                        <small>&nbsp; <i class="fa fa-user"></i> captured by {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}</small>
-                                    </td>
-                                    <td>{{purchaseOrder.captureDate | date: 'yyyy-MM-dd hh:mm'}}</td>
-                                </tr>
-                                <tr ng-show="purchaseOrder.state === 'PROCESSING'">
-                                    <td>2</td>
-                                    <td>Order is being processed by Xeon Team
-                                        <br/>
-                                        <small>&nbsp; <i class="fa fa-bullseye"></i> assigned to {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}} </small>
-                                    </td>
-                                    <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
-                                </tr>
-                                <tr ng-show="states['PROCESSED']">
-                                    <td>2</td>
-                                    <td>Order has been processed by our team
-                                        <br/>
-                                        <small ng-show="purchaseOrder.xeonUser">&nbsp; <i class="fa fa-user"></i> processed by {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}</small>
-                                    </td>
-                                    <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
-                                </tr>
-                                <tr ng-show="states['COLLECTED']">
-                                    <td>3</td>
-                                    <td>Order has been collected and is in transit
-                                    </td>
-                                    <td>{{orderGroup[0].daten | date: 'yyyy-MM-dd'}} {{orderGroup[0].uaten | date: 'hh:mm'}}</td>
-                                </tr>
-                                <tr ng-show="states['DELIVERED']">
-                                    <td>4</td>
-                                    <td>Order has been delivered
-                                    </td>
-                                    <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{orderGroup[0].audat | date: 'hh:mm'}}</td>
-                                </tr>
-                                <tr ng-show="states['POD']">
-                                    <td>5</td>
-                                    <td>POD uploaded and available online
-                                    </td>
-                                    <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <uib-tabset>
+                        <uib-tab>
+                            <uib-tab-heading>
+                                Order Details&nbsp;
+                            </uib-tab-heading>
+
+                            <div class="table-responsive project-list">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Step</th>
+                                        <th>Description</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-hide="purchaseOrder.state === 'NOT_FOUND'">
+                                        <td>1</td>
+                                        <td>Order captured on portal
+                                            <br/>
+                                            <small>&nbsp; <i class="fa fa-user"></i> captured by
+                                                {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}
+                                            </small>
+                                        </td>
+                                        <td>{{purchaseOrder.captureDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                    </tr>
+                                    <tr ng-show="purchaseOrder.state === 'PROCESSING'">
+                                        <td>2</td>
+                                        <td>Order is being processed by Xeon Team
+                                            <br/>
+                                            <small>&nbsp; <i class="fa fa-bullseye"></i> assigned to
+                                                {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}
+                                            </small>
+                                        </td>
+                                        <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                    </tr>
+                                    <tr ng-show="states['PROCESSED']">
+                                        <td>2</td>
+                                        <td>Order has been processed by our team
+                                            <br/>
+                                            <small ng-show="purchaseOrder.xeonUser">&nbsp; <i class="fa fa-user"></i>
+                                                processed by {{purchaseOrder.xeonUser.firstName}}
+                                                {{purchaseOrder.xeonUser.lastName}}
+                                            </small>
+                                        </td>
+                                        <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                    </tr>
+                                    <tr ng-show="states['COLLECTED']">
+                                        <td>3</td>
+                                        <td>Order has been collected and is in transit
+                                        </td>
+                                        <td>{{orderGroup[0].daten | date: 'yyyy-MM-dd'}} {{orderGroup[0].uaten | date:
+                                            'hh:mm'}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="states['DELIVERED']">
+                                        <td>4</td>
+                                        <td>Order has been delivered
+                                        </td>
+                                        <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{orderGroup[0].audat | date:
+                                            'hh:mm'}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="states['POD']">
+                                        <td>5</td>
+                                        <td>POD uploaded and available online
+                                        </td>
+                                        <td>{{orderGroup[0].audat | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </uib-tab>
+                        <uib-tab>
+                            <uib-tab-heading>
+                                Attachments&nbsp;
+                            </uib-tab-heading>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-mailbox">
+                                    <thead>
+                                    <tr>
+                                        <th width="60px">Id</th>
+                                        <th width="140px">Category</th>
+                                        <th width="140px">Date Added</th>
+                                        <th width="160px">Uploaded by</th>
+                                        <th width="100px">Mime Type</th>
+                                        <th>Note</th>
+                                        <th width="160px">
+                                            <button type="submit" class="btn btn-primary" style="width: 150px;" ui-sref="orderdetail.attachment">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                                <span>Add attachment</span>
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="unread">
+                                        <td>{{attachment.id}}</td>
+                                        <td>{{attachment.category}}</td>
+                                        <td>{{attachment.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                        <td>{{attachment.user.firstName + ' ' + attachment.user.lastName}}</td>
+                                        <td>{{attachment.mime}}</td>
+                                        <td>{{attachment.note}}</td>
+                                        <td class="text-right">
+                                            <div class="btn-group flex-btn-group-container">
+                                                <button type="submit"
+                                                        ui-sref="orderdetail"
+                                                        class="btn btn-info">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                    <span class="hidden-xs hidden-sm"></span>
+                                                </button>
+                                                <button type="button" ng-click="downloadAttachment(attachment)" class="btn btn-primary btn-lg" style="height: 33px;padding-top: 5px;width: 70px;">
+                                                    <span class="glyphicon glyphicon-download"></span>
+                                                    <span class="hidden-xs hidden-sm"></span>
+                                                </button>
+                                                <button type="submit"
+                                                        ui-sref="orderdetail"
+                                                        class="btn btn-danger">
+                                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                                    <span class="hidden-xs hidden-sm"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </uib-tab>
+                        <uib-tab>
+                            <uib-tab-heading>
+                                Comments
+                            </uib-tab-heading>
+                            <uib-alert type="info" close="closeAlert($index)" ng-show="purchaseOrder.comment">
+                                <strong>Comment: </strong>{{ purchaseOrder.comment }}
+                            </uib-alert>
+                            <div class="alert alert-success" ng-show="!purchaseOrder.comment">
+                                <i class="fa fa-hashtag"></i> &nbsp; no comments have been added to this order as yet.
+                            </div>
+                        </uib-tab>
+                    </uib-tabset>
                 </div>
-            </div>
-            <div class="hpanel" ng-show="{{ purchaseOrder.comment }}">
-                <div class="panel-heading">
-                    <h2 class="font-light m-b-xs">
-                        Comments
-                    </h2>
-                </div>
-                <div class="panel-body list">
-                    <div class="col-md-12">
-                        <uib-alert type="info" close="closeAlert($index)" ng-show="purchaseOrder.comment"><strong>Comment : </strong>{{ purchaseOrder.comment }}</uib-alert>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="hpanel" style="margin-top: 70px;" ng-show="states['POD']">
-                <div class="panel-body" ng-hide="states['POD_LOADED']">
-                    <h4 style="text-align: center">Looking for POD, please be patient</h4>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <uib-progressbar class="full progress-striped active" max="100" value="podLoading" type="info"></uib-progressbar>
-                        </div>
-                    </div>
-                </div>
-                <uib-tabset ng-show="states['POD_LOADED']">
-                    <uib-tab>
-                        <uib-tab-heading>
-                            Proof Of Delivery&nbsp;
-                        </uib-tab-heading>
-                        <div class="panel-body list text-center" style="padding-top: 0px;">
-                            <h3>Please click below to download POD</h3>
-                            <img data-ng-src="{{pod}}" style="max-width: 100%;" ng-click="downloadPod()"/>
-                        </div>
-                    </uib-tab>
-                    <uib-tab ng-show="states['INVOICE_LOADED']">
-                        <uib-tab-heading>
-                            Invoice&nbsp;
-                        </uib-tab-heading>
-                        <div class="panel-body" style="padding-top: 0px; text-align: center; height: 300px;">
-                            <h3>Please click below to download invoice</h3>
-                            <a href="" ng-click="downloadInvoice()">
-                                <span class="fa-stack fa-5x icon-round-primary" >
-                                  <i class="fa fa-download fa-stack-2x" style="padding-top:50px; font-size: 170px;"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </uib-tab>
-                </uib-tabset>
             </div>
         </div>
     </div>

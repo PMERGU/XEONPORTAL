@@ -149,7 +149,7 @@ public class MobileResource {
         return () -> {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             Future<List<EvResult>> future;
-            if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CUSTOMER)){
+            if(SecurityUtils.isUserCustomer()){
                 log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
                 future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
                     new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));

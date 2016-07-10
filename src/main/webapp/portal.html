@@ -90,7 +90,6 @@
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
         <script src="bower_components/json3/lib/json3.js"></script>
-        <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
         <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         <script src="bower_components/metisMenu/dist/metisMenu.js"></script>
         <script src="bower_components/jquery-ui/jquery-ui.js"></script>
@@ -126,11 +125,15 @@
         <script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
         <script src="bower_components/angular-ui-select/dist/select.js"></script>
         <script src="bower_components/angular-cache/dist/angular-cache.js"></script>
+        <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
         <!-- THEME Directives-->
         <script src="scripts/components/theme/homer.js"></script>
+        <!--&lt;!&ndash;[if lt IE 10]>-->
+        <!--<script src="bower_components/ng-file-upload/ng-file-upload-shim.js"></script>-->
+        <!--<![endif]&ndash;&gt;-->
 
     <!-- build:js({.tmp,src/main/webapp}) scripts/app.js -->
     <script src="scripts/app/app.js"></script>
@@ -207,6 +210,7 @@
     <script src="scripts/app/error/error.js"></script>
     <script src="scripts/app/main/main.js"></script>
     <script src="scripts/app/main/main.controller.js"></script>
+    <script src="scripts/app/main/attachment-dialog.controller.js"></script>
     <script src="scripts/app/main/orderDetail.controller.js"></script>
     <script src="scripts/app/main/xeonmain.controller.js"></script>
     <script src="scripts/components/auth/provider/auth.xauth.service.js"></script>

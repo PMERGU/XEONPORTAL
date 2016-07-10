@@ -1,0 +1,38 @@
+
+<form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myPartyLabel">Add a new attachment</h4>
+    </div>
+    <jh-alert-error></jh-alert-error>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                Drop File:
+                <div ngf-drop ngf-select ng-model="files" class="drop-box"
+                     ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+                     accept="image/*,application/pdf"
+                     ngf-pattern="'image/*,application/pdf'">Drop pdfs or images here or click to upload</div>
+                <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                Files:
+                <ul>
+                    <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+                </ul>
+                Upload Log:
+                <pre>{{log}}</pre>
+
+                Image thumbnail: <img ngf-thumbnail="file || '/thumb.jpg'">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

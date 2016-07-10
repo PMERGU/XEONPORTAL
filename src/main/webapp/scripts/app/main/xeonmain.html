@@ -1,125 +1,131 @@
 <div ng-cloak>
+    <div small-header>
+        <div class="hpanel" style="margin-bottom: 15px;">
+            <div class="panel-body">
+                <h2 class="font-light m-b-xs">
+                    CSU Dashboard - Purchase Order Overview
+                </h2>
+            </div>
+            <jh-alert></jh-alert>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <div class="hpanel">
-                <div class="hpanel">
+                <div class="panel-body list">
                     <uib-tabset>
                         <uib-tab>
                             <uib-tab-heading>
-                                Unprocessed&nbsp;
+                                <span class="badge badge-danger" style="margin-right: 10px">{{unprocessed.length}}</span>Unprocessed&nbsp;
                                 <i class="fa fa-refresh btn btn-default btn-xs" ng-click="reloadData()"></i>
                             </uib-tab-heading>
                             <div class="panel-body">
-                                <div>
-                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Company</th>
-                                                <th>Captured By</th>
-                                                <th>Purchase Order</th>
-                                                <th>Mode of Transport</th>
-                                                <th>Reference</th>
-                                                <th>Status</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="po in unprocessed">
-                                                <td><a ui-sref="purchaseOrder.detail({id:po.id})">{{po.id}}</a></td>
-                                                <td>{{ po.user.company.name }}</td>
-                                                <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
-                                                <td>{{ po.poNumber }}</td>
-                                                <td>{{ po.modeOfTransport }}</td>
-                                                <td>{{ po.reference }}</td>
-                                                <td>{{ po.state }}</td>
-                                                <td>
-                                                    <button type="submit"
-                                                            ui-sref="purchaseOrder.new({id:po.id})"
-                                                            class="btn btn-primary btn-sm">
-                                                        <span class="glyphicon glyphicon-eye-open"></span>
-                                                        <span class="hidden-xs hidden-sm"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Company</th>
+                                        <th>Captured By</th>
+                                        <th>Purchase Order</th>
+                                        <th>Mode of Transport</th>
+                                        <th>Reference</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="po in unprocessed">
+                                        <td><a ui-sref="purchaseOrder.detail({id:po.id})">{{po.id}}</a></td>
+                                        <td>{{ po.user.company.name }}</td>
+                                        <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
+                                        <td>{{ po.poNumber }}</td>
+                                        <td>{{ po.modeOfTransport }}</td>
+                                        <td>{{ po.reference }}</td>
+                                        <td>{{ po.state }}</td>
+                                        <td>
+                                            <button type="submit"
+                                                    ui-sref="purchaseOrder.new({id:po.id})"
+                                                    class="btn btn-primary btn-sm">
+                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                                <span class="hidden-xs hidden-sm"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </uib-tab>
                         <uib-tab>
                             <uib-tab-heading>
-                                In Progress&nbsp;
+                                <span class="badge badge-warning" style="margin-right: 10px">{{inProgress.length}}</span>In Progress&nbsp;
                             </uib-tab-heading>
                             <div class="panel-body">
-                                <div>
-                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Company</th>
-                                            <th>Captured By</th>
-                                            <th>Purchase Order</th>
-                                            <th>Mode of Transport</th>
-                                            <th>Reference</th>
-                                            <th>Status</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="po in inProgress">
-                                            <td><a ui-sref="purchaseOrder.detail({id:po.id})">{{po.id}}</a></td>
-                                            <td>{{ po.user.company.name }}</td>
-                                            <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
-                                            <td>{{ po.poNumber }}</td>
-                                            <td>{{ po.modeOfTransport }}</td>
-                                            <td>{{ po.reference }}</td>
-                                            <td>{{ po.state }}</td>
-                                            <td>
-                                                <button type="submit"
-                                                        ui-sref="purchaseOrder.new({id:po.id})"
-                                                        class="btn btn-primary btn-sm">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                    <span class="hidden-xs hidden-sm"></span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"
+                                       class="table table-striped hover" style="width: 100% !important;">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Company</th>
+                                        <th>Captured By</th>
+                                        <th>Purchase Order</th>
+                                        <th>Mode of Transport</th>
+                                        <th>Reference</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="po in inProgress">
+                                        <td><a ui-sref="purchaseOrder.detail({id:po.id})">{{po.id}}</a></td>
+                                        <td>{{ po.user.company.name }}</td>
+                                        <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
+                                        <td>{{ po.poNumber }}</td>
+                                        <td>{{ po.modeOfTransport }}</td>
+                                        <td>{{ po.reference }}</td>
+                                        <td>{{ po.state }}</td>
+                                        <td>
+                                            <button type="submit"
+                                                    ui-sref="purchaseOrder.new({id:po.id})"
+                                                    class="btn btn-primary btn-sm">
+                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                                <span class="hidden-xs hidden-sm"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </uib-tab>
                         <uib-tab>
                             <uib-tab-heading>
-                                Processed
+                                <span class="badge badge-primary" style="margin-right: 10px">{{processed.length}}</span>Processed
                             </uib-tab-heading>
                             <div class="panel-body">
-                                <div>
-                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Company</th>
-                                                <th>Captured By</th>
-                                                <th>Purchase Order</th>
-                                                <th>Mode of Transport</th>
-                                                <th>Reference</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="po in processed">
-                                            <td>{{ po.id }}</td>
-                                            <td>{{ po.user.company.name }}</td>
-                                            <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
-                                            <td>{{ po.poNumber }}</td>
-                                            <td>{{ po.modeOfTransport }}</td>
-                                            <td>{{ po.reference }}</td>
-                                            <td>{{ po.state }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"
+                                       class="table table-striped hover" style="width: 100% !important;">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Company</th>
+                                        <th>Captured By</th>
+                                        <th>Purchase Order</th>
+                                        <th>Mode of Transport</th>
+                                        <th>Reference</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="po in processed">
+                                        <td>{{ po.id }}</td>
+                                        <td>{{ po.user.company.name }}</td>
+                                        <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
+                                        <td>{{ po.poNumber }}</td>
+                                        <td>{{ po.modeOfTransport }}</td>
+                                        <td>{{ po.reference }}</td>
+                                        <td>{{ po.state }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </uib-tab>
                     </uib-tabset>

@@ -2,9 +2,11 @@ package za.co.xeon;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import za.co.xeon.config.Constants;
 import za.co.xeon.config.JHipsterProperties;
@@ -32,7 +34,7 @@ import java.util.Collection;
 import org.apache.catalina.connector.Connector;
 
 @ComponentScan
-@EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
+@EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class, CacheAutoConfiguration.class})
 @EnableConfigurationProperties({ JHipsterProperties.class, LiquibaseProperties.class })
 public class Application implements CommandLineRunner{
 

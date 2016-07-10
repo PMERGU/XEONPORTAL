@@ -125,5 +125,43 @@ pre {
             -ms-user-select: none;
             user-select: none;
         }
+    }
 }
+
+.nav-tabs > li {
+    margin-bottom: -4px;
+    uib-tab-heading{
+        font-weight: 700;
+    }
+}
+
+.tab-content{
+    border: solid #e4e5e7;
+    border-width: 0px 1px 1px 1px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+    .tab-pane{
+        .panel-body {
+            border: none;
+        }
+    }
+}
+
+.badge{
+    border-radius: 4px;
+}
+
+.drop-box {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 200px;
+    height: 65px;
+    text-align: center;
+    padding-top: 25px;
+    margin: 10px;
+}
+
+.dragover {
+    border: 5px dashed blue;
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval) {
+    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload) {
         purchaseOrder = purchaseOrder !== undefined ? purchaseOrder : {
             state: "NOT_FOUND"
         };
@@ -97,4 +97,10 @@ angular.module('portalApp')
             FileSaver.saveAs($scope.invoiceBlob, $scope.orderGroup[0].dbeln + '.pdf');
         }
 
+        $scope.downloadAttachment = function(attachment){
+            $log.debug("downloadAttachment() //TODO");
+            $log.debug(attachment);
+            // FileSaver.saveAs($scope.invoiceBlob, $scope.orderGroup[0].dbeln + '.pdf');
+        }
+        
     });
