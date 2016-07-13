@@ -14,11 +14,17 @@ public class S3Settings {
     private String accessKeyId;
     private String secretKey;
     private String folderPod;
+    private String folderAttachment;
+
+    public S3Settings() {
+    }
 
     public String getPodPath(String barcode, String extension){
         return getFolderPod() + "/" + barcode + "." + extension;
     }
-    public S3Settings() {
+
+    public String getAttachmentPath(String name){
+        return getFolderAttachment() + "/" + name;
     }
 
     public String getBucketName() {
@@ -59,5 +65,13 @@ public class S3Settings {
 
     public void setFolderPod(String folderPod) {
         this.folderPod = folderPod;
+    }
+
+    public String getFolderAttachment() {
+        return folderAttachment;
+    }
+
+    public void setFolderAttachment(final String folderAttachment) {
+        this.folderAttachment = folderAttachment;
     }
 }

@@ -1,22 +1,32 @@
 package za.co.xeon.external.as3;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import za.co.xeon.config.MobileConfiguration;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+
+import za.co.xeon.config.MobileConfiguration;
 
 /**
  * Created by derick on 2016/02/07.
@@ -68,11 +78,15 @@ public class S3Service {
         }
     }
 
-    public String uploadFile(String fileName, File file){
+    public String uploadFile(String fileName, File file) {
+        return uploadFile(fileName, file, "api/mobile/pods/" + fileName);
+    }
+
+    public String uploadFile(String fileName, File file, String readUrl) {
         try {
             log.debug("Uploading a new object to S3 from a file\n");
             s3client.putObject(new PutObjectRequest(s3Settings.getBucketName(), fileName, file));
-            return mobileConfiguration.getHttpServerName() + "api/mobile/pods/" + fileName;
+            return mobileConfiguration.getHttpServerName() + readUrl;
         } catch (AmazonServiceException ase) {
             log.error("Caught an AmazonServiceException, which " +
                     "means your request made it " +
