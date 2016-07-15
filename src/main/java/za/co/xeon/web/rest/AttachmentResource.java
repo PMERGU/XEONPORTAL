@@ -3,9 +3,12 @@ package za.co.xeon.web.rest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import javax.servlet.annotation.MultipartConfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
@@ -32,6 +35,7 @@ public class AttachmentResource {
 
     private AttachmentService attachmentService;
     private MobileConfiguration mobileConf;
+    private final Logger log = LoggerFactory.getLogger(AttachmentResource.class);
 
     private File tmpDir;
 
@@ -45,33 +49,42 @@ public class AttachmentResource {
 
     @RequestMapping(value = "/attachments", method = RequestMethod.POST)
     @Timed
-    public Attachment createAttachment(@RequestParam String deliveryNumber,
+    public Callable<Attachment> createAttachment(@RequestParam String deliveryNumber,
             @RequestParam String description,
             @RequestParam String category,
             @RequestParam(defaultValue = "true") Boolean visible,
             @RequestParam("file") MultipartFile file) throws IOException {
+        log.debug("createAttachment[{},{},{},{},{}]", deliveryNumber, description, category, visible, file.getName());
+        log.debug("writing temp file to : {}", tmpDir.getAbsolutePath());
         String originalFileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().indexOf("."));
         String originalExtension = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".") + 1);
         File attachmentFile = Converters.multipartToFile(tmpDir, originalFileName, originalExtension, file);
-
-        return attachmentService.createAttachment(deliveryNumber,
-                description,
-                category,
-                file.getContentType(),
-                visible,
-                attachmentFile);
+        return new Callable<Attachment>() {
+            public Attachment call() throws Exception {
+                return attachmentService.createAttachment(deliveryNumber,
+                        description,
+                        category,
+                        file.getContentType(),
+                        visible,
+                        attachmentFile);
+            }
+        };
     }
 
     @RequestMapping(value = "/attachments/{uuid}", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<ByteArrayResource> readAttachment(@PathVariable String uuid,
-            @RequestParam(defaultValue = "true") Boolean activated) {
-        ReadAttachmentDto readAttachment = attachmentService.readAttachment(uuid, activated);
-        return ResponseEntity
-                .ok()
-                .contentLength(readAttachment.getAttachment().length)
-                .contentType(MediaType.parseMediaType(readAttachment.getMimeType()))
-                .body(new ByteArrayResource(readAttachment.getAttachment()));
+    public Callable<ResponseEntity<ByteArrayResource>> readAttachment(@PathVariable String uuid,
+                                                                      @RequestParam(defaultValue = "true") Boolean activated) {
+        return new Callable<ResponseEntity<ByteArrayResource>>() {
+            public ResponseEntity<ByteArrayResource> call() throws Exception {
+                ReadAttachmentDto readAttachment = attachmentService.readAttachment(uuid, activated);
+                return ResponseEntity
+                        .ok()
+                        .contentLength(readAttachment.getAttachment().length)
+                        .contentType(MediaType.parseMediaType(readAttachment.getMimeType()))
+                        .body(new ByteArrayResource(readAttachment.getAttachment()));
+            }
+        };
     }
 
     @RequestMapping(value = "/attachments/{uuid}", method = RequestMethod.DELETE)
