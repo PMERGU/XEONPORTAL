@@ -45,7 +45,7 @@ public class Attachment implements Serializable {
     private String category;
 
     @Column(name = "created_date")
-    private LocalDate createdDate = LocalDate.now();
+    private ZonedDateTime createdDate = ZonedDateTime.now();
 
     @Column(name = "file_name")
     private String fileName;
@@ -122,11 +122,11 @@ public class Attachment implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getCreatedDate() {
+    public ZonedDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(ZonedDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
