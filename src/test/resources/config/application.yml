@@ -88,6 +88,8 @@ ftp:
 
 mobile:
   podDirectory: ../podTempDir
+  httpServerName: http://uat.xeon.co.za/
+  attachmentDirectory: ../attachmentsTempDir
 
 jhipster:
     async:
