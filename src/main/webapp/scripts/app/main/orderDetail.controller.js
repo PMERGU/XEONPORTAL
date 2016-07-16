@@ -2,28 +2,28 @@
 
 angular.module('portalApp')
     .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, attachments, Attachment) {
-        $log.debug("test attachements");
+        $log.debug('test attachements');
         $log.debug(attachments);
         $scope.attachments = attachments;
         $scope.isDownloadingAttachment = false;
         purchaseOrder = purchaseOrder !== undefined ? purchaseOrder : {
-            state: "NOT_FOUND"
+            state: 'NOT_FOUND'
         };
         $scope.step = 1;
 
         $scope.purchaseOrder = purchaseOrder;
         $scope.orderGroup = orderGroup;
         $scope.states = {
-            "RECEIVED": true,
-            "PROCESSED": false,
-            "COLLECTED": false,
-            "IN_TRANSIT": false,
-            "DELIVERED": false,
-            "POD": false,
-            "INVOICE": false
+            'RECEIVED': true,
+            'PROCESSED': false,
+            'COLLECTED': false,
+            'IN_TRANSIT': false,
+            'DELIVERED': false,
+            'POD': false,
+            'INVOICE': false
         };
 
-        $scope.states["PROCESSED"] = purchaseOrder.state === "PROCESSED" ? true : false;
+        $scope.states['PROCESSED'] = purchaseOrder.state === 'PROCESSED' ? true : false;
 
         $log.log("group size " + $scope.orderGroup.length);
         $scope.orderGroup = $scope.orderGroup.sort(function (order1, order2) {
@@ -35,22 +35,22 @@ angular.module('portalApp')
         $log.log("start time : " + $scope.orderGroup[0].uatbg);
 
         if($scope.orderGroup[0].daten !== undefined && $scope.orderGroup[0].daten !== null && $scope.orderGroup[0].daten !== ""){
-            $scope.states["RECEIVED"] = true;
-            $scope.states["PROCESSED"] = true;
-            $scope.states["COLLECTED"] = true;
-            $scope.states["IN_TRANSIT"] = true;
+            $scope.states['RECEIVED'] = true;
+            $scope.states['PROCESSED'] = true;
+            $scope.states['COLLECTED'] = true;
+            $scope.states['IN_TRANSIT'] = true;
         }
 
         if($scope.orderGroup[0].pdstk === "B" || $scope.orderGroup[0].pdstk === "C" ){
-            $scope.states["DELIVERED"] = true;
+            $scope.states['DELIVERED'] = true;
         }
 
-        if($scope.states["DELIVERED"]){
-            $scope.states["POD"] = true;
+        if($scope.states['DELIVERED']){
+            $scope.states['POD'] = true;
         }
 
         $scope.podLoading = 0;
-        if($scope.states["POD"]){
+        if($scope.states['POD']){
             var stopLoading = $interval(function(){
                 if($scope.podLoading >= 100){
                     $interval.cancel(stopLoading);
@@ -63,7 +63,7 @@ angular.module('portalApp')
                 var stopLoading2 = $interval(function(){
                     if($scope.podLoading >= 100){
                         $interval.cancel(stopLoading2);
-                        $scope.states["POD_LOADED"] = true;
+                        $scope.states['POD_LOADED'] = true;
                     }
                     $scope.podLoading+=1;
                 }, 75);
@@ -73,33 +73,33 @@ angular.module('portalApp')
                 $scope.pod = $sce.trustAsResourceUrl(fileURL);
             },function(err){
                 $scope.podMessge = "POD could not be found.";
-                $scope.states["POD_LOADED"] = false;
-                $scope.states["POD"] = false;
+                $scope.states['POD_LOADED'] = false;
+                $scope.states['POD'] = false;
             });
 
-            $scope.states["INVOICE"] = true;
+            $scope.states['INVOICE'] = true;
         }
 
-        if($scope.states["INVOICE"]){
+        if($scope.states['INVOICE']){
             CustomerOrders.getInvoice({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(invoiceBlob){
                 var creator = $window.URL || $window.webkitURL;
                 var fileURL = creator.createObjectURL(invoiceBlob.response);
                 $scope.invoiceBlob = invoiceBlob.response;
-                $scope.states["INVOICE_LOADED"] = true;
+                $scope.states['INVOICE_LOADED'] = true;
             },function(err){
-                $log.debug("Invoice could not be found.");
-                $scope.states["INVOICE_LOADED"] = false;
-                $scope.states["INVOICE"] = false;
+                $log.debug("Invoice could not be found: " + err);
+                $scope.states['INVOICE_LOADED'] = false;
+                $scope.states['INVOICE'] = false;
             });
-        }
+        };
 
         $scope.downloadPod = function(){
             FileSaver.saveAs($scope.podBlob, $scope.orderGroup[0].dbeln + '.jpg');
-        }
+        };
 
         $scope.downloadInvoice = function(){
             FileSaver.saveAs($scope.invoiceBlob, $scope.orderGroup[0].dbeln + '.pdf');
-        }
+        };
 
         $scope.downloadAttachment = function(attachment){
             $scope.isDownloadingAttachment = true;
@@ -114,6 +114,5 @@ angular.module('portalApp')
                 $log.error("Count not download attachment");
                 $log.error(err);
             });
-        }
-
+        };
     });

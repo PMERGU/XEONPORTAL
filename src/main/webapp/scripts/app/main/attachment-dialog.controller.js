@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('portalApp').controller('AttachmentDialogController',
-    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$log', 'Upload', '$timeout', 'Attachment',
-        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, $log, Upload, $timeout, Attachment) {
+    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$log', 'Upload',
+        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, $log, Upload) {
             Upload.setDefaults({ngfMinSize: 20000, ngfMaxSize:20000000});
             // $scope.submit = function() {
             //     if ($scope.form.file.$valid && $scope.file) {
@@ -38,7 +38,7 @@ angular.module('portalApp').controller('AttachmentDialogController',
             $scope.isSaving = false;
         };
 
-        var onSaveError = function (result) {
+        var onSaveError = function () {
             $scope.isSaving = false;
         };
 
@@ -95,31 +95,4 @@ angular.module('portalApp').controller('AttachmentDialogController',
                 }
             }
         };
-
-        $scope.uploadAsync = function (file) {
-            // returns a promise
-            upload.then(function (resp) {
-                // file is uploaded successfully
-                console.log('file ' + resp.config.data.file.name + 'is uploaded successfully. Response: ' + resp.data);
-            }, function (resp) {
-                // handle error
-            }, function (evt) {
-                // progress notify
-                console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :' + evt.config.data.file.name);
-            });
-            upload.catch(errorCallback);
-            upload.finally(callback, notifyCallback);
-        }
-
-
-        // // for multiple files:
-        // $scope.uploadFiles = function (files) {
-        //     if (files && files.length) {
-        //         for (var i = 0; i < files.length; i++) {
-        //             Upload.upload({..., data: {file: files[i]}, ...})...;
-        //         }
-        //         // or send them all together for HTML5 browsers:
-        //         Upload.upload({..., data: {file: files}, ...})...;
-        //     }
-        // }
 }]);

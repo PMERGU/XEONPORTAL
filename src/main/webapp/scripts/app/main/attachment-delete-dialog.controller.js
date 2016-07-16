@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('portalApp')
-	.controller('AttachmentDeleteController', function($scope, $uibModalInstance, attachment, Attachment) {
+    .controller('AttachmentDeleteController', function ($scope, $uibModalInstance, attachment, Attachment) {
 
         $scope.attachment = attachment;
-        $scope.clear = function() {
+        $scope.clear = function () {
             $uibModalInstance.dismiss('cancel');
         };
         $scope.confirmDelete = function (uuid) {
@@ -12,7 +12,7 @@ angular.module('portalApp')
             Attachment.delete({uuid: uuid},
                 function () {
                     $uibModalInstance.close(true);
-                });
+                }
+            );
         };
-
     });

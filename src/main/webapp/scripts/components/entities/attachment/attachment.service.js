@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .factory('Attachment', function ($resource, DateUtils) {
+    .factory('Attachment', function ($resource) {
         return $resource('api/attachments/:uuid', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {

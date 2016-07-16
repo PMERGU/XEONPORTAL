@@ -185,7 +185,7 @@ pre {
         .progress-bar{
             height: 10px;
             &.progress-bar-success{
-                background-color: lighten($color-blue, 20%);;
+                background-color: lighten($color-blue, 20%);
                 border-right: 4px solid $color-blue;
             }
         }

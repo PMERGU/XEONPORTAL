@@ -7,7 +7,7 @@ angular.module('portalApp')
                 parent: 'site',
                 url: '/',
                 data: {
-                    authorities: ['ROLE_CUSTOMER','ROLE_USER','ROLE_ADMIN'],
+                    authorities: ['ROLE_CUSTOMER', 'ROLE_USER', 'ROLE_ADMIN'],
                     pageTitle: 'Dashboard'
                 },
                 views: {
@@ -16,16 +16,15 @@ angular.module('portalApp')
                         controller: 'MainController'
                     }
                 },
-                onEnter: ['$stateParams', '$state', 'Principal', function($stateParams, $state, Principal) {
+                onEnter: ['$stateParams', '$state', 'Principal', function ($stateParams, $state, Principal) {
                     Principal.hasAuthority('ROLE_USER')
                         .then(function (result) {
                             if (result) {
-                                $state.go('xeonhome', null, { reload: true });
+                                $state.go('xeonhome', null, {reload: true});
                             }
                         });
                 }],
-                resolve: {
-                }
+                resolve: {}
             })
             .state('orderdetail', {
                 parent: 'site',
@@ -46,23 +45,23 @@ angular.module('portalApp')
                     company: null
                 },
                 resolve: {
-                    purchaseOrder: ['$stateParams', 'PurchaseOrder', function($stateParams, PurchaseOrder) {
-                        if($stateParams.order){
-                            return PurchaseOrder.getByPONumber({poNumber : $stateParams.order.bstkd}).$promise.then(function(purchaseOrder) {
+                    purchaseOrder: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
+                        if ($stateParams.order) {
+                            return PurchaseOrder.getByPONumber({poNumber: $stateParams.order.bstkd}).$promise.then(function (purchaseOrder) {
                                 return purchaseOrder;
-                            }, function(errResponse) {
+                            }, function (errResponse) {
                                 console.log(errResponse);
                                 return undefined;
                             });
-                        }else{
+                        } else {
                             return undefined;
                         }
                     }],
-                    orderGroup: ['$stateParams', 'PurchaseOrder', 'CachedOrders', function($stateParams, PurchaseOrder, CachedOrders) {
+                    orderGroup: ['$stateParams', 'PurchaseOrder', 'CachedOrders', function ($stateParams, PurchaseOrder, CachedOrders) {
                         return CachedOrders.getOrderGroup($stateParams.orderStep, $stateParams.company.sapId, $stateParams.order.dbeln);
                     }],
-                    attachments: ['$stateParams', 'Attachment', 'CachedOrders', function($stateParams, Attachment, CachedOrders) {
-                        return Attachment.query({deliveryNumber:  $stateParams.order.dbeln})
+                    attachments: ['$stateParams', 'Attachment', function ($stateParams, Attachment) {
+                        return Attachment.query({deliveryNumber: $stateParams.order.dbeln});
                     }]
                 }
             })
@@ -70,13 +69,13 @@ angular.module('portalApp')
                 parent: 'orderdetail',
                 url: '/attachment',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
+                    authorities: ['ROLE_USER', 'ROLE_CUSTOMER'],
                 },
                 params: {
                     for: null,
                     company: null
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'scripts/app/main/attachment-dialog.html',
                         controller: 'AttachmentDialogController',
@@ -90,9 +89,9 @@ angular.module('portalApp')
                                 };
                             }
                         }
-                    }).result.then(function(result) {
-                        $state.go('orderdetail', null, { reload: true });
-                    }, function() {
+                    }).result.then(function (result) {
+                        $state.go('orderdetail', null, {reload: true});
+                    }, function () {
                         $state.go('orderdetail');
                     })
                 }]
@@ -101,24 +100,25 @@ angular.module('portalApp')
                 parent: 'orderdetail',
                 url: '/attachment/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
+                    authorities: ['ROLE_USER', 'ROLE_CUSTOMER'],
                 },
                 params: {
                     attachment: null
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'scripts/app/main/attachment-delete-dialog.html',
                         controller: 'AttachmentDeleteController',
                         size: 'md',
                         resolve: {
-                            attachment: function() {
-                                return $stateParams.attachment
+                            attachment: function () {
+                                return $stateParams.attachment;
                             }
                         }
-                    }).result.then(function(result) {
-                        $state.go('orderdetail', null, { reload: true });
-                    }, function() {
+
+                    }).result.then(function () {
+                        $state.go('orderdetail', null, {reload: true});
+                    }, function () {
                         $state.go('^');
                     })
                 }]
@@ -127,7 +127,7 @@ angular.module('portalApp')
                 parent: 'site',
                 url: '/xeon',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_ADMIN'],
+                    authorities: ['ROLE_USER', 'ROLE_ADMIN'],
                     pageTitle: 'Dashboard'
                 },
                 views: {
@@ -136,14 +136,13 @@ angular.module('portalApp')
                         controller: 'XeonMainController'
                     }
                 },
-                resolve: {
-                }
+                resolve: {}
             })
             .state('salesOrders', {
                 parent: 'site',
                 url: '/salesOrders',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_ADMIN'],
+                    authorities: ['ROLE_USER', 'ROLE_ADMIN'],
                     pageTitle: 'Sales Orders'
                 },
                 views: {
@@ -152,7 +151,6 @@ angular.module('portalApp')
                         controller: 'SalesOrdersController'
                     }
                 },
-                resolve: {
-                }
+                resolve: {}
             });
     });

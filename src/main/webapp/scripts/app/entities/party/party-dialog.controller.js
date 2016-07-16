@@ -10,11 +10,11 @@ angular.module('portalApp').controller('PartyDialogController',
         $scope.isXeon = false;
         Principal.identity().then(function(user) {
             $scope.user = user;
-            $scope.isXeon = user.company.type === "XEON";
+            $scope.isXeon = (user.company.type === "XEON");
         });
 
         $scope.load = function(id) {
-            Party.get({id : id}, function(result) {
+            Party.get({id: id}, function(result) {
                 $scope.party = result;
             });
         };
@@ -29,10 +29,10 @@ angular.module('portalApp').controller('PartyDialogController',
                 search = 'suburb:' + search;
             }
 
-            Area.query({search}).$promise.then(function(data){
+            Area.query({search: search}).$promise.then(function(data){
                 $scope.filteredAreas = data;
             });
-        }
+        };
 
         var onSaveSuccess = function (result) {
             $scope.$emit('portalApp:partyUpdate', result);

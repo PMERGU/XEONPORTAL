@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     prefix = require('gulp-autoprefixer'),
     cssnano = require('gulp-cssnano'),
     usemin = require('gulp-usemin'),
+    gutil = require('gulp-util'),
     uglify = require('gulp-uglify'),
     sass = require('gulp-sass'),
     htmlmin = require('gulp-htmlmin'),
@@ -236,10 +237,10 @@ gulp.task('usemin', ['images', 'styles'], function() {
                 htmlmin.bind(htmlmin, {collapseWhitespace: true})
             ],
             js: [
+                uglify.bind(uglify, { mangle: false }),
                 sourcemaps.init,
                 ngAnnotate,
                 'concat',
-                uglify.bind(uglify, { mangle: false }),
                 rev,
                 sourcemaps.write.bind(sourcemaps.write, '.')
             ]
@@ -293,3 +294,8 @@ gulp.task('jshint', function() {
 
 
 gulp.task('default', ['serve']);
+
+process.on('uncaughtException', function(error) {
+    console.log(error);
+    process.exit(1)
+})

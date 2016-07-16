@@ -27,7 +27,7 @@ angular.module('portalApp').controller('POPartyDialogController',
                 search = 'suburb:' + search;
             }
 
-            Area.query({search}).$promise.then(function(data){
+            Area.query({search: search}).$promise.then(function(data){
                 $scope.filteredAreas = data;
             });
         };
