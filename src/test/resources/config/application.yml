@@ -66,6 +66,7 @@ amazon:
     url: https://936207874332.signin.aws.amazon.com/console
     user: xeonbackend
     folderPod: pod
+    folderAttachment: attachment-dev
 
 sap:
   jco:
