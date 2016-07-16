@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload) {
+    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, attachments, Attachment) {
+        $log.debug("test attachements");
+        $log.debug(attachments);
+        $scope.attachments = attachments;
+        $scope.isDownloadingAttachment = false;
         purchaseOrder = purchaseOrder !== undefined ? purchaseOrder : {
             state: "NOT_FOUND"
         };
@@ -98,9 +102,18 @@ angular.module('portalApp')
         }
 
         $scope.downloadAttachment = function(attachment){
-            $log.debug("downloadAttachment() //TODO");
-            $log.debug(attachment);
-            // FileSaver.saveAs($scope.invoiceBlob, $scope.orderGroup[0].dbeln + '.pdf');
+            $scope.isDownloadingAttachment = true;
+            $scope.selectedAttachment = attachment;
+            $log.debug("downloadAttachment(" + attachment.uuid + " )");
+            Attachment.get({uuid: attachment.uuid}).$promise.then(function(imageBlob){
+                $log.debug(imageBlob.response.type);
+                FileSaver.saveAs(imageBlob.response, attachment.category + "-" + attachment.id);
+                $scope.isDownloadingAttachment = false;
+            },function(err){
+                $scope.isDownloadingAttachment = false;
+                $log.error("Count not download attachment");
+                $log.error(err);
+            });
         }
-        
+
     });

@@ -153,15 +153,66 @@ pre {
 }
 
 .drop-box {
-    background: #F8F8F8;
-    border: 5px dashed #DDD;
-    width: 200px;
-    height: 65px;
+    background: lighten($color-blue, 50%);
+    border: 5px dashed lighten($color-blue, 30%);;
+    width: 100%;
+    height: 100px;
     text-align: center;
     padding-top: 25px;
-    margin: 10px;
+    margin: 10px 0px;
 }
 
 .dragover {
-    border: 5px dashed blue;
+    border: 5px dashed $color-blue;
+}
+
+.table-centered{
+    tbody{
+        tr{
+            td{
+                padding: 5px 10px 5px 10px !important;
+                vertical-align: middle !important;
+            }
+        }
+    }
+}
+
+.m{
+    margin: 0px;
+    .progress{
+        margin: 0px;
+        height: 10px;
+        .progress-bar{
+            height: 10px;
+            &.progress-bar-success{
+                background-color: lighten($color-blue, 20%);;
+                border-right: 4px solid $color-blue;
+            }
+        }
+    }
+}
+
+.glyphicon-spin {
+    -webkit-animation: spinLoader 1000ms infinite linear;
+    animation: spinLoader 1000ms infinite linear;
+}
+@-webkit-keyframes spinLoader {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@keyframes spinLoader {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }

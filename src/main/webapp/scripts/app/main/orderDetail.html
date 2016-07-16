@@ -160,17 +160,17 @@
                                 Attachments&nbsp;
                             </uib-tab-heading>
                             <div class="table-responsive">
-                                <table class="table table-hover table-mailbox">
+                                <table class="table table-striped table-condensed table-hover table-centered" >
                                     <thead>
                                     <tr>
                                         <th width="60px">Id</th>
                                         <th width="140px">Category</th>
                                         <th width="140px">Date Added</th>
                                         <th width="160px">Uploaded by</th>
-                                        <th width="100px">Mime Type</th>
+                                        <th width="100px">Image Type</th>
                                         <th>Note</th>
                                         <th width="160px">
-                                            <button type="submit" class="btn btn-primary" style="width: 150px;" ui-sref="orderdetail.attachment">
+                                            <button type="submit" class="btn btn-primary" style="width: 150px;" ui-sref="orderdetail.attachment({for: orderGroup[0].dbeln})">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                                 <span>Add attachment</span>
                                             </button>
@@ -178,27 +178,28 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="unread">
+                                    <tr ng-repeat="attachment in attachments | orderBy:createdDate">
                                         <td>{{attachment.id}}</td>
                                         <td>{{attachment.category}}</td>
-                                        <td>{{attachment.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                        <td>{{attachment.createdDate | date: 'yyyy-MM-dd'}}</td>
                                         <td>{{attachment.user.firstName + ' ' + attachment.user.lastName}}</td>
-                                        <td>{{attachment.mime}}</td>
-                                        <td>{{attachment.note}}</td>
+                                        <td>{{attachment.mimeType}}</td>
+                                        <td>{{attachment.description}}</td>
                                         <td class="text-right">
                                             <div class="btn-group flex-btn-group-container">
-                                                <button type="submit"
-                                                        ui-sref="orderdetail"
-                                                        class="btn btn-info">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                <!--<button type="submit"-->
+                                                        <!--ui-sref="orderdetail"-->
+                                                        <!--class="btn btn-info">-->
+                                                    <!--<span class="glyphicon glyphicon-eye-open"></span>-->
+                                                    <!--<span class="hidden-xs hidden-sm"></span>-->
+                                                <!--</button>-->
+                                                <button type="button" ng-click="downloadAttachment(attachment)" ng-disabled="isDownloadingAttachment" class="btn btn-primary btn-lg" style="height: 33px;padding-top: 5px;width: 70px;">
+                                                    <span class="glyphicon glyphicon-download" ng-show="selectedAttachment.id != attachment.id || !isDownloadingAttachment"></span>
+                                                    <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="selectedAttachment.id == attachment.id && isDownloadingAttachment"></span>
                                                     <span class="hidden-xs hidden-sm"></span>
                                                 </button>
-                                                <button type="button" ng-click="downloadAttachment(attachment)" class="btn btn-primary btn-lg" style="height: 33px;padding-top: 5px;width: 70px;">
-                                                    <span class="glyphicon glyphicon-download"></span>
-                                                    <span class="hidden-xs hidden-sm"></span>
-                                                </button>
-                                                <button type="submit"
-                                                        ui-sref="orderdetail"
+                                                <button type="button"
+                                                        ui-sref="orderdetail.attachmentDelete({attachment: attachment})"
                                                         class="btn btn-danger">
                                                     <span class="glyphicon glyphicon-remove-circle"></span>
                                                     <span class="hidden-xs hidden-sm"></span>

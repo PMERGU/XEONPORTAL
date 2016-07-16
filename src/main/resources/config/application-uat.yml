@@ -72,6 +72,7 @@ amazon:
     url: https://936207874332.signin.aws.amazon.com/console
     user: xeonbackend
     folderPod: pod-uat
+    folderAttachment: attachment-uat
 
 sap:
   jco:
@@ -92,6 +93,7 @@ ftp:
 
 mobile:
   podDirectory: /opt/data/portal/pod/
+  attachmentDirectory: /opt/data/portal/attachment/
   httpServerName: http://uat1.xeon.co.za:8080/
 
 # ===================================================================

@@ -60,6 +60,9 @@ angular.module('portalApp')
                     }],
                     orderGroup: ['$stateParams', 'PurchaseOrder', 'CachedOrders', function($stateParams, PurchaseOrder, CachedOrders) {
                         return CachedOrders.getOrderGroup($stateParams.orderStep, $stateParams.company.sapId, $stateParams.order.dbeln);
+                    }],
+                    attachments: ['$stateParams', 'Attachment', 'CachedOrders', function($stateParams, Attachment, CachedOrders) {
+                        return Attachment.query({deliveryNumber:  $stateParams.order.dbeln})
                     }]
                 }
             })
@@ -81,20 +84,42 @@ angular.module('portalApp')
                         resolve: {
                             entity: function () {
                                 return {
-                                    name: null,
-                                    houseNumber: null,
-                                    streetName: null,
-                                    area: {},
-                                    reference: null,
-                                    company: $stateParams.company,
-                                    id: null
+                                    category: null,
+                                    description: null,
+                                    deliveryNumber: $stateParams.for
                                 };
                             }
                         }
                     }).result.then(function(result) {
-                        $state.go('orderdetail');
+                        $state.go('orderdetail', null, { reload: true });
                     }, function() {
                         $state.go('orderdetail');
+                    })
+                }]
+            })
+            .state('orderdetail.attachmentDelete', {
+                parent: 'orderdetail',
+                url: '/attachment/{id}/delete',
+                data: {
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
+                },
+                params: {
+                    attachment: null
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/main/attachment-delete-dialog.html',
+                        controller: 'AttachmentDeleteController',
+                        size: 'md',
+                        resolve: {
+                            attachment: function() {
+                                return $stateParams.attachment
+                            }
+                        }
+                    }).result.then(function(result) {
+                        $state.go('orderdetail', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
                     })
                 }]
             })

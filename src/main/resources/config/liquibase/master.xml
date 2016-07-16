@@ -14,4 +14,5 @@
     <include file="classpath:config/liquibase/changelog/20160602_changes.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160705_added_entity_PostalCodes.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160709_changes.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160710_added_entity_Attachment.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

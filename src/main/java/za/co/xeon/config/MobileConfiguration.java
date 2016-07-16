@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix="mobile", locations={"application.yml"})
 public class MobileConfiguration {
     private String podDirectory;
+    private String attachmentDirectory;
     private String httpServerName;
 
     public MobileConfiguration() {
@@ -21,6 +22,14 @@ public class MobileConfiguration {
 
     public void setPodDirectory(String podDirectory) {
         this.podDirectory = podDirectory;
+    }
+
+    public String getAttachmentDirectory() {
+        return attachmentDirectory;
+    }
+
+    public void setAttachmentDirectory(final String attachmentDirectory) {
+        this.attachmentDirectory = attachmentDirectory;
     }
 
     public String getHttpServerName() {
