@@ -2,6 +2,7 @@ package za.co.xeon.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -44,7 +45,7 @@ public class Attachment implements Serializable {
     private String category;
 
     @Column(name = "created_date")
-    private LocalDate createdDate = LocalDate.now();
+    private ZonedDateTime createdDate = ZonedDateTime.now();
 
     @Column(name = "file_name")
     private String fileName;
