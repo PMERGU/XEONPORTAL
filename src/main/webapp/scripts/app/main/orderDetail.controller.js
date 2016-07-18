@@ -1,10 +1,20 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, Principal, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, attachments, Attachment) {
-        $log.debug('test attachements');
-        $log.debug(attachments);
-        $scope.attachments = attachments;
+    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal, PurchaseOrder, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, poAttachments, delAttachments, Attachment) {
+        $scope.attachments = [];
+        delAttachments.$promise.then(function(result){
+            for(var i=0; i < result.length; i++){
+                $scope.attachments.push(result[i]);
+            }
+        });
+        poAttachments.$promise.then(function(result){
+            for(var i=0; i < result.length; i++){
+                $scope.attachments.push(result[i]);
+            }
+        });
+
+        $log.debug($scope.attachments);
         $scope.isDownloadingAttachment = false;
         purchaseOrder = purchaseOrder !== undefined ? purchaseOrder : {
             state: 'NOT_FOUND'

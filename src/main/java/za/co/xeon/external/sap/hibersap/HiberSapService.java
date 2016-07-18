@@ -69,7 +69,6 @@ public class HiberSapService {
             CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(customerNumber, dateRange, null);
             session.execute(rfc);
 
-//            return convertEvResultToPO(rfc.getEvResult());
             return rfc.getEvResult();
         }catch(Exception e){
             log.error("Couldnt complete getCustomerOrdersByDate : + " + e.getMessage(), e);

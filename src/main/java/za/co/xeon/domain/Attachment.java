@@ -32,7 +32,6 @@ public class Attachment implements Serializable {
     @Column(name = "uuid", nullable = false)
     private String uuid = UUID.randomUUID().toString();
 
-    @NotNull
     @Column(name = "delivery_number", nullable = false)
     private String deliveryNumber;
 
@@ -63,6 +62,10 @@ public class Attachment implements Serializable {
     @Column(name = "visible")
     private boolean visible = true;
 
+    @ManyToOne
+    @JoinColumn(name = "purchase_order_id")
+    private PurchaseOrder purchaseOrder;
+
     public Attachment() {
     }
 
@@ -78,13 +81,21 @@ public class Attachment implements Serializable {
         this.visible = visible;
     }
 
+    public Attachment(PurchaseOrder purchaseOrder, String description, String category, User user, boolean visible) {
+        this.purchaseOrder = purchaseOrder;
+        this.description = description;
+        this.category = category;
+        this.user = user;
+        this.visible = visible;
+    }
+
     public Attachment(String deliveryNumber,
-            String description,
-            String category,
-            String fileName,
-            String mimeType,
-            User user,
-            boolean visible) {
+                      String description,
+                      String category,
+                      String fileName,
+                      String mimeType,
+                      User user,
+                      boolean visible) {
         this(deliveryNumber, description, category, user, visible);
         this.fileName = fileName;
         this.mimeType = mimeType;
@@ -168,6 +179,14 @@ public class Attachment implements Serializable {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public PurchaseOrder getPurchaseOrder() {
+        return purchaseOrder;
+    }
+
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+        this.purchaseOrder = purchaseOrder;
     }
 
     @Override

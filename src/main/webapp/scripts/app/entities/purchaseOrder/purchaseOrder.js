@@ -126,7 +126,7 @@ angular.module('portalApp')
                 },
                 params: {
                   for: null,
-                  company: null  
+                  company: null
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -139,7 +139,7 @@ angular.module('portalApp')
                                     name: null,
                                     houseNumber: null,
                                     streetName: null,
-                                    area: {},
+                                    area: null,
                                     reference: null,
                                     company: $stateParams.company,
                                     id: null

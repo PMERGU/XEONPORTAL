@@ -11,9 +11,7 @@ import java.time.ZonedDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 import za.co.xeon.domain.enumeration.*;
 
@@ -197,6 +195,10 @@ public class PurchaseOrder implements Serializable {
     @ManyToOne
     @JoinColumn(name = "captured_by")
     private User capturedBy;
+
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<Attachment> attachments = new ArrayList<>();
 
     public ZonedDateTime getUpdatedDate() {
         return updatedDate;
@@ -596,6 +598,14 @@ public class PurchaseOrder implements Serializable {
 
     public void setCapturedBy(User capturedBy) {
         this.capturedBy = capturedBy;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
     @Override

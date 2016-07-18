@@ -55,10 +55,7 @@ angular.module('portalApp')
                                     name: null,
                                     houseNumber: null,
                                     streetName: null,
-                                    district: null,
-                                    postalCode: null,
-                                    city: null,
-                                    country: null,
+                                    area: null,
                                     reference: null,
                                     id: null
                                 };

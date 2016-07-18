@@ -51,6 +51,12 @@
             </div>
             <jh-alert-error></jh-alert-error>
         </div>
+        <div class="m" ng-show="uploadingAttachments">
+            <div class="progress m-t-xs full progress-striped active animated">
+                <div style="width: 1%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" role="progressbar" class="progress-bar progress-bar-success animated" ng-style="loadingWidth">
+                </div>
+            </div>
+        </div>
     </div>
     <div class="hpanel">
         <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
@@ -95,12 +101,16 @@
 
                     <input ng-click="wizard.show(4)" style="width: 165px;margin: 0px 5px;" role="button"
                            ng-disabled="purchaseOrder.poLines.length === 0" class="btn"
-                           ng-class="{ 'btn-primary': step == 4, 'btn-default': step != 4}"
-                           value="Step 4 - Details"/>
+                           ng-class="{ 'btn-primary': step == 4, 'btn-default': step != 4}" value="Step 4 - Details"/>
 
-                    <input ng-click="wizard.show(5)" style="width: 165px;margin: 0px 5px;" type="button"
+                    <input ng-click="wizard.show(5)" style="width: 165px;margin: 0px 5px;" role="button"
+
+                           class="btn"
+                           ng-class="{ 'btn-primary': step == 5, 'btn-default': step != 5}" value="Step 5 - Attachments"/>
+
+                    <input ng-click="wizard.show(6)" style="width: 165px;margin: 0px 5px;" type="button"
                            ng-disabled="editForm.$invalid || purchaseOrder.poLines.length === 0" class="btn"
-                           ng-class="{ 'btn-primary': step == 5, 'btn-default': step != 5}" value="Step 5 - Confirmation"/>
+                           ng-class="{ 'btn-primary': step == 6, 'btn-default': step != 6}" value="Step 6 - Confirmation"/>
                 </div>
                 <fieldset ng-disabled="purchaseOrder.id && purchaseOrder.state === 'PROCESSED'">
                     <div ng-show="step == 1" class="p-m">
@@ -227,7 +237,7 @@
                                             <select class="form-control" id="field_pickUpParty" name="pickUpParty"
                                                     ng-required="requiredFields['pickUpParty']"
                                                     ng-model="purchaseOrder.pickUpParty.id"
-                                                    ng-options="party.id as (party.name + ' (' + party.area.city + ', ' + ('0000'+party.area.postalCode).slice(-4) + ')') for party in pickuppartys | orderBy:'name'">
+                                                    ng-options="party.id as party.name for party in pickuppartys | orderBy:'name'">
                                             </select>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
@@ -300,7 +310,7 @@
                                             <select class="form-control" id="field_shipToParty" name="shipToParty"
                                                     ng-required="requiredFields['shipToParty']"
                                                     ng-model="purchaseOrder.shipToParty.id"
-                                                    ng-options="party.id as (party.name + ' (' + party.area.city + ', ' + ('0000'+party.area.postalCode).slice(-4) + ')') for party in pickuppartys | orderBy:'name'">
+                                                    ng-options="party.id as party.name for party in pickuppartys | orderBy:'name'">
                                             </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default"
@@ -496,7 +506,7 @@
                                     <div class="input-group">
                                         <select class="form-control" id="field_soldToParty" name="soldToParty" ng-required="user.company.type === 'AGENT'"
                                                 ng-model="purchaseOrder.soldToParty.id"
-                                                ng-options="party.id as (party.name + ' (' + party.area.city + ', ' + ('0000'+party.area.postalCode).slice(-4) + ')') for party in pickuppartys | orderBy:'name'">
+                                                ng-options="party.id as party.name for party in pickuppartys | orderBy:'name'">
                                             <option value=""></option>
                                         </select>
                                             <span class="input-group-btn">
@@ -769,7 +779,111 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-show="step == 5 && !(purchaseOrder.id && purchaseOrder.state === 'PROCESSED')">
+                    <div ng-show="step == 5" class="p-m">
+                        <div class="modal-body" ng-show="!purchaseOrder.id">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h3>Please add all documentation related to this order</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="table-responsive m-t">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th width="60px">Id</th>
+                                            <th width="180px">Category</th>
+                                            <th>Description</th>
+                                            <th width="300px">Drop Box</th>
+                                            <th width="300px">Files Added</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="attachment in attachments">
+                                            <td>{{$index+1}}</td>
+                                            <td>
+                                                <select class="form-control" name="category" ng-model="attachment.category" id="field_category"
+                                                        ng-options="category as category for category in attachmentCategories track by category">
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <textarea class="form-control" rows="4" name="description" id="field_description" placeholder="Please type description for this attachment"
+                                                          ng-model="attachment.description"></textarea>
+                                            </td>
+                                            <td>
+                                                <div ngf-drop ngf-select ng-model="attachment.files" class="drop-box"
+                                                     ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+                                                     accept="image/*,application/pdf"
+                                                     ngf-pattern="'image/*,application/pdf'" style="height: 86px; padding-top:28px; margin: 2px 0px;">
+                                                    Drop pdfs or images here or click to upload
+                                                </div>
+                                                <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                                            </td>
+                                            <td>
+                                                <div class="alert alert-success" ng-show="attachment.files" style="height: 86px;overflow: auto;padding: 6px;">
+                                                    <ul>
+                                                        <li ng-repeat="f in attachment.files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class="btn-group flex-btn-group-container">
+                                                    <button type="button"
+                                                            ui-sref="orderdetail.attachmentDelete({attachment: attachment})"
+                                                            class="btn btn-danger">
+                                                        <span class="glyphicon glyphicon-remove-circle"></span>
+                                                        <span class="hidden-xs hidden-sm"></span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="7">
+                                                <button type="button" class="btn btn-primary pull-right" ng-click="addAttachment()">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body table-responsive" ng-show="purchaseOrder.id">
+                            <table class="table table-striped table-condensed table-hover table-centered" >
+                                <thead>
+                                <tr>
+                                    <th width="60px">Id</th>
+                                    <th width="200px">Category</th>
+                                    <th width="140px">Date Added</th>
+                                    <th width="160px">Uploaded by</th>
+                                    <th width="140px">Image Type</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="attachment in attachments | orderBy:'createdDate'">
+                                    <td>{{attachment.id}}</td>
+                                    <td>{{attachment.category}}</td>
+                                    <td>{{attachment.createdDate | date: 'yyyy-MM-dd HH:mm'}}</td>
+                                    <td>{{attachment.user.firstName + ' ' + attachment.user.lastName}}</td>
+                                    <td>{{attachment.mimeType}}</td>
+                                    <td>{{attachment.description}}</td>
+                                    <td>
+                                        <button type="button" ng-click="downloadAttachment(attachment)" ng-disabled="isDownloadingAttachment" class="btn btn-primary btn-lg" style="height: 33px;padding-top: 5px;width: 70px;">
+                                            <span class="glyphicon glyphicon-download" ng-show="selectedAttachment.id != attachment.id || !isDownloadingAttachment"></span>
+                                            <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="selectedAttachment.id == attachment.id && isDownloadingAttachment"></span>
+                                            <span class="hidden-xs hidden-sm"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-show="step == 6 && !(purchaseOrder.id && purchaseOrder.state === 'PROCESSED')">
                         <div class="row text-center m-t-lg m-b-lg">
                             <div class="col-lg-12">
                                 <i class="pe-7s-check fa-5x text-muted" ng-show="orderApproved" ng-class="{'tc-green-dark': orderApproved}"></i>
@@ -787,7 +901,7 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-show="step == 5 && (purchaseOrder.id && purchaseOrder.state === 'PROCESSED')">
+                    <div ng-show="step == 6 && (purchaseOrder.id && purchaseOrder.state === 'PROCESSED')">
                         <div class="row text-center m-t-lg m-b-lg">
                             <div class="col-lg-12">
                                 <p class="small m-t-md">
@@ -814,11 +928,11 @@
                 <div class="text-right m-t-xs">
                     <input ng-click="wizard.prev()" ng-disabled="step == 1" class="btn btn-default" type="button"
                            value="&nbsp;Previous&nbsp;"/>
-                    <input ng-click="wizard.next()" ng-disabled="step >= 4 && editForm.$invalid || isSaving || (purchaseOrder.poLines.length === 0 && step >= 3)"
-                           ng-hide="step == 5"
+                    <input ng-click="wizard.next()" ng-disabled="step >= 5 && editForm.$invalid || isSaving || (purchaseOrder.poLines.length === 0 && step >= 3)"
+                           ng-hide="step == 6"
                            class="btn btn-primary" type="button" value="&nbsp;Next&nbsp;"/>
                     <button ng-click="submit()"
-                            ng-show="step == 5 && !(purchaseOrder.id && purchaseOrder.state === 'PROCESSED')"
+                            ng-show="step == 6 && !(purchaseOrder.id && purchaseOrder.state === 'PROCESSED')"
                             class="btn btn-primary"
                             ng-disabled="editForm.$invalid || !orderApproved || isSaving">
                         <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Submit Order</span>

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
 import javax.servlet.annotation.MultipartConfig;
 
 import org.slf4j.Logger;
@@ -24,8 +25,10 @@ import com.codahale.metrics.annotation.Timed;
 
 import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.domain.Attachment;
+import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.dto.ReadAttachmentDto;
 import za.co.xeon.external.ocr.Converters;
+import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.service.AttachmentService;
 
 @RestController
@@ -36,7 +39,8 @@ public class AttachmentResource {
     private AttachmentService attachmentService;
     private MobileConfiguration mobileConf;
     private final Logger log = LoggerFactory.getLogger(AttachmentResource.class);
-
+    @Inject
+    private PurchaseOrderRepository purchaseOrderRepository;
     private File tmpDir;
 
     @Autowired
@@ -67,6 +71,36 @@ public class AttachmentResource {
                         file.getContentType(),
                         visible,
                         attachmentFile);
+            }
+        };
+    }
+
+    @RequestMapping(value = "/purchaseOrders/{id}/attachments", method = RequestMethod.POST)
+    @Timed
+    public Callable<Attachment> createAttachment(@PathVariable Long id,
+                                                 @RequestParam String description,
+                                                 @RequestParam String category,
+                                                 @RequestParam(defaultValue = "true") Boolean visible,
+                                                 @RequestParam("file") MultipartFile file) throws IOException {
+        log.debug("createAttachment[{},{},{},{},{}]", id, description, category, visible, file.getName());
+        log.debug("writing temp file to : {}", tmpDir.getAbsolutePath());
+        String originalFileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().indexOf("."));
+        String originalExtension = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".") + 1);
+        File attachmentFile = Converters.multipartToFile(tmpDir, originalFileName, originalExtension, file);
+        return new Callable<Attachment>() {
+            public Attachment call() throws Exception {
+                PurchaseOrder purchaseOrder = purchaseOrderRepository.findOne(id);
+                if(purchaseOrder != null) {
+                    return attachmentService.createAttachmentAgainstPO(purchaseOrder,
+                        description,
+                        category,
+                        file.getContentType(),
+                        visible,
+                        attachmentFile);
+                }else{
+                    log.error("PO {} not found in db, please double check", id);
+                    return null;
+                }
             }
         };
     }

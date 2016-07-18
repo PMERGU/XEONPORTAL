@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import za.co.xeon.domain.Attachment;
+import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.domain.dto.ReadAttachmentDto;
 import za.co.xeon.exception.NoAttachmentoundException;
@@ -45,30 +46,59 @@ public class AttachmentService {
 
     @Transactional
     public Attachment createAttachment(String deliveryNumber,
-            String description,
-            String category,
-            String contentType,
-            Boolean visible,
-            File attachmentFile) {
+                                       String description,
+                                       String category,
+                                       String contentType,
+                                       Boolean visible,
+                                       File attachmentFile) {
         User user = userRepository
-                .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
-                .orElse(new User());
+            .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
+            .orElse(new User());
         Attachment attachment = new Attachment(
-                deliveryNumber,
-                description,
-                category,
-                user,
-                visible);
+            deliveryNumber,
+            description,
+            category,
+            user,
+            visible);
         log.debug("Creating attachment: [{}]", attachment);
 
         s3Service.uploadFile(s3Settings.getAttachmentPath(attachmentFile.getName()),
-                attachmentFile,
-                format("api/attachments/%s", attachment.getUuid()));
+            attachmentFile,
+            format("api/attachments/%s", attachment.getUuid()));
         attachment.setFileName(s3Settings.getAttachmentPath(attachmentFile.getName()));
         attachment.setMimeType(contentType);
 
         return attachmentRepository.save(attachment);
     }
+
+    @Transactional
+    public Attachment createAttachmentAgainstPO(PurchaseOrder po,
+                                       String description,
+                                       String category,
+                                       String contentType,
+                                       Boolean visible,
+                                       File attachmentFile) {
+        User user = userRepository
+            .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
+            .orElse(new User());
+        Attachment attachment = new Attachment(
+            po,
+            description,
+            category,
+            user,
+            visible);
+        log.debug("Creating attachment: [{}]", attachment);
+
+        s3Service.uploadFile(s3Settings.getAttachmentPath(attachmentFile.getName()),
+            attachmentFile,
+            format("api/attachments/%s", attachment.getUuid()));
+        attachment.setFileName(s3Settings.getAttachmentPath(attachmentFile.getName()));
+        attachment.setMimeType(contentType);
+
+        return attachmentRepository.save(attachment);
+    }
+
+
 
     public ReadAttachmentDto readAttachment(final String uuid, final Boolean activated) {
         log.debug("Reading attachment with UUID: [{}]", uuid);

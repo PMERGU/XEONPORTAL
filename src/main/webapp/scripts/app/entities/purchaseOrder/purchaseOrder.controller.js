@@ -1,19 +1,23 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    ['$rootScope', '$scope', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal', 'Company', 'currentUser',
-        function ($rootScope, $scope, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal, Company, currentUser) {
+    ['$rootScope', '$scope', '$interval', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal', 'Company', 'currentUser', 'Attachment', 'UploadTools', 'sweet', 'FileSaver',
+        function ($rootScope, $scope, $interval, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal, Company, currentUser, Attachment, UploadTools, sweet, FileSaver) {
             $scope.user = currentUser;
             $scope.isXeon = currentUser.company.type === "XEON";
+
+            $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
+            $scope.pickuppartys = Party.query({filter: 'purchaseorder-is-null'});
+            $scope.attachmentCategories = Attachment.queryCategories();
 
             function resetPo(){
                 $log.debug("clearing po");
                 $scope.purchaseOrder = {
                     state: "UNPROCESSED",
-                    poNumber: "",
-                    accountReference: "",
-                    reference: "",
-                    collective: "",
+                    poNumber: '',
+                    accountReference: '',
+                    reference: '',
+                    collective: '',
                     serviceType: "COURIER",
                     serviceLevel: "ECONOMY",
                     customerType: "REGULAR",
@@ -25,7 +29,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     pickUpParty:  null,
                     pickUpType: "STANDARD",
                     collectionDate: new Date(),
-                    collectionReference: "",
+                    collectionReference: '',
                     shipToParty: null,
                     shipToType: "HOME_DROPBOX",
                     dropOffDate: new Date(),
@@ -40,6 +44,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     capturedBy: null
                 };
                 $scope.purchaseOrder.poLines.length = 0;
+                $scope.attachments = [];
             }
 
             if(entity === undefined){
@@ -57,7 +62,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         return $scope.capturedAs.company
                     }, function (company) {
                         $scope.capturedAs.employee = null;
-                        if(company != null && company != undefined) {
+                        if(company !== null && company !== undefined) {
                             $log.debug(company);
                             $log.debug("Selected company id : " + company.id);
                             $scope.employees = Company.getUsers({id: company.id});
@@ -66,7 +71,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
                     //Tied to the above code, refreshed the screen once employee is set
                     $scope.$watch(function() {
-                        return $scope.capturedAs.employee
+                        return $scope.capturedAs.employee;
                     }, function (employee) {
                         $scope.clearPO();
                         $scope.purchaseOrder.user = employee;
@@ -75,13 +80,14 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
             }else{
                 $scope.purchaseOrder = entity;
-                $.each($scope.purchaseOrder.poLines, function(idx, po){
+                $.each($scope.purchaseOrder.poLines, function(idx){
                     $scope.purchaseOrder.poLines[idx].rowId = idx+1;
                 });
-            }
+                $scope.purchaseOrder.$promise.then(function(result){
+                    $scope.attachments = PurchaseOrder.getAttachments({id: result.id});
+                });
 
-            $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
-            $scope.pickuppartys = Party.query({filter: 'purchaseorder-is-null'});
+            }
 
             // $scope.load = function (id) {
             //     PurchaseOrder.get({id: id}, function (result) {
@@ -107,7 +113,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 var date = data.date,
                     mode = data.mode;
                 return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-            }
+            };
 
             $scope.deletePoLine = function(rowId){
                 $scope.purchaseOrder.poLines.splice(rowId-1, 1);
@@ -115,19 +121,19 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     $scope.purchaseOrder.poLines[idx].rowId = idx+1;
                 });
                 calculateTotals($scope.purchaseOrder.poLines);
-            }
+            };
 
             $scope.$watch('purchaseOrder.serviceLevel', serviceLevelWatch);
             function serviceLevelWatch(value){
                 $log.debug("watch serviceLevel triggered with value : " + value);
                 switch (value){
-                    case "ECONOMY":
-                    case "EXPRESS_AM":
-                    case "EXPRESS_PM":
+                    case 'ECONOMY':
+                    case 'EXPRESS_AM':
+                    case 'EXPRESS_PM':
                         hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
                         break;
-                    case "DEDICATED_EXPRESS":
-                    case "DEDICATED_ECONOMY":
+                    case 'DEDICATED_EXPRESS':
+                    case 'DEDICATED_ECONOMY':
                         hideOrShow([
                             {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'FOUR_TON')},
                             {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
@@ -344,6 +350,38 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $scope.isSaving = false;
             };
 
+            function showProgress(percentage){
+                $log.debug("Percentage : " + percentage);
+                if(percentage === 100) {
+                    sweet.show({
+                        timer: 4000,
+                        title: 'PO created and attachments uploaded',
+                        text: ''
+                        + '<div class="m" ng-show="uploadingAttachments">'
+                        + '    <div class="progress m-t-xs full progress-striped active animated">'
+                        + '        <div style="width: ' + percentage + '%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" role="progressbar" class="progress-bar progress-bar-success animated">'
+                        + '        </div>'
+                        + '    </div>'
+                        + '</div>',
+                        html: true
+                    });
+                }else{
+                    sweet.show({
+                        timer: 20000,
+                        title: 'Busy uploading attachments',
+                        text: ''
+                        + '<div class="m" ng-show="uploadingAttachments">'
+                        + '    <div class="progress m-t-xs full progress-striped active animated">'
+                        + '        <div style="width: ' + percentage + '%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" role="progressbar" class="progress-bar progress-bar-success animated">'
+                        + '        </div>'
+                        + '    </div>'
+                        + '</div>',
+                        html: true,
+                        showConfirmButton: false
+                    });
+                }
+            }
+
             $scope.save = function () {
                 $log.debug("Saving po to backend");
                 $scope.isSaving = true;
@@ -352,8 +390,61 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 if ($scope.purchaseOrder.id != null) {
                     PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 } else {
-                    PurchaseOrder.save($scope.purchaseOrder, onSaveSuccess, onSaveError);
+                    PurchaseOrder.save($scope.purchaseOrder,
+                        function(result) {
+                            $log.debug("Result of saving : ");
+                            $log.debug(result);
+                            $log.debug("Now gonna try and save the attachments");
+                            $scope.uploadingAttachments = true;
+                            var completed = 0;
+                            var attachments = $scope.attachments;
+                            $log.debug(attachments);
+                            if (attachments && attachments.length) {
+                                for (var i = 0; i < attachments.length; i++) {
+                                    attachments[i].purchaseOrder = {
+                                        id: result.id
+                                    };
+                                    $log.debug(attachments[i]);
+                                    UploadTools.upload(attachments[i],
+                                        function (success) {
+                                            completed++;
+                                            showProgress(completed*(100/attachments.length));
+                                            if(completed === attachments.length){
+                                                $scope.uploadingAttachments = false;
+                                                showProgress(100);
+                                                onSaveSuccess(result);
+                                            }
+                                        },
+                                        function (err) {
+                                            $log.error(err);
+                                            $scope.uploadingAttachments = false;
+                                        },
+                                        function (progress) {
+                                            $log.debug(progress);
+                                            showProgress(completed*(100/attachments.length) + progress.percentage/attachments.length/2);
+                                        }
+                                    );
+                                }
+                            }
+                        },
+                        onSaveError
+                    );
                 }
+            };
+
+            $scope.downloadAttachment = function(attachment){
+                $scope.isDownloadingAttachment = true;
+                $scope.selectedAttachment = attachment;
+                $log.debug("downloadAttachment(" + attachment.uuid + " )");
+                Attachment.get({uuid: attachment.uuid}).$promise.then(function(imageBlob){
+                    $log.debug(imageBlob.response.type);
+                    FileSaver.saveAs(imageBlob.response, attachment.category + "-" + attachment.id);
+                    $scope.isDownloadingAttachment = false;
+                },function(err){
+                    $scope.isDownloadingAttachment = false;
+                    $log.error("Count not download attachment");
+                    $log.error(err);
+                });
             };
 
             $scope.clear = function () {
@@ -460,6 +551,14 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         break;
                 }
             });
+
+            $scope.addAttachment = function(){
+                $log.debug("addAttachment()");
+                $scope.attachments.push({
+                    category: $scope.attachmentCategories[0],
+                    description: null
+                })
+            };
 
             function calculateTotals(lines){
                 $scope.totalWeight = 0;

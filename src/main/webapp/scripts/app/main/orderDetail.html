@@ -164,10 +164,10 @@
                                     <thead>
                                     <tr>
                                         <th width="60px">Id</th>
-                                        <th width="140px">Category</th>
+                                        <th width="180px">Category</th>
                                         <th width="140px">Date Added</th>
                                         <th width="160px">Uploaded by</th>
-                                        <th width="100px">Image Type</th>
+                                        <th width="120px">Image Type</th>
                                         <th>Note</th>
                                         <th width="160px">
                                             <button type="submit" class="btn btn-primary" style="width: 150px;" ui-sref="orderdetail.attachment({for: orderGroup[0].dbeln})">
@@ -178,10 +178,10 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="attachment in attachments | orderBy:createdDate">
+                                    <tr ng-repeat="attachment in attachments | orderBy:'createdDate'">
                                         <td>{{attachment.id}}</td>
                                         <td>{{attachment.category}}</td>
-                                        <td>{{attachment.createdDate | date: 'yyyy-MM-dd'}}</td>
+                                        <td>{{attachment.createdDate | date: 'yyyy-MM-dd HH:mm'}}</td>
                                         <td>{{attachment.user.firstName + ' ' + attachment.user.lastName}}</td>
                                         <td>{{attachment.mimeType}}</td>
                                         <td>{{attachment.description}}</td>

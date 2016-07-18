@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label class="control-label" for="field_category">Category</label>
                     <select class="form-control" name="category" ng-model="attachment.category" id="field_category"
-                            ng-options="category as category.nameSimple for category in categories track by category.nameSimple">
+                            ng-options="category as category for category in attachmentCategories track by category">
                     </select>
                 </div>
             </div>
@@ -42,10 +42,10 @@
                 </div>
                 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
                 <div class="alert alert-success" ng-show="attachment.files">
-                Files added so far for uploading to server:
-                <ul>
-                    <li ng-repeat="f in attachment.files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
-                </ul>
+                    Files added so far for uploading to server:
+                    <ul>
+                        <li ng-repeat="f in attachment.files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+                    </ul>
                 </div>
             </div>
         </div>

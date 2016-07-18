@@ -42,7 +42,8 @@ angular.module('portalApp')
                 params: {
                     order: null,
                     orderStep: null,
-                    company: null
+                    company: null,
+                    purchaseOrder: null
                 },
                 resolve: {
                     purchaseOrder: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
@@ -60,8 +61,11 @@ angular.module('portalApp')
                     orderGroup: ['$stateParams', 'PurchaseOrder', 'CachedOrders', function ($stateParams, PurchaseOrder, CachedOrders) {
                         return CachedOrders.getOrderGroup($stateParams.orderStep, $stateParams.company.sapId, $stateParams.order.dbeln);
                     }],
-                    attachments: ['$stateParams', 'Attachment', function ($stateParams, Attachment) {
+                    delAttachments: ['$stateParams', 'Attachment', '$q', 'PurchaseOrder', function ($stateParams, Attachment, $q, PurchaseOrder) {
                         return Attachment.query({deliveryNumber: $stateParams.order.dbeln});
+                    }],
+                    poAttachments: ['$stateParams', 'Attachment', '$q', 'PurchaseOrder', function ($stateParams, Attachment, $q, PurchaseOrder) {
+                        return PurchaseOrder.getAttachments({id: $stateParams.purchaseOrder.id});
                     }]
                 }
             })

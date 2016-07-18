@@ -29,7 +29,6 @@ module.exports = function (config) {
             'main/webapp/bower_components/metisMenu/dist/metisMenu.js',
             'main/webapp/bower_components/jquery-ui/jquery-ui.js',
             'main/webapp/bower_components/iCheck/icheck.min.js',
-            'main/webapp/bower_components/sweetalert/dist/sweetalert.min.js',
             'main/webapp/bower_components/angular-notify/dist/angular-notify.js',
             'main/webapp/bower_components/angular-animate/angular-animate.js',
             'main/webapp/bower_components/angular-ui-sortable/sortable.js',
@@ -61,6 +60,9 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-ui-select/dist/select.js',
             'main/webapp/bower_components/angular-cache/dist/angular-cache.js',
             'main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
+            'main/webapp/bower_components/sweetalert/dist/sweetalert.min.js',
+            'main/webapp/bower_components/angular-sweetalert/dist/ngSweetAlert.js',
+            'main/webapp/bower_components/angular-sweetalert/dist/ngSweetAlert.min.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
