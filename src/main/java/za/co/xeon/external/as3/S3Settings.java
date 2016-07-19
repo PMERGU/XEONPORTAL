@@ -19,10 +19,6 @@ public class S3Settings {
     public S3Settings() {
     }
 
-    public String getPodPath(String barcode, String extension){
-        return getFolderPod() + "/" + barcode + "." + extension;
-    }
-
     public String getAttachmentPath(String name){
         return getFolderAttachment() + "/" + name;
     }

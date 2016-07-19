@@ -78,15 +78,10 @@ public class S3Service {
         }
     }
 
-    public String uploadFile(String fileName, File file) {
-        return uploadFile(fileName, file, "api/mobile/pods/" + fileName);
-    }
-
-    public String uploadFile(String fileName, File file, String readUrl) {
+    public void uploadFile(String fileName, File file) {
         try {
             log.debug("Uploading a new object to S3 from a file\n");
             s3client.putObject(new PutObjectRequest(s3Settings.getBucketName(), fileName, file));
-            return mobileConfiguration.getHttpServerName() + readUrl;
         } catch (AmazonServiceException ase) {
             log.error("Caught an AmazonServiceException, which " +
                     "means your request made it " +

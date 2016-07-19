@@ -26,12 +26,7 @@
                 <div class="form-group">
                     <label class="control-label" for="field_materialType">Material Type</label>
                     <select class="form-control" name="materialType" ng-model="poLine.materialType" ng-required="requiredFields['materialType']"
-                            id="field_materialType">
-                        <option value="EACH">ITEM</option>
-                        <option value="BOX">BOX</option>
-                        <option value="CRATE">CRATE</option>
-                        <option value="PACKAGE">PACKAGE</option>
-                        <option value="PALLET">PALLET</option>
+                            id="field_materialType" ng-options="material as material for material in static.materials track by material">
                     </select>
                     <div ng-show="editForm.materialType.$invalid">
                         <p class="help-block small-help-block pull-right"

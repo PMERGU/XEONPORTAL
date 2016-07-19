@@ -3,7 +3,10 @@ package za.co.xeon.service;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.hibersap.bapi.BapiRet2;
 import org.springframework.scheduling.annotation.AsyncResult;
+import za.co.xeon.config.MobileConfiguration;
+import za.co.xeon.domain.Attachment;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
+import za.co.xeon.domain.enumeration.AttachmentCategories;
 import za.co.xeon.external.as3.S3Service;
 import za.co.xeon.external.as3.S3Settings;
 import za.co.xeon.external.ocr.OcrService;
@@ -16,6 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.*;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
+import za.co.xeon.web.rest.AttachmentResource;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
@@ -27,6 +31,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
+
+import static java.lang.String.format;
 
 /**
  * Created by derick on 2016/02/07.
@@ -50,8 +56,14 @@ public class MobileService {
     @Autowired
     private HiberSapService hiberSapService;
 
+    @Autowired
+    private AttachmentService attachmentService;
+
+    @Autowired
+    private MobileConfiguration mobileConfiguration;
+
     @Async
-    public void submitPOD(String barcode, File podFile, String extension){
+    public void submitPOD(String barcode, File podFile, String contentType, String originalExtension){
         //first long running task - Submit document for processing
         Task task = ocrService.scanDocument(podFile.getPath()).getTask();
 
@@ -82,9 +94,9 @@ public class MobileService {
                 }
 
                 //fourth long running task - upload POD to amazon S3
-
-                String url = s3Service.uploadFile(s3Settings.getPodPath(barcode, extension), podFile);
-                log.debug("\t[" + barcode + "] - Submitted pod to S3 successfully : " + s3Settings.getPodPath(barcode, extension) + ". Now updating SAP with URL [" + url + "]");
+                Attachment podAttachment = attachmentService.createAttachment(barcode, "POD scanned via mobile scanner", AttachmentCategories.INVOICE.toString(), contentType, true, podFile);
+                String url =  mobileConfiguration.getHttpServerName() + format("api/attachments/%s", podAttachment.getUuid());
+                log.debug("\t[" + barcode + "] - Submitted pod to S3 successfully : " + podAttachment.getFileName() + ". Now updating SAP with URL [" + url + "]");
 
                 try {
                     hiberSapService.updatePod(barcode, url);
@@ -95,9 +107,9 @@ public class MobileService {
                 }
             }else{
                 log.error("Invalid barcode match received. Called with [barcode:" + barcode + "] and ocr'ed [barcode:" + ocrBarcode + "]. Storing to S3 a mismached POD...");
-                String s3Path = s3Settings.getFolderPod() + "/mismatched/" + ocrBarcode + "-vs-" + barcode + "." + extension;
-                String url = s3Service.uploadFile(s3Path, podFile);
-                log.error("\tSubmitted mismatched pod [barcode:" + ocrBarcode + " to S3 successfully : " + url);
+                String s3Path = s3Settings.getFolderPod() + "/mismatched/" + ocrBarcode + "-vs-" + barcode + "." + originalExtension;
+                s3Service.uploadFile(s3Path, podFile);
+                log.error("\tSubmitted mismatched pod [barcode:" + ocrBarcode + " to S3 successfully : ");
             }
         } catch (Exception e) {
             e.printStackTrace();

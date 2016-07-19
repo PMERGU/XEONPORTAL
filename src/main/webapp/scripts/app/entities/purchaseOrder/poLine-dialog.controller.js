@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('portalApp').controller('PoLineDialogController',
-    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PoLine', 'PurchaseOrder', '$timeout', '$log',
-        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, PoLine, PurchaseOrder, $timeout, $log) {
+    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PoLine', 'PurchaseOrder', '$timeout', '$log', 'StaticServices',
+        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, PoLine, PurchaseOrder, $timeout, $log, StaticServices) {
+            $scope.static = {
+                materials: StaticServices.materials()
+            }
         $scope.serviceType = $stateParams.serviceType;
         $scope.requiredFields = {};
         $scope.poLine = entity;

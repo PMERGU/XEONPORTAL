@@ -54,6 +54,7 @@ public class AttachmentService {
         User user = userRepository
             .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
             .orElse(new User());
+        deliveryNumber = org.apache.commons.lang.StringUtils.leftPad(deliveryNumber, 10, "0");
         Attachment attachment = new Attachment(
             deliveryNumber,
             description,
@@ -62,9 +63,7 @@ public class AttachmentService {
             visible);
         log.debug("Creating attachment: [{}]", attachment);
 
-        s3Service.uploadFile(s3Settings.getAttachmentPath(attachmentFile.getName()),
-            attachmentFile,
-            format("api/attachments/%s", attachment.getUuid()));
+        s3Service.uploadFile(s3Settings.getAttachmentPath(attachmentFile.getName()),attachmentFile);
         attachment.setFileName(s3Settings.getAttachmentPath(attachmentFile.getName()));
         attachment.setMimeType(contentType);
 
@@ -89,9 +88,7 @@ public class AttachmentService {
             visible);
         log.debug("Creating attachment: [{}]", attachment);
 
-        s3Service.uploadFile(s3Settings.getAttachmentPath(attachmentFile.getName()),
-            attachmentFile,
-            format("api/attachments/%s", attachment.getUuid()));
+        s3Service.uploadFile(s3Settings.getAttachmentPath(attachmentFile.getName()),attachmentFile);
         attachment.setFileName(s3Settings.getAttachmentPath(attachmentFile.getName()));
         attachment.setMimeType(contentType);
 

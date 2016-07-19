@@ -103,13 +103,11 @@ public class MobileResource {
         log.debug("Service : [POST} /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
         String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));;
         String originalExtension = podDocument.getOriginalFilename().substring(podDocument.getOriginalFilename().indexOf(".")+1);
-        log.debug(originalFileName + "." + originalExtension);
 
         File podFile = Converters.multipartToFile(tmpDir, originalFileName, originalExtension, podDocument);
-        log.debug("\t[" + originalFileName + "] - received file and saved to tmp folder : " + tmpDir.getAbsolutePath());
 
         //create callable to continue long running process in different thread
-        mobileService.submitPOD(barcode, podFile, originalExtension);
+        mobileService.submitPOD(barcode, podFile, podDocument.getContentType(), originalExtension);
         return "\t[" + podFile.getName() + "] - document submitted for processing";
     }
 
