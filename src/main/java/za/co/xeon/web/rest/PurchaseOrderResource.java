@@ -1,9 +1,11 @@
 package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import za.co.xeon.domain.*;
+import za.co.xeon.domain.Company;
+import za.co.xeon.domain.PoLine;
+import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
 import za.co.xeon.domain.enumeration.PoState;
-import za.co.xeon.repository.AttachmentRepository;
 import za.co.xeon.repository.PoLineRepository;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
@@ -52,9 +54,6 @@ public class PurchaseOrderResource {
 
     @Inject
     private UserRepository userRepository;
-
-    @Inject
-    private AttachmentRepository attachmentRepository;
 
     @Inject
     private PoLineRepository poLineRepository;
@@ -323,14 +322,13 @@ public class PurchaseOrderResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Attachment>> getAllPoAttachments(@PathVariable Long id, Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<PoLine>> getAllPoAttachments(@PathVariable Long id, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of attachments");
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        Page<Attachment> page = attachmentRepository.findByPurchaseOrder(purchaseOrder, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/attachments");
+        Page<PoLine> page = poLineRepository.findByPurchaseOrder(purchaseOrder, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/poLines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
     /**
      * GET  /purchaseOrders/:id -> get the "id" purchaseOrder.
      */
@@ -382,6 +380,4 @@ public class PurchaseOrderResource {
         purchaseOrderService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("purchaseOrder", id.toString())).build();
     }
-
-
 }

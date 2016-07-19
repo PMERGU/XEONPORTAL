@@ -69,8 +69,8 @@
                                     <td>{{ purchaseOrders[order.bstkd].user.firstName + ' ' + purchaseOrders[order.bstkd].user.lastName }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.name + ' (' + purchaseOrders[order.bstkd].pickUpParty.city + ')' }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].shipToParty.name + ' (' + purchaseOrders[order.bstkd].shipToParty.city + ')' }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
                                     <td>{{ order.vbeln }}</td>
                                     <td>{{ order.dbeln }}</td>
                                     <td>{{ order.skunnr }}</td>

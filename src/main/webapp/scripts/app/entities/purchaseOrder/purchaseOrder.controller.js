@@ -6,8 +6,8 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.user = currentUser;
             $scope.isXeon = currentUser.company.type === "XEON";
 
-            $scope.shiptopartys = Party.query({filter: 'purchaseorder-is-null'});
-            $scope.pickuppartys = Party.query({filter: 'purchaseorder-is-null'});
+            $scope.shiptopartys = Party.query({size: 500});
+            $scope.pickuppartys = Party.query({size: 500});
             $scope.attachmentCategories = Attachment.queryCategories();
 
             function resetPo(){

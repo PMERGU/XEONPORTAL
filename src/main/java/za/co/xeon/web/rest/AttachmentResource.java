@@ -62,7 +62,7 @@ public class AttachmentResource {
         log.debug("writing temp file to : {}", tmpDir.getAbsolutePath());
         String originalFileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().indexOf("."));
         String originalExtension = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".") + 1);
-        File attachmentFile = Converters.multipartToFile(tmpDir, originalFileName, originalExtension, file);
+        File attachmentFile = Converters.multipartToFile(tmpDir, "Attachment-" + originalFileName, originalExtension, file);
         return new Callable<Attachment>() {
             public Attachment call() throws Exception {
                 return attachmentService.createAttachment(deliveryNumber,

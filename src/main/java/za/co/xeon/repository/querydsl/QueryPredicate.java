@@ -9,18 +9,24 @@ import za.co.xeon.domain.PostalArea;
 /**
  * Created by Derick on 7/9/2016.
  */
-public class PostalAreaPredicate {
+public class QueryPredicate {
     private SearchCriteria criteria;
+    private final Class type;
+    private final String variable;
 
-    public PostalAreaPredicate() {
+    public QueryPredicate(Class type, String variable) {
+        this.type = type;
+        this.variable = variable;
     }
 
-    public PostalAreaPredicate(SearchCriteria criteria) {
+    public QueryPredicate(SearchCriteria criteria, Class type, String variable) {
         this.criteria = criteria;
+        this.type = type;
+        this.variable = variable;
     }
 
     public BooleanExpression getPredicate() {
-        PathBuilder<PostalArea> entityPath = new PathBuilder<PostalArea>(PostalArea.class, "postalArea");
+        PathBuilder<PostalArea> entityPath = new PathBuilder<PostalArea>(type, variable);
 
         if (isNumeric(criteria.getValue().toString())) {
             NumberPath<Integer> path = entityPath.getNumber(criteria.getKey(), Integer.class);
@@ -39,6 +45,9 @@ public class PostalAreaPredicate {
             StringPath path = entityPath.getString(criteria.getKey());
             if (criteria.getOperation().equalsIgnoreCase(":")) {
                 return path.containsIgnoreCase(criteria.getValue().toString());
+            }
+            else if (criteria.getOperation().equalsIgnoreCase("=")) {
+                return path.eq(criteria.getValue().toString());
             }
         }
         return null;

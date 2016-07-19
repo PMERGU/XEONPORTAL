@@ -13,12 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.domain.PostalArea;
-import za.co.xeon.domain.User;
 import za.co.xeon.repository.PostalAreaRepository;
 import za.co.xeon.repository.UserRepository;
-import za.co.xeon.repository.querydsl.PostalAreaPredicatesBuilder;
+import za.co.xeon.repository.querydsl.PredicatesBuilder;
 import za.co.xeon.security.AuthoritiesConstants;
-import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 
@@ -92,17 +90,12 @@ public class PostalAreaResource {
     @Timed
     public ResponseEntity<List<PostalArea>> getAllAreas(@RequestParam(value = "search", defaultValue = "") String search, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get all Areas - [search] : " + search);
-        PostalAreaPredicatesBuilder builder = new PostalAreaPredicatesBuilder();
+        PredicatesBuilder builder = new PredicatesBuilder(PostalArea.class, "postalArea");
         Page<PostalArea> page = null;
         HttpHeaders headers = null;
 
         if(search != null){
-            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-            Matcher matcher = pattern.matcher(search + ",");
-            while (matcher.find()) {
-                builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
-            }
-            BooleanExpression exp = builder.build();
+            BooleanExpression exp = builder.search(search).build();
             page = areaRepository.findAll(exp, pageable);
             headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/areas");
         }else {

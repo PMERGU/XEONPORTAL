@@ -141,7 +141,7 @@ public class HiberSapService {
             if(log.isDebugEnabled()) {
                 for (ImHuupdate tmp : imHuitems) {
                     log.debug(String.format("[%s] - imHuupdate.getExidv(): %s, imHuupdate.getExtIdHu2(): %s", barcode, tmp.getExidv(), tmp.getExtIdHu2()));
-                };
+                }
             }
             ReceivedHandlingUnitsRFC rfc = new ReceivedHandlingUnitsRFC(imHuitems);
             session.execute(rfc);

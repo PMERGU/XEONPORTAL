@@ -128,8 +128,8 @@
                                         <tr ng-repeat="order in undeliveredOrders | unique: 'dbeln'">
                                             <td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td>
                                             <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
-                                            <td>{{ purchaseOrders[order.bstkd].pickUpParty.name + ' (' + purchaseOrders[order.bstkd].pickUpParty.city + ')' }}</td>
-                                            <td>{{ purchaseOrders[order.bstkd].shipToParty.name + ' (' + purchaseOrders[order.bstkd].shipToParty.city + ')' }}</td>
+                                            <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
+                                            <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
                                             <td>{{ order.vbeln }}</td>
                                             <td>{{ order.dbeln }}</td>
                                             <td>{{ order.skunnr }}</td>

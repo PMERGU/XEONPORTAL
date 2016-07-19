@@ -1,5 +1,6 @@
 package za.co.xeon.service;
 
+import com.mysema.query.types.Predicate;
 import org.springframework.security.access.annotation.Secured;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;

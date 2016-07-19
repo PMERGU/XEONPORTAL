@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('PurchaseOrdersController', function ($scope, $state, $stateParams, PurchaseOrder, ParseLinks) {
+    .controller('PurchaseOrdersController', function ($scope, $log, $state, $stateParams, PurchaseOrder, ParseLinks) {
 
         $scope.purchaseOrders = [];
         $scope.predicate = 'id';
@@ -28,8 +28,14 @@ angular.module('portalApp')
         };
         $scope.loadAll();
 
+        $scope.findByPo = function(poNumber){
+            $log.debug("test3");
+            $scope.purchaseOrders = [];
+            $scope.purchaseOrders.push(PurchaseOrder.getByPONumber({poNumber: poNumber}));
+        }
 
         $scope.refresh = function () {
+            $scope.poFilter = null;
             $scope.loadAll();
             $scope.clear();
         };

@@ -16,11 +16,23 @@
     <div class="hpanel">
         <div class="panel-heading hbuilt">
             <div class="row">
-                <div class="col-md-8 col-sm-7 col-xs-6">
+                <div class="col-md-4 col-sm-5 col-xs-5">
+                    <div class="input-group">
+                        <input ng-model="poFilter" type="text" class="form-control" placeholder="Search by purchase order number...">
+                            <span class="input-group-btn">
+                                <div class="btn btn-s btn-default" ng-click="findByPo(poFilter)">
+                                    <span class="fa fa-search"></span>
+                                </div>
+                                <div class="btn btn-s btn-warning" ng-click="refresh()" ng-show="poFilter">
+                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                </div>
+                            </span>
+                    </div>
                 </div>
+                <div class="col-md-4 col-sm-2 col-xs-1"></div>
                 <div class="col-md-4 col-sm-5 col-xs-6">
                     <div class="input-group">
-                        <input ng-model="poFilter" type="text" class="form-control input-s" placeholder="Filter purchase order list...">
+                        <input ng-model="pageFilter" type="text" class="form-control" placeholder="Filter page...">
                             <span class="input-group-btn">
                                 <div class="btn btn-s btn-default" >
                                     <span class="fa fa-search"></span>
@@ -55,7 +67,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="purchaseOrder in (purchaseOrders | filter:poFilter) track by purchaseOrder.id">
+                    <tr ng-repeat="purchaseOrder in (purchaseOrders | filter:pageFilter) track by purchaseOrder.id">
                         <td>
                             <a has-authority="ROLE_USER" ui-sref="purchaseOrder.detail({id:purchaseOrder.id})">{{purchaseOrder.id}}</a>
                             <a has-authority="ROLE_CUSTOMER" ui-sref="purchaseOrder.new({id:purchaseOrder.id})">{{purchaseOrder.id}}</a>
