@@ -122,7 +122,7 @@ public class MobileService {
 
     @Async
     public Future<List<EvResult>> getCustomerOrders(String customerNumber, Date from, Date to) throws Exception{
-        return new AsyncResult<List<EvResult>>(hiberSapService.getCustomerOrdersByDate(customerNumber, from, to));
+        return new AsyncResult<List<EvResult>>(hiberSapService.getCustomerOrdersByDate(customerNumber, from, to, true));
     }
 
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception{

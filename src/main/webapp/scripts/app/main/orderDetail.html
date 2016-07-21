@@ -213,10 +213,13 @@
                         </uib-tab>
                         <uib-tab>
                             <uib-tab-heading>
-                                Comments
+                                <span class="badge badge-warning" style="margin-right: 10px">!</span>Comments
                             </uib-tab-heading>
+                            <uib-alert type="warn" close="closeAlert($index)" ng-show="purchaseOrder.specialInstruction">
+                                <strong>Customer Instruction: </strong>{{ purchaseOrder.specialInstruction }}
+                            </uib-alert>
                             <uib-alert type="info" close="closeAlert($index)" ng-show="purchaseOrder.comment">
-                                <strong>Comment: </strong>{{ purchaseOrder.comment }}
+                                <strong>Comment from CSU: &nbsp&nbsp&nbsp</strong>{{ purchaseOrder.comment }}
                             </uib-alert>
                             <div class="alert alert-success" ng-show="!purchaseOrder.comment">
                                 <i class="fa fa-hashtag"></i> &nbsp; no comments have been added to this order as yet.

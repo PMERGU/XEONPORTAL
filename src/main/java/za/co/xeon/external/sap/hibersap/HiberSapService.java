@@ -1,6 +1,7 @@
 package za.co.xeon.external.sap.hibersap;
 
 import org.hibersap.bapi.BapiRet2;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.thymeleaf.util.MapUtils;
 import za.co.xeon.domain.PurchaseOrder;
@@ -59,8 +60,8 @@ public class HiberSapService {
         sessionManager = configuration.buildSessionManager();
     }
 
-    @Cacheable(value = "CustomerOrdersByDate")
-    public List<EvResult> getCustomerOrdersByDate(String customerNumber, Date from, Date to) throws ParseException {
+//    @Cacheable(value = "CustomerOrdersByDate")
+    public List<EvResult> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
         customerNumber = leftPad(customerNumber, 10);
         Session session = sessionManager.openSession();
         try {

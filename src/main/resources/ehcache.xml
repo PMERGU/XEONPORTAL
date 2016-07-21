@@ -38,6 +38,6 @@
     </cache>
 
     <cache name="CustomerOrdersByDate"
-           timeToLiveSeconds="3600">
+           timeToLiveSeconds="1000">
     </cache>
     </ehcache>

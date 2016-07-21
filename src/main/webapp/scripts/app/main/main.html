@@ -81,25 +81,24 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer contact-footer">
-                    <div class="row">
-                        <div class="col-md-4 border-right">
-                            <div class="contact-stat"><span>Purchase Orders: </span> <strong>{{pos.processed.length + pos.processing.length + pos.unprocessed.length}}</strong></div>
-                        </div>
-                        <div class="col-md-4 border-right">
-                            <div class="contact-stat"><span>Processing: </span> <strong>{{pos.processing.length}}</strong></div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="contact-stat"><span>Unprocessed: </span> <strong>{{ pos.unprocessed.length }}</strong></div>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="panel-footer contact-footer">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-4 border-right">-->
+                            <!--<div class="contact-stat"><span>Purchase Orders: </span> <strong>{{pos.processed.length + pos.processing.length + pos.unprocessed.length}}</strong></div>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4 border-right">-->
+                            <!--<div class="contact-stat"><span>Processing: </span> <strong>{{pos.processing.length}}</strong></div>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<div class="contact-stat"><span>Unprocessed: </span> <strong>{{ pos.unprocessed.length }}</strong></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
         <div class="col-lg-8 col-md-12">
             <div class="hpanel">
-                <div class="hpanel">
-
+                <div class="panel-body">
                     <input ng-disabled="loadingOrders" ng-show="ordersStep !== 0" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.next()" value="Next 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
                     <input ng-disabled="loadingOrders" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.prev()" value="Prev 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
 
@@ -135,7 +134,7 @@
                                             <td>{{ order.skunnr }}</td>
                                             <td width="10px">
                                                 <button type="submit"
-                                                        ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep, company: company})"
+                                                        ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep, company: company, purchaseOrder: purchaseOrders[order.bstkd]})"
                                                         class="btn btn-info btn-sm">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
                                                     <span class="hidden-xs hidden-sm"></span>
@@ -173,7 +172,7 @@
                                                 <td>{{ order.pdstk }}</td>
                                                 <td width="10px">
                                                     <button type="submit"
-                                                            ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep, company: company})"
+                                                            ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep, company: company, purchaseOrder: purchaseOrders[order.bstkd]})"
                                                             class="btn btn-info btn-sm">
                                                         <span class="glyphicon glyphicon-eye-open"></span>
                                                         <span class="hidden-xs hidden-sm"></span>
