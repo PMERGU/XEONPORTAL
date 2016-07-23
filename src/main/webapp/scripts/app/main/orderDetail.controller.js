@@ -101,7 +101,7 @@ angular.module('portalApp')
             $scope.isDownloadingAttachment = true;
             $scope.selectedAttachment = attachment;
             $log.debug("downloadAttachment(" + attachment.uuid + " )");
-            if(attachment.category === 'INVOICE'){
+            if(attachment.category === 'INVOICE' && attachment.uuid === null){
                 FileSaver.saveAs(attachment.blob, "Xeon " + attachment.category.toLowerCase() + " - " + attachment.deliveryNumber);
                 $scope.isDownloadingAttachment = false;
             }else{

@@ -63,7 +63,7 @@ public class AttachmentService {
             visible);
         log.debug("Creating attachment: [{}]", attachment);
 
-        s3Service.uploadFile(s3Settings.getAttachmentPath(attachmentFile.getName()),attachmentFile);
+        s3Service.uploadFile(s3Settings.getAttachmentPath(deliveryNumber + "-" + attachmentFile.getName()),attachmentFile);
         attachment.setFileName(s3Settings.getAttachmentPath(attachmentFile.getName()));
         attachment.setMimeType(contentType);
 

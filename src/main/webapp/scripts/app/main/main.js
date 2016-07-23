@@ -91,7 +91,10 @@ angular.module('portalApp')
                                     description: null,
                                     deliveryNumber: $stateParams.for
                                 };
-                            }
+                            },
+                            currentUser: ['$stateParams', 'Principal', function($stateParams, Principal) {
+                                return Principal.identity();
+                            }]
                         }
                     }).result.then(function (result) {
                         $state.go('orderdetail', null, {reload: true});
