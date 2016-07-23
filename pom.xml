@@ -64,6 +64,7 @@
         <spring-security.version>4.0.2.RELEASE</spring-security.version>
         <springfox.version>2.0.3</springfox.version>
         <querydsl.version>3.7.4</querydsl.version>
+        <aws.version>1.11.13</aws.version>
         <!-- Sonar properties -->
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
@@ -392,19 +393,19 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-core</artifactId>
-            <version>RELEASE</version>
+            <version>${aws.version}</version>
             <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-kms</artifactId>
-            <version>RELEASE</version>
+            <version>${aws.version}</version>
             <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>RELEASE</version>
+            <version>${aws.version}</version>
         </dependency>
         <dependency>
             <groupId>sap</groupId>
