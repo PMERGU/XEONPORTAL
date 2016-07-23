@@ -8,7 +8,7 @@ angular.module('portalApp')
             $uibModalInstance.dismiss('cancel');
         };
         $scope.confirmDelete = function (uuid) {
-            console.log(uuid);
+            console.log("deleting attachment for : " + uuid);
             Attachment.delete({uuid: uuid},
                 function () {
                     $uibModalInstance.close(true);

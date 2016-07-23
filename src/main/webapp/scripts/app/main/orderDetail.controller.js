@@ -6,6 +6,39 @@ angular.module('portalApp')
         delAttachments.$promise.then(function(result){
             for(var i=0; i < result.length; i++){
                 $scope.attachments.push(result[i]);
+                //check for po deliveries
+                if(result[i].category === 'POD'){
+                    $scope.podDate = new Date(result[i].createdDate);
+                    $scope.states['POD'] = true;
+
+                    CustomerOrders.getInvoice({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(invoiceBlob){
+                        var creator = $window.URL || $window.webkitURL;
+                        var fileURL = creator.createObjectURL(invoiceBlob.response);
+                        $scope.states['INVOICE'] = true;
+                        $scope.states['INVOICE_LOADED'] = true;
+
+                        $scope.attachments.push({
+                            activated: true,
+                            category: "INVOICE",
+                            createdDate: new Date(),
+                            deliveryNumber: $scope.orderGroup[0].dbeln,
+                            description: "Invoice, generated on completion of order",
+                            id: $scope.attachments.length+1,
+                            mimeType: "application/pdf",
+                            user: {firstName: "Xeon", lastName: "finance"},
+                            blob: invoiceBlob.response,
+                            uuid: null,
+                            fileName: null,
+                            purchaseOrder: null,
+                            visible: true
+                        });
+                    },function(err){
+                        $log.debug("Invoice could not be found: " + err);
+                        $scope.states['INVOICE_LOADED'] = false;
+                        $scope.states['INVOICE'] = false;
+                    });
+                }
+
             }
         });
         poAttachments.$promise.then(function(result){
@@ -55,53 +88,6 @@ angular.module('portalApp')
             $scope.states['DELIVERED'] = true;
         }
 
-        if($scope.states['DELIVERED']){
-            $scope.states['POD'] = true;
-        }
-
-        $scope.podLoading = 0;
-        if($scope.states['POD']){
-            var stopLoading = $interval(function(){
-                if($scope.podLoading >= 100){
-                    $interval.cancel(stopLoading);
-                }
-                $scope.podLoading+=1;
-            }, 175);
-            $scope.podDate = new Date(new Date($scope.orderGroup[0].audat).setMinutes(new Date($scope.orderGroup[0].audat).getMinutes() + 17));
-            $scope.podMessge = "Loading proof of delivery...";
-            CustomerOrders.getPod({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(imageBlob){
-                var stopLoading2 = $interval(function(){
-                    if($scope.podLoading >= 100){
-                        $interval.cancel(stopLoading2);
-                        $scope.states['POD_LOADED'] = true;
-                    }
-                    $scope.podLoading+=1;
-                }, 75);
-                var creator = $window.URL || $window.webkitURL;
-                var fileURL = creator.createObjectURL(imageBlob.response);
-                $scope.podBlob = imageBlob.response;
-                $scope.pod = $sce.trustAsResourceUrl(fileURL);
-            },function(err){
-                $scope.podMessge = "POD could not be found.";
-                $scope.states['POD_LOADED'] = false;
-                $scope.states['POD'] = false;
-            });
-
-            $scope.states['INVOICE'] = true;
-        }
-
-        if($scope.states['INVOICE']){
-            CustomerOrders.getInvoice({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(invoiceBlob){
-                var creator = $window.URL || $window.webkitURL;
-                var fileURL = creator.createObjectURL(invoiceBlob.response);
-                $scope.invoiceBlob = invoiceBlob.response;
-                $scope.states['INVOICE_LOADED'] = true;
-            },function(err){
-                $log.debug("Invoice could not be found: " + err);
-                $scope.states['INVOICE_LOADED'] = false;
-                $scope.states['INVOICE'] = false;
-            });
-        };
 
         $scope.downloadPod = function(){
             FileSaver.saveAs($scope.podBlob, $scope.orderGroup[0].dbeln + '.jpg');
@@ -115,14 +101,19 @@ angular.module('portalApp')
             $scope.isDownloadingAttachment = true;
             $scope.selectedAttachment = attachment;
             $log.debug("downloadAttachment(" + attachment.uuid + " )");
-            Attachment.get({uuid: attachment.uuid}).$promise.then(function(imageBlob){
-                $log.debug(imageBlob.response.type);
-                FileSaver.saveAs(imageBlob.response, attachment.category + "-" + attachment.id);
+            if(attachment.category === 'INVOICE'){
+                FileSaver.saveAs(attachment.blob, "Xeon " + attachment.category.toLowerCase() + " - " + attachment.deliveryNumber);
                 $scope.isDownloadingAttachment = false;
-            },function(err){
-                $scope.isDownloadingAttachment = false;
-                $log.error("Count not download attachment");
-                $log.error(err);
-            });
+            }else{
+                Attachment.get({uuid: attachment.uuid}).$promise.then(function(imageBlob){
+                    $log.debug(imageBlob.response.type);
+                    FileSaver.saveAs(imageBlob.response, attachment.category + "-" + attachment.id);
+                    $scope.isDownloadingAttachment = false;
+                },function(err){
+                    $scope.isDownloadingAttachment = false;
+                    $log.error("Count not download attachment");
+                    $log.error(err);
+                });
+            }
         };
     });

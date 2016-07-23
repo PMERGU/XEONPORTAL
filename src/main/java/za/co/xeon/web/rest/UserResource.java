@@ -166,7 +166,7 @@ public class UserResource {
     @Transactional(readOnly = true)
     public ResponseEntity<List<ManagedUserDTO>> getAllUsers(Pageable pageable)
         throws URISyntaxException {
-        Page<User> page = userRepository.findAll(pageable);
+        Page<User> page = userRepository.findAllByEnabledIsTrue(pageable);
         List<ManagedUserDTO> managedUserDTOs = page.getContent().stream()
             .map(user -> new ManagedUserDTO(user))
             .collect(Collectors.toList());
@@ -204,7 +204,7 @@ public class UserResource {
         if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
             Authority auth = new Authority();
             auth.setName(AuthoritiesConstants.ADMIN);
-            List<User> existingAdmins = userRepository.findAllByAuthorities(auth);
+            List<User> existingAdmins = userRepository.findAllByEnabledIsTrueAndAuthorities(auth);
             if (existingAdmins.size() == 1) {
                 return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "administrator", "You cant delete the last admin user. Please create a new admin before deleting this one")).body(null);
             }

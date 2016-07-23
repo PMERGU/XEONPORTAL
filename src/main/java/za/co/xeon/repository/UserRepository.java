@@ -1,5 +1,7 @@
 package za.co.xeon.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import za.co.xeon.domain.Authority;
 import za.co.xeon.domain.Company;
 import za.co.xeon.domain.User;
@@ -18,11 +20,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneByActivationKey(String activationKey);
 
-    List<User> findAllByAuthorities(Authority authority);
+    Page<User> findAllByEnabledIsTrue(Pageable pageable);
 
-    List<User> findAllByCompany(Company company);
+    List<User> findAllByEnabledIsTrueAndAuthorities(Authority authority);
 
-    List<User> findAllByActivatedIsFalseAndCreatedDateBefore(ZonedDateTime dateTime);
+    List<User> findAllByEnabledIsTrueAndCompany(Company company);
+
+    List<User> findAllByEnabledIsTrueAndActivatedIsFalseAndCreatedDateBefore(ZonedDateTime dateTime);
 
     Optional<User> findOneByResetKey(String resetKey);
 

@@ -432,21 +432,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
             };
 
-            $scope.downloadAttachment = function(attachment){
-                $scope.isDownloadingAttachment = true;
-                $scope.selectedAttachment = attachment;
-                $log.debug("downloadAttachment(" + attachment.uuid + " )");
-                Attachment.get({uuid: attachment.uuid}).$promise.then(function(imageBlob){
-                    $log.debug(imageBlob.response.type);
-                    FileSaver.saveAs(imageBlob.response, attachment.category + "-" + attachment.id);
-                    $scope.isDownloadingAttachment = false;
-                },function(err){
-                    $scope.isDownloadingAttachment = false;
-                    $log.error("Count not download attachment");
-                    $log.error(err);
-                });
-            };
-
             $scope.clear = function () {
                 $uibModalInstance.dismiss('cancel');
             };
@@ -558,6 +543,26 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     category: $scope.attachmentCategories[0],
                     description: null
                 })
+            };
+
+            $scope.deleteAttachment = function(index){
+                $log.debug("deleteAttachment(" + index + ")");
+                $scope.attachments.splice(index, 1);
+            };
+
+            $scope.downloadAttachment = function(attachment){
+                $scope.isDownloadingAttachment = true;
+                $scope.selectedAttachment = attachment;
+                $log.debug("downloadAttachment(" + attachment.uuid + " )");
+                Attachment.get({uuid: attachment.uuid}).$promise.then(function(imageBlob){
+                    $log.debug(imageBlob.response.type);
+                    FileSaver.saveAs(imageBlob.response, attachment.category + "-" + attachment.id);
+                    $scope.isDownloadingAttachment = false;
+                },function(err){
+                    $scope.isDownloadingAttachment = false;
+                    $log.error("Count not download attachment");
+                    $log.error(err);
+                });
             };
 
             function calculateTotals(lines){

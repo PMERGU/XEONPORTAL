@@ -37,6 +37,9 @@ public class UserDetailsService implements org.springframework.security.core.use
             if (!user.getActivated()) {
                 throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
             }
+            if (!user.getEnabled()) {
+                throw new UserNotActivatedException("User " + lowercaseLogin + " has been deleted and can not sign in");
+            }
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());

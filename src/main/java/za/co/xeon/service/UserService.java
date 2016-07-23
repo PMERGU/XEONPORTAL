@@ -146,10 +146,11 @@ public class UserService {
         });
     }
 
+    @Transactional
     public void deleteUserInformation(String login) {
         userRepository.findOneByLogin(login).ifPresent(u -> {
-            userRepository.delete(u);
-            log.debug("Deleted User: {}", u);
+            u.setEnabled(false);
+            log.debug("Marked user as enabled false: {}", u);
         });
     }
 
@@ -194,7 +195,7 @@ public class UserService {
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         ZonedDateTime now = ZonedDateTime.now();
-        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
+        List<User> users = userRepository.findAllByEnabledIsTrueAndActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
         for (User user : users) {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);

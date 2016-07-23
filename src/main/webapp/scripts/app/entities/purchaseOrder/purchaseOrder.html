@@ -104,7 +104,6 @@
                            ng-class="{ 'btn-primary': step == 4, 'btn-default': step != 4}" value="Step 4 - Details"/>
 
                     <input ng-click="wizard.show(5)" style="width: 165px;margin: 0px 5px;" role="button"
-                           ng-disabled="purchaseOrder.poLines.length === 0" class="btn"
                            class="btn"
                            ng-class="{ 'btn-primary': step == 5, 'btn-default': step != 5}" value="Step 5 - Attachments"/>
 
@@ -829,9 +828,7 @@
                                             </td>
                                             <td class="text-right">
                                                 <div class="btn-group flex-btn-group-container">
-                                                    <button type="button"
-                                                            ui-sref="orderdetail.attachmentDelete({attachment: attachment})"
-                                                            class="btn btn-danger">
+                                                    <button type="button" class="btn btn-danger" ng-click="deleteAttachment($index)">
                                                         <span class="glyphicon glyphicon-remove-circle"></span>
                                                         <span class="hidden-xs hidden-sm"></span>
                                                     </button>
@@ -864,7 +861,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="attachment in attachments | orderBy:'createdDate'">
+                                <tr ng-repeat="attachment in attachments | orderBy:'id'">
                                     <td>{{attachment.id}}</td>
                                     <td>{{attachment.category}}</td>
                                     <td>{{attachment.createdDate | date: 'yyyy-MM-dd HH:mm'}}</td>

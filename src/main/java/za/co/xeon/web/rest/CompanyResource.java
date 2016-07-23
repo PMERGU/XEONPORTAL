@@ -153,7 +153,7 @@ public class CompanyResource {
     @Transactional(readOnly = true)
     public List<User> getAllUsersByCompany(@PathVariable Long id)
         throws URISyntaxException {
-        return userRepository.findAllByCompany(companyRepository.findOne(id));
+        return userRepository.findAllByEnabledIsTrueAndCompany(companyRepository.findOne(id));
     }
 
     /**

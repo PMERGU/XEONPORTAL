@@ -73,6 +73,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_date", nullable = true)
     private ZonedDateTime resetDate = null;
 
+    @Column
+    private boolean enabled;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -100,6 +103,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getFcSapId() {
         return fcSapId;
