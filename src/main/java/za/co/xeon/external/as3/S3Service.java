@@ -80,7 +80,7 @@ public class S3Service {
 
     public void uploadFile(String fileName, File file) {
         try {
-            log.debug("Uploading a new object to S3 from a file\n");
+            log.debug("Uploading a new object to S3 from a file: {} {} {}\n", s3Settings.getBucketName(), fileName, file.getAbsolutePath());
             s3client.putObject(new PutObjectRequest(s3Settings.getBucketName(), fileName, file));
         } catch (AmazonServiceException ase) {
             log.error("Caught an AmazonServiceException, which " +
