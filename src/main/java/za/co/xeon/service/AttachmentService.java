@@ -64,7 +64,7 @@ public class AttachmentService {
         log.debug("Creating attachment: [{}]", attachment);
 
         s3Service.uploadFile(s3Settings.getAttachmentPath(deliveryNumber + "-" + attachmentFile.getName()),attachmentFile);
-        attachment.setFileName(s3Settings.getAttachmentPath(attachmentFile.getName()));
+        attachment.setFileName(s3Settings.getAttachmentPath(deliveryNumber + "-" + attachmentFile.getName()));
         attachment.setMimeType(contentType);
 
         return attachmentRepository.save(attachment);
@@ -88,8 +88,8 @@ public class AttachmentService {
             visible);
         log.debug("Creating attachment: [{}]", attachment);
 
-        s3Service.uploadFile(s3Settings.getAttachmentPath(attachmentFile.getName()),attachmentFile);
-        attachment.setFileName(s3Settings.getAttachmentPath(attachmentFile.getName()));
+        s3Service.uploadFile(s3Settings.getAttachmentPath(po.getPoNumber() + "-" + attachmentFile.getName()),attachmentFile);
+        attachment.setFileName(s3Settings.getAttachmentPath(po.getPoNumber() + "-" + attachmentFile.getName()));
         attachment.setMimeType(contentType);
 
         return attachmentRepository.save(attachment);
