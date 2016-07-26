@@ -92,7 +92,7 @@ public class PurchaseOrder implements Serializable {
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PoLine> poLines = new HashSet<>();
+    private List<PoLine> poLines = new ArrayList<>();
 
     @OneToOne
     private Party shipToParty;
@@ -432,11 +432,11 @@ public class PurchaseOrder implements Serializable {
         this.pickUpType = pickUpType;
     }
 
-    public Set<PoLine> getPoLines() {
+    public List<PoLine> getPoLines() {
         return poLines;
     }
 
-    public void setPoLines(Set<PoLine> poLines) {
+    public void setPoLines(List<PoLine> poLines) {
         this.poLines = poLines;
     }
 
@@ -632,55 +632,55 @@ public class PurchaseOrder implements Serializable {
     public String toString() {
         return "PurchaseOrder{" +
             "id=" + id +
-            ", state=" + state +
-            ", serviceLevel=" + serviceLevel +
-            ", captureDate=" + captureDate +
-            ", updatedDate=" + updatedDate +
-            ", dropOffDate=" + dropOffDate +
-            ", collectionDate=" + collectionDate +
-            ", collectionReference='" + collectionReference + '\'' +
-            ", poNumber='" + poNumber + '\'' +
-            ", reference='" + reference + '\'' +
-            ", customerType=" + customerType +
-            ", shipToType=" + shipToType +
-            ", pickUpType=" + pickUpType +
-            ", telephone='" + telephone + '\'' +
-            ", collective='" + collective + '\'' +
-            ", accountReference='" + accountReference + '\'' +
-            ", modeOfTransport=" + modeOfTransport +
-            ", comment='" + comment + '\'' +
-            ", poLines=" + poLines +
-            ", shipToParty=" + shipToParty +
-            ", pickUpParty=" + pickUpParty +
-            ", cargoClassification=" + cargoClassification +
-            ", cargoType=" + cargoType +
-            ", transportParty=" + transportParty +
-            ", vehicleSize=" + vehicleSize +
-            ", serviceType=" + serviceType +
-            ", labourRequired='" + labourRequired + '\'' +
-            ", specialInstruction='" + specialInstruction + '\'' +
-            ", soldToParty=" + soldToParty +
-            ", financialController='" + financialController + '\'' +
-            ", soNumber='" + soNumber + '\'' +
-            ", soComment='" + soComment + '\'' +
-            ", cvName='" + cvName + '\'' +
-            ", cvNumber='" + cvNumber + '\'' +
-            ", cvOrigin='" + cvOrigin + '\'' +
-            ", cvEta=" + cvEta +
-            ", cvContainerNo='" + cvContainerNo + '\'' +
-            ", cvCarrierRef='" + cvCarrierRef + '\'' +
-            ", cvConsol='" + cvConsol + '\'' +
-            ", cvWaybill='" + cvWaybill + '\'' +
-            ", cvWaybillIssue=" + cvWaybillIssue +
-            ", cvHouseWaybill='" + cvHouseWaybill + '\'' +
-            ", cvHouseWaybillIssue=" + cvHouseWaybillIssue +
-            ", cvShipper='" + cvShipper + '\'' +
-            ", cvEtd=" + cvEtd +
-            ", cvDestination='" + cvDestination + '\'' +
-            ", cvCommodity='" + cvCommodity + '\'' +
-            ", user=" + user +
-            ", xeonUser=" + xeonUser +
-            ", capturedBy=" + capturedBy +
+            ",\n state=" + state +
+            ",\n serviceLevel=" + serviceLevel +
+            ",\n captureDate=" + captureDate +
+            ",\n updatedDate=" + updatedDate +
+            ",\n dropOffDate=" + dropOffDate +
+            ",\n collectionDate=" + collectionDate +
+            ",\n collectionReference='" + collectionReference + '\'' +
+            ",\n poNumber='" + poNumber + '\'' +
+            ",\n reference='" + reference + '\'' +
+            ",\n customerType=" + customerType +
+            ",\n shipToType=" + shipToType +
+            ",\n pickUpType=" + pickUpType +
+            ",\n telephone='" + telephone + '\'' +
+            ",\n collective='" + collective + '\'' +
+            ",\n accountReference='" + accountReference + '\'' +
+            ",\n modeOfTransport=" + modeOfTransport +
+            ",\n comment='" + comment + '\'' +
+            ",\n poLines=" + poLines +
+            ",\n shipToParty=" + shipToParty +
+            ",\n pickUpParty=" + pickUpParty +
+            ",\n cargoClassification=" + cargoClassification +
+            ",\n cargoType=" + cargoType +
+            ",\n transportParty=" + transportParty +
+            ",\n vehicleSize=" + vehicleSize +
+            ",\n serviceType=" + serviceType +
+            ",\n labourRequired='" + labourRequired + '\'' +
+            ",\n specialInstruction='" + specialInstruction + '\'' +
+            ",\n soldToParty=" + soldToParty +
+            ",\n financialController='" + financialController + '\'' +
+            ",\n soNumber='" + soNumber + '\'' +
+            ",\n soComment='" + soComment + '\'' +
+            ",\n cvName='" + cvName + '\'' +
+            ",\n cvNumber='" + cvNumber + '\'' +
+            ",\n cvOrigin='" + cvOrigin + '\'' +
+            ",\n cvEta=" + cvEta +
+            ",\n cvContainerNo='" + cvContainerNo + '\'' +
+            ",\n cvCarrierRef='" + cvCarrierRef + '\'' +
+            ",\n cvConsol='" + cvConsol + '\'' +
+            ",\n cvWaybill='" + cvWaybill + '\'' +
+            ",\n cvWaybillIssue=" + cvWaybillIssue +
+            ",\n cvHouseWaybill='" + cvHouseWaybill + '\'' +
+            ",\n cvHouseWaybillIssue=" + cvHouseWaybillIssue +
+            ",\n cvShipper='" + cvShipper + '\'' +
+            ",\n cvEtd=" + cvEtd +
+            ",\n cvDestination='" + cvDestination + '\'' +
+            ",\n cvCommodity='" + cvCommodity + '\'' +
+            ",\n user=" + user +
+            ",\n xeonUser=" + xeonUser +
+            ",\n capturedBy=" + capturedBy +
             '}';
     }
 }

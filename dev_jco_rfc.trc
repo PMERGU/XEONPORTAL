@@ -743,3 +743,8 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20160726 223030 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Tue Jul 26 22:30:30,847<    >RfcGetException rc (7) message: The function module "ZSALESORDER_CREATE" not released for 'remote' calls.
+<RfcGetException
+

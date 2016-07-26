@@ -56,7 +56,7 @@ public class HiberSapService {
                 .setProperty(DestinationDataProvider.JCO_PEAK_LIMIT,    s3Settings.getPeakLimit());
 
         AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
-        configuration.addBapiClasses( CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, UpdateHandlingUnitsRFC.class, UpdatePodRFC.class, ReceivedHandlingUnitsRFC.class);
+        configuration.addBapiClasses( CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, UpdateHandlingUnitsRFC.class, UpdatePodRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, CustOrdersDetailRFC.class);
         sessionManager = configuration.buildSessionManager();
     }
 
@@ -176,6 +176,27 @@ public class HiberSapService {
             }
         }catch(Exception e){
             log.error("Couldn't complete updatePod : " + e.getMessage(), e);
+            throw e;
+        }finally {
+            session.close();
+        }
+    }
+
+    public List<ExReturn> createSalesOrder(Long po, SalesOrderCreateRFC rfc) throws Exception {
+        log.debug("[{}] - createSalesOrder", po);
+        Session session = sessionManager.openSession();
+        try {
+            session.execute(rfc);
+            log.debug("[{}] - SO created : {}", po, rfc.getExSalesorder());
+            if(rfc.getExReturn().size() > 0 && rfc.getExReturn().get(0).getType().equals('E')){
+                throw new Exception("Request [po:" + po + "] failed with SAP status code " + rfc.getExReturn().get(0).getType() + " : " + rfc.getExReturn().get(0).getMessage());
+            }else{
+                log.debug("[{}] - return", po);
+                rfc.getExReturn().stream().forEach(exReturn -> log.debug("[{}] - return : \n{}", po, exReturn.toString()));
+                return rfc.getExReturn();
+            }
+        }catch(Exception e){
+            log.error("Couldn't complete createSalesOrder : " + e.getMessage(), e);
             throw e;
         }finally {
             session.close();
