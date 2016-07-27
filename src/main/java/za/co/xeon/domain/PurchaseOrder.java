@@ -92,7 +92,7 @@ public class PurchaseOrder implements Serializable {
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private ArrayList<PoLine> poLines = new Arra<>();
+    private List<PoLine> poLines = new ArrayList<>();
 
     @OneToOne
     private Party shipToParty;
@@ -432,11 +432,11 @@ public class PurchaseOrder implements Serializable {
         this.pickUpType = pickUpType;
     }
 
-    public ArrayList<PoLine> getPoLines() {
+    public List<PoLine> getPoLines() {
         return poLines;
     }
 
-    public void setPoLines(ArrayList<PoLine> poLines) {
+    public void setPoLines(List<PoLine> poLines) {
         this.poLines = poLines;
     }
 
