@@ -115,7 +115,7 @@ public class PurchaseOrderResource {
         try {
             PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
             log.debug(" PO saved as ID : {} - Creating SAP SO", savedPo.getId());
-            log.debug(savedPo.toString());
+            log.debug(savedPo.toStringFull());
             SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
                 savedPo.getAccountReference(), safeEnum(savedPo.getServiceType()), Pad.left(savedPo.getUser().getCompany().getSapId(), 10),
                 savedPo.getCollectionReference(), Pad.left(savedPo.getPickUpParty().getSapId(), 10), safeEnum(savedPo.getCargoType()), savedPo.getCvConsol(),
@@ -129,7 +129,7 @@ public class PurchaseOrderResource {
                 Pad.left(savedPo.getSoldToParty().getSapId(), 10), "L1", "",
                 "", savedPo.getTelephone(), savedPo.getCvName(), savedPo.getCvNumber(), "3000", "L1"
             );
-            log.debug(rfc.toString());
+            log.debug(rfc.toStringFull());
             hiberSapService.createSalesOrder(savedPo.getId(), rfc);
             log.debug(" PO saved as ID : {} - Creating SAP SO", savedPo.getId());
             mailService.sendCSUMail(user,

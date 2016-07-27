@@ -334,8 +334,18 @@ public class SalesOrderCreateRFC {
     @Override
     public String toString() {
         return "SalesOrderCreateRFC{" +
+            "imAccRef='" + imAccRef + '\'' +
+            ",  imBillTo='" + imBillTo + '\'' +
+            ",  imFinCon='" + imFinCon + '\'' +
+            ",  imPoDate='" + imPoDate + '\'' +
+            ",  imPoNum='" + imPoNum + '\'' +
+            '}';
+    }
+
+    public String toStringFull() {
+        return "SalesOrderCreateRFC{" +
             "\nimAccRef='" + imAccRef + '\'' +
-            ",\n imAuart='" + imAuart + '\'' +
+            ",  imAuart='" + imAuart + '\'' +
             ",\n imBillTo='" + imBillTo + '\'' +
             ",\n imCollNum='" + imCollNum + '\'' +
             ",\n imColParty='" + imColParty + '\'' +
