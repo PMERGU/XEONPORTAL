@@ -78,6 +78,7 @@ public class PurchaseOrderResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<PurchaseOrder> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
+        log.debug("=============================================== create PO ===================================================");
         log.debug("REST request to save PurchaseOrder : {}", purchaseOrder);
         //validations
         if (purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null) {
@@ -132,6 +133,7 @@ public class PurchaseOrderResource {
             log.debug(rfc.toStringFull());
             hiberSapService.createSalesOrder(savedPo.getId(), rfc);
             log.debug(" PO saved as ID : {} - Creating SAP SO", savedPo.getId());
+            log.debug("============================================= END create PO ==================================================");
             mailService.sendCSUMail(user,
                 String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
                 String.format("A new Purchase Order #%s has been created by %s %s for client %s. Please action and capture as soon as possible.", savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
