@@ -79,7 +79,7 @@ public class PurchaseOrderResource {
     @Timed
     public ResponseEntity<PurchaseOrder> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
         log.debug("=============================================== create PO ===================================================");
-        log.debug("REST request to save PurchaseOrder : {}", purchaseOrder);
+        log.debug("REST request to save PurchaseOrder");
         //validations
         if (purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null) {
             return ResponseEntity.badRequest()
