@@ -142,7 +142,8 @@ angular.module('portalApp')
                                     area: null,
                                     reference: null,
                                     company: $stateParams.company,
-                                    id: null
+                                    id: null,
+                                    sapId: 100000
                                 };
                             }
                         }

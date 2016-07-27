@@ -11,6 +11,11 @@ angular.module('portalApp').controller('PartyDialogController',
         Principal.identity().then(function(user) {
             $scope.user = user;
             $scope.isXeon = (user.company.type === "XEON");
+            $scope.party.$promise.then(function(party){
+                if($scope.isXeon && party.sapId === "10000"){
+                    $scope.party.sapId = null;
+                }
+            });
         });
 
         $scope.load = function(id) {

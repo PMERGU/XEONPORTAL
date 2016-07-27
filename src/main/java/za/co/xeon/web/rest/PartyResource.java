@@ -53,9 +53,12 @@ public class PartyResource {
         if (party.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("party", "idexists", "A new party cannot already have an ID")).body(null);
         }
-        if(!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))){
+        if(!(SecurityUtils.isUserXeonOrAdmin())){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             party.setCompany(user.getCompany());
+            party.setSapId("10000");
+        }else if(party.getSapId() == null && !party.getSapId().equals("10000")){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("party", "sapId", "Please add valid SapID for this user")).body(null);
         }
         Party result = partyRepository.save(party);
         return ResponseEntity.created(new URI("/api/partys/" + result.getId()))

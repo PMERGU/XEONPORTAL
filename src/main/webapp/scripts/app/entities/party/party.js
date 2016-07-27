@@ -57,7 +57,8 @@ angular.module('portalApp')
                                     streetName: null,
                                     area: null,
                                     reference: null,
-                                    id: null
+                                    id: null,
+                                    sapId: 100000
                                 };
                             }
                         }

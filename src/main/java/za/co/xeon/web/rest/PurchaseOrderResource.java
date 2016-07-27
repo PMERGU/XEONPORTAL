@@ -15,6 +15,7 @@ import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
 import za.co.xeon.service.PurchaseOrderService;
+import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -114,16 +115,19 @@ public class PurchaseOrderResource {
         try {
             PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
             log.debug(" PO saved as ID : {} - Creating SAP SO", savedPo.getId());
+            log.debug(savedPo.toString());
             SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
-                savedPo.getAccountReference(), safeEnum(savedPo.getServiceType()), "213", savedPo.getCollectionReference(), "119", null, savedPo.getCvConsol(),
+                savedPo.getAccountReference(), safeEnum(savedPo.getServiceType()), Pad.left(savedPo.getUser().getCompany().getSapId(), 10),
+                savedPo.getCollectionReference(), Pad.left(savedPo.getPickUpParty().getSapId(), 10), safeEnum(savedPo.getCargoType()), savedPo.getCvConsol(),
                 savedPo.getCvContainerNo(), safeDate(savedPo.getDropOffDate()), safeEnum(savedPo.getShipToType()),
                 savedPo.getCvDestination(), safeDate(savedPo.getCvEta()), safeDate(savedPo.getCvEtd()),
-                savedPo.getFinancialController(), savedPo.getCvHouseWaybill(), safeDate(savedPo.getCvHouseWaybillIssue()),
+                savedPo.getUser().getFcSapId(), savedPo.getCvHouseWaybill(), safeDate(savedPo.getCvHouseWaybillIssue()),
                 null, safeEnum(savedPo.getModeOfTransport()), savedPo.getCvWaybill(), safeDate(savedPo.getCvWaybillIssue()),
                 savedPo.getCvOrigin(), savedPo.getCvCarrierRef(), safeEnum(savedPo.getPickUpType()), safeDate(savedPo.getCaptureDate().toLocalDate()),
-                savedPo.getPoNumber(), "JNB-HUB", "L1", safeEnum(savedPo.getServiceLevel()), "213",
-                "SOCRFC002", "213", "SOCRFC002", null, "L1", null,
-                null, "0112302900", savedPo.getCvName(), savedPo.getCvNumber(), "3000", "L1"
+                savedPo.getPoNumber(), "JNB-HUB", "L1", safeEnum(savedPo.getServiceLevel()), savedPo.getCvShipper(),
+                savedPo.getCvCarrierRef(), Pad.left(savedPo.getShipToParty().getSapId(), 10), savedPo.getSoldToParty().getReference(),
+                Pad.left(savedPo.getSoldToParty().getSapId(), 10), "L1", "",
+                "", savedPo.getTelephone(), savedPo.getCvName(), savedPo.getCvNumber(), "3000", "L1"
             );
             log.debug(rfc.toString());
             hiberSapService.createSalesOrder(savedPo.getId(), rfc);

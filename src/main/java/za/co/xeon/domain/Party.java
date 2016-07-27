@@ -37,9 +37,21 @@ public class Party implements Serializable {
     @Column(name = "reference")
     private String reference;
 
+    @NotNull
+    @Column(name = "sap_id", nullable = false)
+    private String sapId;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    public String getSapId() {
+        return sapId;
+    }
+
+    public void setSapId(String sapId) {
+        this.sapId = sapId;
+    }
 
     public Company getCompany() {
         return company;

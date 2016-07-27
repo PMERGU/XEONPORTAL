@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.*;
+import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
@@ -62,7 +63,7 @@ public class HiberSapService {
 
 //    @Cacheable(value = "CustomerOrdersByDate")
     public List<EvResult> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
-        customerNumber = leftPad(customerNumber, 10);
+        customerNumber = Pad.left(customerNumber, 10);
         Session session = sessionManager.openSession();
         try {
             List<ImDateR> dateRange = new ArrayList<>();
@@ -80,7 +81,7 @@ public class HiberSapService {
     }
 
     public HandlingUnitsRFC getHandelingUnits(String barcode){
-        barcode = leftPad(barcode, 10);
+        barcode = Pad.left(barcode, 10);
         Session session = sessionManager.openSession();
         try {
             HandlingUnitsRFC rfc = new HandlingUnitsRFC(barcode);
@@ -98,15 +99,15 @@ public class HiberSapService {
     }
 
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
-        barcode = leftPad(barcode, 10);
+        barcode = Pad.left(barcode, 10);
         log.debug(String.format("[%s] - updateDeliveredHandelingUnits", barcode));
         Session session = sessionManager.openSession();
         try {
             List<ImHuitem> imHuitems = new ArrayList<>();
             log.debug(String.format("[%s] - hu count returned : %s", barcode, handlingUnitUpdateDto.getHandlingUnits().size()));
             for (HandlingUnitDto dto : handlingUnitUpdateDto.getHandlingUnits()) {
-                log.debug(String.format("[%s] - ImHuitem.getHuExid(): %s", barcode, org.apache.commons.lang.StringUtils.leftPad(dto.getHandlingUnit(), 20, "0")));
-                imHuitems.add(new ImHuitem(barcode, org.apache.commons.lang.StringUtils.leftPad(dto.getHandlingUnit(), 20, "0"), handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
+                log.debug(String.format("[%s] - ImHuitem.getHuExid(): %s", barcode, Pad.left(dto.getHandlingUnit(), 20)));
+                imHuitems.add(new ImHuitem(barcode, Pad.left(dto.getHandlingUnit(), 20), handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
             };
             if(imHuitems.size() == 0){
                 log.debug(String.format("[%s] - hu count 0, so making a new imHuitem record with just barcode....nothing else...damn you fairwell!!!", barcode));
@@ -132,12 +133,12 @@ public class HiberSapService {
     }
 
     public List<BapiRet2> pickupHandelingUnits(String barcode, List<ImHuupdate> imHuitems) throws Exception {
-        barcode = leftPad(barcode, 10);
+        barcode = Pad.left(barcode, 10);
         log.debug(String.format("[%s] - pickupHandelingUnits called with %s hu`s", barcode, imHuitems.size()));
         Session session = sessionManager.openSession();
         try {
             imHuitems.stream().forEach(imHuupdate ->
-                imHuupdate.setExidv(org.apache.commons.lang.StringUtils.leftPad(imHuupdate.getExidv(), 20, "0"))
+                imHuupdate.setExidv(Pad.left(imHuupdate.getExidv(), 20))
             );
             if(log.isDebugEnabled()) {
                 for (ImHuupdate tmp : imHuitems) {
@@ -164,7 +165,7 @@ public class HiberSapService {
     }
 
     public List<BapiRet2> updatePod(String barcode, String url) throws Exception {
-        barcode = leftPad(barcode, 10);
+        barcode = Pad.left(barcode, 10);
         Session session = sessionManager.openSession();
         try {
             UpdatePodRFC rfc = new UpdatePodRFC(barcode, url);
@@ -201,10 +202,6 @@ public class HiberSapService {
         }finally {
             session.close();
         }
-    }
-
-    private String leftPad(String padMePlease, int length){
-        return org.apache.commons.lang.StringUtils.leftPad(padMePlease, length, "0");
     }
 
 }

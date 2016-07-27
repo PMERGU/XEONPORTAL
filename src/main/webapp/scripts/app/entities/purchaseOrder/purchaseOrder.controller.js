@@ -526,13 +526,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $scope.pickuppartys.push(data);
                 switch(data.for){
                     case("pickup"):
-                        $scope.purchaseOrder.pickUpParty = { id: data.id };
+                        $scope.purchaseOrder.pickUpParty = data;
                         break;
                     case("dropoff"):
-                        $scope.purchaseOrder.shipToParty = { id: data.id };
+                        $scope.purchaseOrder.shipToParty = data;
                         break;
                     case("soldTo"):
-                        $scope.purchaseOrder.soldToParty = { id: data.id };
+                        $scope.purchaseOrder.soldToParty = data;
                         break;
                 }
             });

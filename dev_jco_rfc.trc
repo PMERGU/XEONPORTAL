@@ -748,3 +748,16 @@ COUNTER     2
 Error:  >Tue Jul 26 22:30:30,847<    >RfcGetException rc (7) message: The function module "ZSALESORDER_CREATE" not released for 'remote' calls.
 <RfcGetException
 
+
+**** Error file opened at 20160727 203653 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Wed Jul 27 20:36:53,565<    >RfcGetException rc (7) message: Screen output without connection to user.
+<RfcGetException
+
+Error:  >Wed Jul 27 20:37:37,355<    >RfcGetException rc (7) message: Screen output without connection to user.
+<RfcGetException
+
+
+**** Error file opened at 20160727 204137 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Wed Jul 27 20:41:37,495<    >RfcGetException rc (7) message: Screen output without connection to user.
+<RfcGetException
+
