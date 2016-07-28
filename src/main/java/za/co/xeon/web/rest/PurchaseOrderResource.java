@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -117,18 +118,40 @@ public class PurchaseOrderResource {
             PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
             log.debug(" PO saved as ID : {} - Creating SAP SO", savedPo.getId());
             log.debug(savedPo.toStringFull());
+            String imVkorg = null;
+            String imVtweg = null;
+            String imSpart = null;
+            switch (savedPo.getServiceType()){
+                case COURIER:
+                    imVkorg = "3000";
+                    imVtweg = "L1";
+                    imSpart = "L1";
+                    break;
+                case INBOUND:
+                    imVkorg = "3000";
+                    imVtweg = "M1";
+                    imSpart = "13";
+                    break;
+                case OUTBOUND:
+                    imVkorg = "3000";
+                    imVtweg = "M1";
+                    imSpart = "13";
+                    break;
+                default:
+                    throw new RuntimeException("Need to map new service type here");
+            }
             SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
                 savedPo.getAccountReference(), safeEnum(savedPo.getServiceType()), Pad.left(savedPo.getUser().getCompany().getSapId(), 10),
                 savedPo.getCollectionReference(), Pad.left(savedPo.getPickUpParty().getSapId(), 10), safeEnum(savedPo.getCargoType()), savedPo.getCvConsol(),
                 savedPo.getCvContainerNo(), safeDate(savedPo.getDropOffDate()), safeEnum(savedPo.getShipToType()),
                 savedPo.getCvDestination(), safeDate(savedPo.getCvEta()), safeDate(savedPo.getCvEtd()),
                 savedPo.getUser().getFcSapId(), savedPo.getCvHouseWaybill(), safeDate(savedPo.getCvHouseWaybillIssue()),
-                null, safeEnum(savedPo.getModeOfTransport()), savedPo.getCvWaybill(), safeDate(savedPo.getCvWaybillIssue()),
+                convertItems(savedPo, savedPo.getPoLines()), safeEnum(savedPo.getModeOfTransport()), savedPo.getCvWaybill(), safeDate(savedPo.getCvWaybillIssue()),
                 savedPo.getCvOrigin(), savedPo.getCvCarrierRef(), safeEnum(savedPo.getPickUpType()), safeDate(savedPo.getCaptureDate().toLocalDate()),
                 savedPo.getPoNumber(), "JNB-HUB", "L1", safeEnum(savedPo.getServiceLevel()), savedPo.getCvShipper(),
                 savedPo.getCvCarrierRef(), Pad.left(savedPo.getShipToParty().getSapId(), 10), savedPo.getSoldToParty().getReference(),
                 Pad.left(savedPo.getSoldToParty().getSapId(), 10), "L1", "",
-                "", savedPo.getTelephone(), savedPo.getCvName(), savedPo.getCvNumber(), "3000", "L1"
+                "", savedPo.getTelephone(), savedPo.getCvName(), savedPo.getCvNumber(), imVkorg, imVtweg
             );
             log.debug(rfc.toStringFull());
             hiberSapService.createSalesOrder(savedPo.getId(), rfc);
@@ -150,8 +173,22 @@ public class PurchaseOrderResource {
         }
     }
 
-    private List<ImItemDetail> convertItems(List<PoLine> poLines){
-        return new ArrayList<ImItemDetail>();
+    private List<ImItemDetail> convertItems(PurchaseOrder savedPo, List<PoLine> poLines){
+        log.debug("line.getMaterialType().getSapCode() : {}",poLines.get(0).getMaterialType().getSapCode());
+        log.debug("line.getOrderQuantity() : {}",new BigDecimal(poLines.get(0).getOrderQuantity()));
+        log.debug("savedPo.getPickUpParty().getArea().getPlant() : {}",savedPo.getPickUpParty().getArea().getPlant());
+        log.debug("line.getBatchNumber() : {}",poLines.get(0).getBatchNumber());
+        log.debug("savedPo.getPickUpParty().getArea().getPlant() : {}",savedPo.getPickUpParty().getArea().getPlant());
+        log.debug("new BigDecimal(line.getLength()) : {}",new BigDecimal(poLines.get(0).getLength()));
+        log.debug("new BigDecimal(line.getWidth()) : {}",new BigDecimal(poLines.get(0).getWidth()));
+        log.debug("new BigDecimal(line.getLength()) : {}",new BigDecimal(poLines.get(0).getLength()));
+        log.debug("new BigDecimal(line.getGrossWeight()) : {}",new BigDecimal(poLines.get(0).getGrossWeight()));
+        log.debug("new BigDecimal(line.getNetWeight()) : {}",new BigDecimal(poLines.get(0).getNetWeight()));
+        return poLines.stream().map(line -> new ImItemDetail(
+            line.getMaterialType().getSapCode(), new BigDecimal(line.getOrderQuantity()), null, savedPo.getPickUpParty().getArea().getPlant(),
+            line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(), new BigDecimal(line.getLength()), new BigDecimal(line.getWidth()), new BigDecimal(line.getLength()),
+            "cm", "cm", "cm", new BigDecimal(line.getGrossWeight()), new BigDecimal(line.getNetWeight()), "KG", "KG"
+        )).collect(Collectors.toList());
     }
 
     private <T> String safeEnum(T t) {

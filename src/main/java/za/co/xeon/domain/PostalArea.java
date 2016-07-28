@@ -29,6 +29,15 @@ public class PostalArea implements Serializable {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "trafficZone")
+    private String trafficZone;
+
+    @Column(name = "hub")
+    private String hub;
+
+    @Column(name = "plant")
+    private String plant;
+
     @Column(name = "province")
     private String province;
 
@@ -38,12 +47,39 @@ public class PostalArea implements Serializable {
     public PostalArea() {
     }
 
-    public PostalArea(String suburb, Integer postalCode, String city, String province, String country) {
+    public PostalArea(String suburb, Integer postalCode, String city, String trafficZone, String hub, String plant, String province, String country) {
         this.suburb = suburb;
         this.postalCode = postalCode;
         this.city = city;
+        this.trafficZone = trafficZone;
+        this.hub = hub;
+        this.plant = plant;
         this.province = province;
         this.country = country;
+    }
+
+    public String getPlant() {
+        return plant;
+    }
+
+    public void setPlant(String plant) {
+        this.plant = plant;
+    }
+
+    public String getTrafficZone() {
+        return trafficZone;
+    }
+
+    public void setTrafficZone(String trafficZone) {
+        this.trafficZone = trafficZone;
+    }
+
+    public String getHub() {
+        return hub;
+    }
+
+    public void setHub(String hub) {
+        this.hub = hub;
     }
 
     public Long getId() {

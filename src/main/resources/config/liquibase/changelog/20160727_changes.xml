@@ -11,5 +11,20 @@
             </column>
         </addColumn>
 
+        <addColumn tableName="postal_code">
+            <column name="traffic_zone" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="postal_code">
+            <column name="hub" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="postal_code">
+            <column name="plant" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('portalApp').controller('POPartyDialogController',
-    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Area', '$log',
-        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, Party, Area, $log) {
+    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Area', '$log', 'Principal',
+        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, Party, Area, $log, Principal) {
 
         $scope.party = entity;
 
@@ -12,7 +12,7 @@ angular.module('portalApp').controller('POPartyDialogController',
             $scope.user = user;
             $scope.isXeon = (user.company.type === "XEON");
             $scope.party.$promise.then(function(party){
-                if($scope.isXeon && party.sapId === "10000"){
+                if($scope.isXeon && party.sapId === "100000"){
                     $scope.party.sapId = null;
                 }
             });

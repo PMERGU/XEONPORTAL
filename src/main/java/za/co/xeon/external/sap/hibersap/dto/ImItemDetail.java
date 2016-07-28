@@ -54,19 +54,19 @@ public class ImItemDetail {
      * "Field of length 16"
      */
     @Parameter("ZLAENG")
-    private String zlaeng;
+    private java.math.BigDecimal zlaeng;
 
     /**
      * "Field of length 16"
      */
     @Parameter("ZBREIT")
-    private String zbreit;
+    private java.math.BigDecimal zbreit;
 
     /**
      * "Field of length 16"
      */
     @Parameter("ZHOEHE")
-    private String zhoehe;
+    private java.math.BigDecimal zhoehe;
 
     /**
      * "Unit of dimension for length/width/height"
@@ -90,13 +90,13 @@ public class ImItemDetail {
      * "Field of length 16"
      */
     @Parameter("ZBRGEW")
-    private String zbrgew;
+    private java.math.BigDecimal zbrgew;
 
     /**
      * "Field of length 16"
      */
     @Parameter("ZNTGEW")
-    private String zntgew;
+    private java.math.BigDecimal zntgew;
 
     /**
      * "Weight Unit"
@@ -110,7 +110,7 @@ public class ImItemDetail {
     @Parameter("UNIT_NW")
     private String unitNw;
 
-    public ImItemDetail(String material, java.math.BigDecimal targetQty, String targetQu, String plant, String batch, String storeLoc, String shipPoint, String zlaeng, String zbreit, String zhoehe, String unitL, String unitW, String unitH, String zbrgew, String zntgew, String unitGw, String unitNw) {
+    public ImItemDetail(String material, java.math.BigDecimal targetQty, String targetQu, String plant, String batch, String storeLoc, String shipPoint, java.math.BigDecimal zlaeng, java.math.BigDecimal zbreit, java.math.BigDecimal zhoehe, String unitL, String unitW, String unitH, java.math.BigDecimal zbrgew, java.math.BigDecimal zntgew, String unitGw, String unitNw) {
         this.material = material;
         this.targetQty = targetQty;
         this.targetQu = targetQu;
@@ -185,21 +185,21 @@ public class ImItemDetail {
     /**
      * @return "Zlaeng" - "Field of length 16"
      */
-    public String getZlaeng() {
+    public java.math.BigDecimal getZlaeng() {
         return zlaeng;
     }
 
     /**
      * @return "Zbreit" - "Field of length 16"
      */
-    public String getZbreit() {
+    public java.math.BigDecimal getZbreit() {
         return zbreit;
     }
 
     /**
      * @return "Zhoehe" - "Field of length 16"
      */
-    public String getZhoehe() {
+    public java.math.BigDecimal getZhoehe() {
         return zhoehe;
     }
 
@@ -227,14 +227,14 @@ public class ImItemDetail {
     /**
      * @return "Zbrgew" - "Field of length 16"
      */
-    public String getZbrgew() {
+    public java.math.BigDecimal getZbrgew() {
         return zbrgew;
     }
 
     /**
      * @return "Zntgew" - "Field of length 16"
      */
-    public String getZntgew() {
+    public java.math.BigDecimal getZntgew() {
         return zntgew;
     }
 
