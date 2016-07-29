@@ -34,18 +34,22 @@
             primaryKey="id"
             encoding="UTF-8"
             file="config/liquibase/postalCodes_20160727.csv"
-            separator=";" />
+            separator=";" onlyUpdate="true"/>
+    </changeSet>
+    <changeSet author="derick" id="changeset_3_sample_data">
         <loadUpdateData
             tableName="party"
             primaryKey="id"
             encoding="UTF-8"
             file="config/liquibase/parties_20160727.csv"
-            separator=";" />
+            separator=";"  onlyUpdate="true"/>
+    </changeSet>
+    <changeSet author="derick" id="changeset_4_sample_data">
         <loadUpdateData
             tableName="jhi_user"
             primaryKey="id"
             encoding="UTF-8"
             file="config/liquibase/users_20160727.csv"
-            separator=";" />
+            separator=";"  onlyUpdate="true"/>
     </changeSet>
 </databaseChangeLog>
