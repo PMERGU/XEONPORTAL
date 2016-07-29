@@ -108,7 +108,7 @@ public class PurchaseOrderResource {
         //logic
         purchaseOrder.setUser(user);
         purchaseOrder.setCaptureDate(ZonedDateTime.now());
-        purchaseOrder.setState(PoState.UNPROCESSED);
+        purchaseOrder.setState(PoState.PROCESSED);
 
         //set PO as parent to PO.poLines
         purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
@@ -190,7 +190,8 @@ public class PurchaseOrderResource {
         log.debug("new BigDecimal(line.getNetWeight()) : {}",new BigDecimal(poLines.get(0).getNetWeight()));
         return poLines.stream().map(line -> new ImItemDetail(
             line.getMaterialType().getSapCode(), new BigDecimal(line.getOrderQuantity()), null, savedPo.getPickUpParty().getArea().getPlant(),
-            line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(), new BigDecimal(line.getLength()), new BigDecimal(line.getWidth()), new BigDecimal(line.getLength()),
+            line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(),
+            new BigDecimal(line.getLength()), new BigDecimal(line.getWidth()), new BigDecimal(line.getHeight()),
             "cm", "cm", "cm", new BigDecimal(line.getGrossWeight()), new BigDecimal(line.getNetWeight()), "KG", "KG"
         )).collect(Collectors.toList());
     }

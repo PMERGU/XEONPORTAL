@@ -6,7 +6,7 @@
                     <div class="col-md-12">
                         <h2 class="font-light m-b-xs tc-green-dark"
                             ng-show="purchaseOrder.id && purchaseOrder.state === 'PROCESSED'">
-                            Update Purchase Order : {{purchaseOrder.id}}
+                            View Purchase Order : {{purchaseOrder.id}} binded to Sales Order : {{purchaseOrder.soNumber}}
                         </h2>
                         <h2 class="font-light m-b-xs"
                             ng-show="purchaseOrder.id && purchaseOrder.state !== 'PROCESSED'">
