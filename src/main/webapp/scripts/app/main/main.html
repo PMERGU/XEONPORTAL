@@ -115,8 +115,8 @@
                                         <tr>
                                             <th>Purchase Order</th>
                                             <th>Capture Date</th>
-                                            <th>Pickup Party</th>
-                                            <th>Ship to Party</th>
+                                            <th>Pickup</th>
+                                            <th>Ship to</th>
                                             <th>Sales Order</th>
                                             <th>Delivery No</th>
                                             <th>Consignee</th>
@@ -156,20 +156,24 @@
                                         <thead>
                                             <tr>
                                                 <th>Purchase Order</th>
+                                                <th>Capture Date</th>
+                                                <th>Pickup</th>
+                                                <th>Ship to</th>
                                                 <th>Sales Order</th>
                                                 <th>Delivery No</th>
-                                                <th>Sold to Party</th>
-                                                <th>Status</th>
+                                                <th>Consignee</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="order in deliveredOrders | unique: 'dbeln'">
                                                 <td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td>
+                                                <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
+                                                <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
+                                                <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
                                                 <td>{{ order.vbeln }}</td>
                                                 <td>{{ order.dbeln }}</td>
                                                 <td>{{ order.skunnr }}</td>
-                                                <td>{{ order.pdstk }}</td>
                                                 <td width="10px">
                                                     <button type="submit"
                                                             ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep, company: company, purchaseOrder: purchaseOrders[order.bstkd]})"

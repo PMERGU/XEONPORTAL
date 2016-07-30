@@ -426,13 +426,13 @@ public class PurchaseOrderResource {
     /**
      * GET  /attachments -> get all the attachment.
      */
-    @RequestMapping(value = "/purchaseOrders/{id}/attachments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/purchaseOrders/{id}/all/attachments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<Attachment>> getAllPoAttachments(@PathVariable Long id, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of attachments");
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
         Page<Attachment> page = attachmentRepository.findByPurchaseOrder(purchaseOrder, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/poLines");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/purchaseOrders/" + id + "/all/attachments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

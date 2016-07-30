@@ -10,33 +10,6 @@ angular.module('portalApp')
                 if(result[i].category === 'POD'){
                     $scope.podDate = new Date(result[i].createdDate);
                     $scope.states['POD'] = true;
-
-                    CustomerOrders.getInvoice({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(invoiceBlob){
-                        var creator = $window.URL || $window.webkitURL;
-                        var fileURL = creator.createObjectURL(invoiceBlob.response);
-                        $scope.states['INVOICE'] = true;
-                        $scope.states['INVOICE_LOADED'] = true;
-
-                        $scope.attachments.push({
-                            activated: true,
-                            category: "INVOICE",
-                            createdDate: new Date(),
-                            deliveryNumber: $scope.orderGroup[0].dbeln,
-                            description: "Invoice, generated on completion of order",
-                            id: $scope.attachments.length+1,
-                            mimeType: "application/pdf",
-                            user: {firstName: "Xeon", lastName: "finance"},
-                            blob: invoiceBlob.response,
-                            uuid: null,
-                            fileName: null,
-                            purchaseOrder: null,
-                            visible: true
-                        });
-                    },function(err){
-                        $log.debug("Invoice could not be found: " + err);
-                        $scope.states['INVOICE_LOADED'] = false;
-                        $scope.states['INVOICE'] = false;
-                    });
                 }
 
             }
@@ -56,6 +29,33 @@ angular.module('portalApp')
 
         $scope.purchaseOrder = purchaseOrder;
         $scope.orderGroup = orderGroup;
+        CustomerOrders.getInvoice({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(invoiceBlob){
+            var creator = $window.URL || $window.webkitURL;
+            var fileURL = creator.createObjectURL(invoiceBlob.response);
+            $scope.states['INVOICE'] = true;
+            $scope.states['INVOICE_LOADED'] = true;
+
+            $scope.attachments.push({
+                activated: true,
+                category: "INVOICE",
+                createdDate: new Date(),
+                deliveryNumber: $scope.orderGroup[0].dbeln,
+                description: "Invoice, generated on completion of order",
+                id: $scope.attachments.length+1,
+                mimeType: "application/pdf",
+                user: {firstName: "Xeon", lastName: "finance"},
+                blob: invoiceBlob.response,
+                uuid: null,
+                fileName: null,
+                purchaseOrder: null,
+                visible: true
+            });
+        },function(err){
+            $log.debug("Invoice could not be found: " + err);
+            $scope.states['INVOICE_LOADED'] = false;
+            $scope.states['INVOICE'] = false;
+        });
+
         $scope.states = {
             'RECEIVED': true,
             'PROCESSED': false,

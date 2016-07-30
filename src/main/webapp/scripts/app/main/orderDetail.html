@@ -6,7 +6,7 @@
                     Order #{{orderGroup[0].dbeln}} in progress
                 </h2>
                 <h2 class="font-light m-b-xs" ng-show="states['POD']" style="color: #3498db">
-                    Order #{{orderGroup[0].dbeln}} delivered {{ states['INVOICE'] ? ' and invoice available' : '' }}
+                    Order #{{orderGroup[0].dbeln}} completed {{ states['INVOICE'] ? ' and invoice available' : '' }}
                 </h2>
                 <jh-alert></jh-alert>
                 <small>Detailed order view as it proceeds from capture to completed</small>
@@ -36,7 +36,8 @@
                 <!-- / marker -->
 
                 <!-- This is the individual marker-->
-                <div class="marker mCollected timeline-icon" ng-class="{'done': states['COLLECTED']}">
+                <div class="marker mCollected timeline-icon" ng-class="{'done': states['COLLECTED']}"
+                     ng-show="purchaseOrder.serviceType === 'COURIER' || purchaseOrder.serviceType === 'INBOUND'">
                     <i class="icon-pi-cargo-trolley-1"></i>
                     <i class="checkmark fa fa-check" ng-show="states['COLLECTED']"></i>
                     </span>
@@ -48,7 +49,8 @@
                 <div class="marker mTransit timeline-icon" ng-class="{'done': states['IN_TRANSIT']}">
                     <i class="icon-pi-truck-3"></i>
                     <i class="checkmark fa fa-check" ng-show="states['IN_TRANSIT']"></i>
-                    <span style="margin-left: -110%; width: 74px;">In Transit</span>
+                    <span style="margin-left: -110%; width: 74px;" ng-show="purchaseOrder.serviceType === 'COURIER' || purchaseOrder.serviceType === 'INBOUND'">In Transit</span>
+                    <span style="margin-left: -110%; width: 74px;" ng-show="purchaseOrder.serviceType === 'OUTBOUND'">Goods Issued</span>
                 </div>
                 <!-- / marker -->
 
@@ -56,7 +58,10 @@
                 <div class="marker mDelivered timeline-icon" ng-class="{'done': states['DELIVERED']}">
                     <i class="icon-pi-hand-truck-4"></i>
                     <i class="checkmark fa fa-check" ng-show="states['DELIVERED']"></i>
-                    <span style="margin-left: -110%;">Delivered</span>
+                    <span style="margin-left: -110%;" ng-show="purchaseOrder.serviceType === 'COURIER'">Delivered</span>
+                    <span style="margin-left: -120%;" ng-show="purchaseOrder.serviceType === 'INBOUND'">Received at warehouse</span>
+                    <span style="margin-left: -110%;" ng-show="purchaseOrder.serviceType === 'OUTBOUND'">Delivered</span>
+
                 </div>
                 <!-- / marker -->
 
@@ -64,7 +69,9 @@
                 <div class="marker mPod timeline-icon" ng-class="{'done': states['POD']}">
                     <i class="icon-pi-checklist-3"></i>
                     <i class="checkmark fa fa-check" ng-show="states['POD']"></i>
-                    <span style="margin-left: -70%;">POD</span>
+                    <span style="margin-left: -70%;" ng-show="purchaseOrder.serviceType === 'COURIER'">POD</span>
+                    <span style="margin-left: -70%;" ng-show="purchaseOrder.serviceType === 'INBOUND'">POR</span>
+                    <span style="margin-left: -70%;" ng-show="purchaseOrder.serviceType === 'OUTBOUND'">POR</span>
                 </div>
                 <!-- / marker -->
 
@@ -72,7 +79,7 @@
                 <div class="marker mInvoice timeline-icon" ng-class="{'done': states['INVOICE']}">
                     <i class="icon-pi-payment-2"></i>
                     <i class="checkmark fa fa-check" ng-show="states['INVOICE_LOADED']"></i>
-                    <span style="margin-left: -70%;">Invoice</span>
+                    <span style="margin-left: -85%;">Invoice</span>
                 </div>
                 <!-- / marker -->
             </div>
@@ -130,11 +137,19 @@
                                         </td>
                                         <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
                                     </tr>
-                                    <tr ng-show="states['COLLECTED']">
+                                    <tr ng-show="states['COLLECTED'] && (purchaseOrder.serviceType === 'COURIER' || purchaseOrder.serviceType === 'INBOUND')">
                                         <td>3</td>
                                         <td>Order has been collected and is in transit
                                         </td>
                                         <td>{{orderGroup[0].daten | date: 'yyyy-MM-dd'}} {{orderGroup[0].uaten | date:
+                                            'hh:mm'}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="states['IN_TRANSIT'] && purchaseOrder.serviceType === 'OUTBOUND'">
+                                        <td>3</td>
+                                        <td>Goods has been issues, on route for delivery
+                                        </td>
+                                        <td>{{orderGroup[0].uatbg | date: 'yyyy-MM-dd'}} {{orderGroup[0].uatbg | date:
                                             'hh:mm'}}
                                         </td>
                                     </tr>
@@ -148,10 +163,16 @@
                                     </tr>
                                     <tr ng-show="states['POD']">
                                         <td>5</td>
-                                        <td>POD uploaded and available online
+                                        <td ng-show="purchaseOrder.serviceType === 'COURIER'">POD uploaded and available online
+                                        <td ng-show="purchaseOrder.serviceType === 'INBOUND' || purchaseOrder.serviceType === 'OUTBOUND')">POR uploaded and available online
+                                        <td>POR uploaded and available online
                                         </td>
                                         <td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}
                                         </td>
+                                    </tr>
+                                    <tr ng-show="states['INVOICE_LOADED']">
+                                        <td>6</td>
+                                        <td>Invoice is available for download, please look under attachments tab</td>
                                     </tr>
                                     </tbody>
                                 </table>

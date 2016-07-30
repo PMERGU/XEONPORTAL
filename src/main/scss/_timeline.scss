@@ -5,11 +5,12 @@ $red: #f00;
 $color_mischka_approx: #cbd0df;
 
 #timeline-wrap {
-    margin: 50px 10%;
+    margin: 60px 10%;
     top: -4px;
     position: relative;
 
     #timeline {
+        top: -10px;
         height: 3px;
         width: 100%;
         background-color: $color-blue;
@@ -49,9 +50,10 @@ $color_mischka_approx: #cbd0df;
             color: $color-blue;
             font-size: 16px;
             text-align: center;
-            margin-top: 40px;
+            margin-top: 50px;
             position: absolute;
             font-weight: 600;
+            line-height: 20px;
         }
     }
 
@@ -66,37 +68,37 @@ $color_mischka_approx: #cbd0df;
     }
 
     .mReceived {
-        top: -25px;
+        top: -35px;
         left: 0%;
     }
 
     .mProcessed {
-        top: -25px;
+        top: -35px;
         left: 16.66%;
     }
 
     .mCollected {
-        top: -25px;
+        top: -35px;
         left: 33.33%;
     }
 
     .mTransit {
-        top: -25px;
+        top: -35px;
         left: 50%;
     }
 
     .mDelivered {
-        top: -25px;
+        top: -35px;
         left: 66.66%;
     }
 
     .mPod {
-        top: -25px;
+        top: -35px;
         left: 83.33%;
     }
 
     .mInvoice {
-        top: -25px;
+        top: -35px;
         left: 100%;
     }
 }
