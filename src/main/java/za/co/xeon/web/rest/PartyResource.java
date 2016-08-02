@@ -60,6 +60,7 @@ public class PartyResource {
         }else if(party.getSapId() == null && !party.getSapId().equals("100000")){
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("party", "sapId", "Please add valid SapID for this user")).body(null);
         }
+        party.setSapId(party.getSapId().trim());
         Party result = partyRepository.save(party);
         return ResponseEntity.created(new URI("/api/partys/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("party", result.getId().toString()))

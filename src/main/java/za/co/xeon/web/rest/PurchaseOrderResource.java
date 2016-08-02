@@ -83,6 +83,7 @@ public class PurchaseOrderResource {
         log.debug("=============================================== create PO ===================================================");
         log.debug("REST request to save PurchaseOrder");
         //validations
+        purchaseOrder.setPoNumber(purchaseOrder.getPoNumber().trim());
         if (purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("purchaseOrder", "poNumber",

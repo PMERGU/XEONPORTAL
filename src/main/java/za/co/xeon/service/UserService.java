@@ -107,12 +107,12 @@ public class UserService {
 
     public User createUser(ManagedUserDTO managedUserDTO) {
         User user = new User();
-        user.setLogin(managedUserDTO.getLogin());
+        user.setLogin(managedUserDTO.getLogin().toLowerCase().trim());
         user.setFirstName(managedUserDTO.getFirstName());
         user.setLastName(managedUserDTO.getLastName());
-        user.setEmail(managedUserDTO.getEmail());
+        user.setEmail(managedUserDTO.getEmail().toLowerCase().trim());
         user.setCompany(managedUserDTO.getCompany());
-        user.setFcSapId(managedUserDTO.getFcSapId());
+        user.setFcSapId(managedUserDTO.getFcSapId().toUpperCase().trim());
         if (managedUserDTO.getLangKey() == null) {
             user.setLangKey("en"); // default language is English
         } else {
