@@ -80,7 +80,7 @@
                     <div class="col-md-3 text-right" style="margin-top: 10px;margin-bottom: 10px;" ng-show="employees">
                         <ui-select ng-model="capturedAs.employee" title="Choose a employee">
                             <ui-select-match placeholder="Select or search for employee">{{$select.selected.firstName + ' ' + $select.selected.lastName}}</ui-select-match>
-                            <ui-select-choices repeat="employee in employees | filter: $select.search">
+                            <ui-select-choices repeat="employee in employees | orderBy:'firstName' | filter: $select.search">
                                 <span ng-bind-html="employee.firstName + ' ' + employee.lastName | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>

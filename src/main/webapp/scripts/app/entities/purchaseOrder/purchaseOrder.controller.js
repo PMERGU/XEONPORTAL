@@ -1,13 +1,17 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    ['$rootScope', '$scope', '$interval', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal', 'Company', 'currentUser', 'Attachment', 'UploadTools', 'sweet', 'FileSaver', 'StaticServices',
-        function ($rootScope, $scope, $interval, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal, Company, currentUser, Attachment, UploadTools, sweet, FileSaver, StaticServices) {
+    ['$rootScope', '$scope', '$interval', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine',
+        'Party', 'User', 'AlertService', 'Principal', 'Company', 'currentUser', 'Attachment', 'UploadTools', 'sweet', 'FileSaver',
+        'StaticServices',
+        function ($rootScope, $scope, $interval, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine,
+                  Party, User, AlertService, Principal, Company, currentUser, Attachment, UploadTools, sweet, FileSaver,
+                  StaticServices) {
             $scope.user = currentUser;
             $scope.isXeon = currentUser.company.type === "XEON";
 
-            $scope.shiptopartys = Party.query({size: 500, sort: 'name'});
-            $scope.pickuppartys = Party.query({size: 500, sort: 'name'});
+            $scope.shiptopartys = Party.query({size: 10000, sort: 'name'});
+            $scope.pickuppartys = Party.query({size: 10000, sort: 'name'});
             $scope.attachmentCategories = Attachment.queryCategories();
             $scope.serviceLevels = StaticServices.serviceLevels();
 

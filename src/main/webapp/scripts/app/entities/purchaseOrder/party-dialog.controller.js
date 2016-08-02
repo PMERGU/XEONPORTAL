@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('portalApp').controller('POPartyDialogController',
-    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Area', '$log', 'Principal',
-        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, Party, Area, $log, Principal) {
+    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Area', '$log', 'Principal', 'Company',
+        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, Party, Area, $log, Principal,Company) {
 
         $scope.party = entity;
+        $scope.companies = Company.query();
 
         $scope.isXeon = false;
         Principal.identity().then(function(user) {
-            $log.debug(1);
             $scope.user = user;
             $scope.isXeon = (user.company.type === "XEON");
         });
