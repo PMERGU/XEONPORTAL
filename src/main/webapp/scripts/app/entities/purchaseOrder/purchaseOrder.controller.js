@@ -6,8 +6,8 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.user = currentUser;
             $scope.isXeon = currentUser.company.type === "XEON";
 
-            $scope.shiptopartys = Party.query({size: 500});
-            $scope.pickuppartys = Party.query({size: 500});
+            $scope.shiptopartys = Party.query({size: 500, sort: 'name'});
+            $scope.pickuppartys = Party.query({size: 500, sort: 'name'});
             $scope.attachmentCategories = Attachment.queryCategories();
             $scope.serviceLevels = StaticServices.serviceLevels();
 

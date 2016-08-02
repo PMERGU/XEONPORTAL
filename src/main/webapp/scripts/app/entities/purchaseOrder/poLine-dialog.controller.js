@@ -29,7 +29,6 @@ angular.module('portalApp').controller('PoLineDialogController',
                     hideOrShow([
                         {name: 'materialNumber', show: true, value: ""},
                         {name: 'materialType', show: true, value: "EACH"},
-                        {name: 'batchNumber', show: true, value: ""},
                         {name: 'length', show: true, value: ""},
                         {name: 'width', show: true, value: ""},
                         {name: 'height', show: true, value: ""},
@@ -40,7 +39,6 @@ angular.module('portalApp').controller('PoLineDialogController',
                 case "OUTBOUND":
                     hideOrShow([
                         {name: 'materialNumber', show: true, value: ""},
-                        {name: 'batchNumber', show: true, value: ""},
                         {name: 'materialType', show: true, value: "PALLET"},
                         {name: 'length'},
                         {name: 'width'},

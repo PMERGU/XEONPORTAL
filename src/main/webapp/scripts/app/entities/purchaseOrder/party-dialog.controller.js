@@ -11,12 +11,6 @@ angular.module('portalApp').controller('POPartyDialogController',
             $log.debug(1);
             $scope.user = user;
             $scope.isXeon = (user.company.type === "XEON");
-            $scope.party.$promise.then(function(party){
-                if($scope.isXeon && party.sapId === "100000"){
-                    $scope.party.sapId = null;
-                }
-            });
-
         });
 
         var onSaveSuccess = function (result) {

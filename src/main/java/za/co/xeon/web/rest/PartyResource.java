@@ -94,7 +94,7 @@ public class PartyResource {
     public ResponseEntity<List<Party>> getAllPartys(Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get all Partys");
         Page<Party> page = null;
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        if(SecurityUtils.isUserXeonOrAdmin()){
             page = partyRepository.findAll(pageable);
         }else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
