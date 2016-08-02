@@ -4,9 +4,9 @@ package za.co.xeon.domain.enumeration;
  * The CustomerType enumeration.
  */
 public enum MaterialType  implements SapCode{
-    BAGS("Bags", "C-BAGS"), BOX("Box", "C-BOX"), CRATE("Crate", "C-CRATE"), ENVELOPE("Envelope", "C-ENV"),
-    PALLET("Pallet", "C-PAL"), PIECES("Pieces", "C-PCS"), STAND("Stand", "C-STAND"), CONTAINER("Container", "C-CONT"),
-    DRUM("Drum", "C-DRUM"), ITEM("Item", "C-ITEM"), PACKAGE("Package", "C-PACK"), PIECE("Piece", "C-PIECE");
+    BAGS("Bags", "COURIER-BAGS"), BOX("Box", "COURIER-BOX"), CRATE("Crate", "COURIER-CRATE"), ENVELOPE("Envelope", "COURIER-ENV"),
+    PALLET("Pallet", "COURIER-PAL"), PIECES("Pieces", "COURIER-PCS"), STAND("Stand", "COURIER-STAND"), CONTAINER("Container", "COURIER-CONT"),
+    DRUM("Drum", "COURIER-DRUM"), ITEM("Item", "COURIER-ITEM"), PACKAGE("Package", "COURIER-PACK"), PIECE("Piece", "COURIER-PIECE");
 
     private String value;
     private String sapCode;
