@@ -53,6 +53,13 @@ public class PartyResource {
         if (party.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("party", "idexists", "A new party cannot already have an ID")).body(null);
         }
+        party.setName(party.getName().trim());
+        if (partyRepository.findFirstByName(party.getName()) != null) {
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("party", "name",
+                    String.format("A party with the name #%s already exists in the system. Please double check the existing list", party.getName())))
+                .body(party);
+        }
         if(!(SecurityUtils.isUserXeonOrAdmin())){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             party.setCompany(user.getCompany());

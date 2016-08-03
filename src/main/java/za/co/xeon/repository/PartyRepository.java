@@ -17,4 +17,5 @@ import java.util.List;
  */
 public interface PartyRepository extends JpaRepository<Party,Long> {
     Page<Party> findByCompany(Company company, Pageable pageable);
+    Party findFirstByName(String name);
 }
