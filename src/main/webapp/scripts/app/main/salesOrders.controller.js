@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('SalesOrdersController', function ($scope, $stateParams, $sce, $window, $log, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, CachedOrders, PurchaseOrder) {
+    .controller('SalesOrdersController', function ($scope, $stateParams, $sce, $window, $log, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, CachedOrders, PurchaseOrder, sweet) {
         $scope.deliveredOrders = [];
         $scope.undeliveredOrders = [];
         $scope.ordersStep = 0;
@@ -83,12 +83,23 @@ angular.module('portalApp')
         $scope.reloadData = function (refresh) {
             var resetPaging = true;
             getOrders(new Date(), refresh);
-            Company.getPurchaseOrders({id: $scope.selected.company.id}).$promise.then(function(data){
-                $scope.purchaseOrders = {};
-                data.forEach(function(po, idx){
-                    $scope.purchaseOrders[po.poNumber] = po;
+            if($scope.selected.company.id !== null) {
+                Company.getPurchaseOrders({id: $scope.selected.company.id}).$promise.then(function (data) {
+                    $scope.purchaseOrders = {};
+                    data.forEach(function (po, idx) {
+                        $scope.purchaseOrders[po.poNumber] = po;
+                    });
                 });
-            });
+            }else{
+                sweet.show({
+                    title: 'Something went wrong...notify derick',
+                    text: 'Company.id is null and we cant figure out why :'
+                    + '<div class="m">'
+                    + '    ' + $scope.selected
+                    + '</div>',
+                    html: true
+                });
+            }
         };
 
         function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {

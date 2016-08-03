@@ -127,7 +127,7 @@ public class MobileResource {
                         .body(new ByteArrayResource(pdf));
                 }else{
                     String msg = String.format("Invoice for deliveryNo %s, could not be found on ftp server", deliveryNo);
-                    log.info(msg);
+                    log.warn(msg);
                     return ResponseEntity
                         .badRequest()
                         .headers(HeaderUtil.createFailureAlert(msg))
