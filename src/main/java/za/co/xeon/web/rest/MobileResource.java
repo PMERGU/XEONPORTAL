@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 //Max uploaded file size (here it is 20 MB)
-@MultipartConfig(fileSizeThreshold = 5971520)
+@MultipartConfig(fileSizeThreshold = 15971520)
 public class MobileResource {
     private final static Logger log = LoggerFactory.getLogger(MobileResource.class);
 

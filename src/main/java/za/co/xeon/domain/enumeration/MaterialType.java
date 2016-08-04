@@ -6,7 +6,7 @@ package za.co.xeon.domain.enumeration;
 public enum MaterialType  implements SapCode{
     BAGS("Bags", "COURIER-BAGS"), BOX("Box", "COURIER-BOX"), CRATE("Crate", "COURIER-CRATE"), ENVELOPE("Envelope", "COURIER-ENV"),
     PALLET("Pallet", "COURIER-PAL"), PIECES("Pieces", "COURIER-PCS"), STAND("Stand", "COURIER-STAND"), CONTAINER("Container", "COURIER-CONT"),
-    DRUM("Drum", "COURIER-DRUM"), ITEM("Item", "COURIER-ITEM"), PACKAGE("Package", "COURIER-PACK"), PIECE("Piece", "COURIER-PIECE");
+    DRUM("Drum", "COURIER-DRUM"), ITEM("Item", "COURIER-ITEM"), PACKAGE("Package", "COURIER-PKG"), PIECE("Piece", "COURIER-PIECE");
 
     private String value;
     private String sapCode;

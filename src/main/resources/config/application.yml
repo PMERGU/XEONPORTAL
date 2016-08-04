@@ -10,6 +10,9 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
+multipart:
+    maxFileSize: 15Mb
+    maxRequestSize: 15Mb
 
 spring:
     jpa:
