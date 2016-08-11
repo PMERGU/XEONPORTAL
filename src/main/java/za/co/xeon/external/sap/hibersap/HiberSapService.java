@@ -1,13 +1,6 @@
 package za.co.xeon.external.sap.hibersap;
 
 import org.hibersap.bapi.BapiRet2;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.thymeleaf.util.MapUtils;
-import za.co.xeon.domain.PurchaseOrder;
-import za.co.xeon.domain.dto.DeliveryDto;
-import za.co.xeon.domain.dto.PurchaseOrderDto;
-import za.co.xeon.domain.dto.SalesOrderDto;
 import za.co.xeon.external.sap.SapSettings;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 import org.hibersap.configuration.AnnotationConfiguration;
@@ -23,11 +16,10 @@ import za.co.xeon.external.sap.hibersap.dto.*;
 import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
+import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
 
 import javax.annotation.PostConstruct;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -183,18 +175,21 @@ public class HiberSapService {
         }
     }
 
-    public List<ExReturn> createSalesOrder(Long po, SalesOrderCreateRFC rfc) throws Exception {
+    public SalesOrderCreatedDTO createSalesOrder(String po, SalesOrderCreateRFC rfc) throws Exception {
         log.debug("[{}] - createSalesOrder", po);
         Session session = sessionManager.openSession();
         try {
             session.execute(rfc);
             log.debug("[{}] - SO created : {}", po, rfc.getExSalesorder());
-            if(rfc.getExReturn().size() > 0 && rfc.getExReturn().get(0).getType().equals('E')){
+
+            if(rfc.getExReturn().size() > 0 && rfc.getExReturn().get(0).getType().equals("E")){
                 throw new Exception("Request [po:" + po + "] failed with SAP status code " + rfc.getExReturn().get(0).getType() + " : " + rfc.getExReturn().get(0).getMessage());
             }else{
+                log.debug("[{}] - Error : [{}]", po, rfc.getExReturn().get(0).getType());
+                log.debug("[{}] - Error : [{}]", po, rfc.getExReturn().size());
                 log.debug("[{}] - return", po);
                 rfc.getExReturn().stream().forEach(exReturn -> log.debug("[{}] - return : \n{}", po, exReturn.toString()));
-                return rfc.getExReturn();
+                return new SalesOrderCreatedDTO(rfc.getExSalesorder(), rfc.getExReturn());
             }
         }catch(Exception e){
             log.error("Couldn't complete createSalesOrder : " + e.getMessage(), e);

@@ -1,14 +1,19 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    ['$rootScope', '$scope', '$interval', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine', 'Party', 'User', 'AlertService', 'Principal', 'Company', 'currentUser', 'Attachment', 'UploadTools', 'sweet', 'FileSaver',
-        function ($rootScope, $scope, $interval, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine, Party, User, AlertService, Principal, Company, currentUser, Attachment, UploadTools, sweet, FileSaver) {
+    ['$rootScope', '$scope', '$interval', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine',
+        'Party', 'User', 'AlertService', 'Principal', 'Company', 'currentUser', 'Attachment', 'UploadTools', 'sweet', 'FileSaver',
+        'StaticServices',
+        function ($rootScope, $scope, $interval, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine,
+                  Party, User, AlertService, Principal, Company, currentUser, Attachment, UploadTools, sweet, FileSaver,
+                  StaticServices) {
             $scope.user = currentUser;
             $scope.isXeon = currentUser.company.type === "XEON";
 
-            $scope.shiptopartys = Party.query({size: 500});
-            $scope.pickuppartys = Party.query({size: 500});
+            $scope.shiptopartys = Party.query({size: 10000, sort: 'name'});
+            $scope.pickuppartys = Party.query({size: 10000, sort: 'name'});
             $scope.attachmentCategories = Attachment.queryCategories();
+            $scope.serviceLevels = StaticServices.serviceLevels();
 
             function resetPo(){
                 $log.debug("clearing po");
@@ -127,13 +132,12 @@ angular.module('portalApp').controller('PurchaseOrderController',
             function serviceLevelWatch(value){
                 $log.debug("watch serviceLevel triggered with value : " + value);
                 switch (value){
+                    case 'ECONOMY_PUS':
                     case 'ECONOMY':
-                    case 'EXPRESS_AM':
-                    case 'EXPRESS_PM':
+                    case 'OVERNIGHT_EXPRESS':
                         hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
                         break;
-                    case 'DEDICATED_EXPRESS':
-                    case 'DEDICATED_ECONOMY':
+                    case 'DEDICATED':
                         hideOrShow([
                             {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'FOUR_TON')},
                             {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
@@ -425,6 +429,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                         }
                                     );
                                 }
+                            }else{
+                                showProgress(100);
+                                onSaveSuccess(result);
                             }
                         },
                         onSaveError

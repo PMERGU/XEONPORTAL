@@ -33,7 +33,7 @@ import za.co.xeon.service.AttachmentService;
 
 @RestController
 @RequestMapping("/api")
-@MultipartConfig(fileSizeThreshold = 5971520)
+@MultipartConfig(fileSizeThreshold = 15971520)
 public class AttachmentResource {
 
     private AttachmentService attachmentService;

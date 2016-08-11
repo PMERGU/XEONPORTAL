@@ -53,13 +53,13 @@ angular.module('portalApp')
             $scope.isAuthenticated = Principal.isAuthenticated;
             if (account.company.id !== null){
                 $scope.company = Company.get({id: account.company.id});
-            }
-            Company.getPurchaseOrders({id: account.company.id}).$promise.then(function(data){
-                $scope.purchaseOrders = {};
-                data.forEach(function(po, idx){
-                    $scope.purchaseOrders[po.poNumber] = po;
+                Company.getPurchaseOrders({id: account.company.id}).$promise.then(function(data){
+                    $scope.purchaseOrders = {};
+                    data.forEach(function(po, idx){
+                        $scope.purchaseOrders[po.poNumber] = po;
+                    });
                 });
-            });
+            }
             getOrders(new Date());
             getCapturedPOs();
         });

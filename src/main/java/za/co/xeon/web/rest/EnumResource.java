@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.domain.enumeration.AttachmentCategories;
 import za.co.xeon.domain.enumeration.MaterialType;
+import za.co.xeon.domain.enumeration.ServiceLevel;
 
 import javax.servlet.annotation.MultipartConfig;
 import java.util.Arrays;
@@ -25,5 +26,10 @@ public class EnumResource {
     @RequestMapping(value = "/materialTypes", method = RequestMethod.GET)
     public List<MaterialType> listMaterials() {
         return Arrays.asList(MaterialType.values());
+    }
+
+    @RequestMapping(value = "/serviceLevels", method = RequestMethod.GET)
+    public List<ServiceLevel> listServiceLevels() {
+        return Arrays.asList(ServiceLevel.values());
     }
 }

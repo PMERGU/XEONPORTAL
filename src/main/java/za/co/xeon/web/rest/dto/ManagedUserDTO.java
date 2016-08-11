@@ -69,4 +69,6 @@ public class ManagedUserDTO extends UserDTO {
             ", lastModifiedDate=" + lastModifiedDate +
             "} " + super.toString();
     }
+
+
 }

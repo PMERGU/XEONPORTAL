@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 //Max uploaded file size (here it is 20 MB)
-@MultipartConfig(fileSizeThreshold = 5971520)
+@MultipartConfig(fileSizeThreshold = 15971520)
 public class MobileResource {
     private final static Logger log = LoggerFactory.getLogger(MobileResource.class);
 
@@ -127,7 +127,7 @@ public class MobileResource {
                         .body(new ByteArrayResource(pdf));
                 }else{
                     String msg = String.format("Invoice for deliveryNo %s, could not be found on ftp server", deliveryNo);
-                    log.info(msg);
+                    log.warn(msg);
                     return ResponseEntity
                         .badRequest()
                         .headers(HeaderUtil.createFailureAlert(msg))

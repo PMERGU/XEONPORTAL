@@ -6,7 +6,7 @@
                     <div class="col-md-12">
                         <h2 class="font-light m-b-xs tc-green-dark"
                             ng-show="purchaseOrder.id && purchaseOrder.state === 'PROCESSED'">
-                            Update Purchase Order : {{purchaseOrder.id}}
+                            View Purchase Order : {{purchaseOrder.id}} binded to Sales Order : {{purchaseOrder.soNumber}}
                         </h2>
                         <h2 class="font-light m-b-xs"
                             ng-show="purchaseOrder.id && purchaseOrder.state !== 'PROCESSED'">
@@ -80,7 +80,7 @@
                     <div class="col-md-3 text-right" style="margin-top: 10px;margin-bottom: 10px;" ng-show="employees">
                         <ui-select ng-model="capturedAs.employee" title="Choose a employee">
                             <ui-select-match placeholder="Select or search for employee">{{$select.selected.firstName + ' ' + $select.selected.lastName}}</ui-select-match>
-                            <ui-select-choices repeat="employee in employees | filter: $select.search">
+                            <ui-select-choices repeat="employee in employees | orderBy:'firstName' | filter: $select.search">
                                 <span ng-bind-html="employee.firstName + ' ' + employee.lastName | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
@@ -183,12 +183,8 @@
                                         <label class="control-label" for="field_serviceLevel">Service Level</label>
                                         <select class="form-control" name="serviceLevel"
                                                 ng-model="purchaseOrder.serviceLevel"
+                                                ng-options="level as level for level in serviceLevels "
                                                 id="field_serviceLevel">
-                                            <option value="ECONOMY">Economy</option>
-                                            <option value="EXPRESS_AM">Express AM</option>
-                                            <option value="EXPRESS_PM">Express PM</option>
-                                            <option value="DEDICATED_EXPRESS">Dedicated Express</option>
-                                            <option value="DEDICATED_ECONOMY">Dedicated Economy</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -236,7 +232,7 @@
                                             <select class="form-control" id="field_pickUpParty" name="pickUpParty"
                                                     ng-required="requiredFields['pickUpParty']"
                                                     ng-model="purchaseOrder.pickUpParty"
-                                                    ng-options="party as party.name for party in pickuppartys | orderBy:'name'">
+                                                    ng-options="party as party.name for party in pickuppartys track by party.id | orderBy:'name'">
                                             </select>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
@@ -309,7 +305,7 @@
                                             <select class="form-control" id="field_shipToParty" name="shipToParty"
                                                     ng-required="requiredFields['shipToParty']"
                                                     ng-model="purchaseOrder.shipToParty"
-                                                    ng-options="party as party.name for party in pickuppartys | orderBy:'name'">
+                                                    ng-options="party as party.name for party in pickuppartys track by party.id | orderBy:'name'">
                                             </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default"
@@ -505,7 +501,7 @@
                                     <div class="input-group">
                                         <select class="form-control" id="field_soldToParty" name="soldToParty" ng-required="user.company.type === 'AGENT'"
                                                 ng-model="purchaseOrder.soldToParty"
-                                                ng-options="party as party.name for party in pickuppartys | orderBy:'name'">
+                                                ng-options="party as party.name for party in pickuppartys track by party.id | orderBy:'name'">
                                             <option value=""></option>
                                         </select>
                                             <span class="input-group-btn">

@@ -53,13 +53,21 @@ public class PartyResource {
         if (party.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("party", "idexists", "A new party cannot already have an ID")).body(null);
         }
+        party.setName(party.getName().trim());
+        if (partyRepository.findFirstByName(party.getName()) != null) {
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("party", "name",
+                    String.format("A party with the name #%s already exists in the system. Please double check the existing list", party.getName())))
+                .body(party);
+        }
         if(!(SecurityUtils.isUserXeonOrAdmin())){
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             party.setCompany(user.getCompany());
-            party.setSapId("10000");
-        }else if(party.getSapId() == null && !party.getSapId().equals("10000")){
+            party.setSapId("100000");
+        }else if(party.getSapId() == null && !party.getSapId().equals("100000")){
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("party", "sapId", "Please add valid SapID for this user")).body(null);
         }
+        party.setSapId(party.getSapId().trim());
         Party result = partyRepository.save(party);
         return ResponseEntity.created(new URI("/api/partys/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("party", result.getId().toString()))
@@ -94,7 +102,7 @@ public class PartyResource {
     public ResponseEntity<List<Party>> getAllPartys(Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get all Partys");
         Page<Party> page = null;
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        if(SecurityUtils.isUserXeonOrAdmin()){
             page = partyRepository.findAll(pageable);
         }else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();

@@ -135,13 +135,14 @@ public class UserResource {
         return userRepository
             .findOneById(managedUserDTO.getId())
             .map(user -> {
-                user.setLogin(managedUserDTO.getLogin());
+                user.setLogin(managedUserDTO.getLogin().trim());
                 user.setFirstName(managedUserDTO.getFirstName());
                 user.setLastName(managedUserDTO.getLastName());
-                user.setEmail(managedUserDTO.getEmail());
+                user.setEmail(managedUserDTO.getEmail().trim());
                 user.setActivated(managedUserDTO.isActivated());
                 user.setLangKey(managedUserDTO.getLangKey());
-                user.setFcSapId(managedUserDTO.getFcSapId());
+                user.setFcSapId(managedUserDTO.getFcSapId().trim());
+                user.setCompany(managedUserDTO.getCompany());
                 Set<Authority> authorities = user.getAuthorities();
                 authorities.clear();
                 managedUserDTO.getAuthorities().stream().forEach(

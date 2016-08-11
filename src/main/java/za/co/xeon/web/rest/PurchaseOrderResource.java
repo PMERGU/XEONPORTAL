@@ -16,6 +16,7 @@ import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
 import za.co.xeon.service.PurchaseOrderService;
 import za.co.xeon.service.util.Pad;
+import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -82,6 +83,7 @@ public class PurchaseOrderResource {
         log.debug("=============================================== create PO ===================================================");
         log.debug("REST request to save PurchaseOrder");
         //validations
+        purchaseOrder.setPoNumber(purchaseOrder.getPoNumber().trim().toUpperCase());
         if (purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("purchaseOrder", "poNumber",
@@ -107,7 +109,7 @@ public class PurchaseOrderResource {
         //logic
         purchaseOrder.setUser(user);
         purchaseOrder.setCaptureDate(ZonedDateTime.now());
-        purchaseOrder.setState(PoState.UNPROCESSED);
+        purchaseOrder.setState(PoState.PROCESSED);
 
         //set PO as parent to PO.poLines
         purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
@@ -115,13 +117,11 @@ public class PurchaseOrderResource {
         log.debug(purchaseOrder.getPoLines().toString());
 
         try {
-            PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
-            log.debug(" PO saved as ID : {} - Creating SAP SO", savedPo.getId());
-            log.debug(savedPo.toStringFull());
+            log.debug(purchaseOrder.toStringFull());
             String imVkorg = null;
             String imVtweg = null;
             String imSpart = null;
-            switch (savedPo.getServiceType()){
+            switch (purchaseOrder.getServiceType()){
                 case COURIER:
                     imVkorg = "3000";
                     imVtweg = "L1";
@@ -141,34 +141,39 @@ public class PurchaseOrderResource {
                     throw new RuntimeException("Need to map new service type here");
             }
             SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
-                savedPo.getAccountReference(), safeEnum(savedPo.getServiceType()), Pad.left(savedPo.getUser().getCompany().getSapId(), 10),
-                savedPo.getCollectionReference(), Pad.left(savedPo.getPickUpParty().getSapId(), 10), safeEnum(savedPo.getCargoType()), savedPo.getCvConsol(),
-                savedPo.getCvContainerNo(), safeDate(savedPo.getDropOffDate()), safeEnum(savedPo.getShipToType()),
-                savedPo.getCvDestination(), safeDate(savedPo.getCvEta()), safeDate(savedPo.getCvEtd()),
-                savedPo.getUser().getFcSapId(), savedPo.getCvHouseWaybill(), safeDate(savedPo.getCvHouseWaybillIssue()),
-                convertItems(savedPo, savedPo.getPoLines()), safeEnum(savedPo.getModeOfTransport()), savedPo.getCvWaybill(), safeDate(savedPo.getCvWaybillIssue()),
-                savedPo.getCvOrigin(), savedPo.getCvCarrierRef(), safeEnum(savedPo.getPickUpType()), safeDate(savedPo.getCaptureDate().toLocalDate()),
-                savedPo.getPoNumber(), "JNB-HUB", "L1", safeEnum(savedPo.getServiceLevel()), savedPo.getCvShipper(),
-                savedPo.getCvCarrierRef(), Pad.left(savedPo.getShipToParty().getSapId(), 10), savedPo.getSoldToParty().getReference(),
-                Pad.left(savedPo.getSoldToParty().getSapId(), 10), "L1", "",
-                "", savedPo.getTelephone(), savedPo.getCvName(), savedPo.getCvNumber(), imVkorg, imVtweg
+                purchaseOrder.getAccountReference(), safeEnum(purchaseOrder.getServiceType()), Pad.left(purchaseOrder.getUser().getCompany().getSapId(), 10),
+                purchaseOrder.getCollectionReference(), Pad.left(purchaseOrder.getPickUpParty().getSapId(), 10), safeEnum(purchaseOrder.getCargoType()), purchaseOrder.getCvConsol(),
+                purchaseOrder.getCvContainerNo(), safeDate(purchaseOrder.getDropOffDate()), safeEnum(purchaseOrder.getShipToType()),
+                purchaseOrder.getCvDestination(), safeDate(purchaseOrder.getCvEta()), safeDate(purchaseOrder.getCvEtd()),
+                purchaseOrder.getUser().getFcSapId(), purchaseOrder.getCvHouseWaybill(), safeDate(purchaseOrder.getCvHouseWaybillIssue()),
+                convertItems(purchaseOrder, purchaseOrder.getPoLines()), safeEnum(purchaseOrder.getModeOfTransport()), purchaseOrder.getCvWaybill(), safeDate(purchaseOrder.getCvWaybillIssue()),
+                purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeEnum(purchaseOrder.getPickUpType()), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
+                purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), "L1", safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
+                purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
+                Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), "L1", "",
+                "", purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg
             );
             log.debug(rfc.toStringFull());
-            hiberSapService.createSalesOrder(savedPo.getId(), rfc);
-            log.debug(" PO saved as ID : {} - Creating SAP SO", savedPo.getId());
+            SalesOrderCreatedDTO so = hiberSapService.createSalesOrder(purchaseOrder.getPoNumber(), rfc);
+            purchaseOrder.setSoNumber(so.getSoNumber());
+            PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
+            log.debug(" PO saved as ID : {} - SO created as ID : {}", savedPo.getId(), savedPo.getSoNumber());
             log.debug("============================================= END create PO ==================================================");
+
             mailService.sendCSUMail(user,
-                String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
-                String.format("A new Purchase Order #%s has been created by %s %s for client %s. Please action and capture as soon as possible.", savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
+                String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
+                String.format("A new Purchase Order #%s has been created by %s %s for client %s and SAP SO auto created as %s.", savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
                 , null, null, getBaseUrl(request));
             return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert("purchase order", savedPo.getId().toString()))
-                .body(savedPo);
+                .headers(HeaderUtil.createAlert(
+                    String.format("New purchase order [%s] created and sales order [%s] auto captured in SAP.", savedPo.getId(), savedPo.getSoNumber()),
+                    savedPo.getId().toString()
+                )).body(savedPo);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             ex.printStackTrace();
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("purchase order could not be saved."))
+                .headers(HeaderUtil.createFailureAlert("Purchase order could not be saved: " + ex.getMessage()))
                 .body(null);
         }
     }
@@ -186,7 +191,8 @@ public class PurchaseOrderResource {
         log.debug("new BigDecimal(line.getNetWeight()) : {}",new BigDecimal(poLines.get(0).getNetWeight()));
         return poLines.stream().map(line -> new ImItemDetail(
             line.getMaterialType().getSapCode(), new BigDecimal(line.getOrderQuantity()), null, savedPo.getPickUpParty().getArea().getPlant(),
-            line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(), new BigDecimal(line.getLength()), new BigDecimal(line.getWidth()), new BigDecimal(line.getLength()),
+            line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(),
+            new BigDecimal(line.getLength()), new BigDecimal(line.getWidth()), new BigDecimal(line.getHeight()),
             "cm", "cm", "cm", new BigDecimal(line.getGrossWeight()), new BigDecimal(line.getNetWeight()), "KG", "KG"
         )).collect(Collectors.toList());
     }
@@ -421,13 +427,13 @@ public class PurchaseOrderResource {
     /**
      * GET  /attachments -> get all the attachment.
      */
-    @RequestMapping(value = "/purchaseOrders/{id}/attachments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/purchaseOrders/{id}/all/attachments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<Attachment>> getAllPoAttachments(@PathVariable Long id, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of attachments");
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
         Page<Attachment> page = attachmentRepository.findByPurchaseOrder(purchaseOrder, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/poLines");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/purchaseOrders/" + id + "/all/attachments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

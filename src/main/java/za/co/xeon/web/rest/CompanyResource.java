@@ -58,6 +58,7 @@ public class CompanyResource {
         if (company.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("company", "idexists", "A new company cannot already have an ID")).body(null);
         }
+        company.setSapId(company.getSapId().trim());
         Company result = companyRepository.save(company);
         return ResponseEntity.created(new URI("/api/companies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("company", result.getId().toString()))
