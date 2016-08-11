@@ -26,9 +26,12 @@ import com.codahale.metrics.annotation.Timed;
 import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.domain.Attachment;
 import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
 import za.co.xeon.domain.dto.ReadAttachmentDto;
 import za.co.xeon.external.ocr.Converters;
 import za.co.xeon.repository.PurchaseOrderRepository;
+import za.co.xeon.repository.UserRepository;
+import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.AttachmentService;
 
 @RestController
@@ -42,7 +45,8 @@ public class AttachmentResource {
     @Inject
     private PurchaseOrderRepository purchaseOrderRepository;
     private File tmpDir;
-
+    @Inject
+    private UserRepository userRepository;
     @Autowired
     public AttachmentResource(final AttachmentService attachmentService, final MobileConfiguration mobileConf) {
         this.attachmentService = attachmentService;
@@ -63,6 +67,9 @@ public class AttachmentResource {
         String originalFileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().indexOf("."));
         String originalExtension = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf(".") + 1);
         File attachmentFile = Converters.multipartToFile(tmpDir, "Attachment-" + originalFileName, originalExtension, file);
+        User user = userRepository
+            .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
+            .orElse(new User());
         return new Callable<Attachment>() {
             public Attachment call() throws Exception {
                 return attachmentService.createAttachment(deliveryNumber,
@@ -70,7 +77,8 @@ public class AttachmentResource {
                         category,
                         file.getContentType(),
                         visible,
-                        attachmentFile);
+                        attachmentFile,
+                        user);
             }
         };
     }
