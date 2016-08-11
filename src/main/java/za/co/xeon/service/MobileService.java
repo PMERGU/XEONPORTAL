@@ -95,7 +95,7 @@ public class MobileService {
                 }
 
                 //fourth long running task - upload POD to amazon S3
-                Attachment podAttachment = attachmentService.createAttachment(barcode, "POD scanned via mobile scanner", AttachmentCategories.INVOICE.toString(), contentType, true, podFile, user);
+                Attachment podAttachment = attachmentService.createAttachment(barcode, "POD scanned via mobile scanner", "POD", contentType, true, podFile, user);
                 String url =  mobileConfiguration.getHttpServerName() + format("api/attachments/%s", podAttachment.getUuid());
                 log.debug("\t[" + barcode + "] - Submitted pod to S3 successfully : " + podAttachment.getFileName() + ". Now updating SAP with URL [" + url + "]");
 
