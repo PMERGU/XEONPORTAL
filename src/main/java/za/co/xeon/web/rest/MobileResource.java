@@ -100,14 +100,17 @@ public class MobileResource {
     @RequestMapping(value = "/mobile/pods/{barcode}", method = RequestMethod.POST)
     @Timed
     public String scanDocument(@PathVariable(value="barcode") String barcode, @RequestParam("podDocument") MultipartFile podDocument) throws Exception {
-        log.debug("Service : [POST} /mobile/pod - uploadPOD " + tmpDir.getAbsolutePath());
-        String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));;
+        log.debug("Service : [POST} /mobile/pod - uploadPOD {} as {}",tmpDir.getAbsolutePath(),SecurityUtils.getCurrentUser().getUsername());
+        String originalFileName = podDocument.getOriginalFilename().substring(0, podDocument.getOriginalFilename().indexOf("."));
         String originalExtension = podDocument.getOriginalFilename().substring(podDocument.getOriginalFilename().indexOf(".")+1);
 
         File podFile = Converters.multipartToFile(tmpDir, originalFileName, originalExtension, podDocument);
 
         //create callable to continue long running process in different thread
-        mobileService.submitPOD(barcode, podFile, podDocument.getContentType(), originalExtension);
+        User user = userRepository
+            .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
+            .orElse(new User());
+        mobileService.submitPOD(barcode, podFile, podDocument.getContentType(), originalExtension,user);
         return "\t[" + podFile.getName() + "] - document submitted for processing";
     }
 

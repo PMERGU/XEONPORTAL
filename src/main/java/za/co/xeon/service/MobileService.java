@@ -5,6 +5,7 @@ import org.hibersap.bapi.BapiRet2;
 import org.springframework.scheduling.annotation.AsyncResult;
 import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.domain.Attachment;
+import za.co.xeon.domain.User;
 import za.co.xeon.domain.dto.PurchaseOrderDto;
 import za.co.xeon.domain.enumeration.AttachmentCategories;
 import za.co.xeon.external.as3.S3Service;
@@ -63,7 +64,7 @@ public class MobileService {
     private MobileConfiguration mobileConfiguration;
 
     @Async
-    public void submitPOD(String barcode, File podFile, String contentType, String originalExtension){
+    public void submitPOD(String barcode, File podFile, String contentType, String originalExtension, User user){
         //first long running task - Submit document for processing
         Task task = ocrService.scanDocument(podFile.getPath()).getTask();
 
@@ -94,7 +95,7 @@ public class MobileService {
                 }
 
                 //fourth long running task - upload POD to amazon S3
-                Attachment podAttachment = attachmentService.createAttachment(barcode, "POD scanned via mobile scanner", AttachmentCategories.INVOICE.toString(), contentType, true, podFile);
+                Attachment podAttachment = attachmentService.createAttachment(barcode, "POD scanned via mobile scanner", AttachmentCategories.INVOICE.toString(), contentType, true, podFile, user);
                 String url =  mobileConfiguration.getHttpServerName() + format("api/attachments/%s", podAttachment.getUuid());
                 log.debug("\t[" + barcode + "] - Submitted pod to S3 successfully : " + podAttachment.getFileName() + ". Now updating SAP with URL [" + url + "]");
 

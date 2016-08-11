@@ -50,10 +50,7 @@ public class AttachmentService {
                                        String category,
                                        String contentType,
                                        Boolean visible,
-                                       File attachmentFile) {
-        User user = userRepository
-            .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
-            .orElse(new User());
+                                       File attachmentFile, User user) {
         deliveryNumber = org.apache.commons.lang.StringUtils.leftPad(deliveryNumber, 10, "0");
         Attachment attachment = new Attachment(
             deliveryNumber,
