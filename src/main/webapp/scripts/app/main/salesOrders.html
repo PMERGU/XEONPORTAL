@@ -54,6 +54,7 @@
                                     <th>Captured By</th>
                                     <th>Capture Date</th>
                                     <th>Pickup Party</th>
+                                    <th>Pickup HUB</th>
                                     <th>Ship to Party</th>
                                     <th>Sales Order</th>
                                     <th>Delivery No</th>
@@ -70,6 +71,7 @@
                                     <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.area.hub}}</td>
                                     <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
                                     <td>{{ order.vbeln }}</td>
                                     <td>{{ order.dbeln }}</td>
@@ -103,6 +105,7 @@
                                     <th>Captured By</th>
                                     <th>Capture Date</th>
                                     <th>Pickup Party</th>
+                                    <th>Pickup HUB</th>
                                     <th>Ship to Party</th>
                                     <th>Sales Order</th>
                                     <th>Delivery No</th>
@@ -120,6 +123,7 @@
                                     <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].pickUpParty.name + ' (' + purchaseOrders[order.bstkd].pickUpParty.city + ')' }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.area.hub}}</td>
                                     <td>{{ purchaseOrders[order.bstkd].shipToParty.name + ' (' + purchaseOrders[order.bstkd].shipToParty.city + ')' }}</td>
                                     <td>{{ order.vbeln }}</td>
                                     <td>{{ order.dbeln }}</td>
