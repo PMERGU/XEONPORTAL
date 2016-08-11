@@ -8,6 +8,7 @@ angular.module('portalApp')
         $scope.todaysDate = new Date();
         $scope.loadingOrders = false;
 
+        
         $scope.companies = Company.query();
         $scope.company = null;
         $scope.selected = {

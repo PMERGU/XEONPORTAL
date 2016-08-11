@@ -4,7 +4,7 @@ package za.co.xeon.domain.enumeration;
  * Created by Derick on 7/17/2016.
  */
 public enum AttachmentCategories {
-    CARTAGE("Cartage"), INVOICE("Invoice"), POD("POD"), TREM("TREM");
+    CARTAGE("Cartage"), INVOICE("Invoice"), POD("POD"), TREM("TREM"), COLLECTION_DOCUMENTS("Collection documents");
 
     private String value;
 

@@ -17,6 +17,10 @@ angular.module('portalApp')
         poAttachments.$promise.then(function(result){
             for(var i=0; i < result.length; i++){
                 $scope.attachments.push(result[i]);
+                if(result[i].category === 'POD'){
+                    $scope.podDate = new Date(result[i].createdDate);
+                    $scope.states['POD'] = true;
+                }
             }
         });
 

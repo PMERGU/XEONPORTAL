@@ -3,10 +3,10 @@
         <div class="hpanel" style="margin-bottom: 15px;">
             <div class="panel-body">
                 <h2 class="font-light m-b-xs" ng-show="!states['POD']">
-                    Order #{{orderGroup[0].dbeln}} in progress
+                    {{purchaseOrder.serviceType}} order #{{orderGroup[0].dbeln}} in progress
                 </h2>
                 <h2 class="font-light m-b-xs" ng-show="states['POD']" style="color: #3498db">
-                    Order #{{orderGroup[0].dbeln}} completed {{ states['INVOICE'] ? ' and invoice available' : '' }}
+                    {{purchaseOrder.serviceType}} order #{{orderGroup[0].dbeln}} completed {{ states['INVOICE'] ? ' and invoice available' : '' }}
                 </h2>
                 <jh-alert></jh-alert>
                 <small>Detailed order view as it proceeds from capture to completed</small>
@@ -161,12 +161,15 @@
                                             'hh:mm'}}
                                         </td>
                                     </tr>
-                                    <tr ng-show="states['POD']">
+                                    <tr ng-show="states['POD'] && purchaseOrder.serviceType === 'COURIER'">
                                         <td>5</td>
-                                        <td ng-show="purchaseOrder.serviceType === 'COURIER'">POD uploaded and available online
-                                        <td ng-show="purchaseOrder.serviceType === 'INBOUND' || purchaseOrder.serviceType === 'OUTBOUND')">POR uploaded and available online
-                                        <td>POR uploaded and available online
+                                        <td>POD uploaded and available online
+                                        <td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}
                                         </td>
+                                    </tr>
+                                    <tr ng-show="states['POD'] && (purchaseOrder.serviceType === 'INBOUND' || purchaseOrder.serviceType === 'OUTBOUND')">
+                                        <td>5</td>
+                                        <td>POR uploaded and available online
                                         <td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}
                                         </td>
                                     </tr>
@@ -203,7 +206,7 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="attachment in attachments | orderBy:'id'">
-                                        <td>{{attachment.id}}</td>
+                                        <td>{{$index+1}}</td>
                                         <td>{{attachment.category}}</td>
                                         <td>{{attachment.createdDate | date: 'yyyy-MM-dd HH:mm'}}</td>
                                         <td>{{attachment.user.firstName === 'Administrator' ? 'Mobile scanner' : attachment.user.firstName + ' ' + attachment.user.lastName}}</td>

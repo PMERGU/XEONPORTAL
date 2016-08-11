@@ -40,7 +40,7 @@
             <uib-tabset>
                 <uib-tab>
                     <uib-tab-heading>
-                        <span class="badge badge-danger" style="margin-right: 10px">{{undeliveredOrders.length}}</span>Undelivered&nbsp;
+                        <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: 'dbeln').length}}</span>Undelivered&nbsp;
                         <i class="fa fa-refresh btn btn-default btn-xs" ng-click="reloadData(true)"></i>
                     </uib-tab-heading>
                     <div class="panel-body" style="padding-top: 0px;">
@@ -90,7 +90,7 @@
                 </uib-tab>
                 <uib-tab>
                     <uib-tab-heading>
-                        <span class="badge badge-primary" style="margin-right: 10px">{{deliveredOrders.length}}</span>Delivered
+                        <span class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders | unique: 'dbeln').length}}</span>Delivered
                     </uib-tab-heading>
                     <div class="panel-body" style="padding-top: 0px;">
                         <div class="table-responsive">

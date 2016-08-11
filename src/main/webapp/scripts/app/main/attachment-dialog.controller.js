@@ -1,16 +1,19 @@
 'use strict';
 
 angular.module('portalApp').controller('AttachmentDialogController',
-    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$log', 'Upload', 'UploadTools', 'Attachment', 'currentUser',
-        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, $log, Upload, UploadTools, Attachment, currentUser) {
+    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$log', 'Upload', 'UploadTools', 'Attachment', 'currentUser', 'Principal',
+        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, $log, Upload, UploadTools, Attachment, currentUser, Principal) {
             Attachment.queryCategories().$promise.then(function(result){
-                if(currentUser.company.type !== "XEON"){
-                    result = result.filter(function(value){
-                        return !(value === "INVOICE" || value === "POD");
-                    });
-                }
-                $scope.attachmentCategories = result;
-                $scope.attachment.category = $scope.attachmentCategories[0];
+                $log.debug(currentUser);
+                Principal.identity().then(function(user) {
+                    if(user.company.type !== "XEON") {
+                        result = result.filter(function (value) {
+                            return !(value === "INVOICE" || value === "POD");
+                        });
+                    };
+                    $scope.attachmentCategories = result;
+                    $scope.attachment.category = $scope.attachmentCategories[0];
+                });
             });
             Upload.setDefaults({ngfMinSize: 20000, ngfMaxSize:20000000});
             // $scope.submit = function() {

@@ -320,6 +320,11 @@
                                                 required
                                             </p>
                                         </div>
+                                        <div ng-show="purchaseOrder.pickUpParty.id === purchaseOrder.shipToParty.id">
+                                            <p class="help-block small-help-block pull-right">
+                                                Pickup and DropOff should not be the same
+                                            </p>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label" for="field_shipToType">Delivery Type</label>

@@ -27,20 +27,24 @@
                     <label class="control-label" for="field_description">Description</label>
                     <textarea class="form-control" rows="4" name="description" id="field_description" required
                               ng-model="attachment.description"></textarea>
-
+                    <div ng-show="editForm.description.$invalid">
+                        <p class="help-block small-help-block pull-right" ng-show="editForm.description.$error.required">required</p>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-
                 Drop File:
                 <div ngf-drop ngf-select ng-model="attachment.files" class="drop-box"
                      ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-                     accept="image/*,application/pdf"
+                     accept="image/*,application/pdf" ngf-max-size="5MB" required ngf-model-invalid="errorFile"
                      ngf-pattern="'image/*,application/pdf'">Drop pdfs or images here or click to upload
                 </div>
                 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                <div class="alert alert-error" ng-show="editForm.file.$error.maxSize">
+                    {{errorFile.size / 1000000|number:1}}MB: max 5M
+                </div>
                 <div class="alert alert-success" ng-show="attachment.files">
                     Files added so far for uploading to server:
                     <ul>

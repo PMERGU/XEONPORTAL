@@ -167,7 +167,12 @@ public class UserResource {
     @Transactional(readOnly = true)
     public ResponseEntity<List<ManagedUserDTO>> getAllUsers(Pageable pageable)
         throws URISyntaxException {
-        Page<User> page = userRepository.findAllByEnabledIsTrue(pageable);
+        Page<User> page = null;
+        if(SecurityUtils.isUserAdmin()){
+            page = userRepository.findAll(pageable);
+        }else{
+            page = userRepository.findAllByEnabledIsTrue(pageable);
+        }
         List<ManagedUserDTO> managedUserDTOs = page.getContent().stream()
             .map(user -> new ManagedUserDTO(user))
             .collect(Collectors.toList());
