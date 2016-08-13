@@ -320,8 +320,9 @@
                                                 required
                                             </p>
                                         </div>
-                                        <div ng-show="purchaseOrder.pickUpParty.id === purchaseOrder.shipToParty.id">
-                                            <p class="help-block small-help-block pull-right">
+                                        <div ng-show="purchaseOrder.pickUpParty === purchaseOrder.shipToParty">
+                                            <p class="help-block small-help-block pull-right"
+                                               ng-show="editForm.shipToParty.$error.required">
                                                 Pickup and DropOff should not be the same
                                             </p>
                                         </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal, PurchaseOrder, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, poAttachments, delAttachments, Attachment) {
+    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal, PurchaseOrder, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, poAttachments, delAttachments, Attachment, Comment, comments) {
         $scope.attachments = [];
         delAttachments.$promise.then(function(result){
             for(var i=0; i < result.length; i++){
@@ -23,6 +23,17 @@ angular.module('portalApp')
                 }
             }
         });
+        $scope.comments = comments;
+        $scope.comment = {
+            id: null,
+            message: null,
+            purchaseOrder: {
+                id: purchaseOrder.id
+            },
+            user: null,
+            internal: false,
+            category: 'ORDER'
+        };
 
         $log.debug($scope.attachments);
         $scope.isDownloadingAttachment = false;
@@ -92,6 +103,34 @@ angular.module('portalApp')
             $scope.states['DELIVERED'] = true;
         }
 
+        $scope.cuComment = function(comment){
+            $log.debug("cuComment");
+            $log.debug(comment);
+            Comment.update(comment, function (result) {
+                $scope.isSavingComment = false;
+                comments.push(result);
+            }, function (result) {
+                $log.error(result);
+                $scope.isSavingComment = false;
+            });
+        };
+
+        $scope.deleteComment = function(comment){
+            $log.debug("deleteComment");
+            $log.debug(comment);
+            Comment.delete(comment, function (result) {
+                $scope.isSavingComment = false;
+            }, function (result) {
+                $log.error(result);
+                $scope.isSavingComment = false;
+            });
+        };
+
+        $interval(function () {
+            PurchaseOrder.getComments({id: $stateParams.purchaseOrder.id}).$promise.then(function(result){
+                $scope.comments = result;
+            });
+        }, 60000);
 
         $scope.downloadPod = function(){
             FileSaver.saveAs($scope.podBlob, $scope.orderGroup[0].dbeln + '.jpg');

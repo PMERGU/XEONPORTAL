@@ -200,6 +200,10 @@ public class PurchaseOrder implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<Attachment> attachments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.EAGER, orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+    private List<Comment> comments = new ArrayList<>();
+
     public ZonedDateTime getUpdatedDate() {
         return updatedDate;
     }
@@ -606,6 +610,14 @@ public class PurchaseOrder implements Serializable {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

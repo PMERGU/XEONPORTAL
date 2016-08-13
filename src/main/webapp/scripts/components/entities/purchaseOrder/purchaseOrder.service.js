@@ -46,6 +46,10 @@ angular.module('portalApp')
                 url: 'api/purchaseOrders/:id/lines',
                 method: 'GET', isArray: true
             },
+            'getComments': {
+                url: 'api/purchaseOrders/:id/comments',
+                method: 'GET', isArray: true
+            },
             'getAttachments': {
                 url: 'api/purchaseOrders/:id/all/attachments',
                 method: 'GET', isArray: true

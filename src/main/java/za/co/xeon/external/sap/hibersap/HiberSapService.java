@@ -1,6 +1,7 @@
 package za.co.xeon.external.sap.hibersap;
 
 import org.hibersap.bapi.BapiRet2;
+import org.springframework.cache.annotation.Cacheable;
 import za.co.xeon.external.sap.SapSettings;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 import org.hibersap.configuration.AnnotationConfiguration;
@@ -53,7 +54,7 @@ public class HiberSapService {
         sessionManager = configuration.buildSessionManager();
     }
 
-//    @Cacheable(value = "CustomerOrdersByDate")
+    @Cacheable(value = "CustomerOrdersByDate")
     public List<EvResult> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
         customerNumber = Pad.left(customerNumber, 10);
         Session session = sessionManager.openSession();

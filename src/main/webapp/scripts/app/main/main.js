@@ -66,6 +66,9 @@ angular.module('portalApp')
                     }],
                     poAttachments: ['$stateParams', 'Attachment', '$q', 'PurchaseOrder', function ($stateParams, Attachment, $q, PurchaseOrder) {
                         return PurchaseOrder.getAttachments({id: $stateParams.purchaseOrder.id});
+                    }],
+                    comments: ['$stateParams', 'Comment', '$q', 'PurchaseOrder', function ($stateParams, Comment, $q, PurchaseOrder) {
+                        return PurchaseOrder.getComments({id: $stateParams.purchaseOrder.id});
                     }]
                 }
             })

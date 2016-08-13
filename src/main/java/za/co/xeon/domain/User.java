@@ -10,7 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.time.ZonedDateTime;
 
@@ -99,6 +101,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PurchaseOrder> capturedPurchaseOrders = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -238,6 +245,18 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public Set<PurchaseOrder> getAssignedPurchaseOrders() {
         return assignedPurchaseOrders;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public void setAssignedPurchaseOrders(Set<PurchaseOrder> assignedPurchaseOrders) {

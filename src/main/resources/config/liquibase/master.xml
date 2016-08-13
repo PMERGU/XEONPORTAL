@@ -18,4 +18,5 @@
     <include file="classpath:config/liquibase/changelog/20160718_changes.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160723_changes.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160727_changes.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160813_added_entity_Comment.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

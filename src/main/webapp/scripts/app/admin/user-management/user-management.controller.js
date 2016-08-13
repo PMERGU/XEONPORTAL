@@ -4,13 +4,13 @@ angular.module('portalApp')
     .controller('UserManagementController', function ($scope, Principal, User, ParseLinks) {
         $scope.users = [];
         $scope.authorities = ["ROLE_USER", "ROLE_ADMIN"];
-		
+
 		Principal.identity().then(function(account) {
             $scope.currentAccount = account;
         });
         $scope.page = 1;
         $scope.loadAll = function () {
-            User.query({page: $scope.page - 1, size: 20}, function (result, headers) {
+            User.query({page: $scope.page - 1, size: 1000}, function (result, headers) {
                 $scope.links = ParseLinks.parse(headers('link'));
                 $scope.totalItems = headers('X-Total-Count');
                 $scope.users = result;

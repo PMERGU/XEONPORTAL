@@ -242,14 +242,50 @@
                             <uib-tab-heading>
                                 <span ng-show="purchaseOrder.comment" class="badge badge-warning" style="margin-right: 10px">!</span>Comments
                             </uib-tab-heading>
-                            <uib-alert type="warn" close="closeAlert($index)" ng-show="purchaseOrder.specialInstruction">
+                            <uib-alert type="warn" ng-show="purchaseOrder.specialInstruction">
                                 <strong>Customer Instruction: </strong>{{ purchaseOrder.specialInstruction }}
                             </uib-alert>
-                            <uib-alert type="info" close="closeAlert($index)" ng-show="purchaseOrder.comment">
+                            <uib-alert type="info" ng-show="purchaseOrder.comment">
                                 <strong>Comment from CSU: &nbsp&nbsp&nbsp</strong>{{ purchaseOrder.comment }}
                             </uib-alert>
-                            <div class="alert alert-success" ng-show="!purchaseOrder.comment">
-                                <i class="fa fa-hashtag"></i> &nbsp; no comments have been added to this order as yet.
+                            <div class="hpanel">
+                                <div class="panel-body no-padding">
+                                    <div class="row" ng-show="comments.length === 0">
+                                        <div class="col-md-12">
+                                            <strong>&nbsp;&nbsp;&nbsp;No comments have been added as yet</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="comments.length !== 0">
+                                        <div class="col-md-12">
+                                            <div class="chat-discussion" style="height: auto; max-height: 500px">
+                                                <div ng-repeat="comment in comments | orderBy:'-captureDate'" class="chat-message" ng-class="{'left':comment.user.company.type!=='XEON', 'right':comment.user.company.type==='XEON'}">
+                                                    <ng-avatar initials="{{comment.user.firstName.charAt(0) + comment.user.lastName.charAt(0)}}" corner-radius="7" bg-color="{{ comment.user.company.type!=='XEON' ? '#ffb606' : '#258cd1' }}" class="message-avatar"></ng-avatar>
+                                                    <div class="message">
+                                                        <a class="message-author" href="#"> {{ comment.user.firstName + ' ' + comment.user.lastName }}</a>
+                                                        <span class="message-date">  {{ comment.captureDate | date:'yyyy-MM-dd HH:mm' }} </span>
+                                                        <span class="message-content">
+                                                            {{ comment.message }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <form name="commentForm" role="form" novalidate ng-submit="cuComment(comment)" show-validation>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" ng-model="comment.message" placeholder="Type your comment here..." required>
+                                            <span class="input-group-btn">
+                                                <button type="submit" ng-disabled="commentForm.$invalid || isSaving" class="btn btn-primary">
+                                                    <span class="glyphicon glyphicon-save"></span>&nbsp;
+                                                    <span ng-show="!isSavingComment">Add Comment</span>
+                                                    <span ng-show="isSavingComment">uploading...</span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </uib-tab>
                     </uib-tabset>

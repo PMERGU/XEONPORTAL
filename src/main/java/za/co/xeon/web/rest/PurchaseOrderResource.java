@@ -7,10 +7,7 @@ import za.co.xeon.domain.enumeration.SapCode;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.SalesOrderCreateRFC;
 import za.co.xeon.external.sap.hibersap.dto.ImItemDetail;
-import za.co.xeon.repository.AttachmentRepository;
-import za.co.xeon.repository.PoLineRepository;
-import za.co.xeon.repository.PurchaseOrderRepository;
-import za.co.xeon.repository.UserRepository;
+import za.co.xeon.repository.*;
 import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
@@ -62,6 +59,9 @@ public class PurchaseOrderResource {
 
     @Inject
     private PoLineRepository poLineRepository;
+
+    @Inject
+    private CommentRepository commentRepository;
 
     @Inject
     private AttachmentRepository attachmentRepository;
@@ -421,6 +421,27 @@ public class PurchaseOrderResource {
         }
         Page<PoLine> page = poLineRepository.findByPurchaseOrder(purchaseOrder, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/poLines");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /poLines -> get all the poLines.
+     */
+    @RequestMapping(value = "/purchaseOrders/{id}/comments",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Comment>> getAllPoComments(@PathVariable Long id, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of comments");
+        PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+        Page<Comment> page = null;
+        if (!(SecurityUtils.isUserXeonOrAdmin())) {
+            page = commentRepository.findByInternalIsFalseAndPurchaseOrder(purchaseOrder, pageable);
+        }else {
+            page = commentRepository.findByPurchaseOrder(purchaseOrder, pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/comments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

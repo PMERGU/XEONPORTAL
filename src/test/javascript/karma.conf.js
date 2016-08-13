@@ -64,6 +64,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-sweetalert/dist/ngSweetAlert.js',
             'main/webapp/bower_components/angular-sweetalert/dist/ngSweetAlert.min.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
+            'main/webapp/bower_components/angular-avatar/src/angular-avatar.js',
             // endbower
             'main/webapp/scripts/app/app.js',
             'main/webapp/scripts/app/**/*.js',
