@@ -156,6 +156,7 @@ public class MailService {
         if(isFromXeon){
             sendEmail(comment.getPurchaseOrder().getUser().getEmail(), subject, content, false, true);
         }else {
+            subject= subject + " from " + comment.getUser().getCompany().getName();
             sendEmail(messageSource.getMessage("email.csu.emailAddress", null, locale), subject, content, false, true);
         }
     }
