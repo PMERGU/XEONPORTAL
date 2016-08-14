@@ -141,7 +141,7 @@ public class MailService {
 
     @Async
     public void sendOrderCommentMail(Comment comment) {
-        log.debug("Sending Order comment e-mail from '{}'", comment.getPurchaseOrder().getUser().getEmail());
+        log.debug("Sending order comment e-mail from '{}'", comment.getPurchaseOrder().getUser().getEmail());
         Locale locale = Locale.forLanguageTag(comment.getPurchaseOrder().getUser().getLangKey());
         Context context = new Context(locale);
         User fromUser = comment.getUser();
