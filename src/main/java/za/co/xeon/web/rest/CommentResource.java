@@ -15,6 +15,7 @@ import za.co.xeon.domain.User;
 import za.co.xeon.repository.CommentRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.SecurityUtils;
+import za.co.xeon.service.MailService;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 
@@ -24,7 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
+import javax.servlet.http.HttpServletRequest;
 /**
  * REST controller for managing Comment.
  */
@@ -39,6 +40,10 @@ public class CommentResource {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private MailService mailService;
+
     /**
      * POST  /comments -> Create a new comment.
      */
@@ -46,12 +51,14 @@ public class CommentResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Comment> createComment(@Valid @RequestBody Comment comment) throws URISyntaxException {
+    public ResponseEntity<Comment> createComment(@Valid @RequestBody Comment comment, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save Comment : {}", comment);
         if (comment.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("comment", "idexists", "A new comment cannot already have an ID")).body(null);
         }
         Comment result = commentRepository.save(comment);
+
+        mailService.sendOrderCommentMail(commentRepository.findOne(result.getId()));
         return ResponseEntity.created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("comment", result.getId().toString()))
             .body(result);
@@ -64,14 +71,15 @@ public class CommentResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Comment> updateComment(@Valid @RequestBody Comment comment) throws URISyntaxException {
+    public ResponseEntity<Comment> updateComment(@Valid @RequestBody Comment comment, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update Comment : {}", comment);
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         comment.setUser(comment.getUser() == null? user:comment.getUser());
         if (comment.getId() == null) {
-            return createComment(comment);
+            return createComment(comment, request);
         }
         Comment result = commentRepository.save(comment);
+        mailService.sendOrderCommentMail(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("comment", comment.getId().toString()))
             .body(result);

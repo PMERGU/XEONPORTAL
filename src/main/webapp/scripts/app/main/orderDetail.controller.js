@@ -109,6 +109,7 @@ angular.module('portalApp')
             Comment.update(comment, function (result) {
                 $scope.isSavingComment = false;
                 comments.push(result);
+                $scope.comment.message = null;
             }, function (result) {
                 $log.error(result);
                 $scope.isSavingComment = false;

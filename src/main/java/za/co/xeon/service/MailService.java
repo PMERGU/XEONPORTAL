@@ -1,6 +1,7 @@
 package za.co.xeon.service;
 
 import za.co.xeon.config.JHipsterProperties;
+import za.co.xeon.domain.Comment;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import za.co.xeon.domain.enumeration.CompanyType;
 import za.co.xeon.repository.UserRepository;
 
 
@@ -135,6 +137,27 @@ public class MailService {
         String content = templateEngine.process("poCommentEmail", context);
         String subject = messageSource.getMessage("email.poComment.title", null, locale);
         sendEmail(purchaseOrder.getUser().getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendOrderCommentMail(Comment comment) {
+        log.debug("Sending Order comment e-mail from '{}'", comment.getPurchaseOrder().getUser().getEmail());
+        Locale locale = Locale.forLanguageTag(comment.getPurchaseOrder().getUser().getLangKey());
+        Context context = new Context(locale);
+        User fromUser = comment.getUser();
+        boolean isFromXeon = fromUser.getCompany().getType().equals(CompanyType.XEON);
+
+        context.setVariable("to", isFromXeon ? comment.getPurchaseOrder().getUser().getFirstName() : "CSU Team");
+        context.setVariable("from", comment.getUser());
+        context.setVariable("comment", comment.getMessage());
+        context.setVariable("purchaseOrder", comment.getPurchaseOrder());
+        String content = templateEngine.process("orderCommentEmail", context);
+        String subject = "Xeon portal : Comment has been added to PO [" + comment.getPurchaseOrder().getPoNumber() + "] by " + comment.getUser().getFirstName() + " " + comment.getUser().getLastName();
+        if(isFromXeon){
+            sendEmail(comment.getPurchaseOrder().getUser().getEmail(), subject, content, false, true);
+        }else {
+            sendEmail(messageSource.getMessage("email.csu.emailAddress", null, locale), subject, content, false, true);
+        }
     }
 
     @Async

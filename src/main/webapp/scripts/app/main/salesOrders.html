@@ -41,7 +41,9 @@
                 <uib-tab>
                     <uib-tab-heading>
                         <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: 'dbeln').length}}</span>Undelivered&nbsp;
-                        <i class="fa fa-refresh btn btn-default btn-xs" ng-click="reloadData(true)"></i>
+                        <span class="btn btn-default btn-xs" ng-click="reloadData(true)" ng-disabled="loadingOrders">
+                            <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
+                        </span>
                     </uib-tab-heading>
                     <div class="panel-body" style="padding-top: 0px;">
                         <div class="table-responsive">

@@ -54,7 +54,7 @@ public class HiberSapService {
         sessionManager = configuration.buildSessionManager();
     }
 
-    @Cacheable(value = "CustomerOrdersByDate")
+//    @Cacheable(value = "CustomerOrdersByDate")
     public List<EvResult> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
         customerNumber = Pad.left(customerNumber, 10);
         Session session = sessionManager.openSession();
