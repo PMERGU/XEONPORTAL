@@ -8,7 +8,7 @@ angular.module('portalApp')
         $scope.todaysDate = new Date();
         $scope.loadingOrders = false;
 
-        
+
         $scope.companies = Company.query();
         $scope.company = null;
         $scope.selected = {
@@ -30,7 +30,7 @@ angular.module('portalApp')
             .withBootstrap()
             .withPaginationType('full_numbers')
             .withOption('rowCallback', rowCallback)
-            .withDisplayLength(10);
+            .withDisplayLength(25);
         $scope.dtColumnDefs = [
             DTColumnDefBuilder.newColumnDef(0),
             DTColumnDefBuilder.newColumnDef(1),

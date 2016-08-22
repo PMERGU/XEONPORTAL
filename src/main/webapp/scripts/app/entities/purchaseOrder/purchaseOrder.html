@@ -119,24 +119,36 @@
                                     <div class="form-group">
                                         <label class="control-label" for="field_poNumber">Purchase Order Number</label>
                                         <input type="text" class="form-control" name="poNumber" id="field_poNumber"
-                                               ng-model="purchaseOrder.poNumber"
+                                               ng-model="purchaseOrder.poNumber" ng-maxlength="35" ng-pattern="/^[a-zA-Z0-9]+$/"
                                                required/>
                                         <div ng-show="editForm.poNumber.$invalid">
                                             <p class="help-block small-help-block pull-right"
                                                ng-show="editForm.poNumber.$error.required">
                                                 required
                                             </p>
+                                            <p class="help-block small-help-block pull-right"
+                                               ng-show="editForm.poNumber.$error.maxlength">
+                                                Max 35
+                                            </p>
+                                            <p class="help-block small-help-block pull-right"
+                                               ng-show="editForm.poNumber.$error.pattern">
+                                                only numeric and alpha-numeric characters allowed
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label" for="field_reference">Reference</label>
                                         <input type="text" class="form-control" name="reference" id="field_reference"
-                                               ng-model="purchaseOrder.reference"
+                                               ng-model="purchaseOrder.reference" ng-maxlength="16"
                                                required/>
                                         <div ng-show="editForm.reference.$invalid">
                                             <p class="help-block small-help-block pull-right"
                                                ng-show="editForm.reference.$error.required">
                                                 required
+                                            </p>
+                                            <p class="help-block small-help-block pull-right"
+                                               ng-show="editForm.reference.$error.maxlength">
+                                                Max 16
                                             </p>
                                         </div>
                                     </div>
@@ -145,12 +157,16 @@
                                                for="field_accountReference">AccountReference</label>
                                         <input type="text" class="form-control" name="accountReference"
                                                id="field_accountReference"
-                                               ng-model="purchaseOrder.accountReference"
+                                               ng-model="purchaseOrder.accountReference"  ng-maxlength="16"
                                                required/>
                                         <div ng-show="editForm.accountReference.$invalid">
                                             <p class="help-block small-help-block pull-right"
                                                ng-show="editForm.accountReference.$error.required">
                                                 required
+                                            </p>
+                                            <p class="help-block small-help-block pull-right"
+                                               ng-show="editForm.accountReference.$error.maxlength">
+                                                Max 16
                                             </p>
                                         </div>
                                     </div>
@@ -291,13 +307,17 @@
                                             Reference</label>
                                         <input type="text" class="form-control" name="collectionReference"
                                                id="field_collectionReference"
-                                               ng-model="purchaseOrder.collectionReference"
+                                               ng-model="purchaseOrder.collectionReference" ng-maxlength="12"
                                                ng-required="requiredFields['collectionReference']"
                                         />
                                         <div ng-show="editForm.collectionReference.$invalid">
                                             <p class="help-block small-help-block pull-right"
                                                ng-show="editForm.collectionReference.$error.required">
                                                 required
+                                            </p>
+                                            <p class="help-block small-help-block pull-right"
+                                               ng-show="editForm.accountReference.$error.maxlength">
+                                                Max 12
                                             </p>
                                         </div>
                                     </div>
