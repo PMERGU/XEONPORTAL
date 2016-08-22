@@ -157,12 +157,16 @@
                                     <div class="form-group">
                                         <label class="control-label" for="field_collective">Collective</label>
                                         <input type="text" class="form-control" name="collective" id="field_collective"
-                                               ng-model="purchaseOrder.collective"
+                                               ng-model="purchaseOrder.collective" ng-maxlength="10"
                                                required/>
                                         <div ng-show="editForm.collective.$invalid">
                                             <p class="help-block small-help-block pull-right"
                                                ng-show="editForm.collective.$error.required">
                                                 required
+                                            </p>
+                                            <p class="help-block small-help-block pull-right"
+                                               ng-show="editForm.collective.$error.maxlength">
+                                                Max 10
                                             </p>
                                         </div>
                                     </div>

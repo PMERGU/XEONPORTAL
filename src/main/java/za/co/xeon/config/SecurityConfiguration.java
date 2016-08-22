@@ -29,6 +29,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private Http401UnauthorizedEntryPoint authenticationEntryPoint;
 
     @Inject
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    @Inject
     private UserDetailsService userDetailsService;
 
     @Inject
@@ -63,6 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .exceptionHandling()
             .authenticationEntryPoint(authenticationEntryPoint)
+            .accessDeniedHandler(customAccessDeniedHandler)
         .and()
             .csrf()
             .disable()
@@ -71,6 +75,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .disable()
         .and()
             .sessionManagement()
+            .sessionFixation()
+                .changeSessionId()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
             .authorizeRequests()

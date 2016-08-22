@@ -100,6 +100,10 @@ angular.module('portalApp')
         }
 
         if($scope.orderGroup[0].pdstk === "B" || $scope.orderGroup[0].pdstk === "C" ){
+            $scope.states['RECEIVED'] = true;
+            $scope.states['PROCESSED'] = true;
+            $scope.states['COLLECTED'] = true;
+            $scope.states['IN_TRANSIT'] = true;
             $scope.states['DELIVERED'] = true;
         }
 

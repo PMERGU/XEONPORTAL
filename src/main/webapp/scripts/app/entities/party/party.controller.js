@@ -8,7 +8,7 @@ angular.module('portalApp')
         $scope.reverse = true;
         $scope.page = 1;
         $scope.loadAll = function() {
-            Party.query({page: $scope.page - 1, size: 20, sort: [$scope.predicate + ',' + ($scope.reverse ? 'asc' : 'desc'), 'id']}, function(result, headers) {
+            Party.query({page: $scope.page - 1, size: 1000, sort: [$scope.predicate + ',' + ($scope.reverse ? 'asc' : 'desc'), 'id']}, function(result, headers) {
                 $scope.links = ParseLinks.parse(headers('link'));
                 $scope.totalItems = headers('X-Total-Count');
                 $scope.partys = result;

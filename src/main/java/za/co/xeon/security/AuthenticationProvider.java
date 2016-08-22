@@ -42,6 +42,9 @@ public class AuthenticationProvider implements org.springframework.security.auth
         if (!passwordEncoder.matches(tokenPassword, password)) {
             throw new BadCredentialsException("Invalid username/password");
         }
+
+
+
         return new UsernamePasswordAuthenticationToken(user, password,
             user.getAuthorities());
     }

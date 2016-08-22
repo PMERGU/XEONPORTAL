@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,8 +32,8 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {
-        log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase();
+
         Optional<User> userFromDatabase = userRepository.findOneByLogin(lowercaseLogin);
         return userFromDatabase.map(user -> {
             if (!user.getActivated()) {
@@ -43,6 +45,7 @@ public class UserDetailsService implements org.springframework.security.core.use
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());
+
             return new org.springframework.security.core.userdetails.User(lowercaseLogin,
                 user.getPassword(),
                 grantedAuthorities);
