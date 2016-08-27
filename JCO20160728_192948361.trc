@@ -1,0 +1,142 @@
+﻿restartedMain [19:29:48:362]: ************************  Thu Jul 28 19:29:48 SAST 2016  ************************
+restartedMain [19:29:48:362]: SAP Java Connector runtime information
+restartedMain [19:29:48:362]: 
+restartedMain [19:29:48:362]: Java Runtime:
+restartedMain [19:29:48:362]: 	Operating System    : Mac OS X 10.11.3 for x86_64
+restartedMain [19:29:48:362]: 	Java VM             : 1.8.0_102 Oracle Corporation
+restartedMain [19:29:48:362]: 	Default charset     : UTF-8
+restartedMain [19:29:48:362]: 
+restartedMain [19:29:48:362]: Versions:
+restartedMain [19:29:48:362]: 	JCo API             : 3.0.14 (2015-12-16)
+restartedMain [19:29:48:362]: 	JCo middleware      : JavaRfc 2.2.17
+restartedMain [19:29:48:362]: 	JCo library         : 721.619
+restartedMain [19:29:48:362]: 
+restartedMain [19:29:48:362]: Library Paths:
+restartedMain [19:29:48:362]: 	Path to JCo archive : /Users/derick/code/bitbucket/xeon/portal/lib/mac/sapjco3.jar
+restartedMain [19:29:48:363]: 	Path to JCo library : /Users/derick/code/bitbucket/xeon/portal/lib/mac/libsapjco3.jnilib
+restartedMain [19:29:48:363]: 
+restartedMain [19:29:48:363]: Configuration:
+restartedMain [19:29:48:363]: 	jco.delta_management = 1
+restartedMain [19:29:48:363]: 	jco.jdsr_provider = 0
+restartedMain [19:29:48:363]: 	jco.trace_path = .
+restartedMain [19:29:48:363]: 	jco.cpic_keep_alive_period = 300
+restartedMain [19:29:48:363]: 	jco.trace_level = 1
+restartedMain [19:29:48:363]: 	jco.use_repository_roundtrip_optimization = 0
+restartedMain [19:29:48:363]: 	jco.allow_non_abap_partner = 0
+restartedMain [19:29:48:363]: 	jco.jarm = 0
+restartedMain [19:29:48:363]: 	jco.jdsr = 0
+restartedMain [19:29:48:363]: 	jco.ignore_jdsr_error = 1
+restartedMain [19:29:48:363]: 	jco.cpic_keep_alive_timeout = 10
+restartedMain [19:29:48:363]: 
+restartedMain [19:29:48:363]: ********************************************************************************
+restartedMain [19:29:48:363]: [JCoAPI] Current JCo trace level is 1
+restartedMain [19:29:48:363]: [JCoAPI] Exception while setting system property to JCo property: jco.cpic_maxconv=202 com.sap.conn.jco.JCoRuntimeException: (108) JCO_ERROR_INTERNAL: Value 202 for property jco.cpic_maxconv caused 
+LOCATION    CPIC (TCP/IP) on local host
+ERROR       hostname 'rfc.private.address.invalid.query' unknown
+TIME        Thu Jul 28 19:29:48 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      niuxi.c
+LINE        1759
+DETAIL      NiPGetHostByName: 'rfc.private.address.invalid.query' not
+            found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+	at com.sap.conn.jco.rt.JCoRuntime.processPublicProperty(JCoRuntime.java:486)
+	at com.sap.conn.jco.rt.JCoRuntime.setSystemProperty(JCoRuntime.java:222)
+	at com.sap.conn.jco.rt.DefaultJCoRuntime.readSystemProperties(DefaultJCoRuntime.java:128)
+	at com.sap.conn.jco.rt.JCoRuntimeFactory.<clinit>(JCoRuntimeFactory.java:24)
+	at com.sap.conn.jco.rt.RuntimeEnvironment.<init>(RuntimeEnvironment.java:43)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at java.lang.Class.newInstance(Class.java:442)
+	at com.sap.conn.jco.ext.Environment.getInstance(Environment.java:155)
+	at com.sap.conn.jco.ext.Environment.registerDestinationDataProvider(Environment.java:259)
+	at org.hibersap.execution.jco.JCoEnvironment.registerDestinationDataProvider(JCoEnvironment.java:80)
+	at org.hibersap.execution.jco.JCoEnvironment.registerDestination(JCoEnvironment.java:53)
+	at org.hibersap.execution.jco.JCoContext.configure(JCoContext.java:68)
+	at org.hibersap.configuration.ContextFactory.create(ContextFactory.java:46)
+	at org.hibersap.configuration.ConfigurationHelper.createContext(ConfigurationHelper.java:41)
+	at org.hibersap.configuration.Configuration.buildSessionManager(Configuration.java:127)
+	at org.hibersap.configuration.AnnotationConfiguration.buildSessionManager(AnnotationConfiguration.java:92)
+	at za.co.xeon.external.sap.hibersap.HiberSapService.init(HiberSapService.java:61)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:354)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:305)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:133)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:408)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1570)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:545)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:482)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1116)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1014)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:545)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:543)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:482)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:368)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1123)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1018)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:510)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:482)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.getEmbeddedServletContainerFactory(EmbeddedWebApplicationContext.java:195)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.createEmbeddedServletContainer(EmbeddedWebApplicationContext.java:158)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.onRefresh(EmbeddedWebApplicationContext.java:130)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:532)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:118)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:766)
+	at org.springframework.boot.SpringApplication.createAndRefreshContext(SpringApplication.java:361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at za.co.xeon.Application.main(Application.java:86)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: RfcException:
+    message: 
+LOCATION    CPIC (TCP/IP) on local host
+ERROR       hostname 'rfc.private.address.invalid.query' unknown
+TIME        Thu Jul 28 19:29:48 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      niuxi.c
+LINE        1759
+DETAIL      NiPGetHostByName: 'rfc.private.address.invalid.query' not
+            found
+SYSTEM CALL getaddrinfo
+COUNTER     1
+
+    return code: RFC_FAILURE (1)
+    error group: 108
+    key: RFC_ERROR_INTERNAL
+	at com.sap.conn.rfc.driver.CpicDriver.setCpicMaxConv(CpicDriver.java:1020)
+	at com.sap.conn.rfc.engine.DefaultRfcRuntime.setCpicMaxConv(DefaultRfcRuntime.java:113)
+	at com.sap.conn.jco.rt.JCoRuntime.processPublicProperty(JCoRuntime.java:470)
+	... 70 more
+

@@ -84,12 +84,6 @@ public class PurchaseOrderResource {
         log.debug("REST request to save PurchaseOrder");
         //validations
         purchaseOrder.setPoNumber(purchaseOrder.getPoNumber().trim().toUpperCase());
-        if (purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null) {
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("purchaseOrder", "poNumber",
-                    String.format("A PO with the number #%s already exists in the system. Please double check poNumber or double check the dashboard", purchaseOrder.getPoNumber())))
-                .body(purchaseOrder);
-        }
         if (purchaseOrder.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("purchaseOrder", "id", "A new purchaseOrder cannot already have an ID")).body(null);
         }
@@ -107,9 +101,16 @@ public class PurchaseOrderResource {
         }
 
         //logic
-        purchaseOrder.setUser(user);
         purchaseOrder.setCaptureDate(ZonedDateTime.now());
-        purchaseOrder.setState(PoState.PROCESSED);
+        purchaseOrder.setUser(user);
+
+        if (purchaseOrderRepository.findByUserId_CompanyAndPoNumber(purchaseOrder.getUser().getCompany(), purchaseOrder.getPoNumber()) != null) {
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("purchaseOrder", "poNumber",
+                    String.format("A PO with the number #%s already exists in the system. Please double check poNumber or double check the dashboard", purchaseOrder.getPoNumber())))
+                .body(purchaseOrder);
+        }
+
 
         //set PO as parent to PO.poLines
         purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
@@ -154,21 +155,36 @@ public class PurchaseOrderResource {
                 "", purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg
             );
             log.debug(rfc.toStringFull());
-            SalesOrderCreatedDTO so = hiberSapService.createSalesOrder(purchaseOrder.getPoNumber(), rfc);
-            purchaseOrder.setSoNumber(so.getSoNumber());
-            PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
-            log.debug(" PO saved as ID : {} - SO created as ID : {}", savedPo.getId(), savedPo.getSoNumber());
-            log.debug("============================================= END create PO ==================================================");
+            try {
+                purchaseOrder.setState(PoState.PROCESSED);
+                SalesOrderCreatedDTO so = hiberSapService.createSalesOrder(purchaseOrder.getPoNumber(), rfc);
+                purchaseOrder.setSoNumber(so.getSoNumber());
+                PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
+                log.debug(" PO saved as ID : {} - SO created as ID : {}", savedPo.getId(), savedPo.getSoNumber());
+                mailService.sendCSUMail(user,
+                    String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
+                    String.format("A new Purchase Order #%s has been created by %s %s for client %s and SAP SO auto created as %s.", savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
+                    , null, null, getBaseUrl(request));
+                return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
+                    .headers(HeaderUtil.createAlert(
+                        String.format("New purchase order [%s] created and sales order [%s] auto captured in SAP.", savedPo.getId(), savedPo.getSoNumber()),
+                        savedPo.getId().toString()
+                    )).body(savedPo);
+            }catch (Exception e){
+                log.warn("Could not create SO in SAP, going manual and creating fallback.");
+                purchaseOrder.setState(PoState.UNPROCESSED);
+                PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
+                mailService.sendCSUMail(user,
+                    String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
+                    String.format("A new Purchase Order #%s has been created by %s %s for client %s. Please action and capture in SAP as soon as possible.", savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
+                    , null, null, getBaseUrl(request));
+                return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
+                    .headers(HeaderUtil.createEntityCreationAlert("purchase order", savedPo.getId().toString()))
+                    .body(savedPo);
+            }finally {
+                log.debug("============================================= END create PO ==================================================");
+            }
 
-            mailService.sendCSUMail(user,
-                String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
-                String.format("A new Purchase Order #%s has been created by %s %s for client %s and SAP SO auto created as %s.", savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
-                , null, null, getBaseUrl(request));
-            return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
-                .headers(HeaderUtil.createAlert(
-                    String.format("New purchase order [%s] created and sales order [%s] auto captured in SAP.", savedPo.getId(), savedPo.getSoNumber()),
-                    savedPo.getId().toString()
-                )).body(savedPo);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             ex.printStackTrace();

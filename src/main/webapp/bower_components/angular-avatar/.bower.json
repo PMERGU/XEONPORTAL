@@ -1,0 +1,41 @@
+{
+  "name": "angular-avatar",
+  "homepage": "https://github.com/ajsoriar/angular-avatar",
+  "authors": [
+    "Andres J. Soria R. <ajsoriar@gmail.com>"
+  ],
+  "description": "Angular Avatar is an AngularJS directive that generates a letter's avatar",
+  "main": "src/angular-avatar.js",
+  "moduleType": [],
+  "keywords": [
+    "avatar",
+    "angular-avatar",
+    "letter avatar",
+    "initials avatar",
+    "angular avatar",
+    "profile picture",
+    "string avatar",
+    "ng-avatar"
+  ],
+  "dependencies": {
+    "angular": "1.4.5",
+    "angular-mocks": "1.4.5"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests"
+  ],
+  "version": "1.1.0",
+  "_release": "1.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.0",
+    "commit": "581c216ea97e9db5562cd71cb5827553d9fb6c8b"
+  },
+  "_source": "https://github.com/ajsoriar/angular-avatar.git",
+  "_target": "^1.1.0",
+  "_originalSource": "angular-avatar"
+}

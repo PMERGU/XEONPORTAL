@@ -27,5 +27,6 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder,Lon
     Page<PurchaseOrder> findByState(PoState poState, Pageable pageable);
     PurchaseOrder findFirstByPoNumber(String poNumber);
     PurchaseOrder findFirstByUserAndPoNumber(User user, String poNumber);
+    PurchaseOrder findByUserId_CompanyAndPoNumber(Company company, String poNumber);
 }
 
