@@ -5,7 +5,7 @@ angular.module('portalApp').controller('UserManagementDialogController',
         function($scope, $stateParams, $uibModalInstance, entity, User, Company) {
 
         $scope.user = entity;
-        $scope.authorities = ["ROLE_USER", "ROLE_ADMIN", "ROLE_CUSTOMER"];
+        $scope.authorities = ["ROLE_USER", "ROLE_ADMIN", "ROLE_CUSTOMER", "ROLE_CUSTOMER_CSU"];
         $scope.companies = Company.query();
 
         var onSaveSuccess = function (result) {

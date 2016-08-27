@@ -64,6 +64,9 @@ public class PurchaseOrderResource {
     private CommentRepository commentRepository;
 
     @Inject
+    private PartyRepository partyRepository;
+
+    @Inject
     private AttachmentRepository attachmentRepository;
 
     @Inject
@@ -141,6 +144,9 @@ public class PurchaseOrderResource {
                 default:
                     throw new RuntimeException("Need to map new service type here");
             }
+            if(purchaseOrder.getPickUpParty() != null) purchaseOrder.setPickUpParty(partyRepository.findOne(purchaseOrder.getPickUpParty().getId()));
+            if(purchaseOrder.getShipToParty() != null) purchaseOrder.setShipToParty(partyRepository.findOne(purchaseOrder.getShipToParty().getId()));
+            if(purchaseOrder.getSoldToParty() != null) purchaseOrder.setSoldToParty(partyRepository.findOne(purchaseOrder.getSoldToParty().getId()));
             SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
                 purchaseOrder.getAccountReference(), safeEnum(purchaseOrder.getServiceType()), Pad.left(purchaseOrder.getUser().getCompany().getSapId(), 10),
                 purchaseOrder.getCollectionReference(), Pad.left(purchaseOrder.getPickUpParty().getSapId(), 10), safeEnum(purchaseOrder.getCargoType()), purchaseOrder.getCvConsol(),
@@ -171,7 +177,7 @@ public class PurchaseOrderResource {
                         savedPo.getId().toString()
                     )).body(savedPo);
             }catch (Exception e){
-                log.warn("Could not create SO in SAP, going manual and creating fallback.");
+                log.warn("Could not create SO in SAP, doing fallback and creating manual entry for CSU to capture.");
                 purchaseOrder.setState(PoState.UNPROCESSED);
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
                 mailService.sendCSUMail(user,
@@ -364,8 +370,13 @@ public class PurchaseOrderResource {
             page = purchaseOrderService.findAll(pageable);
         } else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-            log.debug("Restricting PurchaseOrders lookup by username " + user.getLogin());
-            page = purchaseOrderService.findAllByUser(user, pageable);
+            if(SecurityUtils.isUserCustomerCSU()){
+                log.debug("Restricting PurchaseOrders lookup by company (CSU) " + user.getCompany().getName());
+                page = purchaseOrderRepository.findByUserId_Company(user.getCompany(), pageable);
+            }else {
+                log.debug("Restricting PurchaseOrders lookup by username " + user.getLogin());
+                page = purchaseOrderService.findAllByUser(user, pageable);
+            }
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/purchaseOrders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -386,8 +397,13 @@ public class PurchaseOrderResource {
             page = purchaseOrderRepository.findByState(state, pageable);
         } else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-            log.debug("Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin());
-            page = purchaseOrderRepository.findByUserAndState(user, state, pageable);
+            if(SecurityUtils.isUserCustomerCSU()){
+                log.debug("Restricting getAllPurchaseOrdersByState lookup by company (CSU) " + user.getCompany().getName());
+                page = purchaseOrderRepository.findByUserId_CompanyAndState(user.getCompany(), state, pageable);
+            }else {
+                log.debug("Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin());
+                page = purchaseOrderRepository.findByUserAndState(user, state, pageable);
+            }
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/purchaseOrders");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -408,8 +424,13 @@ public class PurchaseOrderResource {
             purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
         } else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-            log.debug("Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin());
-            purchaseOrder = purchaseOrderRepository.findFirstByUserAndPoNumber(user, poNumber);
+            if(SecurityUtils.isUserCustomerCSU()){
+                log.debug("Restricting getAllPurchaseOrdersByState lookup by company (CSU) " + user.getCompany().getName());
+                purchaseOrder = purchaseOrderRepository.findByUserId_CompanyAndPoNumber(user.getCompany(), poNumber);
+            }else {
+                log.debug("Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin());
+                purchaseOrder = purchaseOrderRepository.findFirstByUserAndPoNumber(user, poNumber);
+            }
         }
         return Optional.ofNullable(purchaseOrder)
             .map(result -> new ResponseEntity<>(

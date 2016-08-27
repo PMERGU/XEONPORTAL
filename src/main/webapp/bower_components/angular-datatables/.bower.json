@@ -66,6 +66,6 @@
     "commit": "1ab0f70bfc3900f5282553200a6740001fb1d2e7"
   },
   "_source": "https://github.com/l-lin/angular-datatables.git",
-  "_target": "^0.5.3",
+  "_target": "^0.5.4",
   "_originalSource": "angular-datatables"
 }

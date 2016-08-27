@@ -190,7 +190,7 @@ public class HiberSapService {
                 log.debug("[{}] - return", po);
                 rfc.getExReturn().stream().forEach(exReturn -> log.debug("[{}] - return : \n{}", po, exReturn.toString()));
                 for(ExReturn exReturn : rfc.getExReturn()){
-                    if(exReturn.getType().equals("E")){
+                    if(exReturn.getType().equals("E") || exReturn.getType().equals("I")){
                         throw new Exception("Request [po:" + po + "] failed with SAP status code " + exReturn.getType() + " : " + exReturn.getMessage());
                     }
                 }

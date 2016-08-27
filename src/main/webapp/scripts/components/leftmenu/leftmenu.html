@@ -52,17 +52,17 @@
                         <span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span >View All</span>
                     </a>
                 </li>
-                <li ui-sref-active="active" has-authority="ROLE_USER" >
+                <li ui-sref-active="active" has-any-authority="ROLE_USER,ROLE_CUSTOMER_CSU" >
                     <a ui-sref="purchaseOrder({queryType: 'PROCESSED'})" data-toggle="collapse" data-target=".navbar-collapse.in">
                         <span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span>Processed</span>
                     </a>
                 </li>
-                <li ui-sref-active="active" has-authority="ROLE_USER" >
+                <li ui-sref-active="active" has-any-authority="ROLE_USER,ROLE_CUSTOMER_CSU" >
                     <a ui-sref="purchaseOrder({queryType: 'PROCESSING'})" data-toggle="collapse" data-target=".navbar-collapse.in">
                         <span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span>In Progress</span>
                     </a>
                 </li>
-                <li ui-sref-active="active" has-authority="ROLE_USER" >
+                <li ui-sref-active="active" has-any-authority="ROLE_USER,ROLE_CUSTOMER_CSU" >
                     <a ui-sref="purchaseOrder({queryType: 'UNPROCESSED'})" data-toggle="collapse" data-target=".navbar-collapse.in">
                         <span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span>Un-processed</span>
                     </a>
@@ -70,7 +70,7 @@
             </ul>
         </li>
 
-        <li ng-class="{active: $state.includes('salesOrder')}" has-authority="ROLE_USER">
+        <li ng-class="{active: $state.includes('salesOrder')}" has-any-authority="ROLE_USER,ROLE_CUSTOMER_CSU">
             <a href="#">
                 <span class="nav-label">Sales Orders</span><span class="fa arrow"></span>
             </a>

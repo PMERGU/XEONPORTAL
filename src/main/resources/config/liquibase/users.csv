@@ -7,3 +7,4 @@ id;login;password_hash;first_name;last_name;email;activated;lang_key;created_by
 6;ryan;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;Ryan;Piaray;ryan.piaray@xeon.co.za;true;en;system
 7;mobile;$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC;Mobile;Devices;systemmobile@localhost;true;en;system
 8;health;$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC;Health;Check;systemhealth@localhost;true;en;system
+9;derick2;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;Derick;Potgieter;derick2@switchbit.io;true;en;system

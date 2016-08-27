@@ -10,7 +10,7 @@
                         </h2>
                         <h2 class="font-light m-b-xs"
                             ng-show="purchaseOrder.id && purchaseOrder.state !== 'PROCESSED'">
-                            Update Purchase Order : {{purchaseOrder.id}}
+                            Purchase Order : {{purchaseOrder.id}}
                         </h2>
                         <h2 class="font-light m-b-xs" ng-hide="purchaseOrder.id">
                             Create new Purchase Order
@@ -111,7 +111,7 @@
                            ng-disabled="editForm.$invalid || purchaseOrder.poLines.length === 0" class="btn"
                            ng-class="{ 'btn-primary': step == 6, 'btn-default': step != 6}" value="Step 6 - Confirmation"/>
                 </div>
-                <fieldset ng-disabled="purchaseOrder.id && purchaseOrder.state === 'PROCESSED'">
+                <fieldset ng-disabled="purchaseOrder.id">
                     <div ng-show="step == 1" class="p-m">
                         <div class="modal-body">
                             <div class="row">

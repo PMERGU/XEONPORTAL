@@ -155,13 +155,18 @@ public class MobileResource {
                 future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
                     new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
 
-                Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
-                    .filter(po -> po.getPoNumber() != null)
-                    .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+                if(SecurityUtils.isUserCustomerCSU()){
+                    Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(user.getCompany()).stream()
+                        .filter(po -> po.getPoNumber() != null)
+                        .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+                    return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
+                }else {
+                    Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
+                        .filter(po -> po.getPoNumber() != null)
+                        .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+                    return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
+                }
 
-                return future.get().stream().filter(
-                    ev -> poMap.containsKey(ev.getBstkd())
-                ).collect(Collectors.toList());
             }else {
                 future = mobileService.getCustomerOrders(customerNumber,
                     new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));

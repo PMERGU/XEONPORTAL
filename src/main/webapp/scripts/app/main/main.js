@@ -152,7 +152,7 @@ angular.module('portalApp')
                 parent: 'site',
                 url: '/salesOrders',
                 data: {
-                    authorities: ['ROLE_USER', 'ROLE_ADMIN'],
+                    authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_CUSTOMER_CSU'],
                     pageTitle: 'Sales Orders'
                 },
                 views: {
@@ -161,6 +161,10 @@ angular.module('portalApp')
                         controller: 'SalesOrdersController'
                     }
                 },
-                resolve: {}
+                resolve: {
+                    identity: ['$stateParams', 'Principal', function($stateParams, Principal) {
+                        return Principal.identity();
+                    }]
+                }
             });
     });

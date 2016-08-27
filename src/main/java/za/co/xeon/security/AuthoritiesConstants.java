@@ -15,6 +15,8 @@ public final class AuthoritiesConstants {
 
     public static final String CUSTOMER = "ROLE_CUSTOMER";
 
+    public static final String CUSTOMER_CSU = "ROLE_CUSTOMER_CSU";
+
     public static final String ANONYMOUS = "ROLE_ANONYMOUS";
 
     private AuthoritiesConstants() {

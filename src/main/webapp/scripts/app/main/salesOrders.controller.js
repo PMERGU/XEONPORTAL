@@ -1,19 +1,29 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('SalesOrdersController', function ($scope, $stateParams, $sce, $window, $log, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, CachedOrders, PurchaseOrder, sweet) {
+    .controller('SalesOrdersController', function ($scope, $stateParams, $sce, $window, $log, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, CachedOrders, PurchaseOrder, sweet, identity) {
         $scope.deliveredOrders = [];
         $scope.undeliveredOrders = [];
         $scope.ordersStep = 0;
         $scope.todaysDate = new Date();
         $scope.loadingOrders = false;
 
+        $scope.identity = identity;
+        if($scope.identity.authorities.indexOf("ROLE_CUSTOMER") != -1){
+            $scope.companies = [$scope.identity.company];
+            $scope.company = $scope.identity.company;
+            $scope.selected = {
+                company: $scope.identity.company
+            };
+        }else{
+            $scope.companies = Company.query();
+            $scope.company = null;
+            $scope.selected = {
+                company: null
+            };
+        }
 
-        $scope.companies = Company.query();
-        $scope.company = null;
-        $scope.selected = {
-            company: null
-        };
+
 
         //WATCH when company is selected (for capture as company employee feature)
         $scope.$watch(function() {

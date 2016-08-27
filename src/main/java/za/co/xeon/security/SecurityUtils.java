@@ -100,6 +100,10 @@ public final class SecurityUtils {
         return isCurrentUserInRole(AuthoritiesConstants.CUSTOMER);
     }
 
+    public static boolean isUserCustomerCSU(){
+        return isCurrentUserInRole(AuthoritiesConstants.CUSTOMER_CSU);
+    }
+
     public static boolean isUserXeonOrAdmin(){
         return isUserXeon() || isUserAdmin();
     }
