@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import za.co.xeon.domain.enumeration.AttachmentCategories;
 import za.co.xeon.domain.enumeration.MaterialType;
+import za.co.xeon.domain.enumeration.PartyType;
 import za.co.xeon.domain.enumeration.ServiceLevel;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -31,5 +32,10 @@ public class EnumResource {
     @RequestMapping(value = "/serviceLevels", method = RequestMethod.GET)
     public List<ServiceLevel> listServiceLevels() {
         return Arrays.asList(ServiceLevel.values());
+    }
+
+    @RequestMapping(value = "/partyTypes", method = RequestMethod.GET)
+    public List<PartyType> listPartyTypes() {
+        return Arrays.asList(PartyType.values());
     }
 }

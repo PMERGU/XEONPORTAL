@@ -252,7 +252,7 @@
                                             <select class="form-control" id="field_pickUpParty" name="pickUpParty"
                                                     ng-required="requiredFields['pickUpParty']"
                                                     ng-model="purchaseOrder.pickUpParty"
-                                                    ng-options="party as party.name for party in pickuppartys track by party.id | orderBy:'name'">
+                                                    ng-options="party as party.name for party in otherParties track by party.id | orderBy:'name'">
                                             </select>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
@@ -329,7 +329,7 @@
                                             <select class="form-control" id="field_shipToParty" name="shipToParty"
                                                     ng-required="requiredFields['shipToParty']"
                                                     ng-model="purchaseOrder.shipToParty"
-                                                    ng-options="party as party.name for party in pickuppartys track by party.id | orderBy:'name'">
+                                                    ng-options="party as party.name for party in otherParties track by party.id | orderBy:'name'">
                                             </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default"
@@ -531,7 +531,7 @@
                                     <div class="input-group">
                                         <select class="form-control" id="field_soldToParty" name="soldToParty" ng-required="user.company.type === 'AGENT'"
                                                 ng-model="purchaseOrder.soldToParty"
-                                                ng-options="party as party.name for party in pickuppartys track by party.id | orderBy:'name'">
+                                                ng-options="party as party.name for party in soldToParties track by party.id | orderBy:'name'">
                                             <option value=""></option>
                                         </select>
                                             <span class="input-group-btn">

@@ -25,6 +25,7 @@
                         <th jh-sort-by="postalCode"><span>PostalCode</span> <span class="glyphicon glyphicon-sort"></span></th>
                         <th jh-sort-by="city"><span>City</span> <span class="glyphicon glyphicon-sort"></span></th>
                         <th jh-sort-by="reference"><span>Reference</span> <span class="glyphicon glyphicon-sort"></span></th>
+                        <th jh-sort-by="type"><span>Type</span> <span class="glyphicon glyphicon-sort"></span></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -37,6 +38,7 @@
                             <td>{{('0000' + party.area.postalCode).slice(-4)}}</td>
                             <td>{{party.area.city}}</td>
                             <td>{{party.reference}}</td>
+                            <td>{{party.type}}</td>
                             <td class="text-right">
                                 <div class="btn-group flex-btn-group-container">
                                     <button type="submit"

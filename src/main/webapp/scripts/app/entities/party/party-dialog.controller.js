@@ -1,21 +1,17 @@
 'use strict';
 
 angular.module('portalApp').controller('PartyDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Company', 'Principal', 'Area', '$log',
-        function($scope, $stateParams, $uibModalInstance, entity, Party, Company, Principal, Area, $log) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Party', 'Company', 'Principal', 'Area', '$log', 'StaticServices',
+        function($scope, $stateParams, $uibModalInstance, entity, Party, Company, Principal, Area, $log, StaticServices) {
 
         $scope.party = entity;
         $scope.companies = Company.query();
+        $scope.partyTypes = StaticServices.partyTypes();
 
         $scope.isXeon = false;
         Principal.identity().then(function(user) {
             $scope.user = user;
             $scope.isXeon = (user.company.type === "XEON");
-            // $scope.party.$promise.then(function(party){
-            //     if($scope.isXeon && party.sapId === "100000"){
-            //         $scope.party.sapId = null;
-            //     }
-            // });
         });
 
         $scope.load = function(id) {

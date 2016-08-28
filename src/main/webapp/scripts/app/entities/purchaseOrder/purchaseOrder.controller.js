@@ -10,8 +10,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.user = currentUser;
             $scope.isXeon = currentUser.company.type === "XEON";
 
-            $scope.shiptopartys = Party.query({size: 10000, sort: 'name'});
-            $scope.pickuppartys = Party.query({size: 10000, sort: 'name'});
+            $scope.soldToParties = Party.query({size: 10000, sort: 'name', type: 'SOLD_TO_PARTY'});
+            $scope.otherParties = Party.query({size: 10000, sort: 'name', type: 'OTHER'});
+
             $scope.attachmentCategories = Attachment.queryCategories();
             $scope.serviceLevels = StaticServices.serviceLevels();
 
@@ -530,7 +531,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             }
             // listen for party create event
             $rootScope.partyUpdateBroadcast = $rootScope.$on('portalApp:partyUpdate', function (event, data) {
-                $scope.pickuppartys.push(data);
+                $scope.otherParties.push(data);
                 switch(data.for){
                     case("pickup"):
                         $scope.purchaseOrder.pickUpParty = data;

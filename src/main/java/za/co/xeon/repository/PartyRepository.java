@@ -9,6 +9,7 @@ import za.co.xeon.domain.Party;
 import org.springframework.data.jpa.repository.*;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
+import za.co.xeon.domain.enumeration.PartyType;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ import java.util.List;
 public interface PartyRepository extends JpaRepository<Party,Long> {
     Page<Party> findByCompany(Company company, Pageable pageable);
     Party findFirstByName(String name);
+    Page<Party> findByType(PartyType type, Pageable pageable);
+    Page<Party> findByCompanyAndType(Company company, PartyType type, Pageable pageable);
 }

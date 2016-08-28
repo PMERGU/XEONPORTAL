@@ -58,7 +58,8 @@ angular.module('portalApp')
                                     area: null,
                                     reference: null,
                                     id: null,
-                                    sapId: 100000
+                                    sapId: 100000,
+                                    type: "OTHER"
                                 };
                             }
                         }

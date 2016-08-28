@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import za.co.xeon.domain.Party;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
+import za.co.xeon.domain.enumeration.PartyType;
 import za.co.xeon.repository.PartyRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.AuthoritiesConstants;
@@ -99,15 +100,15 @@ public class PartyResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Party>> getAllPartys(Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<Party>> getAllPartys(@RequestParam(required = false) PartyType type, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get all Partys");
         Page<Party> page = null;
         if(SecurityUtils.isUserXeonOrAdmin()){
-            page = partyRepository.findAll(pageable);
+            page = (type == null) ? partyRepository.findAll(pageable) : partyRepository.findByType(type, pageable);
         }else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             log.debug("Restricting Party lookup by username " + user.getLogin());
-            page = partyRepository.findByCompany(user.getCompany(), pageable);
+            page = (type == null) ? partyRepository.findByCompany(user.getCompany(), pageable) : partyRepository.findByCompanyAndType(user.getCompany(), type, pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/partys");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

@@ -2,6 +2,8 @@ package za.co.xeon.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import za.co.xeon.domain.enumeration.PartyType;
+import za.co.xeon.domain.enumeration.PoState;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -44,6 +46,10 @@ public class Party implements Serializable {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = true)
+    private PartyType type;
 
     public String getSapId() {
         return sapId;
@@ -107,6 +113,14 @@ public class Party implements Serializable {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public PartyType getType() {
+        return type;
+    }
+
+    public void setType(PartyType type) {
+        this.type = type;
     }
 
     @Override

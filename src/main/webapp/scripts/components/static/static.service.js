@@ -5,6 +5,7 @@ angular.module('portalApp')
         return $resource('api/static/', {}, {
             'categories': { url: 'api/static/attachmentCategories', method: 'GET', isArray: true},
             'materials': { url: 'api/static/materialTypes', method: 'GET', isArray: true},
-            'serviceLevels': { url: 'api/static/serviceLevels', method: 'GET', isArray: true}
+            'serviceLevels': { url: 'api/static/serviceLevels', method: 'GET', isArray: true},
+            'partyTypes': { url: 'api/static/partyTypes', method: 'GET', isArray: true}
         });
     });
