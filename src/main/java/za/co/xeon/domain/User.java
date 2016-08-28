@@ -63,6 +63,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "fc_sap_id", length = 20)
     private String fcSapId;
 
+    @OneToMany(mappedBy = "csu", cascade = CascadeType.ALL, orphanRemoval = false)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<User> assignedCustomers = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "csu_user_id")
+    private User csu;
+
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     @JsonIgnore
@@ -110,6 +118,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    public List<User> getAssignedCustomers() {
+        return assignedCustomers;
+    }
+
+    public void setAssignedCustomers(List<User> assignedCustomers) {
+        this.assignedCustomers = assignedCustomers;
+    }
+
+    public User getCsu() {
+        return csu;
+    }
+
+    public void setCsu(User csu) {
+        this.csu = csu;
+    }
 
     public boolean getEnabled() {
         return enabled;

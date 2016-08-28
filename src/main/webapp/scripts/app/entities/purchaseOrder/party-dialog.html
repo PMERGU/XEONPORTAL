@@ -12,35 +12,48 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label" for="field_name">Name</label>
-                    <input type="text" class="form-control" name="name" id="field_name" ng-model="party.name" required />
+                    <input type="text" class="form-control" name="name" id="field_name" ng-model="party.name" required tabindex="1"/>
                     <div ng-show="editForm.name.$invalid">
                         <p class="help-block small-help-block pull-right" ng-show="editForm.name.$error.required">required</p>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label" for="field_houseNumber">HouseNumber</label>
-                    <input type="text" class="form-control" name="houseNumber" id="field_houseNumber" ng-model="party.houseNumber"/>
+                    <label class="control-label" for="field_streetName">Street Name</label>
+                    <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="party.streetName"  tabindex="4"/>
                 </div>
 
                 <div class="form-group" ng-show="isXeon">
                     <label class="control-label" for="field_sapId">SAP ID (Fin Con)</label>
-                    <input type="text" class="form-control" name="sapId" id="field_sapId" ng-model="party.sapId" required/>
+                    <input type="text" class="form-control" name="sapId" id="field_sapId" ng-model="party.sapId"  tabindex="5" required/>
+                    <div ng-show="editForm.sapId.$invalid">
+                        <p class="help-block small-help-block pull-right" ng-show="editForm.sapId.$error.required">required</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Type</label>
+                    <select class="form-control" name="type" id="field_type"
+                            ng-model="party.type" ng-options="type as type for type in partyTypes" >
+                    </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label" for="field_reference">Reference</label>
-                    <input type="text" class="form-control" name="reference" id="field_reference" ng-model="party.reference"  required/>
+                    <input type="text" class="form-control" name="reference" id="field_reference" ng-model="party.reference"  tabindex="2" required/>
+                    <div ng-show="editForm.reference.$invalid">
+                        <p class="help-block small-help-block pull-right" ng-show="editForm.reference.$error.required">required</p>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="field_streetName">StreetName</label>
-                    <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="party.streetName" />
+                    <label class="control-label" for="field_houseNumber">House Number</label>
+                    <input type="text" class="form-control" name="houseNumber" id="field_houseNumber" ng-model="party.houseNumber" tabindex="3"/>
                 </div>
                 <div class="form-group" ng-show="isXeon">
                     <label>Company</label>
-                    <select class="form-control" name="company" ng-model="party.company" ng-required="isXeon"
-                            ng-options="company as company.name for company in companies track by company.id" disabled="true">
+                    <select class="form-control" name="company" ng-model="party.company" ng-required="isXeon"  tabindex="6"
+                            ng-options="company as company.name for company in companies track by company.id">
                     </select>
                 </div>
                 <div class="form-group" ng-show="!isXeon" style="height: 57px;">

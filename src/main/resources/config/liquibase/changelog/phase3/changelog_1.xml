@@ -10,5 +10,19 @@
                 <constraints nullable="false" />
             </column>
         </addColumn>
+
+        <addColumn tableName="jhi_user">
+            <column name="csu_user_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="csu_user_id"
+                                 baseTableName="jhi_user"
+                                 constraintName="fk_jhi_user_csu_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
     </changeSet>
+
+
 </databaseChangeLog>

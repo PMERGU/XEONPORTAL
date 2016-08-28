@@ -7,6 +7,7 @@ import za.co.xeon.domain.User;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.*;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 /**
@@ -45,6 +46,10 @@ public class UserDTO {
 
     private String fcSapId;
 
+    private User csu;
+
+//    private List<UserDTO> assignedUsers;
+
     private Set<String> authorities;
 
     public UserDTO() {
@@ -55,12 +60,13 @@ public class UserDTO {
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()), user.getFcSapId(),
+            user.getCsu(),
             (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getName(), user.getCompany().getSapId(), user.getCompany().getType())) : new Company())
         );
     }
 
     public UserDTO(String login, String password, String firstName, String lastName,
-        String email, boolean activated, String langKey, Set<String> authorities, String fcSapId, Company company) {
+        String email, boolean activated, String langKey, Set<String> authorities, String fcSapId, User csu, Company company) {
 
         this.login = login;
         this.password = password;
@@ -71,6 +77,7 @@ public class UserDTO {
         this.langKey = langKey;
         this.authorities = authorities;
         this.fcSapId = fcSapId;
+        this.csu = csu;
         this.company = company;
     }
 
@@ -113,6 +120,14 @@ public class UserDTO {
     public String getFcSapId() {
         return fcSapId;
     }
+
+    public User getCsu() {
+        return csu;
+    }
+
+//    public List<UserDTO> getAssignedUsers() {
+//        return assignedUsers;
+//    }
 
     @Override
     public String toString() {

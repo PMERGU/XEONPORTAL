@@ -106,7 +106,8 @@ angular.module('portalApp')
                                         grossWeight: null,
                                         netWeight: null,
                                         batchNumber: null,
-                                        id: null
+                                        id: null,
+                                        dvType: 'DIMENSIONS'
                                     };
                                 }
                             }
@@ -143,7 +144,8 @@ angular.module('portalApp')
                                     reference: null,
                                     company: $stateParams.company,
                                     id: null,
-                                    sapId: 100000
+                                    sapId: 100000,
+                                    type: "OTHER"
                                 };
                             }
                         }

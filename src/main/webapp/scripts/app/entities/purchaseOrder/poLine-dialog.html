@@ -9,6 +9,11 @@
     </div>
     <jh-alert-error></jh-alert-error>
     <div class="modal-body">
+        <div class="row" ng-show="outOfGage">
+            <div class="col-md-12 text-center tc-red-dark">
+                <p><strong>This cargo seems to be out of gauge , </strong></br>please note that additional charges may apply</p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -78,6 +83,74 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label class="control-label" for="field_netWeight">Net Weight</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="netWeight" id="field_netWeight" ng-model="poLine.netWeight" ng-required="requiredFields['netWeight']"/>
+                        <span class="input-group-addon">kg</span>
+                    </div>
+                    <div ng-show="editForm.netWeight.$invalid">
+                        <p class=" help-block small-help-block pull-right" ng-show="editForm.netWeight.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right" ng-show="editForm.netWeight.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_netWeight">Dimensions or Volume</label>
+                    <select class="form-control" name="serviceType" ng-model="poLine.dvType" id="field_serviceType">
+                        <option value="DIMENSIONS">Dimensions</option>
+                        <option value="VOLUME">Volume</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <blockquote>
+                        <dl class="dl-horizontal">
+                            <dt>Total gross weight : </dt>
+                            <dd>{{ (poLine.grossWeight * poLine.orderQuantity) | number:3 }}Kg</dd>
+                            <dt>Total cubes : </dt>
+                            <dd>{{ ((poLine.width * poLine.height * poLine.length)/1000000 * poLine.orderQuantity) | number:3 }}m&sup3;</dd>
+                        </dl>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="field_grossWeight">Gross Weight</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="grossWeight" id="field_grossWeight" ng-model="poLine.grossWeight" ng-required="requiredFields['grossWeight']" />
+                        <span class="input-group-addon">kg</span>
+                    </div>
+                    <div ng-show="editForm.grossWeight.$invalid">
+                        <p class=" help-block small-help-block pull-right" ng-show="editForm.grossWeight.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right" ng-show="editForm.grossWeight.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="field_length">Volume (m&sup3;)</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="volume" id="field_volume"
+                               ng-model="poLine.volume" ng-required="requiredFields['volume']"
+                        />
+                        <span class="input-group-addon">cm</span>
+                    </div>
+                    <div ng-show="editForm.volume.$invalid">
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.volume.$error.required">
+                            required
+                        </p>
+                        <p class=" help-block small-help-block pull-right"
+                           ng-show="editForm.volume.$error.number">
+                            This field should be a number.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label" for="field_length">Length</label>
                     <div class="input-group">
                         <input type="number" class="form-control" name="length" id="field_length" ng-change="isGageLength()" ng-model-options='{ debounce: 1000 }'
@@ -125,7 +198,6 @@
                             Out of gauge
                         </p>
                     </div>
-
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="field_height">Height</label>
@@ -150,65 +222,7 @@
                             Out of gauge
                         </p>
                     </div>
-
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="control-label" for="field_netWeight">NetWeight</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="netWeight" id="field_netWeight"
-                               ng-model="poLine.netWeight" ng-required="requiredFields['netWeight']"
-                        />
-                        <span class="input-group-addon">kg</span>
-                    </div>
-                    <div ng-show="editForm.netWeight.$invalid">
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.netWeight.$error.required">
-                            required
-                        </p>
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.netWeight.$error.number">
-                            This field should be a number.
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="field_grossWeight">GrossWeight</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="grossWeight" id="field_grossWeight"
-                               ng-model="poLine.grossWeight" ng-required="requiredFields['grossWeight']"
-                        />
-                        <span class="input-group-addon">kg</span>
-                    </div>
-                    <div ng-show="editForm.grossWeight.$invalid">
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.grossWeight.$error.required">
-                            required
-                        </p>
-                        <p class=" help-block small-help-block pull-right"
-                           ng-show="editForm.grossWeight.$error.number">
-                            This field should be a number.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" ng-show="outOfGage">
-            <div class="col-md-12 text-center tc-red-dark">
-                    <p><strong>This cargo seems to be out of gauge , </strong></br>please note that additional charges may apply</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <blockquote>
-                    <dl class="dl-horizontal">
-                        <dt>Total gross weight : </dt>
-                        <dd>{{ (poLine.grossWeight * poLine.orderQuantity) | number:3 }}Kg</dd>
-                        <dt>Total cubes : </dt>
-                        <dd>{{ ((poLine.width * poLine.height * poLine.length)/1000000 * poLine.orderQuantity) | number:3 }}m&sup3;</dd>
-                    </dl>
-                </blockquote>
             </div>
         </div>
     </div>

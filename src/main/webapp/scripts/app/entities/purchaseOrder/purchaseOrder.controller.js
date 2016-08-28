@@ -531,15 +531,17 @@ angular.module('portalApp').controller('PurchaseOrderController',
             }
             // listen for party create event
             $rootScope.partyUpdateBroadcast = $rootScope.$on('portalApp:partyUpdate', function (event, data) {
-                $scope.otherParties.push(data);
                 switch(data.for){
                     case("pickup"):
+                        $scope.otherParties.push(data);
                         $scope.purchaseOrder.pickUpParty = data;
                         break;
                     case("dropoff"):
+                        $scope.otherParties.push(data);
                         $scope.purchaseOrder.shipToParty = data;
                         break;
                     case("soldTo"):
+                        $scope.soldToParties.push(data);
                         $scope.purchaseOrder.soldToParty = data;
                         break;
                 }

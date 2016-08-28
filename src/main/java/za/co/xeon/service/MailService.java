@@ -56,7 +56,7 @@ public class MailService {
     private String from;
 
     @Async
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+    private void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={} from '{}'",
             isMultipart, isHtml, to, subject, content, jHipsterProperties.getMail().getFrom());
 
@@ -112,7 +112,7 @@ public class MailService {
     }
 
     @Async
-    public void sendPoProcessedMail(User processedBy, PurchaseOrder purchaseOrder, String baseUrl) {
+    public void sendPoProcessedMail(User processedBy, PurchaseOrder purchaseOrder, String baseUrl, boolean doNotCopyCsu) {
         log.debug("Sending PO processed e-mail to '{}'", purchaseOrder.getUser().getEmail());
         Locale locale = Locale.forLanguageTag(purchaseOrder.getUser().getLangKey());
         Context context = new Context(locale);
@@ -123,6 +123,9 @@ public class MailService {
         String content = templateEngine.process("poProcessedEmail", context);
         String subject = messageSource.getMessage("email.poProcessed.title", null, locale);
         sendEmail(purchaseOrder.getUser().getEmail(), subject, content, false, true);
+        if(!doNotCopyCsu && purchaseOrder.getUser().getCsu() != null) {
+            sendEmail(purchaseOrder.getUser().getCsu().getEmail(), "CSU agent : " + subject, content, false, true);
+        }
     }
 
     @Async
@@ -137,6 +140,9 @@ public class MailService {
         String content = templateEngine.process("poCommentEmail", context);
         String subject = messageSource.getMessage("email.poComment.title", null, locale);
         sendEmail(purchaseOrder.getUser().getEmail(), subject, content, false, true);
+        if(purchaseOrder.getUser().getCsu() != null) {
+            sendEmail(purchaseOrder.getUser().getCsu().getEmail(), "CSU agent : " + subject, content, false, true);
+        }
     }
 
     @Async
@@ -155,6 +161,9 @@ public class MailService {
         String subject = "Xeon portal : Comment has been added to PO [" + comment.getPurchaseOrder().getPoNumber() + "] by " + comment.getUser().getFirstName() + " " + comment.getUser().getLastName();
         if(isFromXeon){
             sendEmail(comment.getPurchaseOrder().getUser().getEmail(), subject, content, false, true);
+            if(comment.getPurchaseOrder().getUser().getCsu() != null) {
+                sendEmail(comment.getPurchaseOrder().getUser().getCsu().getEmail(), "CSU agent : " + subject, content, false, true);
+            }
         }else {
             subject= subject + " from " + comment.getUser().getCompany().getName();
             sendEmail(messageSource.getMessage("email.csu.emailAddress", null, locale), subject, content, false, true);

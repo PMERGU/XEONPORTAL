@@ -142,6 +142,7 @@ public class UserResource {
                 user.setActivated(managedUserDTO.isActivated());
                 user.setLangKey(managedUserDTO.getLangKey());
                 user.setFcSapId(managedUserDTO.getFcSapId().trim());
+                user.setCsu(managedUserDTO.getCsu());
                 user.setCompany(managedUserDTO.getCompany());
                 Set<Authority> authorities = user.getAuthorities();
                 authorities.clear();

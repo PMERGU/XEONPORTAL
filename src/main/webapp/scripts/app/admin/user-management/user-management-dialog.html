@@ -22,12 +22,12 @@
                            ng-model="user.login" ng-required="user.id == null" ng-maxlength="50">
 
                     <div ng-show="editForm.login.$invalid">
-                        <p class="help-block"
+                        <p class="help-block small-help-block pull-right"
                            ng-show="editForm.login.$error.required">
                             This field is required.
                         </p>
 
-                        <p class="help-block"
+                        <p class="help-block small-help-block pull-right"
                            ng-show="editForm.login.$error.maxlength"
                            translate-value-max="50">
                             This field cannot be longer than 50 characters.
@@ -40,7 +40,7 @@
                            ng-model="user.firstName" ng-maxlength="50">
 
                     <div ng-show="editForm.firstName.$invalid">
-                        <p class="help-block"
+                        <p class="help-block small-help-block pull-right"
                            ng-show="editForm.firstName.$error.maxlength"
                            translate-value-max="50">
                             This field cannot be longer than 50 characters.
@@ -53,7 +53,7 @@
                            ng-model="user.lastName" ng-maxlength="50">
 
                     <div ng-show="editForm.lastName.$invalid">
-                        <p class="help-block"
+                        <p class="help-block small-help-block pull-right"
                            ng-show="editForm.lastName.$error.maxlength"
                            translate-value-max="50">
                             This field cannot be longer than 50 characters.
@@ -61,11 +61,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="activated">
-                        <input ng-disabled="user.id === null" type="checkbox" id="activated" ng-model="user.activated">
-                        <span>Activated</span>
-                    </label>
+                    <label>CSU Assigned</label>
+                    <select class="form-control" name="csu" ng-model="user.csu"
+                            ng-options="csu as csu.fistName + ' ' + csu.lastName for csu in csuList track by csu.id">
+                    </select>
                 </div>
+
             </div>
             <div class="col-md-6">
                 <div class="form-group">
@@ -88,15 +89,14 @@
                 <div class="form-group">
                     <label class="control-label">Financial Controller ID</label>
                     <input type="text" class="form-control" name="fcSapId"
-                           ng-model="user.fcSapId" ng-maxlength="20" ng-required>
+                           ng-model="user.fcSapId" ng-maxlength="20" ng-required="true">
 
                     <div ng-show="editForm.fcSapId.$invalid">
-                        <p class="help-block"
-                           ng-show="editForm.email.$error.required">
+                        <p class="help-block small-help-block pull-right" ng-show="editForm.fcSapId.$error.required">
                             This field is required.
                         </p>
 
-                        <p class="help-block"
+                        <p class="help-block small-help-block pull-right"
                            ng-show="editForm.fcSapId.$error.maxlength"
                            translate-value-max="20">
                             This field cannot be longer than 20 characters.
@@ -105,7 +105,7 @@
                 </div>
                 <div class="form-group">
                     <label>Profiles</label>
-                    <select class="form-control" multiple name="authority" ng-model="user.authorities" required
+                    <select class="form-control" multiple name="authority" ng-model="user.authorities" required style="height: 106px;"
                             ng-options="authority for authority in authorities">
                     </select>
                 </div>
@@ -114,6 +114,12 @@
                     <select class="form-control" name="company" ng-model="user.company" required
                             ng-options="company as company.name for company in companies track by company.id">
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="activated">
+                        <input ng-disabled="user.id === null" type="checkbox" id="activated" ng-model="user.activated">
+                        <span>Activated</span>
+                    </label>
                 </div>
             </div>
         </div>

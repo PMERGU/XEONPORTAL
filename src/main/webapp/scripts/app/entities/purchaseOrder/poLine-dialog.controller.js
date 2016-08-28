@@ -16,30 +16,30 @@ angular.module('portalApp').controller('PoLineDialogController',
                     hideOrShow([
                         {name: 'materialNumber'},
                         {name: 'batchNumber'},
-                        {name: 'orderQuantity', show: true, value: "1"},
-                        {name: 'materialType', show: true, value: "PACKAGE"},
-                        {name: 'length', show: true, value: ""},
-                        {name: 'width', show: true, value: ""},
-                        {name: 'height', show: true, value: ""},
-                        {name: 'netWeight', show: true, value: ""},
-                        {name: 'grossWeight', show: true, value: ""}
+                        {name: 'orderQuantity', show: true, value: IFTET($scope.poLine.orderQuantity, 1)},
+                        {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "PACKAGE")},
+                        {name: 'length', show: true, value: IFTET($scope.poLine.length, '')},
+                        {name: 'width', show: true, value: IFTET($scope.poLine.width, '')},
+                        {name: 'height', show: true, value: IFTET($scope.poLine.height, '')},
+                        {name: 'netWeight', show: true, value: IFTET($scope.poLine.netWeight, '')},
+                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')}
                     ]);
                     break;
                 case "INBOUND":
                     hideOrShow([
-                        {name: 'materialNumber', show: true, value: ""},
-                        {name: 'materialType', show: true, value: "EACH"},
-                        {name: 'length', show: true, value: ""},
-                        {name: 'width', show: true, value: ""},
-                        {name: 'height', show: true, value: ""},
-                        {name: 'netWeight', show: true, value: ""},
-                        {name: 'grossWeight', show: true, value: ""}
+                        {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
+                        {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "EACH")},
+                        {name: 'length', show: true, value: IFTET($scope.poLine.length, '')},
+                        {name: 'width', show: true, value: IFTET($scope.poLine.width, '')},
+                        {name: 'height', show: true, value: IFTET($scope.poLine.height, '')},
+                        {name: 'netWeight', show: true, value: IFTET($scope.poLine.netWeight, '')},
+                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')}
                     ]);
                     break;
                 case "OUTBOUND":
                     hideOrShow([
-                        {name: 'materialNumber', show: true, value: ""},
-                        {name: 'materialType', show: true, value: "PALLET"},
+                        {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
+                        {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "PALLET")},
                         {name: 'length'},
                         {name: 'width'},
                         {name: 'height'},
@@ -48,9 +48,29 @@ angular.module('portalApp').controller('PoLineDialogController',
                     ]);
                     break;
             }
-            $scope.poLine = $stateParams.poLine;
-            $log.debug($scope.poLine);
+            $scope.$watch('poLine.dvType', dvTypeWatch);
         }, 50);
+
+
+        function dvTypeWatch(value){
+            $log.debug("watch dvType triggered with value : " + value);
+            switch (value){
+                case 'VOLUME':
+                    hideOrShow([
+                        {name: 'volume', show: true, value: IFTET($scope.poLine.volume, "")},
+                        {name: 'length'},{name: 'width'},{name: 'height'}
+                    ]);
+                    break;
+                case 'DIMENSIONS':
+                    hideOrShow([
+                        {name: 'volume'},
+                        {name: 'length', show: true, value: IFTET($scope.poLine.length, "")},
+                        {name: 'width', show: true, value: IFTET($scope.poLine.width, "")},
+                        {name: 'height', show: true, value: IFTET($scope.poLine.height, "")}
+                    ]);
+                    break;
+            }
+        };
 
         function hideOrShow(elements){
             $.each(elements, function(idx, element) {
@@ -166,4 +186,15 @@ angular.module('portalApp').controller('PoLineDialogController',
             }
         }
 
+            function IFTET(ifThis, elseThat, debug){
+                if(ifThis === undefined || ifThis === null){
+                    if(elseThat === undefined || elseThat === null){
+                        return null;
+                    }else{
+                        return elseThat;
+                    }
+                }else{
+                    return ifThis;
+                }
+            }
 }]);
