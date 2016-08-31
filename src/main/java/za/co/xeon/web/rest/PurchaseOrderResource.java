@@ -306,7 +306,7 @@ public class PurchaseOrderResource {
         purchaseOrder.setSoComment(statePO.getSoComment());
         PurchaseOrder result = purchaseOrderService.save(purchaseOrder);
         if (statePO.getState().equals(PoState.PROCESSED)) {
-            mailService.sendPoProcessedMail(xeonUser, purchaseOrder, getBaseUrl(request));
+            mailService.sendPoProcessedMail(purchaseOrder.getUser(), purchaseOrder, getBaseUrl(request), true);
             mailService.sendCSUMail(xeonUser,
                 String.format("Xeon Portal: PO #%s has been processed by %s", purchaseOrder.getPoNumber(), xeonUser.getFirstName()),
                 String.format("Please note that this PO was been captured and processed in SAP. %s %s from client %s has been informed via Email already.", purchaseOrder.getUser().getFirstName(), purchaseOrder.getUser().getLastName(), purchaseOrder.getUser().getCompany().getName()),
