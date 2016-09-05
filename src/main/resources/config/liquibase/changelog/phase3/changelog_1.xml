@@ -32,7 +32,7 @@
         </addColumn>
 
         <addColumn tableName="po_line">
-            <column name="volume" type="double">
+            <column name="volume" type="decimal">
                 <constraints nullable="true" />
             </column>
         </addColumn>
