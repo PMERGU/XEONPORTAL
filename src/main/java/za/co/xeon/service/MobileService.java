@@ -126,6 +126,16 @@ public class MobileService {
         return new AsyncResult<List<EvResult>>(hiberSapService.getCustomerOrdersByDate(customerNumber, from, to, true));
     }
 
+    @Async
+    public Future<List<GtCustOrders>> getCustomerOrdersNew(String customerNumber, Date from, Date to) throws Exception{
+        return new AsyncResult<List<GtCustOrders>>(hiberSapService.getCustomerOrdersByDateNew(customerNumber, from, to, true));
+    }
+
+    @Async
+    public Future<List<GtCustOrdersDetail>> getCustomerOrderDetails(String deliveryNo, Date from, Date to) throws Exception{
+        return new AsyncResult<List<GtCustOrdersDetail>>(hiberSapService.getCustomerOrderDetails(deliveryNo, from, to));
+    }
+
     public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception{
         return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
     }

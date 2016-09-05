@@ -50,7 +50,15 @@ public class HiberSapService {
                 .setProperty(DestinationDataProvider.JCO_PEAK_LIMIT,    s3Settings.getPeakLimit());
 
         AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
-        configuration.addBapiClasses( CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, UpdateHandlingUnitsRFC.class, UpdatePodRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, CustOrdersDetailRFC.class);
+        configuration.addBapiClasses(
+            CustOrdersRFC.class,
+            CustOrdersDetailRFC.class,
+            CustomerOrdersByDateRFC.class,
+            HandlingUnitsRFC.class,
+            ReceivedHandlingUnitsRFC.class,
+            SalesOrderCreateRFC.class,
+            UpdateHandlingUnitsRFC.class,
+            UpdatePodRFC.class);
         sessionManager = configuration.buildSessionManager();
     }
 
@@ -67,6 +75,42 @@ public class HiberSapService {
             return rfc.getEvResult();
         }catch(Exception e){
             log.error("Couldnt complete getCustomerOrdersByDate : + " + e.getMessage(), e);
+            throw e;
+        }finally {
+            session.close();
+        }
+    }
+
+    public List<GtCustOrders> getCustomerOrdersByDateNew(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
+        customerNumber = Pad.left(customerNumber, 10);
+        Session session = sessionManager.openSession();
+        try {
+            List<ImDateR> dateRange = new ArrayList<>();
+            dateRange.add(new ImDateR("I", "BT", from, to));
+            CustOrdersRFC rfc = new CustOrdersRFC(customerNumber, dateRange, "B");
+            session.execute(rfc);
+
+            return rfc.getGtCustOrders();
+        }catch(Exception e){
+            log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
+            throw e;
+        }finally {
+            session.close();
+        }
+    }
+
+    public List<GtCustOrdersDetail> getCustomerOrderDetails(String orderNumber, Date from, Date to) throws ParseException {
+        orderNumber = Pad.left(orderNumber, 10);
+        Session session = sessionManager.openSession();
+        try {
+            List<ImDateR> dateRange = new ArrayList<>();
+            dateRange.add(new ImDateR("I", "BT", from, to));
+            CustOrdersDetailRFC rfc = new CustOrdersDetailRFC(dateRange, orderNumber);
+            session.execute(rfc);
+
+            return rfc.getGtCustOrdersDetail();
+        }catch(Exception e){
+            log.error("Couldnt complete getCustomerOrderDetails : + " + e.getMessage(), e);
             throw e;
         }finally {
             session.close();

@@ -127,7 +127,8 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="order in undeliveredOrders | unique: 'dbeln'">
-                                            <td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td>
+                                                <!--<td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td-->
+                                            <td>{{ order.bstkd }}</td>
                                             <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
                                             <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
                                             <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
@@ -169,7 +170,7 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="order in deliveredOrders | unique: 'dbeln'">
-                                                <td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td>
+                                                <td>{{ order.bstkd }}</small></td>
                                                 <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
                                                 <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
                                                 <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>

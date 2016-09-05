@@ -22,33 +22,42 @@ angular.module('portalApp').controller('PoLineDialogController',
                         {name: 'width', show: true, value: IFTET($scope.poLine.width, '')},
                         {name: 'height', show: true, value: IFTET($scope.poLine.height, '')},
                         {name: 'netWeight', show: true, value: IFTET($scope.poLine.netWeight, '')},
-                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')}
+                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')},
+                        {name: 'dvType', show: true, value: IFTET($scope.poLine.dvType, "DIMENSIONS")},
+                        {name: 'volume', show: true, value: IFTET($scope.poLine.volume, "")}
                     ]);
+                    $scope.$watch('poLine.dvType', dvTypeWatch);
                     break;
                 case "INBOUND":
                     hideOrShow([
                         {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
+                        {name: 'orderQuantity', show: true, value: IFTET($scope.poLine.orderQuantity, 1)},
                         {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "EACH")},
-                        {name: 'length', show: true, value: IFTET($scope.poLine.length, '')},
-                        {name: 'width', show: true, value: IFTET($scope.poLine.width, '')},
-                        {name: 'height', show: true, value: IFTET($scope.poLine.height, '')},
-                        {name: 'netWeight', show: true, value: IFTET($scope.poLine.netWeight, '')},
-                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')}
+                        {name: 'length'},
+                        {name: 'width'},
+                        {name: 'height'},
+                        {name: 'netWeight'},
+                        {name: 'dvType'},
+                        {name: 'volume'},
+                        {name: 'grossWeight'}
                     ]);
                     break;
                 case "OUTBOUND":
                     hideOrShow([
                         {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
+                        {name: 'orderQuantity', show: true, value: IFTET($scope.poLine.orderQuantity, 1)},
                         {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "PALLET")},
                         {name: 'length'},
                         {name: 'width'},
                         {name: 'height'},
                         {name: 'netWeight'},
+                        {name: 'dvType'},
+                        {name: 'volume'},
                         {name: 'grossWeight'}
                     ]);
                     break;
             }
-            $scope.$watch('poLine.dvType', dvTypeWatch);
+
         }, 50);
 
 

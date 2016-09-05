@@ -24,5 +24,19 @@
                                  referencedTableName="jhi_user"/>
     </changeSet>
 
+    <changeSet author="derick" id="phase3_changeset_2">
+        <addColumn tableName="po_line">
+            <column name="dv_type" type="varchar(255)" defaultValue="DIMENSIONS">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+
+        <addColumn tableName="po_line">
+            <column name="volume" type="decimal(7,3)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

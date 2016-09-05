@@ -912,3 +912,51 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20160904 152652 South Africa Standard Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Sun Sep 04 15:26:52,716<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Sun Sep  4 15:26:52 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        2896
+DETAIL      NiPConnect: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       51
+ERRNO TEXT  Network is unreachable
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20160904 161127 South Africa Standard Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Sun Sep 04 16:11:27,720<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Sun Sep  4 16:11:27 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        2896
+DETAIL      NiPConnect: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       51
+ERRNO TEXT  Network is unreachable
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

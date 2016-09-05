@@ -3,6 +3,7 @@ package za.co.xeon.domain;
 import javafx.scene.paint.Material;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import za.co.xeon.domain.enumeration.DVType;
 import za.co.xeon.domain.enumeration.MaterialType;
 import za.co.xeon.domain.enumeration.PoState;
 
@@ -59,6 +60,13 @@ public class PoLine implements Serializable {
     @ManyToOne
     @JoinColumn(name = "purchase_order_id")
     private PurchaseOrder purchaseOrder;
+
+    @Column(name = "volume")
+    private Float volume;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dv_type")
+    private DVType dvType;
 
     public Long getId() {
         return id;
@@ -154,6 +162,22 @@ public class PoLine implements Serializable {
 
     public void setMaterialType(MaterialType materialType) {
         this.materialType = materialType;
+    }
+
+    public Float getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Float volume) {
+        this.volume = volume;
+    }
+
+    public DVType getDvType() {
+        return dvType;
+    }
+
+    public void setDvType(DVType dvType) {
+        this.dvType = dvType;
     }
 
     @Override

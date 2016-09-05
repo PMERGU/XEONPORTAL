@@ -432,6 +432,7 @@
                                             <th>Material Type</th>
                                             <th>material Number</th>
                                             <th>Gross Weight</th>
+                                            <th>DV Type</th>
                                             <th>Volume</th>
                                             <th>Quantity</th>
                                             <th></th>
@@ -455,12 +456,19 @@
                                                     <b>{{ po.grossWeight * po.orderQuantity }}</b>kg
                                                 </small>
                                             </td>
-                                            <td>
+                                            <td>{{ po.dvType }}</td>
+                                            <td ng-show="po.dvType === 'DIMENSIONS'">
                                                 <div>{{ po.height * po.length * po.width / 1000000 |
                                                     number:2}}m&sup3;</div>
                                                 <small>
                                                     <b>{{(po.height * po.length * po.width)/1000000 * po.orderQuantity |
                                                         number:2}}</b>m&sup3;
+                                                </small>
+                                            </td>
+                                            <td ng-show="po.dvType === 'VOLUME'">
+                                                <div>{{ po.volume | number:2}}m&sup3;</div>
+                                                <small>
+                                                    <b>{{po.volume * po.orderQuantity | number:2}}</b>m&sup3;
                                                 </small>
                                             </td>
                                             <td>{{ po.orderQuantity }}</td>

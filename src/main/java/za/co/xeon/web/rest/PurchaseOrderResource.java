@@ -97,6 +97,7 @@ public class PurchaseOrderResource {
         if (SecurityUtils.isUserCustomer()) {
             user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         } else {
+            log.debug("Capturing as user {}", purchaseOrder.getUser());
             user = userRepository.findOneByLogin(purchaseOrder.getUser().getLogin()).get();
             capturedBy = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             log.debug("PO captured by %s against customer %s", capturedBy.getLogin(), user.getLogin());
@@ -161,15 +162,17 @@ public class PurchaseOrderResource {
                 "", purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg
             );
             log.debug(rfc.toStringFull());
+            User whoDidIt = (capturedBy == null ? user : capturedBy);
             try {
                 purchaseOrder.setState(PoState.PROCESSED);
                 SalesOrderCreatedDTO so = hiberSapService.createSalesOrder(purchaseOrder.getPoNumber(), rfc);
                 purchaseOrder.setSoNumber(so.getSoNumber());
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
                 log.debug(" PO saved as ID : {} - SO created as ID : {}", savedPo.getId(), savedPo.getSoNumber());
-                mailService.sendCSUMail(capturedBy != null ? user : capturedBy,
+                mailService.sendCSUMail(whoDidIt,
                     String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
-                    String.format("A new Purchase Order #%s has been created by %s %s for client %s and SAP SO auto created as %s.", savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
+                    String.format("A new Purchase Order #%s has been created by %s %s for client %s and SAP SO auto created as %s.",
+                        savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getCompany().getName(), so.getSoNumber())
                     , null, null, getBaseUrl(request));
                 if(capturedBy != null){
                     mailService.sendPoProcessedMail(user, purchaseOrder, getBaseUrl(request), true);
@@ -185,7 +188,8 @@ public class PurchaseOrderResource {
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
                 mailService.sendCSUMail(capturedBy != null ? user : capturedBy,
                     String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
-                    String.format("A new Purchase Order #%s has been created by %s %s for client %s. Please action and capture in SAP as soon as possible.", savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
+                    String.format("A new Purchase Order #%s has been created by %s %s for client %s. Please action and capture in SAP as soon as possible.",
+                        savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getCompany().getName())
                     , null, null, getBaseUrl(request));
                 return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
                     .headers(HeaderUtil.createEntityCreationAlert("purchase order", savedPo.getId().toString()))
@@ -204,21 +208,25 @@ public class PurchaseOrderResource {
     }
 
     private List<ImItemDetail> convertItems(PurchaseOrder savedPo, List<PoLine> poLines){
-        log.debug("line.getMaterialType().getSapCode() : {}",poLines.get(0).getMaterialType().getSapCode());
-        log.debug("line.getOrderQuantity() : {}",new BigDecimal(poLines.get(0).getOrderQuantity()));
-        log.debug("savedPo.getPickUpParty().getArea().getPlant() : {}",savedPo.getPickUpParty().getArea().getPlant());
-        log.debug("line.getBatchNumber() : {}",poLines.get(0).getBatchNumber());
-        log.debug("savedPo.getPickUpParty().getArea().getPlant() : {}",savedPo.getPickUpParty().getArea().getPlant());
-        log.debug("new BigDecimal(line.getLength()) : {}",new BigDecimal(poLines.get(0).getLength()));
-        log.debug("new BigDecimal(line.getWidth()) : {}",new BigDecimal(poLines.get(0).getWidth()));
-        log.debug("new BigDecimal(line.getLength()) : {}",new BigDecimal(poLines.get(0).getLength()));
-        log.debug("new BigDecimal(line.getGrossWeight()) : {}",new BigDecimal(poLines.get(0).getGrossWeight()));
-        log.debug("new BigDecimal(line.getNetWeight()) : {}",new BigDecimal(poLines.get(0).getNetWeight()));
+//        log.debug("line.getMaterialType().getSapCode() : {}",poLines.get(0).getMaterialType().getSapCode());
+//        log.debug("line.getOrderQuantity() : {}",new BigDecimal(poLines.get(0).getOrderQuantity()));
+//        log.debug("savedPo.getPickUpParty().getArea().getPlant() : {}",savedPo.getPickUpParty().getArea().getPlant());
+//        log.debug("line.getBatchNumber() : {}",poLines.get(0).getBatchNumber());
+//        log.debug("savedPo.getPickUpParty().getArea().getPlant() : {}",savedPo.getPickUpParty().getArea().getPlant());
+//        log.debug("new BigDecimal(line.getLength()) : {}",new BigDecimal(poLines.get(0).getLength()));
+//        log.debug("new BigDecimal(line.getWidth()) : {}",new BigDecimal(poLines.get(0).getWidth()));
+//        log.debug("new BigDecimal(line.getLength()) : {}",new BigDecimal(poLines.get(0).getLength()));
+//        log.debug("new BigDecimal(line.getGrossWeight()) : {}",new BigDecimal(poLines.get(0).getGrossWeight()));
+//        log.debug("new BigDecimal(line.getNetWeight()) : {}",new BigDecimal(poLines.get(0).getNetWeight()));
         return poLines.stream().map(line -> new ImItemDetail(
             line.getMaterialType().getSapCode(), new BigDecimal(line.getOrderQuantity()), null, savedPo.getPickUpParty().getArea().getPlant(),
             line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(),
-            new BigDecimal(line.getLength()), new BigDecimal(line.getWidth()), new BigDecimal(line.getHeight()),
-            "cm", "cm", "cm", new BigDecimal(line.getGrossWeight()), new BigDecimal(line.getNetWeight()), "KG", "KG"
+            (line.getLength() == null ? null : new BigDecimal(line.getLength())),
+            (line.getWidth() == null ? null : new BigDecimal(line.getWidth())),
+            (line.getHeight() == null ? null : new BigDecimal(line.getHeight())),
+            "cm", "cm", "cm",
+            (line.getGrossWeight() == null ? null : new BigDecimal(line.getGrossWeight())),
+            (line.getNetWeight() == null ? null : new BigDecimal(line.getNetWeight())), "KG", "KG"
         )).collect(Collectors.toList());
     }
 

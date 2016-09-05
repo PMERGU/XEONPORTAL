@@ -99,7 +99,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="field_netWeight">Dimensions or Volume</label>
-                    <select class="form-control" name="serviceType" ng-model="poLine.dvType" id="field_serviceType">
+                    <select class="form-control" name="serviceType" ng-model="poLine.dvType" id="field_serviceType">  ng-required="requiredFields['dvType']"
                         <option value="DIMENSIONS">Dimensions</option>
                         <option value="VOLUME">Volume</option>
                     </select>
@@ -110,7 +110,8 @@
                             <dt>Total gross weight : </dt>
                             <dd>{{ (poLine.grossWeight * poLine.orderQuantity) | number:3 }}Kg</dd>
                             <dt>Total cubes : </dt>
-                            <dd>{{ ((poLine.width * poLine.height * poLine.length)/1000000 * poLine.orderQuantity) | number:3 }}m&sup3;</dd>
+                            <dd ng-show="poLine.dvType === 'DIMENSIONS'">{{ ((poLine.width * poLine.height * poLine.length)/1000000 * poLine.orderQuantity) | number:3 }}m&sup3;</dd>
+                            <dd ng-show="poLine.dvType === 'VOLUME'">{{ (poLine.volume * poLine.orderQuantity) | number:3 }}m&sup3;</dd>
                         </dl>
                     </blockquote>
                 </div>
@@ -223,6 +224,12 @@
                         </p>
                     </div>
                 </div>
+                <div class="form-group" ng-show="poLine.dvType === 'VOLUME'">
+                    <blockquote class="blockquote-warn">
+                        <p><strong>Please note,</strong> volume is not the preference</p>
+                    </blockquote>
+                </div>
+
             </div>
         </div>
     </div>

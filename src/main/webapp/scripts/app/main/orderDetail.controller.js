@@ -83,14 +83,14 @@ angular.module('portalApp')
 
         $scope.states['PROCESSED'] = purchaseOrder.state === 'PROCESSED' ? true : false;
 
-        $log.log("group size " + $scope.orderGroup.length);
+        $log.debug("group size " + $scope.orderGroup.length);
         $scope.orderGroup = $scope.orderGroup.sort(function (order1, order2) {
-            $log.log(order1.tknum + " - " + order2.tknum);
+            $log.debug(order1.tknum + " - " + order2.tknum);
             return order1.tknum - order2.tknum;
         });
 
-        $log.log("start date : " + $scope.orderGroup[0].datbg);
-        $log.log("start time : " + $scope.orderGroup[0].uatbg);
+        $log.debug("start date : " + $scope.orderGroup[0].datbg);
+        $log.debug("start time : " + $scope.orderGroup[0].uatbg);
 
         if($scope.orderGroup[0].daten !== undefined && $scope.orderGroup[0].daten !== null && $scope.orderGroup[0].daten !== ""){
             $scope.states['RECEIVED'] = true;
