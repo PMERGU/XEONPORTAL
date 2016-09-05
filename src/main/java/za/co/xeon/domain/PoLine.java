@@ -10,6 +10,7 @@ import za.co.xeon.domain.enumeration.PoState;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -62,7 +63,7 @@ public class PoLine implements Serializable {
     private PurchaseOrder purchaseOrder;
 
     @Column(name = "volume")
-    private Float volume;
+    private BigDecimal volume;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dv_type")
@@ -164,11 +165,11 @@ public class PoLine implements Serializable {
         this.materialType = materialType;
     }
 
-    public Float getVolume() {
+    public BigDecimal getVolume() {
         return volume;
     }
 
-    public void setVolume(Float volume) {
+    public void setVolume(BigDecimal volume) {
         this.volume = volume;
     }
 
