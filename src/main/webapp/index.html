@@ -178,24 +178,25 @@
                         </div>
                         <div id="trackOrderFound" style="display: none;">
                             <h4 style="font-weight: 400;">Order #<span id="orderId"></span></h4>
-                                <table>
-                                    <tr>
-                                        <td style="font-weight: 600;color: white;" width="70px">For</td>
-                                        <td>: <span id="orderFor"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600;color: white;">Type</td>
-                                        <td>: <span id="orderType"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600;color: white;">From</td>
-                                        <td>: <span id="orderFrom"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600;color: white;">To</td>
-                                        <td>: <span id="orderTo"></span></td>
-                                    </tr>
-                                </table>
+                            <table>
+                                <tr>
+                                    <td style="font-weight: 600;color: white;" width="70px">For</td>
+                                    <td>: <span id="orderFor"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600;color: white;">Type</td>
+                                    <td>: <span id="orderType"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600;color: white;">From</td>
+                                    <td>: <span id="orderFrom"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600;color: white;">To</td>
+                                    <td>: <span id="orderTo"></span></td>
+                                </tr>
+                            </table>
+                            <input type="button" class="" value="Back" id="trackBackButton"/>
                         </div>
                     </div><!-- .col-md-4.custom-bkg.bkg-dark-blue.transparent end -->
 
@@ -245,7 +246,7 @@
                         </ul><!-- .fa-ul end -->
                     </div><!-- .col-md-4.custom-bkg.bkg-dark-blue.transparent end -->
 
-                    <div class="col-md-8 custom-bkg bkg-dark-blue dark transparent03 trackingRightPane" style="display: none">
+                    <div class="col-md-8 custom-bkg bkg-dark-blue dark transparent02 trackingRightPane" style="display: none">
                         <div class="custom-heading">
                             <h3>Detail:</h3>
                         </div><!-- .custom-heading end -->
@@ -378,7 +379,7 @@
                             $("#orderFrom").html(data.purchaseOrder.pickUpParty.area.city + ", " + data.purchaseOrder.pickUpParty.area.suburb);
                             $("#orderTo").html(data.purchaseOrder.shipToParty.area.city + ", " + data.purchaseOrder.shipToParty.area.suburb);
 //                            $("#order").html("");
-
+                            $("#orderDetails").html("");
                             $("#orderDetails").append(
                                 "<tr>" +
                                 "    <th style='text-align: center;' scope='row'>1</th>" +
@@ -430,6 +431,7 @@
                     $("#trackOrderSearching").hide("fast");
                     $("#trackOrderFound").hide("fast");
                     $("#trackOrderForm").show();
+                    $(".trackingRightPane").slideToggle("slow");
                 });
 
                 $.ajax({
