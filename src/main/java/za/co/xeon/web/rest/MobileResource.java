@@ -193,25 +193,25 @@ public class MobileResource {
             Future<List<GtCustOrders>> future;
             if(SecurityUtils.isUserCustomer()){
                 log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
-                future = mobileService.getCustomerOrdersNew(user.getCompany().getSapId(),
+                future = mobileService.getCustomerOrders(user.getCompany().getSapId(),
                     new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
 
                 if(SecurityUtils.isUserCustomerCSU()){
                     Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(user.getCompany()).stream()
                         .filter(po -> po.getPoNumber() != null)
                         .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-                    //return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
-                    return future.get().stream().collect(Collectors.toList());
+                    return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
+                    //return future.get().stream().collect(Collectors.toList());
                 }else {
                     Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream()
                         .filter(po -> po.getPoNumber() != null)
                         .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-                    //return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
-                    return future.get().stream().collect(Collectors.toList());
+                    return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
+                    //return future.get().stream().collect(Collectors.toList());
                 }
 
             }else {
-                future = mobileService.getCustomerOrdersNew(customerNumber,
+                future = mobileService.getCustomerOrders(customerNumber,
                     new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
 
                 Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(companyRepository.findBySapId(customerNumber)).stream()
@@ -226,6 +226,7 @@ public class MobileResource {
 
     @RequestMapping(value = "/mobile/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ANONYMOUS)
     public Callable<List<GtCustOrdersDetail>> getCustomerOrderDetail(@PathVariable(value="deliveryNo") String deliveryNo,
                                                            @RequestParam(value = "from") String from, @RequestParam(value = "to") String to, Pageable pageable) throws Exception {
         log.debug("Service [GET] /mobile/orders/" + deliveryNo);

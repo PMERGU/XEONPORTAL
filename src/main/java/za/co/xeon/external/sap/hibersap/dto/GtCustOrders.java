@@ -9,50 +9,56 @@ import org.hibersap.annotations.Parameter;
 @BapiStructure
 public class GtCustOrders {
     /**
-     * "Customer Number 1"
-     */
+     * "Customer Number 1" */
     @Parameter("SKUNNR")
-    private String skunnr;
+    private java.lang.String skunnr;
 
     /**
-     * "Sales and Distribution Document Number"
-     */
+     * "Sales and Distribution Document Number" */
     @Parameter("VBELN")
-    private String vbeln;
+    private java.lang.String vbeln;
 
     /**
-     * "Sales and Distribution Document Number"
-     */
+     * "Sales and Distribution Document Number" */
     @Parameter("DBELN")
-    private String dbeln;
+    private java.lang.String dbeln;
 
-    public GtCustOrders(String skunnr, String vbeln, String dbeln) {
+    /**
+     * "Customer purchase order number" */
+    @Parameter("BSTKD")
+    private java.lang.String bstkd;
+
+    public GtCustOrders(java.lang.String skunnr, java.lang.String vbeln, java.lang.String dbeln, java.lang.String bstkd) {
         this.skunnr = skunnr;
         this.vbeln = vbeln;
         this.dbeln = dbeln;
+        this.bstkd = bstkd;
     }
 
     public GtCustOrders() {
     }
 
     /**
-     * @return "Skunnr" - "Customer Number 1"
-     */
-    public String getSkunnr() {
+     * @return "Skunnr" - "Customer Number 1" */
+    public java.lang.String getSkunnr() {
         return skunnr;
     }
 
     /**
-     * @return "Vbeln" - "Sales and Distribution Document Number"
-     */
-    public String getVbeln() {
+     * @return "Vbeln" - "Sales and Distribution Document Number" */
+    public java.lang.String getVbeln() {
         return vbeln;
     }
 
     /**
-     * @return "Dbeln" - "Sales and Distribution Document Number"
-     */
-    public String getDbeln() {
+     * @return "Dbeln" - "Sales and Distribution Document Number" */
+    public java.lang.String getDbeln() {
         return dbeln;
+    }
+
+    /**
+     * @return "Bstkd" - "Customer purchase order number" */
+    public java.lang.String getBstkd() {
+        return bstkd;
     }
 }

@@ -150,7 +150,74 @@
         <div class="page-content fixed centered">
             <div class="container">
                 <div class="row matchHeight">
-                    <div class="col-md-4 custom-bkg bkg-dark-blue dark transparent01">
+                    <div class="col-md-4 custom-bkg bkg-dark-blue dark transparent03">
+                        <div class="custom-heading">
+                            <h3>track your order</h3>
+                        </div><!-- .custom-heading end -->
+                        <div id="trackOrderForm">
+                            <p>
+                                Please enter your order number below
+                            </p>
+                            <form class="tracking">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input class="package-id" type="text" placeholder="#DELIVERY NUMBER" id="deliveryNo">
+                                        <input type="button" class="submit" value="" id="trackButton">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div id="trackOrderSearching" style="display: none;text-align: center;">
+                            <p>
+                                Finding your order...please be patient.
+                            </p>
+                            <div>
+                                <i class="fa fa-refresh fa-spin fa-fw fa-5x"></i>
+                            </div>
+                        </div>
+                        <div id="trackOrderFound" style="display: none;">
+                            <h4 style="font-weight: 400;">Order #<span id="orderId"></span></h4>
+                                <table>
+                                    <tr>
+                                        <td style="font-weight: 600;color: white;" width="70px">For</td>
+                                        <td>: <span id="orderFor"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;color: white;">Type</td>
+                                        <td>: <span id="orderType"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;color: white;">From</td>
+                                        <td>: <span id="orderFrom"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;color: white;">To</td>
+                                        <td>: <span id="orderTo"></span></td>
+                                    </tr>
+                                </table>
+                        </div>
+                    </div><!-- .col-md-4.custom-bkg.bkg-dark-blue.transparent end -->
+
+
+                    <div class="col-md-4 custom-bkg bkg-dark-blue dark transparent02 trackingRightPane">
+                        <div class="custom-heading">
+                            <h3>Full Integrated</h3>
+                        </div><!-- .custom-heading end -->
+
+                        <p>
+                            Xeon logistics our full integrated Supply Chain Management solution will help your business become more sustainable, cost effective, integrated and innovative. Lets talk about what we can do for you
+                        </p>
+
+                        <a class="read-more" href="website/contact.html">
+                            <span>
+                                Contact Us
+                                <i class="fa fa-map-marker"></i>
+                            </span>
+                        </a>
+                    </div><!-- .col-md-4.custom-bkg.bkg-dark-blue.transparent end -->
+
+                    <div class="col-md-4 custom-bkg bkg-dark-blue dark transparent01 trackingRightPane">
                         <div class="custom-heading">
                             <h3>our services</h3>
                         </div><!-- .custom-heading end -->
@@ -178,36 +245,23 @@
                         </ul><!-- .fa-ul end -->
                     </div><!-- .col-md-4.custom-bkg.bkg-dark-blue.transparent end -->
 
-                    <div class="col-md-4 custom-bkg bkg-dark-blue dark transparent02">
+                    <div class="col-md-8 custom-bkg bkg-dark-blue dark transparent03 trackingRightPane" style="display: none">
                         <div class="custom-heading">
-                            <h3>Full Integrated</h3>
+                            <h3>Detail:</h3>
                         </div><!-- .custom-heading end -->
 
-                        <p>
-                            Xeon logistics our full integrated Supply Chain Management solution will help your business become more sustainable, cost effective, integrated and innovative. Lets talk about what we can do for you
-                        </p>
+                        <table class="table table-bordered">
+                            <thead style="background-color: #ccc;">
+                                <tr>
+                                    <th width="10%" style='text-align: center;'>#</th>
+                                    <th width="60%" style="text-align: left;">Description</th>
+                                    <th width="30%" style="text-align: left;">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: #ddd;" id="orderDetails">
 
-                        <a class="read-more" href="website/contact.html">
-                            <span>
-                                Contact Us
-                                <i class="fa fa-map-marker"></i>
-                            </span>
-                        </a>
-                    </div><!-- .col-md-4.custom-bkg.bkg-dark-blue.transparent end -->
-
-                    <div class="col-md-4 custom-bkg bkg-dark-blue dark transparent03">
-                        <div class="custom-heading">
-                            <h3>track your load</h3>
-                        </div><!-- .custom-heading end -->
-
-                        <p>
-                            Already have a shipping number, please insert it bellow.
-                        </p>
-
-                        <form class="tracking">
-                            <input class="package-id" type="text" placeholder="#PACKAGE ID">
-                            <input type="submit" class="submit" value="">
-                        </form>
+                            </tbody>
+                        </table>
                     </div><!-- .col-md-4.custom-bkg.bkg-dark-blue.transparent end -->
                 </div><!-- .row end -->
             </div><!-- .container end -->
@@ -268,12 +322,120 @@
 //                    }
 //                });
 //            });
+                $.date = function(dateObject) {
+                    var d = new Date(dateObject);
+                    var day = d.getDate();
+                    var month = d.getMonth() + 1;
+                    var year = d.getFullYear();
+                    if (day < 10) {
+                        day = "0" + day;
+                    }
+                    if (month < 10) {
+                        month = "0" + month;
+                    }
+                    var date = day + "/" + month + "/" + year;
+
+                    return date;
+                };
+
+                $.time = function(dateObject) {
+                    var d = new Date(dateObject);
+                    var hours = d.getHours();
+                    var minutes = d.getMinutes() + 1;
+                    if (hours < 10) {
+                        hours = "0" + hours;
+                    }
+                    if (minutes < 10) {
+                        minutes = "0" + minutes;
+                    }
+                    var date = hours + ":" + minutes;
+
+                    return date;
+                };
+
+                $.dateTime = function(dateObject) {
+                    return $.date(dateObject) + " " + $.time(dateObject) ;
+                };
+
+                $(document).on("click", "#trackButton", function(){
+                   console.log("clicked track button");
+                    $("#trackOrderForm").hide("fast", function(){
+                        $("#trackOrderSearching").show();
+                    });
+                    $.ajax({
+                        url: 'api/open/orders/' + $("#deliveryNo").val(),
+                        dataType: 'json',
+                        success: function (data) {
+                           console.log(data);
+                            $("#trackOrderSearching").hide("fast", function(){
+                                $("#trackOrderFound").show();
+                            });
+                            $(".trackingRightPane").slideToggle("slow");
+
+                            $("#orderId").html(data.sapOrders[0].dbeln);
+                            $("#orderFor").html(data.purchaseOrder.user.firstName + " " + data.purchaseOrder.user.lastName);
+                            $("#orderType").html(data.purchaseOrder.serviceLevel.substr(0,1).toUpperCase() + data.purchaseOrder.serviceLevel.substr(1).toLowerCase() + " " + data.purchaseOrder.serviceType.toLowerCase() + " via " + data.purchaseOrder.modeOfTransport.toLowerCase());
+                            $("#orderFrom").html(data.purchaseOrder.pickUpParty.area.city + ", " + data.purchaseOrder.pickUpParty.area.suburb);
+                            $("#orderTo").html(data.purchaseOrder.shipToParty.area.city + ", " + data.purchaseOrder.shipToParty.area.suburb);
+//                            $("#order").html("");
+
+                            $("#orderDetails").append(
+                                "<tr>" +
+                                "    <th style='text-align: center;' scope='row'>1</th>" +
+                                "    <td style='text-align: left;'>Order captured by " + data.purchaseOrder.user.firstName + " " + data.purchaseOrder.user.lastName + "</td>" +
+                                "    <td style='text-align: left;'>" + $.dateTime(new Date(data.purchaseOrder.captureDate)) + "</td>" +
+                                "</tr>"
+                            );
+                            $("#orderDetails").append(
+                                "<tr>" +
+                                "    <th style='text-align: center;' scope='row'>2</th>" +
+                                "    <td style='text-align: left;'>Order processed in SAP</td>" +
+                                "    <td style='text-align: left;'>" + $.dateTime(new Date(data.purchaseOrder.captureDate)) + "</td>" +
+                                "</tr>"
+                            );
+
+                            if(data.sapOrders[0].daten !== undefined && data.sapOrders[0].daten !== null && data.sapOrders[0].daten !== ""){
+                                $("#orderDetails").append(
+                                    "<tr>" +
+                                    "    <th style='text-align: center;' scope='row'>3</th>" +
+                                    "    <td style='text-align: left;'>Order has been collected and is in transit</td>" +
+                                    "    <td style='text-align: left;'>" + $.date(new Date(data.sapOrders[0].daten)) + " " + $.time(new Date(data.sapOrders[0].uaten)) + "</td>" +
+                                    "</tr>"
+                                );
+                            }
+
+                            if(data.sapOrders[0].pdstk === "B" || data.sapOrders[0].pdstk === "C" ){
+                                $("#orderDetails").append(
+                                    "<tr>" +
+                                    "    <th style='text-align: center;' scope='row'>4</th>" +
+                                    "    <td style='text-align: left;'>Order delivered</td>" +
+                                    "    <td style='text-align: left;'>" + $.dateTime(new Date(data.sapOrders[0].audat)) + "</td>" +
+                                    "</tr>"
+                                );
+                            }
+
+
+                        },
+                        error: function(data){
+                            console.error(data);
+                            $("#trackOrderSearching").hide("fast", function(){
+                                $("#trackOrderForm").show();
+                            });
+                        }
+                    });
+                });
+
+                $(document).on("click", "#trackBackButton", function(){
+                    console.log("clicked track button");
+                    $("#trackOrderSearching").hide("fast");
+                    $("#trackOrderFound").hide("fast");
+                    $("#trackOrderForm").show();
+                });
 
                 $.ajax({
                     url: 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent("http://feeds.reuters.com/reuters/financialsNews"),
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data);
                         if (data.responseData.feed && data.responseData.feed.entries) {
                             $.each(data.responseData.feed.entries, function (i, e) {
                                 var newsItem = [

@@ -275,8 +275,8 @@
             $img.replaceWith($svg);
 
         }, 'xml');
-
     });
+    
 });
 
 

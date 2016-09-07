@@ -59,8 +59,7 @@ angular.module('portalApp').controller('PoLineDialogController',
             }
 
         }, 50);
-
-
+            
         function dvTypeWatch(value){
             $log.debug("watch dvType triggered with value : " + value);
             switch (value){
