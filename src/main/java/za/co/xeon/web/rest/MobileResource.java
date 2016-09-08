@@ -218,8 +218,8 @@ public class MobileResource {
                     .filter(po -> po.getPoNumber() != null)
                     .collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
 
-                //return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
-                return future.get().stream().collect(Collectors.toList());
+                return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
+                //return future.get().stream().collect(Collectors.toList());
             }
         };
     }

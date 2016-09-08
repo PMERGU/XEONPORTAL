@@ -164,6 +164,11 @@
                                         <input class="package-id" type="text" placeholder="#DELIVERY NUMBER" id="deliveryNo">
                                         <input type="button" class="submit" value="" id="trackButton">
                                     </div>
+                                    <div id="trackNotFound" style="display: none">
+                                        <p class="help-block small-help-block pull-right">
+                                            Could not find your order, please try again
+                                        </p>
+                                    </div>
                                 </div>
 
                             </form>
@@ -196,7 +201,7 @@
                                     <td>: <span id="orderTo"></span></td>
                                 </tr>
                             </table>
-                            <input type="button" class="" value="Back" id="trackBackButton"/>
+                            <input type="button" class="btn" value="Back" id="trackBackButton" style="background-color: #f6f6f6; border-radius: 1px"/>
                         </div>
                     </div><!-- .col-md-4.custom-bkg.bkg-dark-blue.transparent end -->
 
@@ -301,28 +306,6 @@
         <script>
             /* <![CDATA[ */
             jQuery(document).ready(function ($) {
-//                $.ajax({
-//                    url: "http://query.yahooapis.com/v1/public/yql",
-//                    jsonp: "callback",
-//
-//                    // tell jQuery we're expecting JSONP
-//                    dataType: "jsonp",
-//
-//                    // tell YQL what we want and that we want JSON
-//                    data: {
-//                        q: "use 'http://github.com/yql/yql-tables/raw/master/weather/weather.bylocation.xml' as t_weather;"
-//                        + "select * from t_weather where location='ottawa,canada' and unit='c'",
-//                        format: "json"
-//                    },
-//                    success: function( response ) {
-//                        var channel = response.query.results.weather.rss.channel;
-//                        $('#weather').append($('<h2/>').text(channel.description));
-//                        $.each(channel, function(index, item){
-//                            if (item.description) { $('#weather').append($('<p/>').html(item.description)); }
-//                        });
-//                    }
-//                });
-//            });
                 $.date = function(dateObject) {
                     var d = new Date(dateObject);
                     var day = d.getDate();
@@ -421,6 +404,7 @@
                             console.error(data);
                             $("#trackOrderSearching").hide("fast", function(){
                                 $("#trackOrderForm").show();
+                                $("#trackNotFound").show();
                             });
                         }
                     });

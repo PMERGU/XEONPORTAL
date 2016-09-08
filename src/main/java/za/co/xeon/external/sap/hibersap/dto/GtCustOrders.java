@@ -28,11 +28,17 @@ public class GtCustOrders {
     @Parameter("BSTKD")
     private java.lang.String bstkd;
 
-    public GtCustOrders(java.lang.String skunnr, java.lang.String vbeln, java.lang.String dbeln, java.lang.String bstkd) {
+    /**
+     * "POD status on header level" */
+    @Parameter("PDSTK")
+    private java.lang.String pdstk;
+
+    public GtCustOrders(java.lang.String skunnr, java.lang.String vbeln, java.lang.String dbeln, java.lang.String bstkd, java.lang.String pdstk) {
         this.skunnr = skunnr;
         this.vbeln = vbeln;
         this.dbeln = dbeln;
         this.bstkd = bstkd;
+        this.pdstk = pdstk;
     }
 
     public GtCustOrders() {
@@ -60,5 +66,11 @@ public class GtCustOrders {
      * @return "Bstkd" - "Customer purchase order number" */
     public java.lang.String getBstkd() {
         return bstkd;
+    }
+
+    /**
+     * @return "Pdstk" - "POD status on header level" */
+    public java.lang.String getPdstk() {
+        return pdstk;
     }
 }
