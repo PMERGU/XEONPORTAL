@@ -116,7 +116,6 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "vehicle_size")
     private VehicleSize vehicleSize;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "service_type")
     private ServiceType serviceType;
@@ -183,6 +182,14 @@ public class PurchaseOrder implements Serializable {
 
     @Column(name = "cv_commodity")
     private String cvCommodity;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "service")
+    private Service service;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "trade_type")
+    private TradeType tradeType;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -618,6 +625,22 @@ public class PurchaseOrder implements Serializable {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public TradeType getTradeType() {
+        return tradeType;
+    }
+
+    public void setTradeType(TradeType tradeType) {
+        this.tradeType = tradeType;
     }
 
     @Override

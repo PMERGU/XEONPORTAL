@@ -3,9 +3,8 @@
 angular.module('portalApp').controller('PoLineDialogController',
     ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PoLine', 'PurchaseOrder', '$timeout', '$log', 'StaticServices',
         function($rootScope, $scope, $stateParams, $uibModalInstance, entity, PoLine, PurchaseOrder, $timeout, $log, StaticServices) {
-            $scope.static = {
-                materials: StaticServices.materials()
-            }
+        
+        $scope.staticEnums = StaticServices.getAll();
         $scope.serviceType = $stateParams.serviceType;
         $scope.requiredFields = {};
         $scope.poLine = entity;
@@ -59,7 +58,7 @@ angular.module('portalApp').controller('PoLineDialogController',
             }
 
         }, 50);
-            
+
         function dvTypeWatch(value){
             $log.debug("watch dvType triggered with value : " + value);
             switch (value){

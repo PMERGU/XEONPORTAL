@@ -3,9 +3,6 @@
 angular.module('portalApp')
     .factory('StaticServices', function ($resource) {
         return $resource('api/static/', {}, {
-            'categories': { url: 'api/static/attachmentCategories', method: 'GET', isArray: true},
-            'materials': { url: 'api/static/materialTypes', method: 'GET', isArray: true},
-            'serviceLevels': { url: 'api/static/serviceLevels', method: 'GET', isArray: true},
-            'partyTypes': { url: 'api/static/partyTypes', method: 'GET', isArray: true}
+            'getAll': { url: 'api/static', method: 'GET', isArray: false}
         });
     });

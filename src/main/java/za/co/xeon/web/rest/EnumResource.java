@@ -4,38 +4,40 @@ import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import za.co.xeon.domain.enumeration.AttachmentCategories;
-import za.co.xeon.domain.enumeration.MaterialType;
-import za.co.xeon.domain.enumeration.PartyType;
-import za.co.xeon.domain.enumeration.ServiceLevel;
+import za.co.xeon.domain.enumeration.*;
 
 import javax.servlet.annotation.MultipartConfig;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/static")
 public class EnumResource {
 
-    private final Logger log = LoggerFactory.getLogger(EnumResource.class);
 
-    @RequestMapping(value = "/attachmentCategories", method = RequestMethod.GET)
-    public List<AttachmentCategories> listAttachments() {
-        return Arrays.asList(AttachmentCategories.values());
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public Map<String, List<?>> allStaticTypes(){
+        Map<String, List<?>> enums = new HashMap<>();
+        enums.put("attachmentCategories", Arrays.asList(AttachmentCategories.values()));
+        enums.put("cargoTypes", Arrays.asList(CargoType.values()));
+        enums.put("deliveryTypes", Arrays.asList(DeliveryType.values()));
+        enums.put("materialTypes", Arrays.asList(MaterialType.values()));
+        enums.put("partyTypes", Arrays.asList(PartyType.values()));
+        enums.put("serviceLevels", Arrays.asList(ServiceLevel.values()));
+        enums.put("serviceTypes", Arrays.asList(ServiceType.values()));
+        enums.put("services", Arrays.asList(Service.values()));
+        enums.put("tradeTypes", Arrays.asList(TradeType.values()));
+        enums.put("vehicleSizes", Arrays.asList(VehicleSize.values()));
+        enums.put("transportTypes", Arrays.asList(ModeOfTransport.values()));
+        return enums;
     }
 
-    @RequestMapping(value = "/materialTypes", method = RequestMethod.GET)
-    public List<MaterialType> listMaterials() {
-        return Arrays.asList(MaterialType.values());
+    @RequestMapping(value = "/decode/{enumName}", method = RequestMethod.GET)
+    public AttachmentCategories detectEnum(@PathVariable String enumName){
+        return AttachmentCategories.valueOf(enumName);
     }
 
-    @RequestMapping(value = "/serviceLevels", method = RequestMethod.GET)
-    public List<ServiceLevel> listServiceLevels() {
-        return Arrays.asList(ServiceLevel.values());
-    }
-
-    @RequestMapping(value = "/partyTypes", method = RequestMethod.GET)
-    public List<PartyType> listPartyTypes() {
-        return Arrays.asList(PartyType.values());
+    @RequestMapping(value = "/decode2/{enumName}", method = RequestMethod.GET)
+    public AttachmentCategories detect2Enum(@PathVariable AttachmentCategories enumName){
+        return enumName;
     }
 }

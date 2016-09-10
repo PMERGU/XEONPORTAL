@@ -193,17 +193,15 @@
                                         <label class="control-label" for="field_serviceType">Service Type</label>
                                         <select class="form-control" name="serviceType"
                                                 ng-model="purchaseOrder.serviceType"
-                                                id="field_serviceType">
-                                            <option value="COURIER">Courier</option>
-                                            <option value="INBOUND">Inbound</option>
-                                            <option value="OUTBOUND">Outbound</option>
+                                                id="field_serviceType"
+                                                ng-options="enum | prittyPrint for enum in staticEnums['serviceTypes']">
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label" for="field_serviceLevel">Service Level</label>
                                         <select class="form-control" name="serviceLevel"
                                                 ng-model="purchaseOrder.serviceLevel"
-                                                ng-options="level as level for level in serviceLevels "
+                                                ng-options="enum | prittyPrint for enum in staticEnums['serviceLevels']"
                                                 id="field_serviceLevel">
                                         </select>
                                     </div>
@@ -211,14 +209,8 @@
                                         <label class="control-label" for="field_vehicleSize">Vehicle Size</label>
                                         <select class="form-control" name="vehicleSize"
                                                 ng-model="purchaseOrder.vehicleSize"
-                                                id="field_vehicleSize" ng-required="requiredFields['vehicleSize']">
-                                            <option value="LPV">LPV</option>
-                                            <option value="ONE_TON">1 Ton</option>
-                                            <option value="FOUR_TON">4 Ton</option>
-                                            <option value="EIGHT_TON">8 Ton</option>
-                                            <option value="TWELVE_TON">12 Ton</option>
-                                            <option value="TRI_AXLE">Tri Axle</option>
-                                            <option value="SUPER_LINK">Super Link</option>
+                                                id="field_vehicleSize" ng-required="requiredFields['vehicleSize']"
+                                                ng-options="enum | prittyPrint for enum in staticEnums['vehicleSizes']">
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -272,11 +264,8 @@
                                         <label class="control-label" for="field_pickUpType">Collection Type</label>
                                         <select class="form-control" name="pickUpType"
                                                 ng-model="purchaseOrder.pickUpType"
-                                                id="field_pickUpType">
-                                            <option value="RETAIL">Retail</option>
-                                            <option value="STANDARD">Standard</option>
-                                            <option value="HOME_DROPBOX">Home Dropbox</option>
-                                            <option value="HOME_CONNECTION">Home Connection</option>
+                                                id="field_pickUpType"
+                                                ng-options="enum | prittyPrint for enum in staticEnums['deliveryTypes']">
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -355,11 +344,8 @@
                                         <label class="control-label" for="field_shipToType">Delivery Type</label>
                                         <select class="form-control" name="shipToType"
                                                 ng-model="purchaseOrder.shipToType"
-                                                id="field_shipToType">
-                                            <option value="RETAIL">Retail</option>
-                                            <option value="STANDARD">Standard</option>
-                                            <option value="HOME_DROPBOX">Home Dropbox</option>
-                                            <option value="HOME_CONNECTION">Home Connection</option>
+                                                id="field_shipToType"
+                                                ng-options="enum | prittyPrint for enum in staticEnums['deliveryTypes']">
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -409,16 +395,8 @@
                                         <label class="control-label" for="field_cargoType">Hazardous
                                             Classification</label>
                                         <select class="form-control" name="cargoType" ng-model="purchaseOrder.cargoType"
-                                                id="field_cargoType">
-                                            <option value="EXPLOSIVES">Explosives</option>
-                                            <option value="GASES">Gases</option>
-                                            <option value="FLAMMABLE_LIQUIDS">Flammable Liquids</option>
-                                            <option value="FLAMMABLE_SOLIDS">Flammable Solids</option>
-                                            <option value="OXIDIZING">Oxidizing</option>
-                                            <option value="TOXIC_INFECTIOUS">Toxic Infectious</option>
-                                            <option value="RADIAACTIVE">Radioactive</option>
-                                            <option value="CORROSIVES">Corrosives</option>
-                                            <option value="DANGEROUS_GOODS">Dangerous Goods</option>
+                                                id="field_cargoType"
+                                                ng-options="enum | prittyPrint for enum in staticEnums['cargoTypes']">
                                         </select>
                                     </div>
                                 </div>
@@ -575,11 +553,8 @@
                                     <label class="control-label" for="field_modeOfTransport">Mode of Transport</label>
                                     <select class="form-control" name="modeOfTransport" ng-required="user.company.type === 'AGENT'"
                                             ng-model="purchaseOrder.modeOfTransport"
-                                            id="field_modeOfTransport">
-                                        <option value="AIR_DELIVERIES">Air Deliveries</option>
-                                        <option value="AIR_TRANSFERS">Air Transfers</option>
-                                        <option value="ROAD">Road</option>
-                                        <option value="SEA">Sea</option>
+                                            id="field_modeOfTransport"
+                                            ng-options="enum | prittyPrint for enum in staticEnums['transportTypes']">
                                     </select>
                                     <div ng-show="editForm.modeOfTransport.$invalid">
                                         <p class="help-block small-help-block pull-right"
@@ -837,7 +812,7 @@
                                             <td>{{$index+1}}</td>
                                             <td>
                                                 <select class="form-control" name="category" ng-model="attachment.category" id="field_category"
-                                                        ng-options="category as category for category in attachmentCategories track by category">
+                                                        ng-options="enum | prittyPrint for enum in staticEnums['attachmentCategories']">
                                                 </select>
                                             </td>
                                             <td>

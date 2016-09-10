@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label class="control-label" for="field_materialType">Material Type</label>
                     <select class="form-control" name="materialType" ng-model="poLine.materialType" ng-required="requiredFields['materialType']"
-                            id="field_materialType" ng-options="material as material for material in static.materials track by material">
+                            id="field_materialType" ng-options="enum | prittyPrint for enum in staticEnums['materialTypes']">
                     </select>
                     <div ng-show="editForm.materialType.$invalid">
                         <p class="help-block small-help-block pull-right"

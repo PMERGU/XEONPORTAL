@@ -38,5 +38,19 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="derick" id="phase3_changeset_3">
+        <addColumn tableName="purchase_order">
+            <column name="service" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+
+        <addColumn tableName="purchase_order">
+            <column name="trade_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

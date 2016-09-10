@@ -13,8 +13,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.soldToParties = Party.query({size: 10000, sort: 'name', type: 'SOLD_TO_PARTY'});
             $scope.otherParties = Party.query({size: 10000, sort: 'name', type: 'OTHER'});
 
-            $scope.attachmentCategories = Attachment.queryCategories();
-            $scope.serviceLevels = StaticServices.serviceLevels();
+            $scope.staticEnums = StaticServices.getAll();
 
             function resetPo(){
                 $log.debug("clearing po");

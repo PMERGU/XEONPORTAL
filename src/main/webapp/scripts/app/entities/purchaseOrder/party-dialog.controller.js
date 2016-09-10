@@ -6,7 +6,7 @@ angular.module('portalApp').controller('POPartyDialogController',
 
         $scope.party = entity;
         $scope.companies = Company.query();
-        $scope.partyTypes = StaticServices.partyTypes();
+        $scope.partyTypes = StaticServices.getAll()['partyTypes'];
             
         $scope.isXeon = false;
         Principal.identity().then(function(user) {
