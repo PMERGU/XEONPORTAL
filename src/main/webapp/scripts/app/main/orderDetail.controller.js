@@ -1,8 +1,24 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal, PurchaseOrder, purchaseOrder, orderGroup, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, poAttachments, delAttachments, Attachment, Comment, comments) {
+    .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal, PurchaseOrder, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, Attachment, Comment,
+                                                       purchaseOrder, order, deliveryNo, orderStep, delAttachments, poAttachments, comments) {
+        $scope.purchaseOrder = purchaseOrder;
+        $scope.deliveryNo = deliveryNo;
+
+        $scope.orderResolved = false;
         $scope.attachments = [];
+
+        $scope.states = {
+            'RECEIVED': true,
+            'PROCESSED':  purchaseOrder.state === 'PROCESSED' ? true : false,
+            'COLLECTED': false,
+            'IN_TRANSIT': false,
+            'DELIVERED': false,
+            'POD': false,
+            'INVOICE': false
+        };
+
         delAttachments.$promise.then(function(result){
             for(var i=0; i < result.length; i++){
                 $scope.attachments.push(result[i]);
@@ -37,14 +53,9 @@ angular.module('portalApp')
 
         $log.debug($scope.attachments);
         $scope.isDownloadingAttachment = false;
-        purchaseOrder = purchaseOrder !== undefined ? purchaseOrder : {
-            state: 'NOT_FOUND'
-        };
         $scope.step = 1;
 
-        $scope.purchaseOrder = purchaseOrder;
-        $scope.orderGroup = orderGroup;
-        CustomerOrders.getInvoice({deliveryNo: $scope.orderGroup[0].dbeln}).$promise.then(function(invoiceBlob){
+        CustomerOrders.getInvoice({deliveryNo: deliveryNo}).$promise.then(function(invoiceBlob){
             var creator = $window.URL || $window.webkitURL;
             var fileURL = creator.createObjectURL(invoiceBlob.response);
             $scope.states['INVOICE'] = true;
@@ -54,7 +65,7 @@ angular.module('portalApp')
                 activated: true,
                 category: "INVOICE",
                 createdDate: new Date(),
-                deliveryNumber: $scope.orderGroup[0].dbeln,
+                deliveryNumber: deliveryNo,
                 description: "Invoice, generated on completion of order",
                 id: $scope.attachments.length+1,
                 mimeType: "application/pdf",
@@ -66,46 +77,36 @@ angular.module('portalApp')
                 visible: true
             });
         },function(err){
-            $log.debug("Invoice could not be found: " + err);
             $scope.states['INVOICE_LOADED'] = false;
             $scope.states['INVOICE'] = false;
         });
 
-        $scope.states = {
-            'RECEIVED': true,
-            'PROCESSED': false,
-            'COLLECTED': false,
-            'IN_TRANSIT': false,
-            'DELIVERED': false,
-            'POD': false,
-            'INVOICE': false
-        };
+        //WHEN ORDER IS LOADED, LETS START WITH THE ORDER DATA
+        order.$promise.then(function(result) {
+            $scope.orderResolved = true;
 
-        $scope.states['PROCESSED'] = purchaseOrder.state === 'PROCESSED' ? true : false;
+            $scope.order = result.sort(function (order1, order2) {
+                $log.debug(order1.tknum + " - " + order2.tknum);
+                return order1.tknum - order2.tknum;
+            });
 
-        $log.debug("group size " + $scope.orderGroup.length);
-        $scope.orderGroup = $scope.orderGroup.sort(function (order1, order2) {
-            $log.debug(order1.tknum + " - " + order2.tknum);
-            return order1.tknum - order2.tknum;
+            if($scope.order[0].daten !== undefined && $scope.order[0].daten !== null && $scope.order[0].daten !== ""){
+                $scope.states['RECEIVED'] = true;
+                $scope.states['PROCESSED'] = true;
+                $scope.states['COLLECTED'] = true;
+                $scope.states['IN_TRANSIT'] = true;
+            }
+
+            if($scope.order[0].pdstk === "B" || $scope.order[0].pdstk === "C" ){
+                $scope.states['RECEIVED'] = true;
+                $scope.states['PROCESSED'] = true;
+                $scope.states['COLLECTED'] = true;
+                $scope.states['IN_TRANSIT'] = true;
+                $scope.states['DELIVERED'] = true;
+            }
         });
 
-        $log.debug("start date : " + $scope.orderGroup[0].datbg);
-        $log.debug("start time : " + $scope.orderGroup[0].uatbg);
 
-        if($scope.orderGroup[0].daten !== undefined && $scope.orderGroup[0].daten !== null && $scope.orderGroup[0].daten !== ""){
-            $scope.states['RECEIVED'] = true;
-            $scope.states['PROCESSED'] = true;
-            $scope.states['COLLECTED'] = true;
-            $scope.states['IN_TRANSIT'] = true;
-        }
-
-        if($scope.orderGroup[0].pdstk === "B" || $scope.orderGroup[0].pdstk === "C" ){
-            $scope.states['RECEIVED'] = true;
-            $scope.states['PROCESSED'] = true;
-            $scope.states['COLLECTED'] = true;
-            $scope.states['IN_TRANSIT'] = true;
-            $scope.states['DELIVERED'] = true;
-        }
 
         $scope.cuComment = function(comment){
             $log.debug("cuComment");
@@ -132,17 +133,17 @@ angular.module('portalApp')
         };
 
         $interval(function () {
-            PurchaseOrder.getComments({id: $stateParams.purchaseOrder.id}).$promise.then(function(result){
+            PurchaseOrder.getComments({id: purchaseOrder.id}).$promise.then(function(result){
                 $scope.comments = result;
             });
         }, 60000);
 
         $scope.downloadPod = function(){
-            FileSaver.saveAs($scope.podBlob, $scope.orderGroup[0].dbeln + '.jpg');
+            FileSaver.saveAs($scope.podBlob, deliveryNo + '.jpg');
         };
 
         $scope.downloadInvoice = function(){
-            FileSaver.saveAs($scope.invoiceBlob, $scope.orderGroup[0].dbeln + '.pdf');
+            FileSaver.saveAs($scope.invoiceBlob, deliveryNo + '.pdf');
         };
 
         $scope.downloadAttachment = function(attachment){

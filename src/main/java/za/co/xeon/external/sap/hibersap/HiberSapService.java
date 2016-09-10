@@ -62,26 +62,9 @@ public class HiberSapService {
         sessionManager = configuration.buildSessionManager();
     }
 
-//    @Cacheable(value = "CustomerOrdersByDate")
-    public List<EvResult> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
-        customerNumber = Pad.left(customerNumber, 10);
-        Session session = sessionManager.openSession();
-        try {
-            List<ImDateR> dateRange = new ArrayList<>();
-            dateRange.add(new ImDateR("I", "BT", from, to));
-            CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(customerNumber, dateRange, null);
-            session.execute(rfc);
 
-            return rfc.getEvResult();
-        }catch(Exception e){
-            log.error("Couldnt complete getCustomerOrdersByDate : + " + e.getMessage(), e);
-            throw e;
-        }finally {
-            session.close();
-        }
-    }
-
-    public List<GtCustOrders> getCustomerOrdersByDateNew(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
+    @Cacheable(value = "CustomerOrdersByDate")
+    public List<GtCustOrders> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
         customerNumber = Pad.left(customerNumber, 10);
         Session session = sessionManager.openSession();
         try {
@@ -99,6 +82,7 @@ public class HiberSapService {
         }
     }
 
+    @Cacheable(value = "getCustomerOrderDetails")
     public List<GtCustOrdersDetail> getCustomerOrderDetails(String orderNumber, Date from, Date to) throws ParseException {
         orderNumber = Pad.left(orderNumber, 10);
         Session session = sessionManager.openSession();

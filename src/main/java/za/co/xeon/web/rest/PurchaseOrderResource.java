@@ -1,18 +1,22 @@
 package za.co.xeon.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.beans.factory.annotation.Autowired;
 import za.co.xeon.domain.*;
 import za.co.xeon.domain.enumeration.PoState;
 import za.co.xeon.domain.enumeration.SapCode;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.SalesOrderCreateRFC;
+import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.dto.ImItemDetail;
 import za.co.xeon.repository.*;
 import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
+import za.co.xeon.service.MobileService;
 import za.co.xeon.service.PurchaseOrderService;
 import za.co.xeon.service.util.Pad;
+import za.co.xeon.web.rest.dto.OrderDetails;
 import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
@@ -32,10 +36,12 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
@@ -75,6 +81,8 @@ public class PurchaseOrderResource {
     @Inject
     private HiberSapService hiberSapService;
 
+    @Autowired
+    private MobileService mobileService;
     /**
      * POST  /purchaseOrders -> Create a new purchaseOrder.
      */
@@ -448,6 +456,33 @@ public class PurchaseOrderResource {
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/purchaseOrders/{id}/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(@PathVariable Long id, @PathVariable(value="deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
+        log.debug("Service [GET] /purchaseOrders/{}/orders/{}", id, deliveryNo);
+        return () -> {
+            List<GtCustOrdersDetail> sapOrders = null;
+            PurchaseOrder purchaseOrder;
+            purchaseOrder = purchaseOrderRepository.findOne(id);
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+
+            if(purchaseOrder != null){
+                sapOrders = mobileService.getCustomerOrderDetails(deliveryNo, new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
+                if(sapOrders.isEmpty()) {
+                    log.debug("Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, deliveryNo);
+                }
+            }else{
+                log.debug("Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]", id, deliveryNo, user.getCompany().getName());
+            }
+
+            return Optional.ofNullable(sapOrders)
+                .map(result -> new ResponseEntity<>(
+                    result,
+                    HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        };
     }
 
     /**

@@ -53,6 +53,10 @@ angular.module('portalApp')
             'getAttachments': {
                 url: 'api/purchaseOrders/:id/all/attachments',
                 method: 'GET', isArray: true
+            },
+            'getOrder': {
+                url: 'api/purchaseOrders/:id/orders/:deliveryNo',
+                method: 'GET', isArray: true
             }
         });
     });

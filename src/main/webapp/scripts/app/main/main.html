@@ -137,7 +137,7 @@
                                             <td>{{ order.skunnr }}</td>
                                             <td width="10px">
                                                 <button type="submit"
-                                                        ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep, company: company, purchaseOrder: purchaseOrders[order.bstkd]})"
+                                                        ui-sref="orderdetail({poId: purchaseOrders[order.bstkd].id, deliveryNo: order.dbeln, orderStep: ordersStep})"
                                                         class="btn btn-info btn-sm">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
                                                     <span class="hidden-xs hidden-sm"></span>
@@ -179,7 +179,7 @@
                                                 <td>{{ order.skunnr }}</td>
                                                 <td width="10px">
                                                     <button type="submit"
-                                                            ui-sref="orderdetail({deliveryNo: order.dbeln, order: order, orderStep: ordersStep, company: company, purchaseOrder: purchaseOrders[order.bstkd]})"
+                                                            ui-sref="orderdetail({poId: purchaseOrders[order.bstkd].id, deliveryNo: order.dbeln, orderStep: ordersStep})"
                                                             class="btn btn-info btn-sm">
                                                         <span class="glyphicon glyphicon-eye-open"></span>
                                                         <span class="hidden-xs hidden-sm"></span>

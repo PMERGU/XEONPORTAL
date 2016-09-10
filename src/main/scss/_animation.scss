@@ -20,3 +20,15 @@
     -webkit-animation: glower 2s ease-in 0.5s 1 alternate;
     animation: glower 2s ease-in 0.5s 1 alternate;
 }
+
+.animate-show {
+    opacity: 1;
+}
+
+.animate-show.ng-hide-add, .animate-show.ng-hide-remove {
+    transition: all linear 1.0s;
+}
+
+.animate-show.ng-hide {
+    opacity: 0;
+}

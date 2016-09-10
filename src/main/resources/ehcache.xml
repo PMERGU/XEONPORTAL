@@ -37,7 +37,8 @@
            timeToLiveSeconds="3600">
     </cache>
 
-    <cache name="CustomerOrdersByDate"
-           timeToLiveSeconds="1000">
+    <cache name="CustomerOrdersByDate" timeToLiveSeconds="1000">
+    </cache>
+    <cache name="getCustomerOrderDetails" timeToLiveSeconds="1000">
     </cache>
     </ehcache>

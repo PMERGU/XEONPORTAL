@@ -123,7 +123,7 @@ public class MobileService {
 
     @Async
     public Future<List<GtCustOrders>> getCustomerOrders(String customerNumber, Date from, Date to) throws Exception{
-        return new AsyncResult<List<GtCustOrders>>(hiberSapService.getCustomerOrdersByDateNew(customerNumber, from, to, true));
+        return new AsyncResult<List<GtCustOrders>>(hiberSapService.getCustomerOrdersByDate(customerNumber, from, to, true));
     }
 
     @Async

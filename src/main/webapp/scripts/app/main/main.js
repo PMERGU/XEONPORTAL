@@ -28,7 +28,7 @@ angular.module('portalApp')
             })
             .state('orderdetail', {
                 parent: 'site',
-                url: '/orderdetail/{deliveryNo}',
+                url: '/purchaseOrder/{poId}/orders/{deliveryNo}?step={orderStep})',
                 data: {
                     authorities: ['ROLE_CUSTOMER', 'ROLE_USER'],
                     pageTitle: 'Order Details'
@@ -40,35 +40,29 @@ angular.module('portalApp')
                     }
                 },
                 params: {
-                    order: null,
-                    orderStep: null,
-                    company: null,
-                    purchaseOrder: null
                 },
                 resolve: {
                     purchaseOrder: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
-                        if ($stateParams.order) {
-                            return PurchaseOrder.getByPONumber({poNumber: $stateParams.order.bstkd}).$promise.then(function (purchaseOrder) {
-                                return purchaseOrder;
-                            }, function (errResponse) {
-                                console.log(errResponse);
-                                return undefined;
-                            });
-                        } else {
-                            return undefined;
-                        }
+                        return PurchaseOrder.get({id: $stateParams.poId})
+                            .$promise.then(function (data) {return data;}, function (errResponse) {console.log(errResponse);return undefined;});
                     }],
-                    orderGroup: ['$stateParams', 'PurchaseOrder', 'CachedOrders', function ($stateParams, PurchaseOrder, CachedOrders) {
-                        return CachedOrders.getOrderGroup($stateParams.orderStep, $stateParams.company.sapId, $stateParams.order.dbeln);
+                    order: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
+                        return PurchaseOrder.getOrder({id: $stateParams.poId, deliveryNo: $stateParams.deliveryNo});
+                    }],
+                    deliveryNo: ['$stateParams', function ($stateParams) {
+                        return $stateParams.deliveryNo === undefined || $stateParams.deliveryNo === null ? 0 : $stateParams.deliveryNo;
+                    }], 
+                    orderStep: ['$stateParams', function ($stateParams) {
+                        return $stateParams.orderStep === undefined || $stateParams.orderStep === null ? 0 : $stateParams.orderStep;
                     }],
                     delAttachments: ['$stateParams', 'Attachment', '$q', 'PurchaseOrder', function ($stateParams, Attachment, $q, PurchaseOrder) {
-                        return Attachment.query({deliveryNumber: $stateParams.order.dbeln});
+                        return Attachment.query({deliveryNumber: $stateParams.deliveryNo});
                     }],
                     poAttachments: ['$stateParams', 'Attachment', '$q', 'PurchaseOrder', function ($stateParams, Attachment, $q, PurchaseOrder) {
-                        return PurchaseOrder.getAttachments({id: $stateParams.purchaseOrder.id});
+                        return PurchaseOrder.getAttachments({id: $stateParams.poId});
                     }],
                     comments: ['$stateParams', 'Comment', '$q', 'PurchaseOrder', function ($stateParams, Comment, $q, PurchaseOrder) {
-                        return PurchaseOrder.getComments({id: $stateParams.purchaseOrder.id});
+                        return PurchaseOrder.getComments({id: $stateParams.poId});
                     }]
                 }
             })

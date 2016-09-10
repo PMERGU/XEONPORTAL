@@ -36,6 +36,7 @@ import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MobileService;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
+import za.co.xeon.web.rest.dto.OrderDetails;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 
@@ -48,6 +49,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -131,10 +133,7 @@ public class MobileResource {
                 }else{
                     String msg = String.format("Invoice for deliveryNo %s, could not be found on ftp server", deliveryNo);
                     log.warn(msg);
-                    return ResponseEntity
-                        .badRequest()
-                        .headers(HeaderUtil.createFailureAlert(msg))
-                        .body(null);
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
             }
         };
@@ -221,19 +220,6 @@ public class MobileResource {
                 return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
                 //return future.get().stream().collect(Collectors.toList());
             }
-        };
-    }
-
-    @RequestMapping(value = "/mobile/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    @Secured(AuthoritiesConstants.ANONYMOUS)
-    public Callable<List<GtCustOrdersDetail>> getCustomerOrderDetail(@PathVariable(value="deliveryNo") String deliveryNo,
-                                                           @RequestParam(value = "from") String from, @RequestParam(value = "to") String to, Pageable pageable) throws Exception {
-        log.debug("Service [GET] /mobile/orders/" + deliveryNo);
-        return () -> {
-            Future<List<GtCustOrdersDetail>> future = mobileService.getCustomerOrderDetails(deliveryNo,
-                new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
-            return future.get().stream().collect(Collectors.toList());
         };
     }
 
