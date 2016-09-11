@@ -71,6 +71,16 @@ angular.module('portalApp')
                     }],
                     currentUser: ['$stateParams', 'Principal', function($stateParams, Principal) {
                         return Principal.identity();
+                    }],
+                    staticEnums: ['$stateParams', 'StaticServices', function($stateParams, StaticServices) {
+                        return StaticServices.getAll()
+                            .$promise.then(function (data) {
+                                    return data;
+                                }, function (errResponse) {
+                                    console.error(errResponse);
+                                    return undefined;
+                                }
+                            );
                     }]
                 }
 

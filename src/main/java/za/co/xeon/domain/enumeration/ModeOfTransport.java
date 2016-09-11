@@ -4,7 +4,8 @@ package za.co.xeon.domain.enumeration;
  * The ModeOfTransport enumeration.
  */
 public enum ModeOfTransport implements SapCode{
-    AIR_DELIVERIES("06"), AIR_TRANSFERS("05"), ROAD("RD"), SEA("03");
+    AIR("06"), ROAD("RD"), ROAD_FCL("FR"), SEA("03"), SEA_FCL("FS"),
+    ALL_MODES_OF_TRANSPORT_CH("XH"), ALL_MODES_OF_TRANSPORT_FTL("FT");
 
     private String sapCode;
 
@@ -15,5 +16,4 @@ public enum ModeOfTransport implements SapCode{
     public String getSapCode() {
         return sapCode;
     }
-
 }

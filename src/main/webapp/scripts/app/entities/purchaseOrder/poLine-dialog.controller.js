@@ -3,7 +3,7 @@
 angular.module('portalApp').controller('PoLineDialogController',
     ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PoLine', 'PurchaseOrder', '$timeout', '$log', 'StaticServices',
         function($rootScope, $scope, $stateParams, $uibModalInstance, entity, PoLine, PurchaseOrder, $timeout, $log, StaticServices) {
-        
+
         $scope.staticEnums = StaticServices.getAll();
         $scope.serviceType = $stateParams.serviceType;
         $scope.requiredFields = {};
@@ -11,7 +11,35 @@ angular.module('portalApp').controller('PoLineDialogController',
 
         $timeout(function() {
             switch ($scope.serviceType){
-                case "COURIER":
+                case "INBOUND":
+                    hideOrShow([
+                        {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
+                        {name: 'orderQuantity', show: true, value: IFTET($scope.poLine.orderQuantity, 1)},
+                        {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "EACH")},
+                        {name: 'length'},
+                        {name: 'width'},
+                        {name: 'height'},
+                        {name: 'netWeight', show: true, value: IFTET($scope.poLine.netWeight, '')},
+                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')},
+                        {name: 'dvType'},
+                        {name: 'volume'}
+                    ]);
+                    break;
+                case "OUTBOUND":
+                    hideOrShow([
+                        {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
+                        {name: 'orderQuantity', show: true, value: IFTET($scope.poLine.orderQuantity, 1)},
+                        {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "PALLET")},
+                        {name: 'length'},
+                        {name: 'width'},
+                        {name: 'height'},
+                        {name: 'netWeight', show: true, value: IFTET($scope.poLine.netWeight, '')},
+                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')},
+                        {name: 'dvType'},
+                        {name: 'volume'}
+                    ]);
+                    break;
+                default:
                     hideOrShow([
                         {name: 'materialNumber'},
                         {name: 'batchNumber'},
@@ -26,34 +54,6 @@ angular.module('portalApp').controller('PoLineDialogController',
                         {name: 'volume', show: true, value: IFTET($scope.poLine.volume, "")}
                     ]);
                     $scope.$watch('poLine.dvType', dvTypeWatch);
-                    break;
-                case "INBOUND":
-                    hideOrShow([
-                        {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
-                        {name: 'orderQuantity', show: true, value: IFTET($scope.poLine.orderQuantity, 1)},
-                        {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "EACH")},
-                        {name: 'length'},
-                        {name: 'width'},
-                        {name: 'height'},
-                        {name: 'netWeight'},
-                        {name: 'dvType'},
-                        {name: 'volume'},
-                        {name: 'grossWeight'}
-                    ]);
-                    break;
-                case "OUTBOUND":
-                    hideOrShow([
-                        {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
-                        {name: 'orderQuantity', show: true, value: IFTET($scope.poLine.orderQuantity, 1)},
-                        {name: 'materialType', show: true, value: IFTET($scope.poLine.materialType, "PALLET")},
-                        {name: 'length'},
-                        {name: 'width'},
-                        {name: 'height'},
-                        {name: 'netWeight'},
-                        {name: 'dvType'},
-                        {name: 'volume'},
-                        {name: 'grossWeight'}
-                    ]);
                     break;
             }
 

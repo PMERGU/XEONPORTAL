@@ -1,19 +1,16 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    ['$rootScope', '$scope', '$interval', '$stateParams', '$state', '$q', '$log', 'entity', 'entityLines', 'PurchaseOrder', 'PoLine',
-        'Party', 'User', 'AlertService', 'Principal', 'Company', 'currentUser', 'Attachment', 'UploadTools', 'sweet', 'FileSaver',
-        'StaticServices',
-        function ($rootScope, $scope, $interval, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine,
+    function ($rootScope, $scope, $interval, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine,
                   Party, User, AlertService, Principal, Company, currentUser, Attachment, UploadTools, sweet, FileSaver,
-                  StaticServices) {
+                  staticEnums) {
             $scope.user = currentUser;
             $scope.isXeon = currentUser.company.type === "XEON";
 
             $scope.soldToParties = Party.query({size: 10000, sort: 'name', type: 'SOLD_TO_PARTY'});
             $scope.otherParties = Party.query({size: 10000, sort: 'name', type: 'OTHER'});
 
-            $scope.staticEnums = StaticServices.getAll();
+            $scope.staticEnums = staticEnums;
 
             function resetPo(){
                 $log.debug("clearing po");
@@ -23,11 +20,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     accountReference: '',
                     reference: '',
                     collective: '',
-                    serviceType: "COURIER",
-                    serviceLevel: "ECONOMY",
+                    service: "TRANSPORT",
+                    serviceType: null,
+                    serviceLevel: null,
                     customerType: "REGULAR",
-                    modeOfTransport: 'ROAD',
-                    transportParty: "XEON",
+                    tradeType: 'DOMESTIC',
+                    modeOfTransport: null,
+                    transportParty: null,
                     vehicleSize: null,
                     labourRequired: null,
                     //STEP 2
@@ -128,20 +127,87 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 calculateTotals($scope.purchaseOrder.poLines);
             };
 
+            $scope.$watch('purchaseOrder.service', serviceWatch);
+            function serviceWatch(value){
+                $log.debug("watch service triggered with value : " + value);
+                switch (value){
+                    case 'WAREHOUSING':
+                        limitSelect([
+                            {name: 'serviceType', values: ["INBOUND","OUTBOUND"], defaultValue: "INBOUND"}
+                        ]);
+                        break;
+                    case 'TRANSPORT':
+                        limitSelect([
+                            {name: 'serviceType', values: ["BREAKBULK_TRANSPORT", "CROSS_HAUL","FULL_CONTAINER_LOAD","FULL_TRUCK_LOAD"], defaultValue: "CROSS_HAUL"}
+                        ]);
+                        break;
+                }
+            };
+
+            $scope.$watch('purchaseOrder.serviceType', serviceTypeWatch);
+            function serviceTypeWatch(value){
+                $log.debug("watch serviceType triggered with value : " + value);
+                switch (value){
+                    case "INBOUND":
+                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true} ]);
+                        limitSelect([
+                            {name: 'serviceLevel', values: ["ECONOMY","EXPRESS","CUSTOMER_DROP_OFF"], defaultValue: "ECONOMY"},
+                            {name: 'modeOfTransport', values: ["ROAD"], defaultValue: "ROAD"}
+                        ]);
+                        break;
+                    case "OUTBOUND":
+                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true} ]);
+                        limitSelect([
+                            {name: 'serviceLevel', values: ["ECONOMY","EXPRESS","CUSTOMER_COLLECTION"], defaultValue: "ECONOMY"},
+                            {name: 'modeOfTransport', values: ["ROAD"], defaultValue: "ROAD"}
+                        ]);
+                        break;
+                    case "BREAKBULK_TRANSPORT":
+                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')} ]);
+                        limitSelect([
+                            {name: 'serviceLevel', values: ["ECONOMY","ECONOMY_PLUS","EXPRESS","OVERNIGHT_EXPRESS"], defaultValue: "ECONOMY_PLUS"},
+                            {name: 'modeOfTransport', values: ["AIR","ROAD","SEA"], defaultValue: "ROAD"}
+                        ]);
+                        break;
+                    case "FULL_CONTAINER_LOAD":
+                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')} ]);
+                        limitSelect([
+                            {name: 'serviceLevel', values: ["ECONOMY","EXPRESS"], defaultValue: "ECONOMY"},
+                            {name: 'modeOfTransport', values: ["ROAD_FCL","SEA_FCL"], defaultValue: "ROAD_FCL"}
+                        ]);
+                        break;
+                    case "FULL_TRUCK_LOAD":
+                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')} ]);
+                        limitSelect([
+                            {name: 'serviceLevel', values: ["STANDARD_FTL"], defaultValue: "STANDARD_FTL"},
+                            {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_FTL"], defaultValue: "ALL_MODES_OF_TRANSPORT_FTL"}
+                        ]);
+                        break;
+                    case "CROSS_HAUL":
+                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')} ]);
+                        limitSelect([
+                            {name: 'serviceLevel', values: ["STANDARD_CROSS_DOCK"], defaultValue: "STANDARD_CROSS_DOCK"},
+                            {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_CH"], defaultValue: "ALL_MODES_OF_TRANSPORT_CH"}
+                        ]);
+                        break;
+                }
+
+                transportPartyWatch(IFTET($scope.purchaseOrder.transportParty, 'XEON'));
+                // serviceLevelWatch(IFTET($scope.purchaseOrder.serviceLevel, 'ECONOMY'));
+            };
+
             $scope.$watch('purchaseOrder.serviceLevel', serviceLevelWatch);
             function serviceLevelWatch(value){
                 $log.debug("watch serviceLevel triggered with value : " + value);
                 switch (value){
-                    case 'ECONOMY_PUS':
-                    case 'ECONOMY':
-                    case 'OVERNIGHT_EXPRESS':
-                        hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
-                        break;
                     case 'DEDICATED':
                         hideOrShow([
                             {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'FOUR_TON')},
                             {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
                         ]);
+                        break;
+                    default:
+                        hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
                         break;
                 }
             };
@@ -150,8 +216,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             function modeOfTransportWatch(value){
                 $log.debug("watch modeOfTransport triggered with value : " + value);
                 switch (value){
-                    case "AIR_TRANSFERS":
-                    case "AIR_DELIVERIES":
+                    case "AIR":
                         hideOrShow([
                             {name: 'cvName', show: true, value: IFTET($scope.purchaseOrder.cvName, '')},
                             {name: 'cvNumber', show: true, value: IFTET($scope.purchaseOrder.cvNumber, '')},
@@ -171,6 +236,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         ]);
                         break;
                     case "SEA":
+                    case "SEA_FCL":
                         hideOrShow([
                             {name: 'cvName', show: true, value: IFTET($scope.purchaseOrder.cvName, '')},
                             {name: 'cvNumber', show: true, value: IFTET($scope.purchaseOrder.cvNumber, '')},
@@ -190,6 +256,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         ]);
                         break;
                     case "ROAD":
+                    case "ROAD_FCL":
+                    case "ALL_MODES_OF_TRANSPORT_CH":
+                    case "ALL_MODES_OF_TRANSPORT_FTL":
                     default:
                         hideOrShow([{name: 'cvName'},{name: 'cvNumber'},{name: 'cvOrigin'},
                             {name: 'cvContainerNo'},
@@ -207,31 +276,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'cvCommodity'}
                         ]);
                         break;
-
                 }
-            };
-
-            $scope.$watch('purchaseOrder.serviceType', serviceTypeWatch);
-            function serviceTypeWatch(value){
-                $log.debug("watch serviceType triggered with value : " + value);
-                switch (value){
-                    case "COURIER":
-                        limitSelect([
-                            {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')}
-                        ]);
-                        break;
-                    case "INBOUND":
-                        limitSelect([
-                            {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true}
-                        ]);
-                        break;
-                    case "OUTBOUND":
-                        limitSelect([
-                            {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true}
-                        ]);
-                        break;
-                }
-                transportPartyWatch(IFTET($scope.purchaseOrder.transportParty, 'XEON'));
             };
 
             $scope.$watch('purchaseOrder.transportParty', transportPartyWatch);
@@ -246,15 +291,15 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                 value: IFTET($scope.purchaseOrder.pickUpParty, {id: 1})
                             },
                             {name: 'pickUpType',
-                                show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
+                                show: serviceType !== "OUTBOUND",
                                 value: IFTET($scope.purchaseOrder.pickUpType, 'STANDARD')
                             },
                             {name: 'collectionDate',
-                                show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
+                                show: serviceType !== "OUTBOUND",
                                 value: IFTET(new Date($scope.purchaseOrder.collectionDate))
                             },
                             {name: 'collectionReference',
-                                show: serviceType === "COURIER" || serviceType === "INBOUND" ? true : false,
+                                show: serviceType !== "OUTBOUND",
                                 value: IFTET($scope.purchaseOrder.collectionReference, 'ref')
                             },
                             {name: 'shipToParty',
@@ -262,11 +307,11 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                 value: IFTET($scope.purchaseOrder.shipToParty, {id: 1})
                             },
                             {name: 'shipToType',
-                                show: serviceType === "COURIER" || serviceType === "OUTBOUND" ? true : false,
+                                show: serviceType !== "INBOUND",
                                 value: IFTET($scope.purchaseOrder.shipToType, 'STANDARD')
                             },
                             {name: 'dropOffDate',
-                                show: serviceType === "COURIER" || serviceType === "OUTBOUND" ? true : false,
+                                show: serviceType !== "INBOUND",
                                 value: IFTET(new Date($scope.purchaseOrder.dropOffDate))
                             }
                         ]);
@@ -315,14 +360,27 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 })
             }
 
+            function forceSelected(elements){
+                $.each(elements, function(idx, element) {
+                    var field = $('#' + 'field_' + element.name);
+                    if(field === undefined){
+                        alert("unknown field : " + element.name);
+                    }else{
+                        $scope.purchaseOrder[element.name] = element.value === undefined ? null : element.value;
+                        field.prop( "disabled", element.all === undefined ? true : !element.all);
+                    }
+                })
+            }
+
             function limitSelect(elements){
                 $.each(elements, function(idx, element) {
                     var field = $('#' + 'field_' + element.name);
                     if(field === undefined){
                         alert("unknown field : " + element.name);
                     }else{
-                        field.prop( "disabled", element.all === undefined ? true : !element.all);
-                        $scope.purchaseOrder[element.name] = element.value === undefined ? null : element.value;
+                        element.selectOptions = element.values;
+                        $scope.staticEnums[element.name + 's'] = element.values;
+                        $scope.purchaseOrder[element.name] = element.defaultValue;
                     }
                 })
             }
@@ -388,54 +446,56 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             $scope.save = function () {
                 $log.debug("Saving po to backend");
-                $scope.isSaving = true;
-                $log.debug($scope.purchaseOrder.poLines);
-                $log.debug($scope.purchaseOrder);
-                if ($scope.purchaseOrder.id != null) {
-                    PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
-                } else {
-                    PurchaseOrder.save($scope.purchaseOrder,
-                        function(result) {
-                            $log.debug("Result of saving : ");
-                            $log.debug(result);
-                            $log.debug("Now gonna try and save the attachments");
-                            $scope.uploadingAttachments = true;
-                            var completed = 0;
-                            var attachments = $scope.attachments;
-                            $log.debug(attachments);
-                            if (attachments && attachments.length) {
-                                for (var i = 0; i < attachments.length; i++) {
-                                    attachments[i].purchaseOrder = {
-                                        id: result.id
-                                    };
-                                    $log.debug(attachments[i]);
-                                    UploadTools.upload(attachments[i],
-                                        function (success) {
-                                            completed++;
-                                            showProgress(completed*(100/attachments.length));
-                                            if(completed === attachments.length){
+                if(false) {
+                    $scope.isSaving = true;
+                    $log.debug($scope.purchaseOrder.poLines);
+                    $log.debug($scope.purchaseOrder);
+                    if ($scope.purchaseOrder.id != null) {
+                        PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
+                    } else {
+                        PurchaseOrder.save($scope.purchaseOrder,
+                            function (result) {
+                                $log.debug("Result of saving : ");
+                                $log.debug(result);
+                                $log.debug("Now gonna try and save the attachments");
+                                $scope.uploadingAttachments = true;
+                                var completed = 0;
+                                var attachments = $scope.attachments;
+                                $log.debug(attachments);
+                                if (attachments && attachments.length) {
+                                    for (var i = 0; i < attachments.length; i++) {
+                                        attachments[i].purchaseOrder = {
+                                            id: result.id
+                                        };
+                                        $log.debug(attachments[i]);
+                                        UploadTools.upload(attachments[i],
+                                            function (success) {
+                                                completed++;
+                                                showProgress(completed * (100 / attachments.length));
+                                                if (completed === attachments.length) {
+                                                    $scope.uploadingAttachments = false;
+                                                    showProgress(100);
+                                                    onSaveSuccess(result);
+                                                }
+                                            },
+                                            function (err) {
+                                                $log.error(err);
                                                 $scope.uploadingAttachments = false;
-                                                showProgress(100);
-                                                onSaveSuccess(result);
+                                            },
+                                            function (progress) {
+                                                $log.debug(progress);
+                                                showProgress(completed * (100 / attachments.length) + progress.percentage / attachments.length / 2);
                                             }
-                                        },
-                                        function (err) {
-                                            $log.error(err);
-                                            $scope.uploadingAttachments = false;
-                                        },
-                                        function (progress) {
-                                            $log.debug(progress);
-                                            showProgress(completed*(100/attachments.length) + progress.percentage/attachments.length/2);
-                                        }
-                                    );
+                                        );
+                                    }
+                                } else {
+                                    showProgress(100);
+                                    onSaveSuccess(result);
                                 }
-                            }else{
-                                showProgress(100);
-                                onSaveSuccess(result);
-                            }
-                        },
-                        onSaveError
-                    );
+                            },
+                            onSaveError
+                        );
+                    }
                 }
             };
 
@@ -597,5 +657,5 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     return ifThis;
                 }
             }
-        }]);
+        });
 

@@ -11,6 +11,8 @@ import org.hibersap.annotations.ParameterType;
 import org.hibersap.annotations.Table;
 import za.co.xeon.external.sap.hibersap.dto.ExReturn;
 import za.co.xeon.external.sap.hibersap.dto.ImItemDetail;
+import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrCol;
+import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrShpto;
 
 @Bapi("ZSALESORDER_CREATE")
 public class SalesOrderCreateRFC {
@@ -145,6 +147,24 @@ public class SalesOrderCreateRFC {
     private final String imOrigin;
 
     /**
+     * "OTC address for collecting party" */
+    @Import
+    @Parameter(
+        value = "IM_OTC_ADR_COL",
+        type = ParameterType.STRUCTURE
+    )
+    private final ImOtcAdrCol imOtcAdrCol;
+
+    /**
+     * "OTC address for shipto party" */
+    @Import
+    @Parameter(
+        value = "IM_OTC_ADR_SHPTO",
+        type = ParameterType.STRUCTURE
+    )
+    private final ImOtcAdrShpto imOtcAdrShpto;
+
+    /**
      * "Carrier Reference" */
     @Import
     @Parameter("IM_OWNREF")
@@ -223,6 +243,12 @@ public class SalesOrderCreateRFC {
     private final String imSpart;
 
     /**
+     * "Status Domestic" */
+    @Import
+    @Parameter("IM_STATDOM")
+    private final String imStatdom;
+
+    /**
      * "Status Export" */
     @Import
     @Parameter("IM_STATEXP")
@@ -278,8 +304,9 @@ public class SalesOrderCreateRFC {
         <ExReturn> exReturn;
 
     /**
-     * @param "imAccRef" - "Reference Doc No " TESTDOC"@param "imAuart" - "Sales Document Type " YCO"@param "imBillTo" - "Bill to party " 213"@param "imCollNum" - "Collective number (SD) " TEST"@param "imColParty" - "Collection Party " 213"@param "imCommod" - "Commodity"@param "imConsol" - "Consol"@param "imContnr" - "Containers"@param "imDeldt" - "Requested delivery date " 26.07.2016"@param "imDeltype" - "Delivery type " Y1"@param "imDestin" - "Destination"@param "imEta" - "ETA - Container"@param "imEtd" - "ETD - Container"@param "imFinCon" - "Finance Controller "6043"@param "imHbiola" - "House Ocean/ Air Way Bill"@param "imHbioli" - "House Ocean/ Air Way Bill Issue"@param "imModOfTrans" - "Mode of transport " 01"@param "imObiola" - "Master Ocean/ Air Way Bill"@param "imObioli" - "Master Ocean/ Air Way Bill Issue"@param "imOrigin" - "Origin"@param "imOwnref" - "Carrier Reference"@param "imPickupDeltyp" - "Pick up delivery type " Y1"@param "imPoDate" - "Customer PO date " 25.07.2016"@param "imPoNum" - "Customer PO num " TESTPO"@param "imRechub" - "Receiving Hub " CPT-HUB"@param "imSerlvl" - "Service level "L1"@param "imSertype" - "Service type " YSL1"@param "imShiper" - "Shipper"@param "imShipRef" - "Shipment Reference " TESTREF"@param "imShipTo" - "Ship to party " 213"@param "imSoldRef" - "Sold to party  Reference "TESTSTP"@param "imSoldTo" - "Sold to party " 213"@param "imSpart" - "Division " L1"@param "imStatexp" - "Status Export"@param "imStatimp" - "Status Import"@param "imTel" - "Telephone number "011 253 4940"@param "imVessel" - "Vessel"@param "imVesvoy" - "Vessel Voyage  / Flight"@param "imVkorg" - "Sales Organization "3000"@param "imVtweg" - "Distribution Channel " L1" */
-    public SalesOrderCreateRFC(String imAccRef, String imAuart, String imBillTo, String imCollNum, String imColParty, String imCommod, String imConsol, String imContnr, Date imDeldt, String imDeltype, String imDestin, Date imEta, Date imEtd, String imFinCon, String imHbiola, Date imHbioli, List<ImItemDetail> imItemDetail, String imModOfTrans, String imObiola, Date imObioli, String imOrigin, String imOwnref, String imPickupDeltyp, Date imPoDate, String imPoNum, String imRechub, String imSerlvl, String imSertype, String imShiper, String imShipRef, String imShipTo, String imSoldRef, String imSoldTo, String imSpart, String imStatexp, String imStatimp, String imTel, String imVessel, String imVesvoy, String imVkorg, String imVtweg) {
+     * @param "imAccRef" - "Reference Doc No " TESTDOC"@param "imAuart" - "Sales Document Type " YCO"@param "imBillTo" - "Bill to party " 213"@param "imCollNum" - "Collective number (SD) " TEST"@param "imColParty" - "Collection Party " 213"@param "imCommod" - "Commodity"@param "imConsol" - "Consol"@param "imContnr" - "Containers"@param "imDeldt" - "Requested delivery date " 26.07.2016"@param "imDeltype" - "Delivery type " Y1"@param "imDestin" - "Destination"@param "imEta" - "ETA - Container"@param "imEtd" - "ETD - Container"@param "imFinCon" - "Finance Controller "6043"@param "imHbiola" - "House Ocean/ Air Way Bill"@param "imHbioli" - "House Ocean/ Air Way Bill Issue"@param "imModOfTrans" - "Mode of transport " 01"@param "imObiola" - "Master Ocean/ Air Way Bill"@param "imObioli" - "Master Ocean/ Air Way Bill Issue"@param "imOrigin" - "Origin"@param "imOwnref" - "Carrier Reference"@param "imPickupDeltyp" - "Pick up delivery type " Y1"@param "imPoDate" - "Customer PO date " 25.07.2016"@param "imPoNum" - "Customer PO num " TESTPO"@param "imRechub" - "Receiving Hub " CPT-HUB"@param "imSerlvl" - "Service level "L1"@param "imSertype" - "Service type " YSL1"@param "imShiper" - "Shipper"@param "imShipRef" - "Shipment Reference " TESTREF"@param "imShipTo" - "Ship to party " 213"@param "imSoldRef" - "Sold to party  Reference "TESTSTP"@param "imSoldTo" - "Sold to party " 213"@param "imSpart" - "Division " L1"@param "imStatdom" - "Status Domestic"@param "imStatexp" - "Status Export"@param "imStatimp" - "Status Import"@param "imTel" - "Telephone number "011 253 4940"@param "imVessel" - "Vessel"@param "imVesvoy" - "Vessel Voyage  / Flight"@param "imVkorg" - "Sales Organization "3000"@param "imVtweg" - "Distribution Channel " L1" */
+    public SalesOrderCreateRFC(String imAccRef, String imAuart, String imBillTo, String imCollNum, String imColParty, String imCommod, String imConsol, String imContnr, Date imDeldt, String imDeltype, String imDestin, Date imEta, Date imEtd, String imFinCon, String imHbiola, Date imHbioli, List
+        <ImItemDetail> imItemDetail, String imModOfTrans, String imObiola, Date imObioli, String imOrigin, String imOwnref, String imPickupDeltyp, Date imPoDate, String imPoNum, String imRechub, String imSerlvl, String imSertype, String imShiper, String imShipRef, String imShipTo, String imSoldRef, String imSoldTo, String imSpart, String imStatdom, String imStatexp, String imStatimp, String imTel, String imVessel, String imVesvoy, String imVkorg, String imVtweg, ImOtcAdrCol imOtcAdrCol, ImOtcAdrShpto imOtcAdrShpto) {
         this.imAccRef = imAccRef;
         this.imAuart = imAuart;
         this.imBillTo = imBillTo;
@@ -314,6 +341,7 @@ public class SalesOrderCreateRFC {
         this.imSoldRef = imSoldRef;
         this.imSoldTo = imSoldTo;
         this.imSpart = imSpart;
+        this.imStatdom = imStatdom;
         this.imStatexp = imStatexp;
         this.imStatimp = imStatimp;
         this.imTel = imTel;
@@ -321,13 +349,16 @@ public class SalesOrderCreateRFC {
         this.imVesvoy = imVesvoy;
         this.imVkorg = imVkorg;
         this.imVtweg = imVtweg;
+        this.imOtcAdrCol = imOtcAdrCol;
+        this.imOtcAdrShpto = imOtcAdrShpto;
     }
 
     public String getExSalesorder() {
         return exSalesorder;
     }
 
-    public List<ExReturn> getExReturn() {
+    public List
+        <ExReturn> getExReturn() {
         return exReturn;
     }
 
@@ -390,3 +421,4 @@ public class SalesOrderCreateRFC {
             '}';
     }
 }
+

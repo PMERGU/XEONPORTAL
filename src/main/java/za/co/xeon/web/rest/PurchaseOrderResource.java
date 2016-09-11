@@ -3,8 +3,7 @@ package za.co.xeon.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import za.co.xeon.domain.*;
-import za.co.xeon.domain.enumeration.PoState;
-import za.co.xeon.domain.enumeration.SapCode;
+import za.co.xeon.domain.enumeration.*;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.SalesOrderCreateRFC;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
@@ -134,12 +133,8 @@ public class PurchaseOrderResource {
             String imVkorg = null;
             String imVtweg = null;
             String imSpart = null;
+            String imSerlvl = "L1";
             switch (purchaseOrder.getServiceType()){
-                case COURIER:
-                    imVkorg = "3000";
-                    imVtweg = "L1";
-                    imSpart = "L1";
-                    break;
                 case INBOUND:
                     imVkorg = "3000";
                     imVtweg = "M1";
@@ -149,6 +144,19 @@ public class PurchaseOrderResource {
                     imVkorg = "3000";
                     imVtweg = "M1";
                     imSpart = "13";
+                    break;
+                case CROSS_HAUL:
+                case FULL_CONTAINER_LOAD:
+                case FULL_TRUCK_LOAD:
+                    imVkorg = "3000";
+                    imVtweg = "L1";
+                    imSpart = "L1";
+                    break;
+                case BREAKBULK_TRANSPORT:
+                    imVkorg = "3000";
+                    imVtweg = "L1";
+                    imSpart = "L1";
+                    imSerlvl = determineBreakBulkSapType(purchaseOrder).getSapCode();
                     break;
                 default:
                     throw new RuntimeException("Need to map new service type here");
@@ -164,10 +172,11 @@ public class PurchaseOrderResource {
                 purchaseOrder.getUser().getFcSapId(), purchaseOrder.getCvHouseWaybill(), safeDate(purchaseOrder.getCvHouseWaybillIssue()),
                 convertItems(purchaseOrder, purchaseOrder.getPoLines()), safeEnum(purchaseOrder.getModeOfTransport()), purchaseOrder.getCvWaybill(), safeDate(purchaseOrder.getCvWaybillIssue()),
                 purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeEnum(purchaseOrder.getPickUpType()), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
-                purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), "L1", safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
+                purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), imSerlvl, safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
                 purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
-                Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), "L1", "",
-                "", purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg
+                Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), imSpart,
+                (purchaseOrder.getTradeType().equals(TradeType.DOMESTIC)? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.EXPORT)? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.IMPORT)? "1" : ""),
+                purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg, null, null
             );
             log.debug(rfc.toStringFull());
             User whoDidIt = (capturedBy == null ? user : capturedBy);
@@ -213,6 +222,40 @@ public class PurchaseOrderResource {
                 .headers(HeaderUtil.createFailureAlert("Purchase order could not be saved: " + ex.getMessage()))
                 .body(null);
         }
+    }
+
+    private ShippingType determineBreakBulkSapType(PurchaseOrder po){
+        ShippingType shippingType = null;
+        if(po.getPickUpParty().getCompany().getType().equals(CompanyType.XEON)){
+            if(po.getShipToParty().getCompany().getType().equals(CompanyType.XEON)){
+                //PICKUP IS XEON & DROP_OFF IS XEON
+                shippingType = ShippingType.HUB_TO_HUB_LINE;
+            }else{
+                if(po.getPickUpParty().getArea().getHub().equals(po.getShipToParty().getArea().getHub())){
+                    //PICKUP IS XEON & AREA HUB'S MATCH
+                    shippingType = ShippingType.HUB_TO_DOOR_LOCAL;
+                }else{
+                    //PICKUP IS XEON & AREA HUB'S DON'T MATCH
+                    shippingType = ShippingType.HUB_TO_DOOR_LINE;
+                }
+            }
+        }else if(po.getShipToParty().getCompany().getType().equals(CompanyType.XEON)){
+            if(po.getPickUpParty().getArea().getHub().equals(po.getShipToParty().getArea().getHub())){
+                //DROPOFF IS XEON & AREA HUB'S MATCH
+                shippingType = ShippingType.DOOR_TO_HUB_LOCAL;
+            }else{
+                //DROPOFF IS XEON & AREA HUB'S DON'T MATCH
+                shippingType = ShippingType.DOOR_TO_HUB_LINE;
+            }
+        }else if(po.getPickUpParty().getArea().getHub().equals(po.getShipToParty().getArea().getHub())){
+            //AREA HUB' MATCH
+            shippingType = ShippingType.DOOR_TO_DOOR_LOCAL;
+        }else {
+            //AREA HUB'S DON'T MATCH
+            shippingType = ShippingType.DOOR_TO_DOOR_LINE;
+        }
+
+        return shippingType;
     }
 
     private List<ImItemDetail> convertItems(PurchaseOrder savedPo, List<PoLine> poLines){
