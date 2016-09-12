@@ -26,7 +26,7 @@
             <span class="font-extra-bold font-uppercase">Roles</span>
             </br>
             <div ng-repeat="role in identity.authorities">
-                <small class="text-muted">{{ role }}</small>
+                <small class="text-muted">{{ role }}}</small>
             </div>
         </div>
     </div>
@@ -84,7 +84,7 @@
 
         <li ng-class="{active: $state.includes('party')}">
             <a href="#">
-                <span class="nav-label">Locations</span><span class="fa arrow"></span>
+                <span class="nav-label">Party</span><span class="fa arrow"></span>
             </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('party')}">
                 <li ui-sref-active="active" >

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp').controller('PurchaseOrderController',
-    function ($rootScope, $scope, $interval, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine,
+    function ($rootScope, $scope, $interval, $timeout, $stateParams, $state, $q, $log, entity, entityLines, PurchaseOrder, PoLine,
                   Party, User, AlertService, Principal, Company, currentUser, Attachment, UploadTools, sweet, FileSaver,
                   staticEnums) {
             $scope.user = currentUser;
@@ -80,7 +80,11 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         $scope.clearPO();
                         $scope.purchaseOrder.user = employee;
                         $scope.user = employee;
+                        $timeout(function(){
+                            serviceWatch('TRANSPORT');
+                        },200);
                     });
+
                 }
             }else{
                 $scope.purchaseOrder = entity;
@@ -163,28 +167,28 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         ]);
                         break;
                     case "BREAKBULK_TRANSPORT":
-                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')} ]);
+                        forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
                         limitSelect([
                             {name: 'serviceLevel', values: ["ECONOMY","ECONOMY_PLUS","EXPRESS","OVERNIGHT_EXPRESS"], defaultValue: "ECONOMY_PLUS"},
                             {name: 'modeOfTransport', values: ["AIR","ROAD","SEA"], defaultValue: "ROAD"}
                         ]);
                         break;
                     case "FULL_CONTAINER_LOAD":
-                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')} ]);
+                        forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
                         limitSelect([
                             {name: 'serviceLevel', values: ["ECONOMY","EXPRESS"], defaultValue: "ECONOMY"},
                             {name: 'modeOfTransport', values: ["ROAD_FCL","SEA_FCL"], defaultValue: "ROAD_FCL"}
                         ]);
                         break;
                     case "FULL_TRUCK_LOAD":
-                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')} ]);
+                        forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
                         limitSelect([
                             {name: 'serviceLevel', values: ["STANDARD_FTL"], defaultValue: "STANDARD_FTL"},
                             {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_FTL"], defaultValue: "ALL_MODES_OF_TRANSPORT_FTL"}
                         ]);
                         break;
                     case "CROSS_HAUL":
-                        forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON')} ]);
+                        forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
                         limitSelect([
                             {name: 'serviceLevel', values: ["STANDARD_CROSS_DOCK"], defaultValue: "STANDARD_CROSS_DOCK"},
                             {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_CH"], defaultValue: "ALL_MODES_OF_TRANSPORT_CH"}
@@ -200,7 +204,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
             function serviceLevelWatch(value){
                 $log.debug("watch serviceLevel triggered with value : " + value);
                 switch (value){
-                    case 'DEDICATED':
+                    // case 'ECONOMY':
+                    // case 'EXPRESS':
+                    //     if($scope.purchaseOrder.serviceType !== 'FULL_CONTAINER_LOAD'){
+                    //         break;
+                    //     }
+                    case 'STANDARD_CROSS_DOCK':
+                    case 'STANDARD_FTL':
                         hideOrShow([
                             {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'FOUR_TON')},
                             {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
@@ -446,56 +456,54 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             $scope.save = function () {
                 $log.debug("Saving po to backend");
-                if(false) {
-                    $scope.isSaving = true;
-                    $log.debug($scope.purchaseOrder.poLines);
-                    $log.debug($scope.purchaseOrder);
-                    if ($scope.purchaseOrder.id != null) {
-                        PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
-                    } else {
-                        PurchaseOrder.save($scope.purchaseOrder,
-                            function (result) {
-                                $log.debug("Result of saving : ");
-                                $log.debug(result);
-                                $log.debug("Now gonna try and save the attachments");
-                                $scope.uploadingAttachments = true;
-                                var completed = 0;
-                                var attachments = $scope.attachments;
-                                $log.debug(attachments);
-                                if (attachments && attachments.length) {
-                                    for (var i = 0; i < attachments.length; i++) {
-                                        attachments[i].purchaseOrder = {
-                                            id: result.id
-                                        };
-                                        $log.debug(attachments[i]);
-                                        UploadTools.upload(attachments[i],
-                                            function (success) {
-                                                completed++;
-                                                showProgress(completed * (100 / attachments.length));
-                                                if (completed === attachments.length) {
-                                                    $scope.uploadingAttachments = false;
-                                                    showProgress(100);
-                                                    onSaveSuccess(result);
-                                                }
-                                            },
-                                            function (err) {
-                                                $log.error(err);
+                $scope.isSaving = true;
+                $log.debug($scope.purchaseOrder.poLines);
+                $log.debug($scope.purchaseOrder);
+                if ($scope.purchaseOrder.id != null) {
+                    PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
+                } else {
+                    PurchaseOrder.save($scope.purchaseOrder,
+                        function (result) {
+                            $log.debug("Result of saving : ");
+                            $log.debug(result);
+                            $log.debug("Now gonna try and save the attachments");
+                            $scope.uploadingAttachments = true;
+                            var completed = 0;
+                            var attachments = $scope.attachments;
+                            $log.debug(attachments);
+                            if (attachments && attachments.length) {
+                                for (var i = 0; i < attachments.length; i++) {
+                                    attachments[i].purchaseOrder = {
+                                        id: result.id
+                                    };
+                                    $log.debug(attachments[i]);
+                                    UploadTools.upload(attachments[i],
+                                        function (success) {
+                                            completed++;
+                                            showProgress(completed * (100 / attachments.length));
+                                            if (completed === attachments.length) {
                                                 $scope.uploadingAttachments = false;
-                                            },
-                                            function (progress) {
-                                                $log.debug(progress);
-                                                showProgress(completed * (100 / attachments.length) + progress.percentage / attachments.length / 2);
+                                                showProgress(100);
+                                                onSaveSuccess(result);
                                             }
-                                        );
-                                    }
-                                } else {
-                                    showProgress(100);
-                                    onSaveSuccess(result);
+                                        },
+                                        function (err) {
+                                            $log.error(err);
+                                            $scope.uploadingAttachments = false;
+                                        },
+                                        function (progress) {
+                                            $log.debug(progress);
+                                            showProgress(completed * (100 / attachments.length) + progress.percentage / attachments.length / 2);
+                                        }
+                                    );
                                 }
-                            },
-                            onSaveError
-                        );
-                    }
+                            } else {
+                                showProgress(100);
+                                onSaveSuccess(result);
+                            }
+                        },
+                        onSaveError
+                    );
                 }
             };
 

@@ -20,7 +20,7 @@
 
                 <div class="form-group">
                     <label class="control-label" for="field_streetName">Street Name</label>
-                    <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="party.streetName"  tabindex="4"/>
+                    <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="party.streetName"  tabindex="3"/>
                 </div>
 
                 <div class="form-group" ng-show="isXeon">
@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label>Type</label>
                     <select class="form-control" name="type" id="field_type"
-                            ng-model="party.type" ng-options="type as type for type in partyTypes" >
+                            ng-model="party.type" ng-options="enum | prittyPrint for enum in staticEnums['partyTypes']" >
                     </select>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="field_houseNumber">House Number</label>
-                    <input type="text" class="form-control" name="houseNumber" id="field_houseNumber" ng-model="party.houseNumber" tabindex="3"/>
+                    <input type="text" class="form-control" name="houseNumber" id="field_houseNumber" ng-model="party.houseNumber" tabindex="4"/>
                 </div>
                 <div class="form-group" ng-show="isXeon">
                     <label>Company</label>

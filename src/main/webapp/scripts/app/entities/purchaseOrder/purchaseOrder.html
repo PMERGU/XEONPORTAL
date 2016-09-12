@@ -100,6 +100,7 @@
                            ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 3}" value="Step 3 - Cargo"/>
 
                     <input ng-click="wizard.show(4)" style="width: 165px;margin: 0px 5px;" role="button" class="btn"
+                           ng-disabled="purchaseOrder.poLines.length === 0"
                            ng-class="{ 'btn-primary': step == 4, 'btn-default': step != 4}" value="Step 4 - Details"/>
 
                     <input ng-click="wizard.show(5)" style="width: 165px;margin: 0px 5px;" role="button"
@@ -334,6 +335,10 @@
                                                     </button>
                                                 </span>
                                         </div>
+                                        <p class="help-block small-help-block pull-right"
+                                           ng-show="purchaseOrder.pickUpParty.id === purchaseOrder.shipToParty.id">
+                                            Both pickup and delivery are the same
+                                        </p>
                                         <div ng-show="editForm.shipToParty.$invalid">
                                             <p class="help-block small-help-block pull-right"
                                                ng-show="editForm.shipToParty.$error.required">
@@ -520,14 +525,14 @@
                         <div class="modal-body">
                             <div class="col-md-6" ng-show="user.company.type === 'AGENT'">
                                 <div class="form-group">
-                                    <label for="field_soldToParty">Sold to Party (Entity placing the order)</label>
-                                    <div class="input-group">
+                                    <label for="field_soldToParty">Consignee</label>
+                                    <div class="input-group" style="width: 100%">
                                         <select class="form-control" id="field_soldToParty" name="soldToParty" ng-required="user.company.type === 'AGENT'"
                                                 ng-model="purchaseOrder.soldToParty"
                                                 ng-options="party as party.name for party in soldToParties track by party.id | orderBy:'name'">
                                             <option value=""></option>
                                         </select>
-                                            <span class="input-group-btn">
+                                            <span class="input-group-btn" ng-show="isXeon">
                                                 <button type="button" class="btn btn-default"
                                                         ui-sref="purchaseOrder.newParty({for: 'soldTo'})">
                                                     <i class="glyphicon glyphicon-plus"></i>
@@ -920,8 +925,7 @@
                                     <i class="pe-7s-check fa-5x text-muted tc-green-dark"></i>
                                 </p>
                                 <p>
-                                    <strong class="tc-green-dark">This order has been processed by our Xeon team
-                                        already.</strong>
+                                    <strong class="tc-green-dark">This order has been processed by our Xeon team already.</strong>
                                 </p>
                                 <br/>
                                 <p>
@@ -940,7 +944,7 @@
                 <div class="text-right m-t-xs">
                     <input ng-click="wizard.prev()" ng-disabled="step == 1" class="btn btn-default" type="button"
                            value="&nbsp;Previous&nbsp;"/>
-                    <input ng-click="wizard.next()" ng-disabled="step >= 5 && editForm.$invalid || isSaving || (purchaseOrder.poLines.length === 0 && step >= 3)"
+                    <input ng-click="wizard.next()" ng-disabled="step >= 5 && editForm.$invalid || isSaving || (purchaseOrder.poLines.length === 0 && step >= 3) || purchaseOrder.pickUpParty.id === purchaseOrder.shipToParty.id"
                            ng-hide="step == 6"
                            class="btn btn-primary" type="button" value="&nbsp;Next&nbsp;"/>
                     <button ng-click="submit()"

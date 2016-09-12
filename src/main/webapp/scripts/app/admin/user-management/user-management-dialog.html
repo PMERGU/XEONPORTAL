@@ -62,9 +62,15 @@
                 </div>
                 <div class="form-group">
                     <label>CSU Assigned</label>
-                    <select class="form-control" name="csu" ng-model="user.csu"
+                    <select class="form-control" name="csu" ng-model="user.csu" ng-required="user.authorities[0] === 'ROLE_CUSTOMER'    "
                             ng-options="csu as csu.fistName + ' ' + csu.lastName for csu in csuList track by csu.id">
                     </select>
+                    <div ng-show="editForm.csu.$invalid">
+                        <p class="help-block small-help-block pull-right"
+                           ng-show="editForm.csu.$error.required">
+                            Please select the CSU assiged to a customer
+                        </p>
+                    </div>
                 </div>
 
             </div>

@@ -31,10 +31,10 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-show="isXeon">
                     <label>Type</label>
                     <select class="form-control" name="type" id="field_type"
-                            ng-model="party.type" ng-options="type as type for type in partyTypes" >
+                            ng-model="party.type" ng-options="enum | prittyPrint for enum in staticEnums['partyTypes']" >
                     </select>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                             ng-options="company as company.name for company in companies track by company.id">
                     </select>
                 </div>
-                <div class="form-group" ng-show="!isXeon" style="height: 57px;">
+                <div class="form-group" ng-show="isXeon" style="height: 57px;">
                 </div>
             </div>
         </div>

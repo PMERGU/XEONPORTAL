@@ -19,8 +19,8 @@ angular.module('portalApp').controller('PoLineDialogController',
                         {name: 'length'},
                         {name: 'width'},
                         {name: 'height'},
-                        {name: 'netWeight', show: true, value: IFTET($scope.poLine.netWeight, '')},
-                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')},
+                        {name: 'netWeight'},
+                        {name: 'grossWeight'},
                         {name: 'dvType'},
                         {name: 'volume'}
                     ]);
@@ -33,8 +33,8 @@ angular.module('portalApp').controller('PoLineDialogController',
                         {name: 'length'},
                         {name: 'width'},
                         {name: 'height'},
-                        {name: 'netWeight', show: true, value: IFTET($scope.poLine.netWeight, '')},
-                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')},
+                        {name: 'netWeight'},
+                        {name: 'grossWeight'},
                         {name: 'dvType'},
                         {name: 'volume'}
                     ]);

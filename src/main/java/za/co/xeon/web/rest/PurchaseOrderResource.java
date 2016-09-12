@@ -176,7 +176,9 @@ public class PurchaseOrderResource {
                 purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
                 Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), imSpart,
                 (purchaseOrder.getTradeType().equals(TradeType.DOMESTIC)? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.EXPORT)? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.IMPORT)? "1" : ""),
-                purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg, null, null
+                purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg,
+                null,
+                null
             );
             log.debug(rfc.toStringFull());
             User whoDidIt = (capturedBy == null ? user : capturedBy);
@@ -186,11 +188,19 @@ public class PurchaseOrderResource {
                 purchaseOrder.setSoNumber(so.getSoNumber());
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
                 log.debug(" PO saved as ID : {} - SO created as ID : {}", savedPo.getId(), savedPo.getSoNumber());
-                mailService.sendCSUMail(whoDidIt,
-                    String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
-                    String.format("A new Purchase Order #%s has been created by %s %s for client %s and SAP SO auto created as %s.",
-                        savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getCompany().getName(), so.getSoNumber())
-                    , null, null, getBaseUrl(request));
+                if(whoDidIt.getId() != user.getId()){
+                    mailService.sendCSUMail(whoDidIt,
+                        String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
+                        String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s and SAP SO auto created as %s.",
+                            savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
+                        , null, null, getBaseUrl(request));
+                }else{
+                    mailService.sendCSUMail(whoDidIt,
+                        String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
+                        String.format("A new Purchase Order #%s has been created by controller %s %s for client %s and SAP SO auto created as %s.",
+                            savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
+                        , null, null, getBaseUrl(request));
+                }
                 if(capturedBy != null){
                     mailService.sendPoProcessedMail(user, purchaseOrder, getBaseUrl(request), true);
                 }
@@ -203,11 +213,19 @@ public class PurchaseOrderResource {
                 log.warn("Could not create SO in SAP, doing fallback and creating manual entry for CSU to capture.");
                 purchaseOrder.setState(PoState.UNPROCESSED);
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
-                mailService.sendCSUMail(capturedBy != null ? user : capturedBy,
-                    String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
-                    String.format("A new Purchase Order #%s has been created by %s %s for client %s. Please action and capture in SAP as soon as possible.",
-                        savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getCompany().getName())
-                    , null, null, getBaseUrl(request));
+                if(whoDidIt.getId() != user.getId()) {
+                    mailService.sendCSUMail(capturedBy != null ? user : capturedBy,
+                        String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
+                        String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s. Please action and capture in SAP as soon as possible.",
+                            savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
+                        , null, null, getBaseUrl(request));
+                }else{
+                    mailService.sendCSUMail(capturedBy != null ? user : capturedBy,
+                        String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
+                        String.format("A new Purchase Order #%s has been created by controller %s %s for client %s. Please action and capture in SAP as soon as possible.",
+                            savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
+                        , null, null, getBaseUrl(request));
+                }
                 return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
                     .headers(HeaderUtil.createEntityCreationAlert("purchase order", savedPo.getId().toString()))
                     .body(savedPo);

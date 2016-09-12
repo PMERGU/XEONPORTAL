@@ -50,6 +50,8 @@ public class UserDTO {
 
 //    private List<UserDTO> assignedUsers;
 
+    private boolean enabled;
+
     private Set<String> authorities;
 
     public UserDTO() {
@@ -61,12 +63,13 @@ public class UserDTO {
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()), user.getFcSapId(),
             user.getCsu(),
-            (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getName(), user.getCompany().getSapId(), user.getCompany().getType())) : new Company())
+            (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getName(), user.getCompany().getSapId(), user.getCompany().getType())) : new Company()),
+            user.getEnabled()
         );
     }
 
     public UserDTO(String login, String password, String firstName, String lastName,
-        String email, boolean activated, String langKey, Set<String> authorities, String fcSapId, User csu, Company company) {
+        String email, boolean activated, String langKey, Set<String> authorities, String fcSapId, User csu, Company company, boolean enabled) {
 
         this.login = login;
         this.password = password;
@@ -79,6 +82,7 @@ public class UserDTO {
         this.fcSapId = fcSapId;
         this.csu = csu;
         this.company = company;
+        this.enabled = enabled;
     }
 
     public String getPassword() {
@@ -128,6 +132,11 @@ public class UserDTO {
 //    public List<UserDTO> getAssignedUsers() {
 //        return assignedUsers;
 //    }
+
+
+    public boolean isEnabled() {
+        return enabled;
+    }
 
     @Override
     public String toString() {
