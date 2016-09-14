@@ -60,6 +60,7 @@
                                     <th>Ship to Party</th>
                                     <th>Sales Order</th>
                                     <th>Delivery No</th>
+                                    <th>CSU Allocated</th>
                                     <th>Consignee</th>
                                     <th></th>
                                 </tr>
@@ -77,6 +78,7 @@
                                     <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
                                     <td>{{ order.vbeln }}</td>
                                     <td>{{ order.dbeln }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].user.csu.firstName + ' ' + purchaseOrders[order.bstkd].user.csu.lastName }}</td>
                                     <td>{{ order.skunnr }}</td>
                                     <td width="10px">
                                         <button type="submit"
@@ -111,6 +113,7 @@
                                     <th>Ship to Party</th>
                                     <th>Sales Order</th>
                                     <th>Delivery No</th>
+                                    <th>CSU Allocated</th>
                                     <th>Consignee</th>
                                     <th>Status</th>
                                     <th></th>
@@ -129,6 +132,7 @@
                                     <td>{{ purchaseOrders[order.bstkd].shipToParty.name + ' (' + purchaseOrders[order.bstkd].shipToParty.city + ')' }}</td>
                                     <td>{{ order.vbeln }}</td>
                                     <td>{{ order.dbeln }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].user.csu.firstName + ' ' + purchaseOrders[order.bstkd].user.csu.lastName }}</td>
                                     <td>{{ order.skunnr }}</td>
                                     <td>{{ order.pdstk }}</td>
                                     <td width="10px">

@@ -50,6 +50,11 @@
                 <constraints nullable="true" />
             </column>
         </addColumn>
+
+        <update tableName="purchase_order">
+            <column name="service_type" type="varchar(255)" value="BREAKBULK_TRANSPORT"/>
+            <where>service_type = 'COURIER'</where>
+        </update>
     </changeSet>
 
 

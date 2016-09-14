@@ -7,8 +7,15 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.user = currentUser;
             $scope.isXeon = currentUser.company.type === "XEON";
 
-            $scope.soldToParties = Party.query({size: 10000, sort: 'name', type: 'SOLD_TO_PARTY'});
-            $scope.otherParties = Party.query({size: 10000, sort: 'name', type: 'OTHER'});
+            Party.query({size: 10000, sort: 'name', type: 'OTHER'}).$promise.then(function(data){
+                $scope.otherParties = data;
+                Party.query({size: 10000, sort: 'name', type: 'SOLD_TO_PARTY'}).$promise.then(function(soldTo){
+                    $.each(soldTo, function(idx, item){
+                        $scope.otherParties.push(item);
+                    });
+                    $scope.soldToParties = soldTo;
+                });
+            });
 
             $scope.staticEnums = staticEnums;
 

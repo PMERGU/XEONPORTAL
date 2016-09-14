@@ -8,6 +8,8 @@ import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.SalesOrderCreateRFC;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.dto.ImItemDetail;
+import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrCol;
+import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrShpto;
 import za.co.xeon.repository.*;
 import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
@@ -164,6 +166,8 @@ public class PurchaseOrderResource {
             if(purchaseOrder.getPickUpParty() != null) purchaseOrder.setPickUpParty(partyRepository.findOne(purchaseOrder.getPickUpParty().getId()));
             if(purchaseOrder.getShipToParty() != null) purchaseOrder.setShipToParty(partyRepository.findOne(purchaseOrder.getShipToParty().getId()));
             if(purchaseOrder.getSoldToParty() != null) purchaseOrder.setSoldToParty(partyRepository.findOne(purchaseOrder.getSoldToParty().getId()));
+            Party pup = purchaseOrder.getPickUpParty();
+            Party stp = purchaseOrder.getShipToParty();
             SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
                 purchaseOrder.getAccountReference(), safeEnum(purchaseOrder.getServiceType()), Pad.left(purchaseOrder.getUser().getCompany().getSapId(), 10),
                 purchaseOrder.getCollectionReference(), Pad.left(purchaseOrder.getPickUpParty().getSapId(), 10), safeEnum(purchaseOrder.getCargoType()), purchaseOrder.getCvConsol(),
@@ -171,14 +175,20 @@ public class PurchaseOrderResource {
                 purchaseOrder.getCvDestination(), safeDate(purchaseOrder.getCvEta()), safeDate(purchaseOrder.getCvEtd()),
                 purchaseOrder.getUser().getFcSapId(), purchaseOrder.getCvHouseWaybill(), safeDate(purchaseOrder.getCvHouseWaybillIssue()),
                 convertItems(purchaseOrder, purchaseOrder.getPoLines()), safeEnum(purchaseOrder.getModeOfTransport()), purchaseOrder.getCvWaybill(), safeDate(purchaseOrder.getCvWaybillIssue()),
-                purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeEnum(purchaseOrder.getPickUpType()), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
+                purchaseOrder.getSpecialInstruction(), purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeEnum(purchaseOrder.getPickUpType()), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
                 purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), imSerlvl, safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
                 purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
                 Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), imSpart,
                 (purchaseOrder.getTradeType().equals(TradeType.DOMESTIC)? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.EXPORT)? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.IMPORT)? "1" : ""),
                 purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg,
-                null,
-                null
+                pup.getSapId().equals("100000") ? new ImOtcAdrCol(pup.getName(),pup.getName(),pup.getReference(),pup.getStreetName(),
+                    pup.getArea().getCity(), pup.getArea().getSuburb(),pup.getArea().getProvince(),pup.getArea().getTrafficZone(),
+                    pup.getArea().getCountry(),pup.getArea().getPostalCode().toString(),pup.getArea().getPostalCode().toString(),
+                    pup.getArea().getCity(),"","") : null,
+                pup.getSapId().equals("100000") ? new ImOtcAdrShpto(stp.getName(),stp.getName(),stp.getReference(),stp.getStreetName(),
+                    stp.getArea().getCity(), stp.getArea().getSuburb(),stp.getArea().getProvince(),stp.getArea().getTrafficZone(),
+                    stp.getArea().getCountry(),stp.getArea().getPostalCode().toString(),stp.getArea().getPostalCode().toString(),
+                    stp.getArea().getCity(),"","") : null
             );
             log.debug(rfc.toStringFull());
             User whoDidIt = (capturedBy == null ? user : capturedBy);
