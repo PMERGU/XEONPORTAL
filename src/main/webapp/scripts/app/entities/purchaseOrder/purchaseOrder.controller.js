@@ -10,8 +10,8 @@ angular.module('portalApp').controller('PurchaseOrderController',
             Party.query({size: 10000, sort: 'name', type: 'OTHER'}).$promise.then(function(data){
                 $scope.otherParties = data;
                 Party.query({size: 10000, sort: 'name', type: 'SOLD_TO_PARTY'}).$promise.then(function(soldTo){
-                    $.each(soldTo, function(idx, item){
-                        $scope.otherParties.push(item);
+                    $.each(soldTo, function(eac){
+                        $scope.otherParties.push(soldTo);
                     });
                     $scope.soldToParties = soldTo;
                 });

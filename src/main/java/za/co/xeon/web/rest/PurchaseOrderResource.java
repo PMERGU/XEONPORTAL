@@ -132,6 +132,11 @@ public class PurchaseOrderResource {
 
         try {
             log.debug(purchaseOrder.toStringFull());
+
+            if(purchaseOrder.getPickUpParty() != null) purchaseOrder.setPickUpParty(partyRepository.findOne(purchaseOrder.getPickUpParty().getId()));
+            if(purchaseOrder.getShipToParty() != null) purchaseOrder.setShipToParty(partyRepository.findOne(purchaseOrder.getShipToParty().getId()));
+            if(purchaseOrder.getSoldToParty() != null) purchaseOrder.setSoldToParty(partyRepository.findOne(purchaseOrder.getSoldToParty().getId()));
+
             String imVkorg = null;
             String imVtweg = null;
             String imSpart = null;
@@ -158,14 +163,11 @@ public class PurchaseOrderResource {
                     imVkorg = "3000";
                     imVtweg = "L1";
                     imSpart = "L1";
-                    imSerlvl = determineBreakBulkSapType(purchaseOrder).getSapCode();
+                    imSerlvl = determineSerlvlSapType(purchaseOrder).getSapCode();
                     break;
                 default:
                     throw new RuntimeException("Need to map new service type here");
             }
-            if(purchaseOrder.getPickUpParty() != null) purchaseOrder.setPickUpParty(partyRepository.findOne(purchaseOrder.getPickUpParty().getId()));
-            if(purchaseOrder.getShipToParty() != null) purchaseOrder.setShipToParty(partyRepository.findOne(purchaseOrder.getShipToParty().getId()));
-            if(purchaseOrder.getSoldToParty() != null) purchaseOrder.setSoldToParty(partyRepository.findOne(purchaseOrder.getSoldToParty().getId()));
             Party pup = purchaseOrder.getPickUpParty();
             Party stp = purchaseOrder.getShipToParty();
             SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
@@ -230,15 +232,15 @@ public class PurchaseOrderResource {
                     log.debug(" whoDidIt [3]");
                     mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
-                        String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s. Please action and capture in SAP as soon as possible.",
-                            savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
+                        String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s. Please action and capture in SAP as soon as possible. Failure : %s",
+                            savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), e.getMessage())
                         , null, null, getBaseUrl(request));
                 }else{
                     log.debug(" whoDidIt [4]");
                     mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
-                        String.format("A new Purchase Order #%s has been created by controller %s %s for client %s. Please action and capture in SAP as soon as possible.",
-                            savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
+                        String.format("A new Purchase Order #%s has been created by controller %s %s for client %s. Please action and capture in SAP as soon as possible. Failure : %s",
+                            savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), e.getMessage())
                         , null, null, getBaseUrl(request));
                 }
                 return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
@@ -257,7 +259,17 @@ public class PurchaseOrderResource {
         }
     }
 
-    private ShippingType determineBreakBulkSapType(PurchaseOrder po){
+    private ShippingType determineSerlvlSapType(PurchaseOrder po) throws Exception {
+
+        if(po.getPickUpParty() == null || po.getPickUpParty().getCompany() == null || po.getPickUpParty().getArea() == null || po.getPickUpParty().getArea().getHub() == null){
+            log.error(" PickupParty incorrectly setup : po.getPickUpParty() == null || po.getPickUpParty().getCompany() == null");
+            throw new Exception("PickupParty incorrectly setup, please contact Xeon support");
+        }
+
+        if(po.getShipToParty() == null || po.getShipToParty().getCompany() == null || po.getShipToParty().getArea() == null || po.getShipToParty().getArea().getHub() == null){
+            log.error(" PickupParty incorrectly setup : po.getPickUpParty() == null || po.getPickUpParty().getCompany() == null");
+            throw new Exception("ShipToParty incorrectly setup, please contact Xeon support");
+        }
         ShippingType shippingType = null;
         log.debug("  determineBreakBulkSapType - [{}]", 1);
         if(po.getPickUpParty().getCompany().getType().equals(CompanyType.XEON)){
