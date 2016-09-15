@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label class="control-label" for="field_category">Category</label>
                     <select class="form-control" name="category" ng-model="attachment.category" id="field_category" required
-                            ng-options="category as category for category in attachmentCategories track by category">
+                            ng-options="enum | prittyPrint for enum in attachmentCategories">
                     </select>
                 </div>
             </div>

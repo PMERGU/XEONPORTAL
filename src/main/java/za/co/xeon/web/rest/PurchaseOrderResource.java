@@ -192,6 +192,7 @@ public class PurchaseOrderResource {
             );
             log.debug(rfc.toStringFull());
             User whoDidIt = (capturedBy == null ? user : capturedBy);
+            log.debug(" whoDidIt : " + whoDidIt);
             try {
                 purchaseOrder.setState(PoState.PROCESSED);
                 SalesOrderCreatedDTO so = hiberSapService.createSalesOrder(purchaseOrder.getPoNumber(), rfc);
@@ -199,12 +200,14 @@ public class PurchaseOrderResource {
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
                 log.debug(" PO saved as ID : {} - SO created as ID : {}", savedPo.getId(), savedPo.getSoNumber());
                 if(whoDidIt.getId() != user.getId()){
+                    log.debug(" whoDidIt [1]");
                     mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
                         String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s and SAP SO auto created as %s.",
                             savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
                         , null, null, getBaseUrl(request));
                 }else{
+                    log.debug(" whoDidIt [2]");
                     mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
                         String.format("A new Purchase Order #%s has been created by controller %s %s for client %s and SAP SO auto created as %s.",
@@ -224,13 +227,15 @@ public class PurchaseOrderResource {
                 purchaseOrder.setState(PoState.UNPROCESSED);
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
                 if(whoDidIt.getId() != user.getId()) {
-                    mailService.sendCSUMail(capturedBy != null ? user : capturedBy,
+                    log.debug(" whoDidIt [3]");
+                    mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
                         String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s. Please action and capture in SAP as soon as possible.",
                             savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
                         , null, null, getBaseUrl(request));
                 }else{
-                    mailService.sendCSUMail(capturedBy != null ? user : capturedBy,
+                    log.debug(" whoDidIt [4]");
+                    mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
                         String.format("A new Purchase Order #%s has been created by controller %s %s for client %s. Please action and capture in SAP as soon as possible.",
                             savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName())
@@ -254,31 +259,42 @@ public class PurchaseOrderResource {
 
     private ShippingType determineBreakBulkSapType(PurchaseOrder po){
         ShippingType shippingType = null;
+        log.debug("  determineBreakBulkSapType - [{}]", 1);
         if(po.getPickUpParty().getCompany().getType().equals(CompanyType.XEON)){
+            log.debug("  determineBreakBulkSapType - [{}]", 2);
             if(po.getShipToParty().getCompany().getType().equals(CompanyType.XEON)){
+                log.debug("  determineBreakBulkSapType - [{}]", 3);
                 //PICKUP IS XEON & DROP_OFF IS XEON
                 shippingType = ShippingType.HUB_TO_HUB_LINE;
             }else{
+                log.debug("  determineBreakBulkSapType - [{}]", 4);
                 if(po.getPickUpParty().getArea().getHub().equals(po.getShipToParty().getArea().getHub())){
+                    log.debug("  determineBreakBulkSapType - [{}]", 5);
                     //PICKUP IS XEON & AREA HUB'S MATCH
                     shippingType = ShippingType.HUB_TO_DOOR_LOCAL;
                 }else{
+                    log.debug("  determineBreakBulkSapType - [{}]", 6);
                     //PICKUP IS XEON & AREA HUB'S DON'T MATCH
                     shippingType = ShippingType.HUB_TO_DOOR_LINE;
                 }
             }
         }else if(po.getShipToParty().getCompany().getType().equals(CompanyType.XEON)){
+            log.debug("  determineBreakBulkSapType - [{}]", 7);
             if(po.getPickUpParty().getArea().getHub().equals(po.getShipToParty().getArea().getHub())){
+                log.debug("  determineBreakBulkSapType - [{}]", 8);
                 //DROPOFF IS XEON & AREA HUB'S MATCH
                 shippingType = ShippingType.DOOR_TO_HUB_LOCAL;
             }else{
+                log.debug("  determineBreakBulkSapType - [{}]", 9);
                 //DROPOFF IS XEON & AREA HUB'S DON'T MATCH
                 shippingType = ShippingType.DOOR_TO_HUB_LINE;
             }
         }else if(po.getPickUpParty().getArea().getHub().equals(po.getShipToParty().getArea().getHub())){
+            log.debug("  determineBreakBulkSapType - [{}]", 10);
             //AREA HUB' MATCH
             shippingType = ShippingType.DOOR_TO_DOOR_LOCAL;
         }else {
+            log.debug("  determineBreakBulkSapType - [{}]", 11);
             //AREA HUB'S DON'T MATCH
             shippingType = ShippingType.DOOR_TO_DOOR_LINE;
         }

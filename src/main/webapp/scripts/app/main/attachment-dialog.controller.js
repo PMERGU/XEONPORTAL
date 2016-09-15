@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('portalApp').controller('AttachmentDialogController',
-    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$log', 'Upload', 'UploadTools', 'Attachment', 'currentUser', 'Principal',
-        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, $log, Upload, UploadTools, Attachment, currentUser, Principal) {
-            Attachment.queryCategories().$promise.then(function(result){
+    ['$rootScope', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$log', 'Upload', 'UploadTools', 'Attachment', 'currentUser', 'Principal', 'StaticServices',
+        function($rootScope, $scope, $stateParams, $uibModalInstance, entity, $log, Upload, UploadTools, Attachment, currentUser, Principal, StaticServices) {
+            StaticServices.getAll().$promise.then(function(result){
+                result = result['attachmentCategories'];
                 $log.debug(currentUser);
                 Principal.identity().then(function(user) {
                     if(user.company.type !== "XEON") {

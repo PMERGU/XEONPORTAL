@@ -21,7 +21,6 @@ angular.module('portalApp')
                     };
                 }
             },
-            'delete': { method:'DELETE' },
-            'queryCategories': { url: 'api/static/attachmentCategories', method: 'GET', isArray: true},
+            'delete': { method:'DELETE' }
         });
     });

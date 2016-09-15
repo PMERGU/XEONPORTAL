@@ -3,3 +3,4 @@ id;name;house_number;street_name;district;postal_code;city;country;reference;com
 2;Xeon (Pomona);308;Pomona;Kempton;1620;Johannesburg;South Africa;Xeon (Pomona);3
 3;Test 1;59;5th Avenue;Edenvale;1610;Johannesburg;South Africa;Derick (Home);2
 4;Test 2 (Pomona);308;Pomona;Kempton;1620;Johannesburg;South Africa;Xeon (Pomona);3
+5;SoldToParty;308;Pomona;Kempton;1620;Johannesburg;South Africa;Xeon (Pomona);2
