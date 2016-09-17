@@ -11,6 +11,7 @@ angular.module('portalApp')
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'getXeon':{ url: 'api/partys/company/xeon', method: 'GET', isArray: true}
         });
     });

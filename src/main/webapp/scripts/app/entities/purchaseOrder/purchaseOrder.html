@@ -97,7 +97,8 @@
                            ng-class="{ 'btn-primary': step == 2, 'btn-default': step != 2}" value="Step 2 - Transport"/>
 
                     <input ng-click="wizard.show(3)" style="width: 165px;margin: 0px 5px;" type="button" class="btn"
-                           ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 3}" value="Step 3 - Cargo"/>
+                           ng-class="{ 'btn-primary': step == 3, 'btn-default': step != 3}" value="Step 3 - Cargo"
+                           ng-disabled="purchaseOrder.pickUpParty.id === purchaseOrder.shipToParty.id" />
 
                     <input ng-click="wizard.show(4)" style="width: 165px;margin: 0px 5px;" role="button" class="btn"
                            ng-disabled="purchaseOrder.poLines.length === 0"
@@ -252,7 +253,7 @@
                                             <select class="form-control" id="field_pickUpParty" name="pickUpParty"
                                                     ng-required="requiredFields['pickUpParty']"
                                                     ng-model="purchaseOrder.pickUpParty"
-                                                    ng-options="party as party.name for party in otherParties track by party.id | orderBy:'name'">
+                                                    ng-options="party as party.name for party in (otherParties | orderBy:'name') track by party.id">
                                             </select>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
@@ -326,7 +327,7 @@
                                             <select class="form-control" id="field_shipToParty" name="shipToParty"
                                                     ng-required="requiredFields['shipToParty']"
                                                     ng-model="purchaseOrder.shipToParty"
-                                                    ng-options="party as party.name for party in otherParties track by party.id | orderBy:'name'">
+                                                    ng-options="party as party.name for party in (otherParties | orderBy:'name') track by party.id">
                                             </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default"
@@ -529,7 +530,7 @@
                                     <div class="input-group" style="width: 100%">
                                         <select class="form-control" id="field_soldToParty" name="soldToParty" ng-required="user.company.type === 'AGENT'"
                                                 ng-model="purchaseOrder.soldToParty"
-                                                ng-options="party as party.name for party in soldToParties track by party.id | orderBy:'name'">
+                                                ng-options="party as party.name for party in (soldToParties | orderBy:'name') track by party.id">
                                             <option value=""></option>
                                         </select>
                                             <span class="input-group-btn" ng-show="isXeon">
@@ -948,7 +949,7 @@
                            ng-hide="step == 6"
                            class="btn btn-primary" type="button" value="&nbsp;Next&nbsp;"/>
                     <button ng-click="submit()"
-                            ng-show="step == 6 && !(purchaseOrder.id && purchaseOrder.state === 'PROCESSED')"
+                            ng-show="step == 6 && !(purchaseOrder.id && purchaseOrder.state === 'PROCESSED') && (purchaseOrder.pickUpParty.id !== purchaseOrder.shipToParty.id)"
                             class="btn btn-primary"
                             ng-disabled="editForm.$invalid || !orderApproved || isSaving">
                         <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Submit Order</span>

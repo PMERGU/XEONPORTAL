@@ -3,10 +3,12 @@ package za.co.xeon.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import za.co.xeon.domain.Company;
 import za.co.xeon.domain.Party;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.domain.enumeration.PartyType;
+import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.PartyRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.AuthoritiesConstants;
@@ -42,6 +44,10 @@ public class PartyResource {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private CompanyRepository companyRepository;
+
     /**
      * POST  /partys -> Create a new party.
      */
@@ -110,6 +116,21 @@ public class PartyResource {
             log.debug("Restricting Party lookup by username " + user.getLogin());
             page = (type == null) ? partyRepository.findByCompany(user.getCompany(), pageable) : partyRepository.findByCompanyAndType(user.getCompany(), type, pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/partys");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /partys -> get all the partys.
+     */
+    @RequestMapping(value = "/partys/company/xeon",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Party>> getAllXeonPartys(@RequestParam(required = false) PartyType type, Pageable pageable) throws URISyntaxException {
+        log.debug("REST request to get all getAllXeonPartys");
+        Company company = companyRepository.findXeon();
+        Page<Party> page = (type == null) ? partyRepository.findByCompany(company, pageable) : partyRepository.findByCompanyAndType(company, type, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/partys");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

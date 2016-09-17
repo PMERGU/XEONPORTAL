@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import za.co.xeon.domain.*;
 import za.co.xeon.domain.enumeration.*;
+import za.co.xeon.external.sap.hibersap.DuplicatePoException;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.SalesOrderCreateRFC;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
@@ -92,8 +93,8 @@ public class PurchaseOrderResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<PurchaseOrder> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
-        log.debug("=============================================== create PO ===================================================");
-        log.debug("REST request to save PurchaseOrder");
+        log.debug("[PO:{}] - =============================================== create PO ===================================================", purchaseOrder.getPoNumber());
+        log.debug("[PO:{}] - REST request to save PurchaseOrder", purchaseOrder.getPoNumber());
         //validations
         purchaseOrder.setPoNumber(purchaseOrder.getPoNumber().trim().toUpperCase());
         if (purchaseOrder.getId() != null) {
@@ -106,10 +107,10 @@ public class PurchaseOrderResource {
         if (SecurityUtils.isUserCustomer()) {
             user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         } else {
-            log.debug("Capturing as user {}", purchaseOrder.getUser());
+            log.debug("[PO:{}] - Capturing as user {}", purchaseOrder.getPoNumber(), purchaseOrder.getUser());
             user = userRepository.findOneByLogin(purchaseOrder.getUser().getLogin()).get();
             capturedBy = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-            log.debug("PO captured by %s against customer %s", capturedBy.getLogin(), user.getLogin());
+            log.debug("[PO:{}] - PO captured by {} against customer {}", purchaseOrder.getPoNumber(), capturedBy.getLogin(), user.getLogin());
             purchaseOrder.setCapturedBy(capturedBy);
         }
 
@@ -117,7 +118,7 @@ public class PurchaseOrderResource {
         purchaseOrder.setCaptureDate(ZonedDateTime.now());
         purchaseOrder.setUser(user);
 
-        if (purchaseOrderRepository.findByUserId_CompanyAndPoNumber(purchaseOrder.getUser().getCompany(), purchaseOrder.getPoNumber()) != null) {
+        if (purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("purchaseOrder", "poNumber",
                     String.format("A PO with the number #%s already exists in the system. Please double check poNumber or double check the dashboard", purchaseOrder.getPoNumber())))
@@ -127,7 +128,7 @@ public class PurchaseOrderResource {
 
         //set PO as parent to PO.poLines
         purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
-        log.debug(" purchaseOrder.getPoLines().size() : {}", purchaseOrder.getPoLines().size());
+        log.debug("[PO:{}] -  purchaseOrder.getPoLines().size() : {}", purchaseOrder.getPoNumber(), purchaseOrder.getPoLines().size());
         log.debug(purchaseOrder.getPoLines().toString());
 
         try {
@@ -137,30 +138,26 @@ public class PurchaseOrderResource {
             if(purchaseOrder.getShipToParty() != null) purchaseOrder.setShipToParty(partyRepository.findOne(purchaseOrder.getShipToParty().getId()));
             if(purchaseOrder.getSoldToParty() != null) purchaseOrder.setSoldToParty(partyRepository.findOne(purchaseOrder.getSoldToParty().getId()));
 
-            String imVkorg = null;
+            String imVkorg = "3000";
             String imVtweg = null;
             String imSpart = null;
             String imSerlvl = "L1";
             switch (purchaseOrder.getServiceType()){
                 case INBOUND:
-                    imVkorg = "3000";
                     imVtweg = "M1";
                     imSpart = "13";
                     break;
                 case OUTBOUND:
-                    imVkorg = "3000";
                     imVtweg = "M1";
                     imSpart = "13";
                     break;
                 case CROSS_HAUL:
                 case FULL_CONTAINER_LOAD:
                 case FULL_TRUCK_LOAD:
-                    imVkorg = "3000";
                     imVtweg = "L1";
                     imSpart = "L1";
                     break;
                 case BREAKBULK_TRANSPORT:
-                    imVkorg = "3000";
                     imVtweg = "L1";
                     imSpart = "L1";
                     imSerlvl = determineSerlvlSapType(purchaseOrder).getSapCode();
@@ -194,29 +191,29 @@ public class PurchaseOrderResource {
             );
             log.debug(rfc.toStringFull());
             User whoDidIt = (capturedBy == null ? user : capturedBy);
-            log.debug(" whoDidIt : " + whoDidIt);
+            log.debug("[PO:{}] -  whoDidIt : {}", purchaseOrder.getPoNumber(), whoDidIt);
             try {
                 purchaseOrder.setState(PoState.PROCESSED);
                 SalesOrderCreatedDTO so = hiberSapService.createSalesOrder(purchaseOrder.getPoNumber(), rfc);
                 purchaseOrder.setSoNumber(so.getSoNumber());
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
-                log.debug(" PO saved as ID : {} - SO created as ID : {}", savedPo.getId(), savedPo.getSoNumber());
-                if(whoDidIt.getId() != user.getId()){
-                    log.debug(" whoDidIt [1]");
+                log.debug("[PO:{}] -  PO saved as ID : {} - SO created as ID : {}", purchaseOrder.getPoNumber(), savedPo.getId(), savedPo.getSoNumber());
+                if (whoDidIt.getId() != user.getId()) {
+                    log.debug("[PO:{}] -  whoDidIt [1]", purchaseOrder.getPoNumber());
                     mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
                         String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s and SAP SO auto created as %s.",
                             savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
                         , null, null, getBaseUrl(request));
-                }else{
-                    log.debug(" whoDidIt [2]");
+                } else {
+                    log.debug("[PO:{}] -  whoDidIt [2]", purchaseOrder.getPoNumber());
                     mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
                         String.format("A new Purchase Order #%s has been created by controller %s %s for client %s and SAP SO auto created as %s.",
                             savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
                         , null, null, getBaseUrl(request));
                 }
-                if(capturedBy != null){
+                if (capturedBy != null) {
                     mailService.sendPoProcessedMail(user, purchaseOrder, getBaseUrl(request), true);
                 }
                 return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
@@ -224,19 +221,23 @@ public class PurchaseOrderResource {
                         String.format("New purchase order [%s] created and sales order [%s] auto captured in SAP.", savedPo.getId(), savedPo.getSoNumber()),
                         savedPo.getId().toString()
                     )).body(savedPo);
+            }catch (DuplicatePoException dpe){
+                return ResponseEntity.badRequest()
+                    .headers(HeaderUtil.createFailureAlert("Duplicate po number " + purchaseOrder.getPoNumber() + ". Please retry with different PO number."))
+                    .body(null);
             }catch (Exception e){
                 log.warn("Could not create SO in SAP, doing fallback and creating manual entry for CSU to capture.");
                 purchaseOrder.setState(PoState.UNPROCESSED);
                 PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
-                if(whoDidIt.getId() != user.getId()) {
-                    log.debug(" whoDidIt [3]");
+                if (whoDidIt.getId() != user.getId()) {
+                    log.debug("[PO:{}] -  whoDidIt [3]", purchaseOrder.getPoNumber());
                     mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
                         String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s. Please action and capture in SAP as soon as possible. Failure : %s",
                             savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), e.getMessage())
                         , null, null, getBaseUrl(request));
-                }else{
-                    log.debug(" whoDidIt [4]");
+                } else {
+                    log.debug("[PO:{}] -  whoDidIt [4]", purchaseOrder.getPoNumber());
                     mailService.sendCSUMail(whoDidIt,
                         String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
                         String.format("A new Purchase Order #%s has been created by controller %s %s for client %s. Please action and capture in SAP as soon as possible. Failure : %s",
@@ -246,8 +247,9 @@ public class PurchaseOrderResource {
                 return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
                     .headers(HeaderUtil.createEntityCreationAlert("purchase order", savedPo.getId().toString()))
                     .body(savedPo);
+
             }finally {
-                log.debug("============================================= END create PO ==================================================");
+                log.debug("[PO:{}] - ============================================= END create PO ==================================================", purchaseOrder.getPoNumber());
             }
 
         } catch (Exception ex) {
@@ -560,6 +562,33 @@ public class PurchaseOrderResource {
     @RequestMapping(value = "/purchaseOrders/{id}/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(@PathVariable Long id, @PathVariable(value="deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
+        log.debug("Service [GET] /purchaseOrders/{}/orders/{}", id, deliveryNo);
+        return () -> {
+            List<GtCustOrdersDetail> sapOrders = null;
+            PurchaseOrder purchaseOrder;
+            purchaseOrder = purchaseOrderRepository.findOne(id);
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+
+            if(purchaseOrder != null){
+                sapOrders = mobileService.getCustomerOrderDetails(deliveryNo, new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
+                if(sapOrders.isEmpty()) {
+                    log.debug("Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, deliveryNo);
+                }
+            }else{
+                log.debug("Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]", id, deliveryNo, user.getCompany().getName());
+            }
+
+            return Optional.ofNullable(sapOrders)
+                .map(result -> new ResponseEntity<>(
+                    result,
+                    HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        };
+    }
+
+    @RequestMapping(value = "/purchaseOrders/{id}/huDetails/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Callable<ResponseEntity<List<HandlingUnitsRFC>>> getPoOrder(@PathVariable Long id, @PathVariable(value="deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
         log.debug("Service [GET] /purchaseOrders/{}/orders/{}", id, deliveryNo);
         return () -> {
             List<GtCustOrdersDetail> sapOrders = null;

@@ -63,7 +63,6 @@ public class HiberSapService {
     }
 
 
-    @Cacheable(value = "CustomerOrdersByDate")
     public List<GtCustOrders> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
         customerNumber = Pad.left(customerNumber, 10);
         Session session = sessionManager.openSession();
@@ -82,7 +81,6 @@ public class HiberSapService {
         }
     }
 
-    @Cacheable(value = "getCustomerOrderDetails")
     public List<GtCustOrdersDetail> getCustomerOrderDetails(String orderNumber, Date from, Date to) throws ParseException {
         orderNumber = Pad.left(orderNumber, 10);
         Session session = sessionManager.openSession();
@@ -214,12 +212,16 @@ public class HiberSapService {
             if(rfc.getExReturn().size() > 0 && rfc.getExReturn().get(0).getType().equals("E")){
                 throw new Exception("Request [po:" + po + "] failed with SAP status code " + rfc.getExReturn().get(0).getType() + " : " + rfc.getExReturn().get(0).getMessage());
             }else{
-                log.debug("[{}] - Error count : [{}]", po, rfc.getExReturn().size());
+                log.debug("[{}] - Return count : [{}]", po, rfc.getExReturn().size());
                 log.debug("[{}] - return", po);
                 rfc.getExReturn().stream().forEach(exReturn -> log.debug("[{}] - return : \n{}", po, exReturn.toString()));
                 for(ExReturn exReturn : rfc.getExReturn()){
                     if(exReturn.getType().equals("E") || exReturn.getType().equals("I")){
-                        throw new Exception("Request [po:" + po + "] failed with SAP status code " + exReturn.getType() + " : " + exReturn.getMessage());
+                        if(exReturn.getType().equals("I") && exReturn.getMessage().startsWith("Purchase order number " + po + " already exists")){
+                            throw new DuplicatePoException("Request [po:" + po + "] failed with SAP status code " + exReturn.getType() + " : " + exReturn.getMessage());
+                        }else {
+                            throw new Exception("Request [po:" + po + "] failed with SAP status code " + exReturn.getType() + " : " + exReturn.getMessage());
+                        }
                     }
                 }
                 return new SalesOrderCreatedDTO(rfc.getExSalesorder(), rfc.getExReturn());

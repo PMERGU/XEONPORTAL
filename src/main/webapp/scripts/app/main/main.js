@@ -51,7 +51,7 @@ angular.module('portalApp')
                     }],
                     deliveryNo: ['$stateParams', function ($stateParams) {
                         return $stateParams.deliveryNo === undefined || $stateParams.deliveryNo === null ? 0 : $stateParams.deliveryNo;
-                    }], 
+                    }],
                     orderStep: ['$stateParams', function ($stateParams) {
                         return $stateParams.orderStep === undefined || $stateParams.orderStep === null ? 0 : $stateParams.orderStep;
                     }],
@@ -144,7 +144,7 @@ angular.module('portalApp')
             })
             .state('salesOrders', {
                 parent: 'site',
-                url: '/salesOrders',
+                url: '/salesOrders/{company}',
                 data: {
                     authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_CUSTOMER_CSU'],
                     pageTitle: 'Sales Orders'

@@ -57,6 +57,10 @@ angular.module('portalApp')
             'getOrder': {
                 url: 'api/purchaseOrders/:id/orders/:deliveryNo',
                 method: 'GET', isArray: true
+            },
+            'getHUDetails': {
+                url: 'api/purchaseOrders/:id/huDetails/:deliveryNo',
+                method: 'GET', isArray: true
             }
         });
     });

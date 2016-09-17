@@ -2,6 +2,7 @@
 
 angular.module('portalApp')
     .controller('SalesOrdersController', function ($scope, $stateParams, $sce, $window, $log, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, CachedOrders, PurchaseOrder, sweet, identity) {
+        $log.debug("ID : " + $stateParams.company);
         $scope.deliveredOrders = [];
         $scope.undeliveredOrders = [];
         $scope.ordersStep = 0;
@@ -21,6 +22,21 @@ angular.module('portalApp')
             $scope.selected = {
                 company: null
             };
+            // $scope.company = null;
+            // $scope.selected = {
+            //     company: null
+            // };
+            // Company.query().$promise.then(function(companies){
+            //     $.each(companies, function(idx, company){
+            //         $log.debug(idx + " - " + company.name);
+            //         if($stateParams.company === company.name){
+            //             $scope.selected.company = company;
+            //             $scope.company = company;
+            //         }
+            //     });
+            //     $scope.companies = companies;
+            //
+            // });
         }
 
 

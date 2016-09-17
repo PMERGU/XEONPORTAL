@@ -54,14 +54,13 @@
                                     <th>Purchase Order</th>
                                     <th>Employee</th>
                                     <th>Captured By</th>
+                                    <th>CSU Allocated</th>
                                     <th>Capture Date</th>
                                     <th>Pickup Party</th>
                                     <th>Pickup HUB</th>
                                     <th>Ship to Party</th>
                                     <th>Sales Order</th>
                                     <th>Delivery No</th>
-                                    <th>CSU Allocated</th>
-                                    <th>Consignee</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -72,14 +71,13 @@
                                     </td>
                                     <td>{{ purchaseOrders[order.bstkd].user.firstName + ' ' + purchaseOrders[order.bstkd].user.lastName }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].user.csu.firstName + ' ' + purchaseOrders[order.bstkd].user.csu.lastName }}</td>
+                                    <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yy-MM-dd HH:mm' }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
                                     <td>{{ purchaseOrders[order.bstkd].pickUpParty.area.hub}}</td>
                                     <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
                                     <td>{{ order.vbeln }}</td>
                                     <td>{{ order.dbeln }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].user.csu.firstName + ' ' + purchaseOrders[order.bstkd].user.csu.lastName }}</td>
-                                    <td>{{ order.skunnr }}</td>
                                     <td width="10px">
                                         <button type="submit"
                                                 ui-sref="orderdetail({poId: purchaseOrders[order.bstkd].id, deliveryNo: order.dbeln, orderStep: ordersStep})"

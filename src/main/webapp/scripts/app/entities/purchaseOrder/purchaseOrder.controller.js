@@ -10,10 +10,15 @@ angular.module('portalApp').controller('PurchaseOrderController',
             Party.query({size: 10000, sort: 'name', type: 'OTHER'}).$promise.then(function(data){
                 $scope.otherParties = data;
                 Party.query({size: 10000, sort: 'name', type: 'SOLD_TO_PARTY'}).$promise.then(function(soldTo){
-                    $.each(soldTo, function(eac){
-                        $scope.otherParties.push(soldTo);
+                    $.each(soldTo, function(idx, item){
+                        $scope.otherParties.push(item);
                     });
                     $scope.soldToParties = soldTo;
+                });
+                Party.getXeon({size: 10000, sort: 'name', type: 'OTHER'}).$promise.then(function(xeon){
+                    $.each(xeon, function(idx, item){
+                        $scope.otherParties.push(item);
+                    });
                 });
             });
 
@@ -146,6 +151,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         limitSelect([
                             {name: 'serviceType', values: ["INBOUND","OUTBOUND"], defaultValue: "INBOUND"}
                         ]);
+                        hideOrShow([{name: 'cargoClassification'},{name: 'cargoType'}]);
                         break;
                     case 'TRANSPORT':
                         limitSelect([
@@ -235,20 +241,20 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 switch (value){
                     case "AIR":
                         hideOrShow([
-                            {name: 'cvName', show: true, value: IFTET($scope.purchaseOrder.cvName, '')},
-                            {name: 'cvNumber', show: true, value: IFTET($scope.purchaseOrder.cvNumber, '')},
+                            {name: 'cvName'},
+                            {name: 'cvNumber'},
                             {name: 'cvOrigin', show: true, value:IFTET($scope.purchaseOrder.cvOrigin, '')},
                             {name: 'cvContainerNo'},
                             {name: 'cvCarrierRef'},
                             {name: 'cvConsol', show: true, value:IFTET($scope.purchaseOrder.cvConsol, '')},
-                            {name: 'cvWaybill', show: true, value:IFTET($scope.purchaseOrder.cvWaybill, '')},
-                            {name: 'cvHouseWaybill', show: true, value:IFTET($scope.purchaseOrder.cvHouseWaybill, '')},
+                            {name: 'cvWaybill'},
+                            {name: 'cvHouseWaybill'},
                             {name: 'cvWaybillIssue', show: true, value:IFTET(new Date($scope.purchaseOrder.cvWaybillIssue), '')},
                             {name: 'cvHouseWaybillIssue', show: true, value:IFTET(new Date($scope.purchaseOrder.cvHouseWaybillIssue), '')},
                             {name: 'cvShipper', show: true, value:IFTET($scope.purchaseOrder.cvShipper, '')},
                             {name: 'cvEtd', show: true, value:IFTET(new Date($scope.purchaseOrder.cvEtd), '')},
-                            {name: 'cvEta', show: true, value:IFTET(new Date($scope.purchaseOrder.cvEta), '')},
-                            {name: 'cvDestination', show: true, value:IFTET($scope.purchaseOrder.cvDestination, '')},
+                            {name: 'cvEta'},
+                            {name: 'cvDestination'},
                             {name: 'cvCommodity', show: true, value:IFTET($scope.purchaseOrder.cvCommodity, '')}
                         ]);
                         break;
@@ -256,9 +262,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     case "SEA_FCL":
                         hideOrShow([
                             {name: 'cvName', show: true, value: IFTET($scope.purchaseOrder.cvName, '')},
-                            {name: 'cvNumber', show: true, value: IFTET($scope.purchaseOrder.cvNumber, '')},
+                            {name: 'cvNumber'},
                             {name: 'cvOrigin', show: true, value:IFTET($scope.purchaseOrder.cvOrigin, '')},
-                            {name: 'cvContainerNo', show: true, value:IFTET($scope.purchaseOrder.cvContainerNo, '')},
+                            {name: 'cvContainerNo'},
                             {name: 'cvCarrierRef', show: true, value:IFTET($scope.purchaseOrder.cvCarrierRef, '')},
                             {name: 'cvConsol', show: true, value:IFTET($scope.purchaseOrder.cvConsol, '')},
                             {name: 'cvWaybill', show: true, value:IFTET($scope.purchaseOrder.cvWaybill, '')},
@@ -267,8 +273,8 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'cvHouseWaybillIssue', show: true, value:IFTET(new Date($scope.purchaseOrder.cvHouseWaybillIssue), '')},
                             {name: 'cvShipper', show: true, value:IFTET($scope.purchaseOrder.cvShipper, '')},
                             {name: 'cvEtd', show: true, value:IFTET(new Date($scope.purchaseOrder.cvEtd), '')},
-                            {name: 'cvEta', show: true, value:IFTET(new Date($scope.purchaseOrder.cvEta), '')},
-                            {name: 'cvDestination', show: true, value:IFTET($scope.purchaseOrder.cvDestination, '')},
+                            {name: 'cvEta'},
+                            {name: 'cvDestination'},
                             {name: 'cvCommodity', show: true, value:IFTET($scope.purchaseOrder.cvCommodity, '')}
                         ]);
                         break;
@@ -509,7 +515,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                 onSaveSuccess(result);
                             }
                         },
-                        onSaveError
+                        onSaveError(result)
                     );
                 }
             };
@@ -624,7 +630,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.addAttachment = function(){
                 $log.debug("addAttachment()");
                 $scope.attachments.push({
-                    category: $scope.attachmentCategories[0],
+                    category: $scope.staticEnums['attachmentCategories'][0],
                     description: null
                 })
             };

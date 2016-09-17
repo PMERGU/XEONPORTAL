@@ -359,10 +359,12 @@
                 <th>Batch Number</th>
                 <th>Gross Weight</th>
                 <th>Net Weight</th>
+                <th>DV Type</th>
                 <th>Length</th>
                 <th>Width</th>
                 <th>Height</th>
                 <th>Quantity</th>
+                <th>Volume</th>
                 <th>Total Weight</th>
                 <th>Total Cubes</th>
             </tr>
@@ -375,10 +377,12 @@
                 <td>{{ po.batchNumber }}</td>
                 <td>{{ po.grossWeight}}kg</td>
                 <td>{{ po.netWeight}}kg</td>
+                <td>{{ po.dvType }}</td>
                 <td>{{ po.length}}cm</td>
                 <td>{{ po.width}}cm</td>
                 <td>{{ po.height}}cm</td>
                 <td>{{ po.orderQuantity }}</td>
+                <td>{{ po.volume }}</td>
                 <td>{{ po.grossWeight * po.orderQuantity }}kg</td>
                 <td>{{ (po.height * po.length * po.width)/1000000 * po.orderQuantity }}m&sup3;</td>
             </tr>

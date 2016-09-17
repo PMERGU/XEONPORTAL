@@ -17,4 +17,7 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
     List<Company> findByNameStartingWithOrderByName(String name);
     Company findBySapId(String sapId);
 
+    @Query("SELECT c FROM Company c WHERE c.type = 'XEON'")
+    Company findXeon();
+
 }
