@@ -60,7 +60,7 @@ angular.module('portalApp')
             },
             'getHUDetails': {
                 url: 'api/purchaseOrders/:id/huDetails/:deliveryNo',
-                method: 'GET', isArray: true
+                method: 'GET', isArray: false
             }
         });
     });

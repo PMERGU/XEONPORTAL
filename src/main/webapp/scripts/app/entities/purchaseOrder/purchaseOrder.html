@@ -270,14 +270,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label" for="field_pickUpType">Collection Type</label>
-                                        <select class="form-control" name="pickUpType"
-                                                ng-model="purchaseOrder.pickUpType"
-                                                id="field_pickUpType"
-                                                ng-options="enum | prittyPrint for enum in staticEnums['deliveryTypes']">
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="control-label" for="field_collectionDate">Collection Date</label>
                                         <div class="input-group">
                                             <input id="field_collectionDate" type="text" class="form-control"
@@ -354,14 +346,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label" for="field_shipToType">Delivery Type</label>
-                                        <select class="form-control" name="shipToType"
-                                                ng-model="purchaseOrder.shipToType"
-                                                id="field_shipToType"
-                                                ng-options="enum | prittyPrint for enum in staticEnums['deliveryTypes']">
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="control-label" for="field_dropOffDate">Delivery Date</label>
                                         <div class="input-group">
                                             <input type="text" id="field_dropOffDate" class="form-control"
@@ -418,7 +402,13 @@
                                 <div class="table-responsive m-t">
                                     <table class="table table-striped">
                                         <thead>
-                                        <tr>
+                                        <tr ng-show="purchaseOrder.poLines !== undefined && purchaseOrder.poLines[0].materialType === 'DEDICATED'">
+                                            <th>No</th>
+                                            <th>Gross Weight</th>
+                                            <th>Volume</th>
+                                            <th></th>
+                                        </tr>
+                                        <tr ng-show="!purchaseOrder.poLines || purchaseOrder.poLines[0].materialType !== 'DEDICATED'">
                                             <th>No</th>
                                             <th>Material Type</th>
                                             <th>material Number</th>
@@ -432,10 +422,10 @@
                                         <tbody>
                                         <tr ng-repeat="po in purchaseOrder.poLines">
                                             <td>{{$index+1}}</td>
-                                            <td>
+                                            <td ng-hide="po.materialType === 'DEDICATED'">
                                                 <div><strong>{{ po.materialType }}</strong></div>
                                             </td>
-                                            <td>
+                                            <td ng-hide="po.materialType === 'DEDICATED'">
                                                 <div>{{ po.materialNumber }}&nbsp;</div>
                                                 <small>
                                                     <b class="pull-right" style="margin-top: 2px;">Totals </b>
@@ -447,8 +437,10 @@
                                                     <b>{{ po.grossWeight * po.orderQuantity }}</b>kg
                                                 </small>
                                             </td>
-                                            <td>{{ po.dvType }}</td>
-                                            <td ng-show="po.dvType === 'DIMENSIONS'">
+                                            <td ng-hide="po.materialType === 'DEDICATED'">
+                                                {{ po.dvType }}
+                                            </td>
+                                            <td ng-show="po.dvType === null || po.dvType === 'DIMENSIONS'">
                                                 <div>{{ po.height * po.length * po.width / 1000000 |
                                                     number:2}}m&sup3;</div>
                                                 <small>
@@ -462,14 +454,16 @@
                                                     <b>{{po.volume * po.orderQuantity | number:2}}</b>m&sup3;
                                                 </small>
                                             </td>
-                                            <td>{{ po.orderQuantity }}</td>
+                                            <td ng-hide="po.materialType === 'DEDICATED'">
+                                                {{ po.orderQuantity }}
+                                            </td>
                                             <td width="95px">
                                                 <div class="btn-group flex-btn-group-container">
                                                     <button class="btn btn-primary"
                                                             ui-sref="purchaseOrder.poLine({serviceType: purchaseOrder.serviceType, poLine: po})">
-                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                        <span class="glyphicon glyphicon-pencil"></span>
                                                     </button>
-                                                    <button type="button"
+                                                    <button type="button" ng-hide="po.materialType === 'DEDICATED'"
                                                             ng-click="deletePoLine(po.rowId)"
                                                             class="btn btn-danger">
                                                         <span class="glyphicon glyphicon-remove-circle"></span>
@@ -480,8 +474,8 @@
                                         </tr>
 
                                         <tr>
-                                            <td colspan="7">
-                                                <button class="btn btn-primary pull-right"
+                                            <td colspan="8">
+                                                <button class="btn btn-primary pull-right" ng-show="!purchaseOrder.poLines || purchaseOrder.poLines[0].materialType !== 'DEDICATED'"
                                                         ui-sref="purchaseOrder.poLine({serviceType: purchaseOrder.serviceType})">
                                                     <span class="glyphicon glyphicon-plus"></span>
                                                 </button>
@@ -490,7 +484,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="row m-t">
+                                <div class="row m-t" ng-show="!purchaseOrder.poLines || purchaseOrder.poLines[0].materialType !== 'DEDICATED'">
                                     <div class="col-md-4 col-md-offset-8">
                                         <table class="table table-striped text-right">
                                             <tbody>
@@ -506,8 +500,18 @@
                                         </table>
                                     </div>
                                 </div>
+                                <div class="row" ng-show="purchaseOrder.poLines && purchaseOrder.poLines[0].materialType === 'DEDICATED' && (purchaseOrder.poLines[0].grossWeight === null || purchaseOrder.poLines[0].volume === null)">
+                                    <div class="col-md-12">
+                                        <div class="m-t">
+                                            <blockquote class="blockquote-reverse" style="border-right: 5px solid #c0392b;">
+                                                <p><strong>Weight and volume needed</strong></p>
+                                                Please click the edit button above to insert the needed values.
+                                            </blockquote>
 
-                                <div class="row">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-show="!purchaseOrder.poLines || purchaseOrder.poLines[0].materialType !== 'DEDICATED'">
                                     <div class="col-md-12">
                                         <div class="m-t">
                                             <blockquote class="blockquote-warn">
@@ -945,9 +949,11 @@
                 <div class="text-right m-t-xs">
                     <input ng-click="wizard.prev()" ng-disabled="step == 1" class="btn btn-default" type="button"
                            value="&nbsp;Previous&nbsp;"/>
-                    <input ng-click="wizard.next()" ng-disabled="step >= 5 && editForm.$invalid || isSaving || (purchaseOrder.poLines.length === 0 && step >= 3) || (purchaseOrder.pickUpParty.id === purchaseOrder.shipToParty.id && step >= 2)"
-                           ng-hide="step == 6"
-                           class="btn btn-primary" type="button" value="&nbsp;Next&nbsp;"/>
+                    <input ng-click="wizard.next()" ng-hide="step == 6" class="btn btn-primary" type="button" value="&nbsp;Next&nbsp;"
+                           ng-disabled="step >= 5 && editForm.$invalid || isSaving || (purchaseOrder.poLines.length === 0 && step >= 3)
+                                || (purchaseOrder.pickUpParty.id === purchaseOrder.shipToParty.id && step >= 2)
+                                || (purchaseOrder.poLines && purchaseOrder.poLines[0].materialType === 'DEDICATED' && (purchaseOrder.poLines[0].grossWeight === null || purchaseOrder.poLines[0].volume === null))"
+                           />
                     <button ng-click="submit()"
                             ng-show="step == 6 && !(purchaseOrder.id && purchaseOrder.state === 'PROCESSED') && (purchaseOrder.pickUpParty.id !== purchaseOrder.shipToParty.id)"
                             class="btn btn-primary"

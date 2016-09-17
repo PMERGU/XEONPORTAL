@@ -39,6 +39,24 @@ angular.module('portalApp').controller('PoLineDialogController',
                         {name: 'volume'}
                     ]);
                     break;
+                case "FULL_CONTAINER_LOAD":
+                case "FULL_TRUCK_LOAD":
+                case "CROSS_HAUL":
+                    hideOrShow([
+                        {name: 'materialNumber'},
+                        {name: 'orderQuantity', show: false, value: 1},
+                        {name: 'batchNumber'},
+                        {name: 'materialType', show: false, value: "DEDICATED"},
+                        {name: 'length'},
+                        {name: 'width'},
+                        {name: 'height'},
+                        {name: 'netWeight'},
+                        {name: 'dvType', show: false, value: IFTET($scope.poLine.dvType, 'VOLUME')},
+                        {name: 'grossWeight', show: true, value: IFTET($scope.poLine.grossWeight, '')},
+                        {name: 'volume', show: true, value: IFTET($scope.poLine.volume, "")}
+
+                    ]);
+                    break;
                 default:
                     hideOrShow([
                         {name: 'materialNumber'},

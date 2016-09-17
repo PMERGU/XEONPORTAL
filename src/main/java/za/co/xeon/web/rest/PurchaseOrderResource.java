@@ -18,6 +18,7 @@ import za.co.xeon.service.MailService;
 import za.co.xeon.service.MobileService;
 import za.co.xeon.service.PurchaseOrderService;
 import za.co.xeon.service.util.Pad;
+import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.OrderDetails;
 import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
 import za.co.xeon.web.rest.util.HeaderUtil;
@@ -170,11 +171,11 @@ public class PurchaseOrderResource {
             SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
                 purchaseOrder.getAccountReference(), safeEnum(purchaseOrder.getServiceType()), Pad.left(purchaseOrder.getUser().getCompany().getSapId(), 10),
                 purchaseOrder.getCollectionReference(), Pad.left(purchaseOrder.getPickUpParty().getSapId(), 10), safeEnum(purchaseOrder.getCargoType()), purchaseOrder.getCvConsol(),
-                purchaseOrder.getCvContainerNo(), safeDate(purchaseOrder.getDropOffDate()), safeEnum(purchaseOrder.getShipToType()),
+                purchaseOrder.getCvContainerNo(), safeDate(purchaseOrder.getDropOffDate()),
                 purchaseOrder.getCvDestination(), safeDate(purchaseOrder.getCvEta()), safeDate(purchaseOrder.getCvEtd()),
                 purchaseOrder.getUser().getFcSapId(), purchaseOrder.getCvHouseWaybill(), safeDate(purchaseOrder.getCvHouseWaybillIssue()),
                 convertItems(purchaseOrder, purchaseOrder.getPoLines()), safeEnum(purchaseOrder.getModeOfTransport()), purchaseOrder.getCvWaybill(), safeDate(purchaseOrder.getCvWaybillIssue()),
-                purchaseOrder.getSpecialInstruction(), purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeEnum(purchaseOrder.getPickUpType()), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
+                purchaseOrder.getSpecialInstruction(), purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
                 purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), imSerlvl, safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
                 purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
                 Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), imSpart,
@@ -328,7 +329,17 @@ public class PurchaseOrderResource {
 //        log.debug("new BigDecimal(line.getGrossWeight()) : {}",new BigDecimal(poLines.get(0).getGrossWeight()));
 //        log.debug("new BigDecimal(line.getNetWeight()) : {}",new BigDecimal(poLines.get(0).getNetWeight()));
         return poLines.stream().map(line -> new ImItemDetail(
-            line.getMaterialType().getSapCode(), new BigDecimal(line.getOrderQuantity()), null, savedPo.getPickUpParty().getArea().getPlant(),
+            (savedPo.getServiceType().equals(ServiceType.CROSS_HAUL) ||
+                    savedPo.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
+                    savedPo.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD)
+                    ? savedPo.getVehicleSize().getSapCode() : line.getMaterialType().getSapCode()),
+            new BigDecimal(line.getOrderQuantity()),
+            (savedPo.getServiceType().equals(ServiceType.CROSS_HAUL) ||
+            savedPo.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
+            savedPo.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD) ||
+            savedPo.getServiceType().equals(ServiceType.BREAKBULK_TRANSPORT)
+            ? "EA" : null),
+            savedPo.getPickUpParty().getArea().getPlant(),
             line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(),
             (line.getLength() == null ? null : new BigDecimal(line.getLength())),
             (line.getWidth() == null ? null : new BigDecimal(line.getWidth())),
@@ -538,17 +549,17 @@ public class PurchaseOrderResource {
     @Timed
     @Transactional(readOnly = true)
     public ResponseEntity<PurchaseOrder> getAllPurchaseOrdersByPoNumber(@PathVariable String poNumber, Pageable pageable) throws URISyntaxException {
-        log.debug("REST request to get getAllPurchaseOrdersByPoNumber by poNumber " + poNumber);
+        log.debug("[PO:{}] - REST request to get getAllPurchaseOrdersByPoNumber ", poNumber);
         PurchaseOrder purchaseOrder;
         if (SecurityUtils.isUserXeonOrAdmin()) {
             purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
         } else {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             if(SecurityUtils.isUserCustomerCSU()){
-                log.debug("Restricting getAllPurchaseOrdersByState lookup by company (CSU) " + user.getCompany().getName());
+                log.debug("[PO:{}] - Restricting getAllPurchaseOrdersByState lookup by company (CSU) " + user.getCompany().getName(), poNumber);
                 purchaseOrder = purchaseOrderRepository.findByUserId_CompanyAndPoNumber(user.getCompany(), poNumber);
             }else {
-                log.debug("Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin());
+                log.debug("[PO:{}] - Restricting getAllPurchaseOrdersByState lookup by username " + user.getLogin(), poNumber);
                 purchaseOrder = purchaseOrderRepository.findFirstByUserAndPoNumber(user, poNumber);
             }
         }
@@ -562,7 +573,7 @@ public class PurchaseOrderResource {
     @RequestMapping(value = "/purchaseOrders/{id}/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(@PathVariable Long id, @PathVariable(value="deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
-        log.debug("Service [GET] /purchaseOrders/{}/orders/{}", id, deliveryNo);
+        log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", id, deliveryNo);
         return () -> {
             List<GtCustOrdersDetail> sapOrders = null;
             PurchaseOrder purchaseOrder;
@@ -572,10 +583,10 @@ public class PurchaseOrderResource {
             if(purchaseOrder != null){
                 sapOrders = mobileService.getCustomerOrderDetails(deliveryNo, new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
                 if(sapOrders.isEmpty()) {
-                    log.debug("Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, deliveryNo);
+                    log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, deliveryNo);
                 }
             }else{
-                log.debug("Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]", id, deliveryNo, user.getCompany().getName());
+                log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]", id, deliveryNo, user.getCompany().getName());
             }
 
             return Optional.ofNullable(sapOrders)
@@ -586,6 +597,32 @@ public class PurchaseOrderResource {
         };
     }
 
+    @RequestMapping(value = "/purchaseOrders/{id}/huDetails/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Callable<ResponseEntity<HandlingUnitDetails>> getHuDetails(@PathVariable Long id, @PathVariable(value="deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
+        log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", id, id, deliveryNo);
+        return () -> {
+            HandlingUnitDetails hud = null;
+            PurchaseOrder purchaseOrder;
+            purchaseOrder = purchaseOrderRepository.findOne(id);
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+
+            if(purchaseOrder != null){
+                hud = mobileService.getHandlingUnitDetails(deliveryNo);
+                if(hud.getHuheader().isEmpty()) {
+                    log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, id, deliveryNo);
+                }
+            }else{
+                log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]", id, id, deliveryNo, user.getCompany().getName());
+            }
+
+            return Optional.ofNullable(hud)
+                .map(result -> new ResponseEntity<>(
+                    result,
+                    HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        };
+    }
 
     /**
      * GET  /poLines -> get all the poLines.
@@ -596,7 +633,7 @@ public class PurchaseOrderResource {
     @Timed
     public ResponseEntity<List<PoLine>> getAllPoLines(@PathVariable Long id, Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to get a page of PoLines");
+        log.debug("[PO:{}] - REST request to get a page of PoLines", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
         if (!(SecurityUtils.isUserXeonOrAdmin())) {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
@@ -618,7 +655,7 @@ public class PurchaseOrderResource {
     @Timed
     public ResponseEntity<List<Comment>> getAllPoComments(@PathVariable Long id, Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to get a page of comments");
+        log.debug("[PO:{}] - REST request to get a page of comments", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
         Page<Comment> page = null;
         if (!(SecurityUtils.isUserXeonOrAdmin())) {
@@ -636,7 +673,7 @@ public class PurchaseOrderResource {
     @RequestMapping(value = "/purchaseOrders/{id}/all/attachments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<Attachment>> getAllPoAttachments(@PathVariable Long id, Pageable pageable) throws URISyntaxException {
-        log.debug("REST request to get a page of attachments");
+        log.debug("[PO:{}] - REST request to get a page of attachments", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
         Page<Attachment> page = attachmentRepository.findByPurchaseOrder(purchaseOrder, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/purchaseOrders/" + id + "/all/attachments");
@@ -651,7 +688,7 @@ public class PurchaseOrderResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable Long id) {
-        log.debug("REST request to get PurchaseOrder : {}", id);
+        log.debug("[PO:{}] - REST request to get PurchaseOrder");
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
         if (!(SecurityUtils.isUserXeonOrAdmin())) {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
@@ -674,9 +711,9 @@ public class PurchaseOrderResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> deletePurchaseOrder(@PathVariable Long id) {
-        log.debug("REST request to delete PurchaseOrder : {}", id);
+        log.debug("[PO:{}] - REST request to delete PurchaseOrder", id);
         PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
-        log.debug("PO state " + purchaseOrder.getState());
+        log.debug("[PO:{}] - PO state {}", id, purchaseOrder.getState());
 
         if (!(SecurityUtils.isUserXeonOrAdmin())) {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();

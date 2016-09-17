@@ -63,6 +63,12 @@ angular.module('portalApp')
                     }],
                     comments: ['$stateParams', 'Comment', '$q', 'PurchaseOrder', function ($stateParams, Comment, $q, PurchaseOrder) {
                         return PurchaseOrder.getComments({id: $stateParams.poId});
+                    }],
+                    huDetails: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
+                        return PurchaseOrder.getHUDetails({id: $stateParams.poId, deliveryNo: $stateParams.deliveryNo});
+                    }],
+                    currentUser: ['$stateParams', 'Principal', function($stateParams, Principal) {
+                        return Principal.identity();
                     }]
                 }
             })

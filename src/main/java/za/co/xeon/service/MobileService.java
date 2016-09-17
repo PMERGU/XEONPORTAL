@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.*;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.web.rest.AttachmentResource;
+import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
@@ -119,6 +120,10 @@ public class MobileService {
 
     public List<Hunumbers> getHandlingUnits(String barcode) throws Exception{
         return hiberSapService.getHandelingUnits(barcode).getHunumbers();
+    }
+
+    public HandlingUnitDetails getHandlingUnitDetails(String barcode) throws Exception{
+        return hiberSapService.getHandlingUnitDetails(barcode);
     }
 
     @Async

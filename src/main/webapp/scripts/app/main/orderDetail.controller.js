@@ -2,10 +2,10 @@
 
 angular.module('portalApp')
     .controller('MainOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal, PurchaseOrder, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, Attachment, Comment,
-                                                       purchaseOrder, order, deliveryNo, orderStep, delAttachments, poAttachments, comments) {
+                                                       purchaseOrder, order, deliveryNo, orderStep, delAttachments, poAttachments, comments, huDetails, currentUser) {
         $scope.purchaseOrder = purchaseOrder;
         $scope.deliveryNo = deliveryNo;
-
+        $scope.isXeon = currentUser.company.type === "XEON";
         $scope.orderResolved = false;
         $scope.attachments = [];
 
@@ -39,6 +39,7 @@ angular.module('portalApp')
                 }
             }
         });
+        $scope.huDetails = huDetails;
         $scope.comments = comments;
         $scope.comment = {
             id: null,

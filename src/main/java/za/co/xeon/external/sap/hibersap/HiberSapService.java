@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.*;
 import za.co.xeon.service.util.Pad;
+import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
@@ -109,6 +110,22 @@ public class HiberSapService {
                 hunumbers.setHuExid(Long.valueOf(hunumbers.getHuExid()).toString())
             );
             return rfc;
+        }catch(Exception e){
+            log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
+            throw e;
+        }finally {
+            session.close();
+        }
+    }
+
+    public HandlingUnitDetails getHandlingUnitDetails(String barcode){
+        barcode = Pad.left(barcode, 10);
+        Session session = sessionManager.openSession();
+        try {
+            HandlingUnitsRFC rfc = new HandlingUnitsRFC(barcode);
+            session.execute(rfc);
+            HandlingUnitDetails hud = new HandlingUnitDetails(rfc.getHuheader(), rfc.getHuitem(), rfc.getHunumbers());
+            return hud;
         }catch(Exception e){
             log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
             throw e;

@@ -43,11 +43,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     labourRequired: null,
                     //STEP 2
                     pickUpParty:  null,
-                    pickUpType: "STANDARD",
                     collectionDate: new Date(),
                     collectionReference: '',
                     shipToParty: null,
-                    shipToType: "HOME_DROPBOX",
                     dropOffDate: new Date(),
 
                     //STEP 3
@@ -164,6 +162,8 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.$watch('purchaseOrder.serviceType', serviceTypeWatch);
             function serviceTypeWatch(value){
                 $log.debug("watch serviceType triggered with value : " + value);
+                $scope.purchaseOrder.poLines = [];
+                $scope.purchaseOrder.poLines.length = 0;
                 switch (value){
                     case "INBOUND":
                         forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true} ]);
@@ -171,6 +171,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'serviceLevel', values: ["ECONOMY","EXPRESS","CUSTOMER_DROP_OFF"], defaultValue: "ECONOMY"},
                             {name: 'modeOfTransport', values: ["ROAD"], defaultValue: "ROAD"}
                         ]);
+                        hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
                         break;
                     case "OUTBOUND":
                         forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true} ]);
@@ -178,6 +179,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'serviceLevel', values: ["ECONOMY","EXPRESS","CUSTOMER_COLLECTION"], defaultValue: "ECONOMY"},
                             {name: 'modeOfTransport', values: ["ROAD"], defaultValue: "ROAD"}
                         ]);
+                        hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
                         break;
                     case "BREAKBULK_TRANSPORT":
                         forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
@@ -185,27 +187,46 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'serviceLevel', values: ["ECONOMY","ECONOMY_PLUS","EXPRESS","OVERNIGHT_EXPRESS"], defaultValue: "ECONOMY_PLUS"},
                             {name: 'modeOfTransport', values: ["AIR","ROAD","SEA"], defaultValue: "ROAD"}
                         ]);
+                        hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
                         break;
                     case "FULL_CONTAINER_LOAD":
                         forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
                         limitSelect([
                             {name: 'serviceLevel', values: ["ECONOMY","EXPRESS"], defaultValue: "ECONOMY"},
-                            {name: 'modeOfTransport', values: ["ROAD_FCL","SEA_FCL"], defaultValue: "ROAD_FCL"}
+                            {name: 'modeOfTransport', values: ["ROAD_FCL","SEA_FCL"], defaultValue: "ROAD_FCL"},
+                            {name: 'vehicleSize', values: ["LIGHT_CONTAINER_6m","HEAVY_CONTAINER_6m","EXTRA_HEAVY_CONTAINER_6m","LIGHT_CONTAINER_12m","HEAVY_CONTAINER_12m"], defaultValue: "LIGHT_CONTAINER_6m"}
                         ]);
+                        hideOrShow([
+                            {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'LIGHT_CONTAINER_6m')},
+                            {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
+                        ]);
+                        addTruckCargoToPoLines();
                         break;
                     case "FULL_TRUCK_LOAD":
                         forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
                         limitSelect([
                             {name: 'serviceLevel', values: ["STANDARD_FTL"], defaultValue: "STANDARD_FTL"},
-                            {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_FTL"], defaultValue: "ALL_MODES_OF_TRANSPORT_FTL"}
+                            {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_FTL"], defaultValue: "ALL_MODES_OF_TRANSPORT_FTL"},
+                            {name: 'vehicleSize', values: ["TRUCK_1_TON","TRUCK_1__5_TON","FULL_TRUCK_6m","FULL_TRUCK_12m","FULL_TRUCK_18m","FULL_TRUCK_4_TON","FULL_TRUCK_5_TON","FULL_TRUCK_8_TON"], defaultValue: "FULL_TRUCK_6m"}
                         ]);
+                        hideOrShow([
+                            {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'FULL_TRUCK_6m')},
+                            {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
+                        ]);
+                        addTruckCargoToPoLines();
                         break;
                     case "CROSS_HAUL":
                         forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
                         limitSelect([
                             {name: 'serviceLevel', values: ["STANDARD_CROSS_DOCK"], defaultValue: "STANDARD_CROSS_DOCK"},
-                            {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_CH"], defaultValue: "ALL_MODES_OF_TRANSPORT_CH"}
+                            {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_CH"], defaultValue: "ALL_MODES_OF_TRANSPORT_CH"},
+                            {name: 'vehicleSize', values: ["LIGHT_CONTAINER_6m","HEAVY_CONTAINER_6m","EXTRA_HEAVY_CONTAINER_6m","LIGHT_CONTAINER_12m","HEAVY_CONTAINER_12m"], defaultValue: "LIGHT_CONTAINER_6m"}
                         ]);
+                        hideOrShow([
+                            {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'LIGHT_CONTAINER_6m')},
+                            {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
+                        ]);
+                        addTruckCargoToPoLines();
                         break;
                 }
 
@@ -213,27 +234,40 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 // serviceLevelWatch(IFTET($scope.purchaseOrder.serviceLevel, 'ECONOMY'));
             };
 
-            $scope.$watch('purchaseOrder.serviceLevel', serviceLevelWatch);
-            function serviceLevelWatch(value){
-                $log.debug("watch serviceLevel triggered with value : " + value);
-                switch (value){
-                    // case 'ECONOMY':
-                    // case 'EXPRESS':
-                    //     if($scope.purchaseOrder.serviceType !== 'FULL_CONTAINER_LOAD'){
-                    //         break;
-                    //     }
-                    case 'STANDARD_CROSS_DOCK':
-                    case 'STANDARD_FTL':
-                        hideOrShow([
-                            {name: 'vehicleSize', show: true, value: IFTET($scope.purchaseOrder.vehicleSize, 'FOUR_TON')},
-                            {name: 'labourRequired', show: true, value:IFTET($scope.purchaseOrder.labourRequired, '1')}
-                        ]);
-                        break;
-                    default:
-                        hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
-                        break;
-                }
-            };
+            function addTruckCargoToPoLines(){
+                poLineUpdateBroadcastFunction(null, {
+                    orderQuantity:1,
+                    dvType:"VOLUME",
+                    height:null,
+                    length:null,
+                    width:null,
+                    materialNumber:"",
+                    materialType:"DEDICATED",
+                    grossWeight:null,
+                    netWeight:null,
+                    unitOfMeasure:null,
+                    volume:null,
+                    warehouse:null
+                });
+            }
+
+            // $scope.$watch('purchaseOrder.serviceLevel', serviceLevelWatch);
+            // function serviceLevelWatch(value){
+            //     $log.debug("watch serviceLevel triggered with value : " + value);
+            //     switch (value){
+            //         // case 'ECONOMY':
+            //         // case 'EXPRESS':
+            //         //     if($scope.purchaseOrder.serviceType !== 'FULL_CONTAINER_LOAD'){
+            //         //         break;
+            //         //     }
+            //         case 'STANDARD_CROSS_DOCK':
+            //         case 'STANDARD_FTL':
+            //             break;
+            //         default:
+            //             hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
+            //             break;
+            //     }
+            // };
 
             $scope.$watch('purchaseOrder.modeOfTransport', modeOfTransportWatch);
             function modeOfTransportWatch(value){
@@ -313,10 +347,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                 show: true,
                                 value: IFTET($scope.purchaseOrder.pickUpParty, {id: 1})
                             },
-                            {name: 'pickUpType',
-                                show: serviceType !== "OUTBOUND",
-                                value: IFTET($scope.purchaseOrder.pickUpType, 'STANDARD')
-                            },
                             {name: 'collectionDate',
                                 show: serviceType !== "OUTBOUND",
                                 value: IFTET(new Date($scope.purchaseOrder.collectionDate))
@@ -329,10 +359,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                 show:  true,
                                 value: IFTET($scope.purchaseOrder.shipToParty, {id: 1})
                             },
-                            {name: 'shipToType',
-                                show: serviceType !== "INBOUND",
-                                value: IFTET($scope.purchaseOrder.shipToType, 'STANDARD')
-                            },
                             {name: 'dropOffDate',
                                 show: serviceType !== "INBOUND",
                                 value: IFTET(new Date($scope.purchaseOrder.dropOffDate))
@@ -344,7 +370,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
                             {name: 'pickUpType'},
                             {name: 'collectionDate'},
                             {name: 'collectionReference'},
-                            {name: 'shipToType'},
                             {name: 'dropOffDate', show: true, value: IFTET(new Date($scope.purchaseOrder.dropOffDate), new Date())}
                         ]);
                         break;
@@ -355,7 +380,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $log.debug("watch cargoClassification triggered with value : " + value);
                 switch (value){
                     case "HAZARDOUS":
-                        hideOrShow([{name: 'cargoType', show: true, value: IFTET($scope.purchaseOrder.shipToType, 'CORROSIVES')}]);
+                        hideOrShow([{name: 'cargoType', show: true, value: IFTET($scope.purchaseOrder.cargoType, 'CORROSIVES')}]);
                         break;
                     case "NON_HAZARDOUS":
                     default:
@@ -515,7 +540,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                 onSaveSuccess(result);
                             }
                         },
-                        onSaveError(result)
+                        onSaveError
                     );
                 }
             };
@@ -587,8 +612,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $log.debug("clearning previous registered poLineUpdateBroadcast event");
                 $rootScope.poLineUpdateBroadcast();
             }
-            // listen for poLine add event
-            $rootScope.poLineUpdateBroadcast = $rootScope.$on('portalApp:poLineUpdate', function (event, poLine) {
+
+            $rootScope.poLineUpdateBroadcast = $rootScope.$on('portalApp:poLineUpdate', poLineUpdateBroadcastFunction);
+            function poLineUpdateBroadcastFunction (event, poLine) {
                 $log.debug("current row id : " + poLine.rowId);
                 if(poLine.rowId === null || poLine.rowId === undefined || $scope.purchaseOrder.poLines.length == 0) {
                     poLine.rowId = $scope.purchaseOrder.poLines.length+1;
@@ -603,7 +629,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     });
                 }
                 calculateTotals($scope.purchaseOrder.poLines);
-            });
+            };
 
             if($rootScope.partyUpdateBroadcast != undefined){
                 $log.debug("clearning previous registered partyUpdateBroadcast event");
