@@ -401,17 +401,24 @@
                             <div class="row">
                                 <div class="table-responsive m-t">
                                     <table class="table table-striped">
-                                        <thead>
-                                        <tr ng-show="purchaseOrder.poLines !== undefined && purchaseOrder.poLines[0].materialType === 'DEDICATED'">
+                                        <thead >
+                                        <tr ng-show="purchaseOrder.service === 'WAREHOUSING'">
+                                            <th>No</th>
+                                            <th>Material Number</th>
+                                            <th>Batch No</th>
+                                            <th>Unit of Measure</th>
+                                            <th>Quantity</th>
+                                            <th></th>
+                                        </tr>
+                                        <tr ng-show="purchaseOrder.service === 'TRANSPORT' && (purchaseOrder.poLines !== undefined && purchaseOrder.poLines[0].materialType === 'DEDICATED')">
                                             <th>No</th>
                                             <th>Gross Weight</th>
                                             <th>Volume</th>
                                             <th></th>
                                         </tr>
-                                        <tr ng-show="!purchaseOrder.poLines || purchaseOrder.poLines[0].materialType !== 'DEDICATED'">
+                                        <tr ng-show="purchaseOrder.service === 'TRANSPORT' && (!purchaseOrder.poLines || purchaseOrder.poLines[0].materialType !== 'DEDICATED')">
                                             <th>No</th>
                                             <th>Material Type</th>
-                                            <th>material Number</th>
                                             <th>Gross Weight</th>
                                             <th>DV Type</th>
                                             <th>Volume</th>
@@ -423,24 +430,21 @@
                                         <tr ng-repeat="po in purchaseOrder.poLines">
                                             <td>{{$index+1}}</td>
                                             <td ng-hide="po.materialType === 'DEDICATED'">
-                                                <div><strong>{{ po.materialType }}</strong></div>
+                                                <div>
+                                                    <strong ng-hide="purchaseOrder.service === 'WAREHOUSING'">{{ po.materialType }}</strong>
+                                                    <strong ng-show="purchaseOrder.service === 'WAREHOUSING'">{{ po.materialNumber }}</strong>
+                                                </div>
                                             </td>
-                                            <td ng-hide="po.materialType === 'DEDICATED'">
-                                                <div>{{ po.materialNumber }}&nbsp;</div>
-                                                <small>
-                                                    <b class="pull-right" style="margin-top: 2px;">Totals </b>
-                                                </small>
-                                            </td>
-                                            <td>
+                                            <td ng-hide="purchaseOrder.service === 'WAREHOUSING'">
                                                 <div>{{ po.grossWeight}}kg</div>
                                                 <small>
                                                     <b>{{ po.grossWeight * po.orderQuantity }}</b>kg
                                                 </small>
                                             </td>
-                                            <td ng-hide="po.materialType === 'DEDICATED'">
+                                            <td ng-hide="po.materialType === 'DEDICATED' && purchaseOrder.service === 'WAREHOUSING'">
                                                 {{ po.dvType }}
                                             </td>
-                                            <td ng-show="po.dvType === null || po.dvType === 'DIMENSIONS'">
+                                            <td ng-show="(po.dvType === null || po.dvType === 'DIMENSIONS') && purchaseOrder.service !== 'WAREHOUSING'">
                                                 <div>{{ po.height * po.length * po.width / 1000000 |
                                                     number:2}}m&sup3;</div>
                                                 <small>

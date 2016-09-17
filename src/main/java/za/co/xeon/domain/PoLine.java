@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import za.co.xeon.domain.enumeration.DVType;
 import za.co.xeon.domain.enumeration.MaterialType;
 import za.co.xeon.domain.enumeration.PoState;
+import za.co.xeon.domain.enumeration.UnitOfMeasure;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -57,6 +58,10 @@ public class PoLine implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "material_type")
     private MaterialType materialType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "unit_of_measure")
+    private UnitOfMeasure unitOfMeasure;
 
     @ManyToOne
     @JoinColumn(name = "purchase_order_id")
@@ -181,6 +186,14 @@ public class PoLine implements Serializable {
         this.dvType = dvType;
     }
 
+    public UnitOfMeasure getUnitOfMeasure() {
+        return unitOfMeasure;
+    }
+
+    public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
+        this.unitOfMeasure = unitOfMeasure;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -214,6 +227,8 @@ public class PoLine implements Serializable {
             ", grossWeight='" + grossWeight + "'" +
             ", netWeight='" + netWeight + "'" +
             ", batchNumber='" + batchNumber + "'" +
+            ", dvType='" + dvType + "'" +
+            ", unitOfMeasure='" + unitOfMeasure + "'" +
             '}';
     }
 }

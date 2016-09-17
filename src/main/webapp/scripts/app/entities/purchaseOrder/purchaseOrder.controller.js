@@ -465,11 +465,11 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 if(percentage === 100) {
                     sweet.show({
                         timer: 4000,
-                        title: 'PO created and attachments uploaded',
+                        title: 'PO created successfully',
                         text: ''
                         + '<div class="m" ng-show="uploadingAttachments">'
                         + '    <div class="progress m-t-xs full progress-striped active animated">'
-                        + '        <div style="width: ' + percentage + '%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" role="progressbar" class="progress-bar progress-bar-success animated">'
+                        + '        <div style="width: ' + percentage + '%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="' + percentage + '" role="progressbar" class="progress-bar progress-bar-success animated">'
                         + '        </div>'
                         + '    </div>'
                         + '</div>',
@@ -482,7 +482,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         text: ''
                         + '<div class="m" ng-show="uploadingAttachments">'
                         + '    <div class="progress m-t-xs full progress-striped active animated">'
-                        + '        <div style="width: ' + percentage + '%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" role="progressbar" class="progress-bar progress-bar-success animated">'
+                        + '        <div style="width: ' + percentage + '%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="' + percentage + '" role="progressbar" class="progress-bar progress-bar-success animated">'
                         + '        </div>'
                         + '    </div>'
                         + '</div>',
@@ -500,8 +500,27 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 if ($scope.purchaseOrder.id != null) {
                     PurchaseOrder.update($scope.purchaseOrder, onSaveSuccess, onSaveError);
                 } else {
+                    var createProgress = 10;
+                    var createProgressInterval = $interval(function(){
+
+                        sweet.show({
+                            title: 'Creating PO....please be patient.',
+                            text: ''
+                            + '<div class="m">'
+                            + '    <div class="progress m-t-xs full progress-striped active animated">'
+                            + '        <div style="width: ' + createProgress + '%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="' + createProgress + '" role="progressbar" class="progress-bar progress-bar-success animated">'
+                            + '        </div>'
+                            + '    </div>'
+                            + '</div>',
+                            html: true,
+                            showConfirmButton: false
+                        });
+                        createProgress = createProgress + 1;
+                    }, 800);
+
                     PurchaseOrder.save($scope.purchaseOrder,
                         function (result) {
+                            $interval.cancel(createProgressInterval);
                             $log.debug("Result of saving : ");
                             $log.debug(result);
                             $log.debug("Now gonna try and save the attachments");

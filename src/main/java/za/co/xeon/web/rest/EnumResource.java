@@ -28,6 +28,7 @@ public class EnumResource {
         enums.put("tradeTypes", Arrays.asList(TradeType.values()));
         enums.put("vehicleSizes", Arrays.asList(VehicleSize.values()));
         enums.put("modeOfTransports", Arrays.asList(ModeOfTransport.values()));
+        enums.put("unitOfMeasures", Arrays.asList(UnitOfMeasure.values()));
         return enums;
     }
 

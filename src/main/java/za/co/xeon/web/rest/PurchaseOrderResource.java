@@ -93,173 +93,180 @@ public class PurchaseOrderResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PurchaseOrder> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
+    public Callable<ResponseEntity<PurchaseOrder>> createPurchaseOrder(@Valid @RequestBody PurchaseOrder purchaseOrder, HttpServletRequest request) throws URISyntaxException {
         log.debug("[PO:{}] - =============================================== create PO ===================================================", purchaseOrder.getPoNumber());
         log.debug("[PO:{}] - REST request to save PurchaseOrder", purchaseOrder.getPoNumber());
-        //validations
-        purchaseOrder.setPoNumber(purchaseOrder.getPoNumber().trim().toUpperCase());
-        if (purchaseOrder.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("purchaseOrder", "id", "A new purchaseOrder cannot already have an ID")).body(null);
-        }
-
-        //captured by logic
-        User user;
-        User capturedBy = null; //when a xeon user captures a order on behalf of a customer
-        if (SecurityUtils.isUserCustomer()) {
-            user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        } else {
-            log.debug("[PO:{}] - Capturing as user {}", purchaseOrder.getPoNumber(), purchaseOrder.getUser());
-            user = userRepository.findOneByLogin(purchaseOrder.getUser().getLogin()).get();
-            capturedBy = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-            log.debug("[PO:{}] - PO captured by {} against customer {}", purchaseOrder.getPoNumber(), capturedBy.getLogin(), user.getLogin());
-            purchaseOrder.setCapturedBy(capturedBy);
-        }
-
-        //logic
-        purchaseOrder.setCaptureDate(ZonedDateTime.now());
-        purchaseOrder.setUser(user);
-
-        if (purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null) {
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("purchaseOrder", "poNumber",
-                    String.format("A PO with the number #%s already exists in the system. Please double check poNumber or double check the dashboard", purchaseOrder.getPoNumber())))
-                .body(purchaseOrder);
-        }
-
-
-        //set PO as parent to PO.poLines
-        purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
-        log.debug("[PO:{}] -  purchaseOrder.getPoLines().size() : {}", purchaseOrder.getPoNumber(), purchaseOrder.getPoLines().size());
-        log.debug(purchaseOrder.getPoLines().toString());
-
-        try {
-            log.debug(purchaseOrder.toStringFull());
-
-            if(purchaseOrder.getPickUpParty() != null) purchaseOrder.setPickUpParty(partyRepository.findOne(purchaseOrder.getPickUpParty().getId()));
-            if(purchaseOrder.getShipToParty() != null) purchaseOrder.setShipToParty(partyRepository.findOne(purchaseOrder.getShipToParty().getId()));
-            if(purchaseOrder.getSoldToParty() != null) purchaseOrder.setSoldToParty(partyRepository.findOne(purchaseOrder.getSoldToParty().getId()));
-
-            String imVkorg = "3000";
-            String imVtweg = null;
-            String imSpart = null;
-            String imSerlvl = "L1";
-            switch (purchaseOrder.getServiceType()){
-                case INBOUND:
-                    imVtweg = "M1";
-                    imSpart = "13";
-                    break;
-                case OUTBOUND:
-                    imVtweg = "M1";
-                    imSpart = "13";
-                    break;
-                case CROSS_HAUL:
-                case FULL_CONTAINER_LOAD:
-                case FULL_TRUCK_LOAD:
-                    imVtweg = "L1";
-                    imSpart = "L1";
-                    break;
-                case BREAKBULK_TRANSPORT:
-                    imVtweg = "L1";
-                    imSpart = "L1";
-                    imSerlvl = determineSerlvlSapType(purchaseOrder).getSapCode();
-                    break;
-                default:
-                    throw new RuntimeException("Need to map new service type here");
+        return () -> {
+            //validations
+            purchaseOrder.setPoNumber(purchaseOrder.getPoNumber().trim().toUpperCase());
+            if (purchaseOrder.getId() != null) {
+                return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("purchaseOrder", "id", "A new purchaseOrder cannot already have an ID")).body(null);
             }
-            Party pup = purchaseOrder.getPickUpParty();
-            Party stp = purchaseOrder.getShipToParty();
-            SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
-                purchaseOrder.getAccountReference(), safeEnum(purchaseOrder.getServiceType()), Pad.left(purchaseOrder.getUser().getCompany().getSapId(), 10),
-                purchaseOrder.getCollectionReference(), Pad.left(purchaseOrder.getPickUpParty().getSapId(), 10), safeEnum(purchaseOrder.getCargoType()), purchaseOrder.getCvConsol(),
-                purchaseOrder.getCvContainerNo(), safeDate(purchaseOrder.getDropOffDate()),
-                purchaseOrder.getCvDestination(), safeDate(purchaseOrder.getCvEta()), safeDate(purchaseOrder.getCvEtd()),
-                purchaseOrder.getUser().getFcSapId(), purchaseOrder.getCvHouseWaybill(), safeDate(purchaseOrder.getCvHouseWaybillIssue()),
-                convertItems(purchaseOrder, purchaseOrder.getPoLines()), safeEnum(purchaseOrder.getModeOfTransport()), purchaseOrder.getCvWaybill(), safeDate(purchaseOrder.getCvWaybillIssue()),
-                purchaseOrder.getSpecialInstruction(), purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
-                purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), imSerlvl, safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
-                purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
-                Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), imSpart,
-                (purchaseOrder.getTradeType().equals(TradeType.DOMESTIC)? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.EXPORT)? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.IMPORT)? "1" : ""),
-                purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg,
-                pup.getSapId().equals("100000") ? new ImOtcAdrCol(pup.getName(),pup.getName(),pup.getReference(),pup.getStreetName(),
-                    pup.getArea().getCity(), pup.getArea().getSuburb(),pup.getArea().getProvince(),pup.getArea().getTrafficZone(),
-                    pup.getArea().getCountry(),pup.getArea().getPostalCode().toString(),pup.getArea().getPostalCode().toString(),
-                    pup.getArea().getCity(),"","") : null,
-                pup.getSapId().equals("100000") ? new ImOtcAdrShpto(stp.getName(),stp.getName(),stp.getReference(),stp.getStreetName(),
-                    stp.getArea().getCity(), stp.getArea().getSuburb(),stp.getArea().getProvince(),stp.getArea().getTrafficZone(),
-                    stp.getArea().getCountry(),stp.getArea().getPostalCode().toString(),stp.getArea().getPostalCode().toString(),
-                    stp.getArea().getCity(),"","") : null
-            );
-            log.debug(rfc.toStringFull());
-            User whoDidIt = (capturedBy == null ? user : capturedBy);
-            log.debug("[PO:{}] -  whoDidIt : {}", purchaseOrder.getPoNumber(), whoDidIt);
+
+            //captured by logic
+            User user;
+            User capturedBy = null; //when a xeon user captures a order on behalf of a customer
+            if (SecurityUtils.isUserCustomer()) {
+                user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            } else {
+                log.debug("[PO:{}] - Capturing as user {}", purchaseOrder.getPoNumber(), purchaseOrder.getUser());
+                user = userRepository.findOneByLogin(purchaseOrder.getUser().getLogin()).get();
+                capturedBy = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+                log.debug("[PO:{}] - PO captured by {} against customer {}", purchaseOrder.getPoNumber(), capturedBy.getLogin(), user.getLogin());
+                purchaseOrder.setCapturedBy(capturedBy);
+            }
+
+            //logic
+            purchaseOrder.setCaptureDate(ZonedDateTime.now());
+            purchaseOrder.setUser(user);
+
+            if (purchaseOrderRepository.findFirstByPoNumber(purchaseOrder.getPoNumber()) != null) {
+                    return ResponseEntity.badRequest()
+                        .headers(HeaderUtil.createFailureAlert("purchaseOrder", "poNumber",
+                            String.format("A PO with the number #%s already exists in the system. Please double check poNumber or double check the dashboard", purchaseOrder.getPoNumber())))
+                        .body(purchaseOrder);
+            }
+
+
+            //set PO as parent to PO.poLines
+            purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
+            log.debug("[PO:{}] -  purchaseOrder.getPoLines().size() : {}", purchaseOrder.getPoNumber(), purchaseOrder.getPoLines().size());
+            log.debug(purchaseOrder.getPoLines().toString());
+
+
             try {
-                purchaseOrder.setState(PoState.PROCESSED);
-                SalesOrderCreatedDTO so = hiberSapService.createSalesOrder(purchaseOrder.getPoNumber(), rfc);
-                purchaseOrder.setSoNumber(so.getSoNumber());
-                PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
-                log.debug("[PO:{}] -  PO saved as ID : {} - SO created as ID : {}", purchaseOrder.getPoNumber(), savedPo.getId(), savedPo.getSoNumber());
-                if (whoDidIt.getId() != user.getId()) {
-                    log.debug("[PO:{}] -  whoDidIt [1]", purchaseOrder.getPoNumber());
-                    mailService.sendCSUMail(whoDidIt,
-                        String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
-                        String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s and SAP SO auto created as %s.",
-                            savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
-                        , null, null, getBaseUrl(request));
-                } else {
-                    log.debug("[PO:{}] -  whoDidIt [2]", purchaseOrder.getPoNumber());
-                    mailService.sendCSUMail(whoDidIt,
-                        String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
-                        String.format("A new Purchase Order #%s has been created by controller %s %s for client %s and SAP SO auto created as %s.",
-                            savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
-                        , null, null, getBaseUrl(request));
+                log.debug(purchaseOrder.toStringFull());
+
+                if (purchaseOrder.getPickUpParty() != null)
+                    purchaseOrder.setPickUpParty(partyRepository.findOne(purchaseOrder.getPickUpParty().getId()));
+                if (purchaseOrder.getShipToParty() != null)
+                    purchaseOrder.setShipToParty(partyRepository.findOne(purchaseOrder.getShipToParty().getId()));
+                if (purchaseOrder.getSoldToParty() != null)
+                    purchaseOrder.setSoldToParty(partyRepository.findOne(purchaseOrder.getSoldToParty().getId()));
+
+                String imVkorg = "3000";
+                String imVtweg = null;
+                String imSpart = null;
+                String imSerlvl = "L1";
+                switch (purchaseOrder.getServiceType()) {
+                    case INBOUND:
+                        imVtweg = "M1";
+                        imSpart = "13";
+                        break;
+                    case OUTBOUND:
+                        imVtweg = "M1";
+                        imSpart = "13";
+                        break;
+                    case CROSS_HAUL:
+                    case FULL_CONTAINER_LOAD:
+                    case FULL_TRUCK_LOAD:
+                        imVtweg = "L1";
+                        imSpart = "L1";
+                        break;
+                    case BREAKBULK_TRANSPORT:
+                        imVtweg = "L1";
+                        imSpart = "L1";
+                        imSerlvl = determineSerlvlSapType(purchaseOrder).getSapCode();
+                        break;
+                    default:
+                        throw new RuntimeException("Need to map new service type here");
                 }
-                if (capturedBy != null) {
-                    mailService.sendPoProcessedMail(user, purchaseOrder, getBaseUrl(request), true);
+                Party pup = purchaseOrder.getPickUpParty();
+                Party stp = purchaseOrder.getShipToParty();
+
+                SalesOrderCreateRFC rfc = new SalesOrderCreateRFC(
+                    purchaseOrder.getAccountReference(), safeEnum(purchaseOrder.getServiceType()), Pad.left(purchaseOrder.getUser().getCompany().getSapId(), 10),
+                    purchaseOrder.getCollectionReference(), Pad.left(purchaseOrder.getPickUpParty().getSapId(), 10), safeEnum(purchaseOrder.getCargoType()), purchaseOrder.getCvConsol(),
+                    purchaseOrder.getCvContainerNo(), safeDate(purchaseOrder.getDropOffDate()),
+                    purchaseOrder.getCvDestination(), safeDate(purchaseOrder.getCvEta()), safeDate(purchaseOrder.getCvEtd()),
+                    purchaseOrder.getUser().getFcSapId(), purchaseOrder.getCvHouseWaybill(), safeDate(purchaseOrder.getCvHouseWaybillIssue()),
+                    convertItems(purchaseOrder, purchaseOrder.getPoLines()), safeEnum(purchaseOrder.getModeOfTransport()), purchaseOrder.getCvWaybill(), safeDate(purchaseOrder.getCvWaybillIssue()),
+                    purchaseOrder.getSpecialInstruction(), purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
+                    purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), imSerlvl, safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
+                    purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
+                    Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), imSpart,
+                    (purchaseOrder.getTradeType().equals(TradeType.DOMESTIC) ? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.EXPORT) ? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.IMPORT) ? "1" : ""),
+                    purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg,
+                    pup.getSapId().equals("100000") ? new ImOtcAdrCol(pup.getName(), pup.getName(), pup.getReference(), pup.getStreetName(),
+                        pup.getArea().getCity(), pup.getArea().getSuburb(), pup.getArea().getProvince(), pup.getArea().getTrafficZone(),
+                        pup.getArea().getCountry(), pup.getArea().getPostalCode().toString(), pup.getArea().getPostalCode().toString(),
+                        pup.getArea().getCity(), "", "") : null,
+                    pup.getSapId().equals("100000") ? new ImOtcAdrShpto(stp.getName(), stp.getName(), stp.getReference(), stp.getStreetName(),
+                        stp.getArea().getCity(), stp.getArea().getSuburb(), stp.getArea().getProvince(), stp.getArea().getTrafficZone(),
+                        stp.getArea().getCountry(), stp.getArea().getPostalCode().toString(), stp.getArea().getPostalCode().toString(),
+                        stp.getArea().getCity(), "", "") : null
+                );
+                log.debug(rfc.toStringFull());
+                User whoDidIt = (capturedBy == null ? user : capturedBy);
+                log.debug("[PO:{}] -  whoDidIt : {}", purchaseOrder.getPoNumber(), whoDidIt);
+                try {
+                    purchaseOrder.setState(PoState.PROCESSED);
+                    SalesOrderCreatedDTO so = hiberSapService.createSalesOrder(purchaseOrder.getPoNumber(), rfc);
+                    purchaseOrder.setSoNumber(so.getSoNumber());
+                    PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
+                    log.debug("[PO:{}] -  PO saved as ID : {} - SO created as ID : {}", purchaseOrder.getPoNumber(), savedPo.getId(), savedPo.getSoNumber());
+                    if (whoDidIt.getId() != user.getId()) {
+                        log.debug("[PO:{}] -  whoDidIt [1]", purchaseOrder.getPoNumber());
+                        mailService.sendCSUMail(whoDidIt,
+                            String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
+                            String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s and SAP SO auto created as %s.",
+                                savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
+                            , null, null, getBaseUrl(request));
+                    } else {
+                        log.debug("[PO:{}] -  whoDidIt [2]", purchaseOrder.getPoNumber());
+                        mailService.sendCSUMail(whoDidIt,
+                            String.format("Xeon Portal: New SO created for %s as %s", user.getCompany().getName(), so.getSoNumber()),
+                            String.format("A new Purchase Order #%s has been created by controller %s %s for client %s and SAP SO auto created as %s.",
+                                savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), so.getSoNumber())
+                            , null, null, getBaseUrl(request));
+                    }
+                    if (capturedBy != null) {
+                        mailService.sendPoProcessedMail(user, purchaseOrder, getBaseUrl(request), true);
+                    }
+                    return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
+                        .headers(HeaderUtil.createAlert(
+                            String.format("New purchase order [%s] created and sales order [%s] auto captured in SAP.", savedPo.getId(), savedPo.getSoNumber()),
+                            savedPo.getId().toString()
+                        )).body(savedPo);
+                } catch (DuplicatePoException dpe) {
+                    return ResponseEntity.badRequest()
+                        .headers(HeaderUtil.createFailureAlert("Duplicate po number " + purchaseOrder.getPoNumber() + ". Please retry with different PO number."))
+                        .body(null);
+                } catch (Exception e) {
+                    log.warn("Could not create SO in SAP, doing fallback and creating manual entry for CSU to capture.");
+                    purchaseOrder.setState(PoState.UNPROCESSED);
+                    PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
+                    if (whoDidIt.getId() != user.getId()) {
+                        log.debug("[PO:{}] -  whoDidIt [3]", purchaseOrder.getPoNumber());
+                        mailService.sendCSUMail(whoDidIt,
+                            String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
+                            String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s. Please action and capture in SAP as soon as possible. Failure : %s",
+                                savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), e.getMessage())
+                            , null, null, getBaseUrl(request));
+                    } else {
+                        log.debug("[PO:{}] -  whoDidIt [4]", purchaseOrder.getPoNumber());
+                        mailService.sendCSUMail(whoDidIt,
+                            String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
+                            String.format("A new Purchase Order #%s has been created by controller %s %s for client %s. Please action and capture in SAP as soon as possible. Failure : %s",
+                                savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), e.getMessage())
+                            , null, null, getBaseUrl(request));
+                    }
+                    return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
+                        .headers(HeaderUtil.createEntityCreationAlert("purchase order", savedPo.getId().toString()))
+                        .body(savedPo);
+
+                } finally {
+                    log.debug("[PO:{}] - ============================================= END create PO ==================================================", purchaseOrder.getPoNumber());
                 }
-                return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
-                    .headers(HeaderUtil.createAlert(
-                        String.format("New purchase order [%s] created and sales order [%s] auto captured in SAP.", savedPo.getId(), savedPo.getSoNumber()),
-                        savedPo.getId().toString()
-                    )).body(savedPo);
-            }catch (DuplicatePoException dpe){
+
+            } catch (Exception ex) {
+                log.error(ex.getMessage(), ex);
+                ex.printStackTrace();
                 return ResponseEntity.badRequest()
-                    .headers(HeaderUtil.createFailureAlert("Duplicate po number " + purchaseOrder.getPoNumber() + ". Please retry with different PO number."))
+                    .headers(HeaderUtil.createFailureAlert("Purchase order could not be saved: " + ex.getMessage()))
                     .body(null);
-            }catch (Exception e){
-                log.warn("Could not create SO in SAP, doing fallback and creating manual entry for CSU to capture.");
-                purchaseOrder.setState(PoState.UNPROCESSED);
-                PurchaseOrder savedPo = purchaseOrderService.save(purchaseOrder);
-                if (whoDidIt.getId() != user.getId()) {
-                    log.debug("[PO:{}] -  whoDidIt [3]", purchaseOrder.getPoNumber());
-                    mailService.sendCSUMail(whoDidIt,
-                        String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
-                        String.format("A new Purchase Order #%s has been created by %s %s for controller %s %s for client %s. Please action and capture in SAP as soon as possible. Failure : %s",
-                            savedPo.getPoNumber(), whoDidIt.getFirstName(), whoDidIt.getLastName(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), e.getMessage())
-                        , null, null, getBaseUrl(request));
-                } else {
-                    log.debug("[PO:{}] -  whoDidIt [4]", purchaseOrder.getPoNumber());
-                    mailService.sendCSUMail(whoDidIt,
-                        String.format("Xeon Portal: New PO created for %s", user.getCompany().getName()),
-                        String.format("A new Purchase Order #%s has been created by controller %s %s for client %s. Please action and capture in SAP as soon as possible. Failure : %s",
-                            savedPo.getPoNumber(), user.getFirstName(), user.getLastName(), user.getCompany().getName(), e.getMessage())
-                        , null, null, getBaseUrl(request));
-                }
-                return ResponseEntity.created(new URI("/api/purchaseOrders/" + savedPo.getId()))
-                    .headers(HeaderUtil.createEntityCreationAlert("purchase order", savedPo.getId().toString()))
-                    .body(savedPo);
-
-            }finally {
-                log.debug("[PO:{}] - ============================================= END create PO ==================================================", purchaseOrder.getPoNumber());
             }
-
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            ex.printStackTrace();
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("Purchase order could not be saved: " + ex.getMessage()))
-                .body(null);
-        }
+        };
     }
 
     private ShippingType determineSerlvlSapType(PurchaseOrder po) throws Exception {
@@ -318,27 +325,24 @@ public class PurchaseOrderResource {
     }
 
     private List<ImItemDetail> convertItems(PurchaseOrder savedPo, List<PoLine> poLines){
-//        log.debug("line.getMaterialType().getSapCode() : {}",poLines.get(0).getMaterialType().getSapCode());
-//        log.debug("line.getOrderQuantity() : {}",new BigDecimal(poLines.get(0).getOrderQuantity()));
-//        log.debug("savedPo.getPickUpParty().getArea().getPlant() : {}",savedPo.getPickUpParty().getArea().getPlant());
-//        log.debug("line.getBatchNumber() : {}",poLines.get(0).getBatchNumber());
-//        log.debug("savedPo.getPickUpParty().getArea().getPlant() : {}",savedPo.getPickUpParty().getArea().getPlant());
-//        log.debug("new BigDecimal(line.getLength()) : {}",new BigDecimal(poLines.get(0).getLength()));
-//        log.debug("new BigDecimal(line.getWidth()) : {}",new BigDecimal(poLines.get(0).getWidth()));
-//        log.debug("new BigDecimal(line.getLength()) : {}",new BigDecimal(poLines.get(0).getLength()));
-//        log.debug("new BigDecimal(line.getGrossWeight()) : {}",new BigDecimal(poLines.get(0).getGrossWeight()));
-//        log.debug("new BigDecimal(line.getNetWeight()) : {}",new BigDecimal(poLines.get(0).getNetWeight()));
         return poLines.stream().map(line -> new ImItemDetail(
             (savedPo.getServiceType().equals(ServiceType.CROSS_HAUL) ||
                     savedPo.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
                     savedPo.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD)
-                    ? savedPo.getVehicleSize().getSapCode() : line.getMaterialType().getSapCode()),
+                    ? savedPo.getVehicleSize().getSapCode() :
+                        (savedPo.getServiceType().equals(ServiceType.INBOUND) ||
+                            savedPo.getServiceType().equals(ServiceType.OUTBOUND)
+                        ? line.getMaterialNumber() : line.getMaterialType().getSapCode())),
             new BigDecimal(line.getOrderQuantity()),
             (savedPo.getServiceType().equals(ServiceType.CROSS_HAUL) ||
             savedPo.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
             savedPo.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD) ||
             savedPo.getServiceType().equals(ServiceType.BREAKBULK_TRANSPORT)
-            ? "EA" : null),
+            ? "EA" :
+                (savedPo.getServiceType().equals(ServiceType.INBOUND) ||
+                    savedPo.getServiceType().equals(ServiceType.OUTBOUND)
+                ? line.getUnitOfMeasure().getSapCode() : null)
+            ),
             savedPo.getPickUpParty().getArea().getPlant(),
             line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(),
             (line.getLength() == null ? null : new BigDecimal(line.getLength())),

@@ -57,5 +57,12 @@
         </update>
     </changeSet>
 
+    <changeSet author="derick" id="phase3_changeset_4">
+        <addColumn tableName="po_line">
+            <column name="unit_of_measure" type="varchar(30)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
 
+    </changeSet>
 </databaseChangeLog>
