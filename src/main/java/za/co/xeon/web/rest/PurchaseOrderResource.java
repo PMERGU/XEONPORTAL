@@ -586,32 +586,6 @@ public class PurchaseOrderResource {
         };
     }
 
-    @RequestMapping(value = "/purchaseOrders/{id}/huDetails/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public Callable<ResponseEntity<List<HandlingUnitsRFC>>> getPoOrder(@PathVariable Long id, @PathVariable(value="deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
-        log.debug("Service [GET] /purchaseOrders/{}/orders/{}", id, deliveryNo);
-        return () -> {
-            List<GtCustOrdersDetail> sapOrders = null;
-            PurchaseOrder purchaseOrder;
-            purchaseOrder = purchaseOrderRepository.findOne(id);
-            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-
-            if(purchaseOrder != null){
-                sapOrders = mobileService.getCustomerOrderDetails(deliveryNo, new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
-                if(sapOrders.isEmpty()) {
-                    log.debug("Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, deliveryNo);
-                }
-            }else{
-                log.debug("Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]", id, deliveryNo, user.getCompany().getName());
-            }
-
-            return Optional.ofNullable(sapOrders)
-                .map(result -> new ResponseEntity<>(
-                    result,
-                    HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-        };
-    }
 
     /**
      * GET  /poLines -> get all the poLines.
