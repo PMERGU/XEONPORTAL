@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.*;
-import za.co.xeon.external.sap.hibersap.errors.DuplicatePoException;
-import za.co.xeon.external.sap.hibersap.errors.InvalidModeOfTransportException;
 import za.co.xeon.external.sap.hibersap.errors.ValidSapException;
 import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
