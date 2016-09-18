@@ -4,22 +4,20 @@ import com.codahale.metrics.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import za.co.xeon.domain.*;
 import za.co.xeon.domain.enumeration.*;
-import za.co.xeon.external.sap.hibersap.DuplicatePoException;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.SalesOrderCreateRFC;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.dto.ImItemDetail;
 import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrCol;
 import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrShpto;
+import za.co.xeon.external.sap.hibersap.errors.ValidSapException;
 import za.co.xeon.repository.*;
-import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
 import za.co.xeon.service.MobileService;
 import za.co.xeon.service.PurchaseOrderService;
 import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
-import za.co.xeon.web.rest.dto.OrderDetails;
 import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
@@ -42,7 +40,6 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
@@ -181,7 +178,11 @@ public class PurchaseOrderResource {
                     purchaseOrder.getCvDestination(), safeDate(purchaseOrder.getCvEta()), safeDate(purchaseOrder.getCvEtd()),
                     purchaseOrder.getUser().getFcSapId(), purchaseOrder.getCvHouseWaybill(), safeDate(purchaseOrder.getCvHouseWaybillIssue()),
                     convertItems(purchaseOrder, purchaseOrder.getPoLines()), safeEnum(purchaseOrder.getModeOfTransport()), purchaseOrder.getCvWaybill(), safeDate(purchaseOrder.getCvWaybillIssue()),
-                    purchaseOrder.getSpecialInstruction(), purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
+                    (purchaseOrder.getServiceType().equals(ServiceType.CROSS_HAUL) ||
+                        purchaseOrder.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
+                        purchaseOrder.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD)
+                        ? purchaseOrder.getSpecialInstruction() + " - " + purchaseOrder.getLabourRequired() : purchaseOrder.getSpecialInstruction()),
+                    purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
                     purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), imSerlvl, safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
                     purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
                     Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), imSpart,
@@ -228,9 +229,9 @@ public class PurchaseOrderResource {
                             String.format("New purchase order [%s] created and sales order [%s] auto captured in SAP.", savedPo.getId(), savedPo.getSoNumber()),
                             savedPo.getId().toString()
                         )).body(savedPo);
-                } catch (DuplicatePoException dpe) {
+                } catch (ValidSapException dpe) {
                     return ResponseEntity.badRequest()
-                        .headers(HeaderUtil.createFailureAlert("Duplicate po number " + purchaseOrder.getPoNumber() + ". Please retry with different PO number."))
+                        .headers(HeaderUtil.createFailureAlert(String.format("%s - [Type:%s, Id:%s, Number:%s]:%s", dpe.getMessage(),dpe.getType(),dpe.getId(),dpe.getNumber(),dpe.getSapMessage())))
                         .body(null);
                 } catch (Exception e) {
                     log.warn("Could not create SO in SAP, doing fallback and creating manual entry for CSU to capture.");
@@ -267,6 +268,10 @@ public class PurchaseOrderResource {
                     .body(null);
             }
         };
+    }
+
+    private BigDecimal cubeEdge(BigDecimal volume){
+        return BigDecimal.valueOf(Math.cbrt(volume.doubleValue()));
     }
 
     private ShippingType determineSerlvlSapType(PurchaseOrder po) throws Exception {
@@ -324,30 +329,49 @@ public class PurchaseOrderResource {
         return shippingType;
     }
 
-    private List<ImItemDetail> convertItems(PurchaseOrder savedPo, List<PoLine> poLines){
-        return poLines.stream().map(line -> new ImItemDetail(
-            (savedPo.getServiceType().equals(ServiceType.CROSS_HAUL) ||
-                    savedPo.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
-                    savedPo.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD)
-                    ? savedPo.getVehicleSize().getSapCode() :
-                        (savedPo.getServiceType().equals(ServiceType.INBOUND) ||
-                            savedPo.getServiceType().equals(ServiceType.OUTBOUND)
-                        ? line.getMaterialNumber() : line.getMaterialType().getSapCode())),
-            new BigDecimal(line.getOrderQuantity()),
-            (savedPo.getServiceType().equals(ServiceType.CROSS_HAUL) ||
+    private boolean checkIfTransport(PurchaseOrder savedPo){
+        return (savedPo.getServiceType().equals(ServiceType.CROSS_HAUL) ||
             savedPo.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
             savedPo.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD) ||
             savedPo.getServiceType().equals(ServiceType.BREAKBULK_TRANSPORT)
-            ? "EA" :
-                (savedPo.getServiceType().equals(ServiceType.INBOUND) ||
-                    savedPo.getServiceType().equals(ServiceType.OUTBOUND)
-                ? line.getUnitOfMeasure().getSapCode() : null)
+            ? true : false);
+    }
+
+    private boolean checkIfWarehouse(PurchaseOrder savedPo){
+        return (savedPo.getServiceType().equals(ServiceType.INBOUND) ||
+            savedPo.getServiceType().equals(ServiceType.OUTBOUND)
+            ? true : false);
+    }
+
+    private boolean checkIfTransportDedicated(PurchaseOrder savedPo){
+        return (savedPo.getServiceType().equals(ServiceType.CROSS_HAUL) ||
+            savedPo.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
+            savedPo.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD)
+            ? true : false);
+    }
+//    cubeEdge
+    private List<ImItemDetail> convertItems(PurchaseOrder savedPo, List<PoLine> poLines){
+        return poLines.stream().map(line -> new ImItemDetail(
+            (checkIfTransportDedicated(savedPo) ? savedPo.getVehicleSize().getSapCode() : (
+                checkIfWarehouse(savedPo) ? line.getMaterialNumber() :
+                    line.getMaterialType().getSapCode()
+                )
+            ),
+            new BigDecimal(line.getOrderQuantity()),
+            (checkIfTransport(savedPo) ? "EA" :
+                checkIfWarehouse(savedPo) ? line.getUnitOfMeasure().getSapCode() : null
             ),
             savedPo.getPickUpParty().getArea().getPlant(),
             line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(),
-            (line.getLength() == null ? null : new BigDecimal(line.getLength())),
-            (line.getWidth() == null ? null : new BigDecimal(line.getWidth())),
-            (line.getHeight() == null ? null : new BigDecimal(line.getHeight())),
+            (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
+                line.getLength() == null ? null : new BigDecimal(line.getLength())
+            ),
+            (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
+                line.getWidth() == null ? null : new BigDecimal(line.getWidth())
+            ),
+            (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
+                line.getHeight() == null ? null : new BigDecimal(line.getHeight())
+            ),
             "cm", "cm", "cm",
             (line.getGrossWeight() == null ? null : new BigDecimal(line.getGrossWeight())),
             (line.getNetWeight() == null ? null : new BigDecimal(line.getNetWeight())), "KG", "KG"

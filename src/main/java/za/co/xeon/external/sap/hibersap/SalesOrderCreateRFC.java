@@ -384,7 +384,7 @@ public class SalesOrderCreateRFC {
             ",\n imFinCon='" + imFinCon + '\'' +
             ",\n imHbiola='" + imHbiola + '\'' +
             ",\n imHbioli='" + imHbioli + '\'' +
-            ",\n imItemDetail=" + imItemDetail +
+            ",\n imItemDetail=" + imItemDetail.toString() +
             ",\n imModOfTrans='" + imModOfTrans + '\'' +
             ",\n imObiola='" + imObiola + '\'' +
             ",\n imObioli='" + imObioli + '\'' +

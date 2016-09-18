@@ -1,7 +1,6 @@
 package za.co.xeon.external.sap.hibersap;
 
 import org.hibersap.bapi.BapiRet2;
-import org.springframework.cache.annotation.Cacheable;
 import za.co.xeon.external.sap.SapSettings;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 import org.hibersap.configuration.AnnotationConfiguration;
@@ -14,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.co.xeon.external.sap.hibersap.dto.*;
+import za.co.xeon.external.sap.hibersap.errors.DuplicatePoException;
+import za.co.xeon.external.sap.hibersap.errors.InvalidModeOfTransportException;
+import za.co.xeon.external.sap.hibersap.errors.ValidSapException;
 import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
@@ -234,8 +236,10 @@ public class HiberSapService {
                 rfc.getExReturn().stream().forEach(exReturn -> log.debug("[{}] - return : \n{}", po, exReturn.toString()));
                 for(ExReturn exReturn : rfc.getExReturn()){
                     if(exReturn.getType().equals("E") || exReturn.getType().equals("I")){
-                        if(exReturn.getType().equals("I") && exReturn.getMessage().startsWith("Purchase order number " + po + " already exists")){
-                            throw new DuplicatePoException("Request [po:" + po + "] failed with SAP status code " + exReturn.getType() + " : " + exReturn.getMessage());
+                        if(exReturn.getType().equals("I") && exReturn.getMessage().startsWith("Purchase order number " + po + " already exists")) {
+                            throw new ValidSapException("Duplicate PO [" + po + "], please fix", exReturn);
+                        }else if(exReturn.getType().equals("I") && exReturn.getMessage().startsWith("Mode of transport does not match Finance Controller")){
+                            throw new ValidSapException("Invalid mode of transport selected, please fix", exReturn);
                         }else {
                             throw new Exception("Request [po:" + po + "] failed with SAP status code " + exReturn.getType() + " : " + exReturn.getMessage());
                         }

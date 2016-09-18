@@ -251,4 +251,27 @@ public class ImItemDetail {
     public String getUnitNw() {
         return unitNw;
     }
+
+    @Override
+    public String toString() {
+        return "ImItemDetail{" +
+            "material='" + material + '\'' +
+            ", targetQty=" + targetQty +
+            ", targetQu='" + targetQu + '\'' +
+            ", plant='" + plant + '\'' +
+            ", batch='" + batch + '\'' +
+            ", storeLoc='" + storeLoc + '\'' +
+            ", shipPoint='" + shipPoint + '\'' +
+            ", zlaeng=" + zlaeng +
+            ", zbreit=" + zbreit +
+            ", zhoehe=" + zhoehe +
+            ", unitL='" + unitL + '\'' +
+            ", unitW='" + unitW + '\'' +
+            ", unitH='" + unitH + '\'' +
+            ", zbrgew=" + zbrgew +
+            ", zntgew=" + zntgew +
+            ", unitGw='" + unitGw + '\'' +
+            ", unitNw='" + unitNw + '\'' +
+            '}';
+    }
 }

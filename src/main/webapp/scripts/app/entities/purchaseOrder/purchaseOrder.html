@@ -956,7 +956,7 @@
                     <input ng-click="wizard.next()" ng-hide="step == 6" class="btn btn-primary" type="button" value="&nbsp;Next&nbsp;"
                            ng-disabled="step >= 5 && editForm.$invalid || isSaving || (purchaseOrder.poLines.length === 0 && step >= 3)
                                 || (purchaseOrder.pickUpParty.id === purchaseOrder.shipToParty.id && step >= 2)
-                                || (purchaseOrder.poLines && purchaseOrder.poLines[0].materialType === 'DEDICATED' && (purchaseOrder.poLines[0].grossWeight === null || purchaseOrder.poLines[0].volume === null))"
+                                || (purchaseOrder.poLines && step >= 3 && purchaseOrder.poLines[0].materialType === 'DEDICATED' && (purchaseOrder.poLines[0].grossWeight === null || purchaseOrder.poLines[0].volume === null))"
                            />
                     <button ng-click="submit()"
                             ng-show="step == 6 && !(purchaseOrder.id && purchaseOrder.state === 'PROCESSED') && (purchaseOrder.pickUpParty.id !== purchaseOrder.shipToParty.id)"
