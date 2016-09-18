@@ -374,7 +374,7 @@ public class PurchaseOrderResource {
             ),
             "cm", "cm", "cm",
             (line.getGrossWeight() == null ? null : new BigDecimal(line.getGrossWeight())),
-            (line.getNetWeight() == null ? null : new BigDecimal(line.getNetWeight())), "KG", "KG"
+            (checkIfTransportDedicated(savedPo) ? (line.getGrossWeight() == null ? null : new BigDecimal(line.getGrossWeight())) : line.getNetWeight() == null ? null : new BigDecimal(line.getNetWeight())), "KG", "KG"
         )).collect(Collectors.toList());
     }
 
