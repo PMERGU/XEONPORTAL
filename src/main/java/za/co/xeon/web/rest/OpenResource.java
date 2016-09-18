@@ -32,7 +32,9 @@ import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.AuthoritiesConstants;
 import za.co.xeon.security.SecurityUtils;
+import za.co.xeon.service.MailService;
 import za.co.xeon.service.MobileService;
+import za.co.xeon.web.rest.dto.Contact;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 import za.co.xeon.web.rest.dto.OrderDetails;
 import za.co.xeon.web.rest.util.HeaderUtil;
@@ -40,6 +42,7 @@ import za.co.xeon.web.rest.util.HeaderUtil;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -84,7 +87,7 @@ public class OpenResource {
     private S3Service s3Service;
 
     @Autowired
-    private S3Settings s3Settings;
+    private MailService mailService;
 
     private static File tmpDir = null;
 
@@ -105,6 +108,30 @@ public class OpenResource {
                     HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         };
+    }
+
+    @RequestMapping(value = "/open/contact", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Callable<ResponseEntity> contact(@RequestBody Contact contact, HttpServletRequest request) throws Exception {
+        log.debug("Service [POST] /mobile/contact");
+        return () -> {
+            mailService.sendCSUMail(userRepository.findAllByEnabledIsTrueAndCompany(companyRepository.findXeon()).get(0),
+                String.format("Xeon Portal: New website enquiry for %s", contact.getAction().getDesc()),
+                String.format("Enquiry from %s %s [email:%s] for %s : %s ",
+                    contact.getFirstName(), contact.getLastName(), contact.getEmail(), contact.getAction().getDesc(), contact.getMessage()
+                ),
+                null, null, getBaseUrl(request));
+            return new ResponseEntity<>("",HttpStatus.OK);
+        };
+    }
+
+    public String getBaseUrl(HttpServletRequest request) {
+        return request.getScheme() + // "http"
+            "://" +                                // "://"
+            request.getServerName() +              // "myhost"
+            ":" +                                  // ":"
+            request.getServerPort() +              // "80"
+            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
     }
 
 }

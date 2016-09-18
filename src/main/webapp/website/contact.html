@@ -146,9 +146,9 @@
                                 </label>
 
                                 <select class="wpcf7-form-control-wrap wpcf7-select" id="contact-inquiry">
-                                    <option value="I need a quote on logistics services">I need a quote on logistic services</option>
-                                    <option value="I need more info on your warehousing solutions">I need more info on your warehousing solutions</option>
-                                    <option value="I have some other request">I have some other request</option>
+                                    <option value="LOGISTICS">I need a quote on logistic services</option>
+                                    <option value="WAREHOUSING">I need more info on your warehousing solutions</option>
+                                    <option value="OTHER">I have some other request</option>
                                 </select>
                             </fieldset>
 
@@ -378,18 +378,26 @@
                 // CONTACT FORM AJAX SUBMIT START
                 $('.wpcf7 .wpcf7-submit').on('click', function (event) {
                     event.preventDefault();
-                    var inquiry = $('#contact-inquiry option:selected').text();
-                    var name = $('#contact-name').val();
-                    var lastname = $('#contact-last-name').val();
-                    var email = $('#contact-email').val();
-                    var contact_message = $('#contact-message').val();
-                    var form_data = new Array({'inquiry': inquiry, 'name': name, 'last_name': lastname, 'email': email, 'message': contact_message});
+                    var contact = {
+                        "firstName": $('#contact-name').val(),
+                        "lastName": $('#contact-last-name').val(),
+                        "email": $('#contact-email').val(),
+                        "action": $('#contact-inquiry option:selected').val(),
+                        "message": $('#contact-message').val()
+                    };
+
                     $.ajax({
+                        url: '/api/open/contact',
+                        dataType : "application/json",
+                        contentType: 'application/json',
                         type: 'POST',
-                        url: "contact.php",
-                        data: ({'action': 'contact', 'form_data': form_data})
-                    }).done(function (data) {
-                        alert(data);
+                        data: JSON.stringify(contact),
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function(data) {
+                            console.error(data);
+                        }
                     });
                 }); // CONTACT FORM AJAX SUBMIT END
 
