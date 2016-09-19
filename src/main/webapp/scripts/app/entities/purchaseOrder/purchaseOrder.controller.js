@@ -99,7 +99,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
             }else{
                 $scope.purchaseOrder = entity;
                 $.each($scope.purchaseOrder.poLines, function(idx){
-                    $scope.purchaseOrder.poLines[idx].rowId = idx+1;
+                    $log.debug("ID's : " + idx);
                 });
                 $scope.purchaseOrder.$promise.then(function(result){
                     $scope.attachments = PurchaseOrder.getAttachments({id: result.id});
@@ -162,8 +162,10 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.$watch('purchaseOrder.serviceType', serviceTypeWatch);
             function serviceTypeWatch(value){
                 $log.debug("watch serviceType triggered with value : " + value);
-                $scope.purchaseOrder.poLines = [];
-                $scope.purchaseOrder.poLines.length = 0;
+                if(!entity){
+                    $scope.purchaseOrder.poLines = [];
+                    $scope.purchaseOrder.poLines.length = 0;
+                }
                 switch (value){
                     case "INBOUND":
                         forceSelected([ {name: 'transportParty', value: IFTET($scope.purchaseOrder.transportParty, 'XEON'), all: true} ]);
@@ -443,6 +445,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $scope.purchaseOrder.comment = null;
             };
             var onSaveError = function (result) {
+                $log.debug("111111");
                 $log.error(result);
                 var msg = "Failed to create order :\n\n";
                 $.each(result.data.fieldErrors, function(idx, error){
@@ -502,7 +505,6 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 } else {
                     var createProgress = 10;
                     var createProgressInterval = $interval(function(){
-
                         sweet.show({
                             title: 'Creating PO....please be patient.',
                             text: ''
@@ -559,7 +561,10 @@ angular.module('portalApp').controller('PurchaseOrderController',
                                 onSaveSuccess(result);
                             }
                         },
-                        onSaveError
+                        function(error){
+                            $interval.cancel(createProgressInterval);
+                            onSaveError(error);
+                        }
                     );
                 }
             };

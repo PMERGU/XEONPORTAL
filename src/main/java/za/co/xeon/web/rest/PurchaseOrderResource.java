@@ -181,7 +181,7 @@ public class PurchaseOrderResource {
                     (purchaseOrder.getServiceType().equals(ServiceType.CROSS_HAUL) ||
                         purchaseOrder.getServiceType().equals(ServiceType.FULL_CONTAINER_LOAD) ||
                         purchaseOrder.getServiceType().equals(ServiceType.FULL_TRUCK_LOAD)
-                        ? purchaseOrder.getSpecialInstruction() + " - " + purchaseOrder.getLabourRequired() : purchaseOrder.getSpecialInstruction()),
+                        ? purchaseOrder.getSpecialInstruction() + " - Number of labour required : " + purchaseOrder.getLabourRequired() : purchaseOrder.getSpecialInstruction()),
                     purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
                     purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), imSerlvl, safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
                     purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
@@ -363,14 +363,20 @@ public class PurchaseOrderResource {
             ),
             savedPo.getPickUpParty().getArea().getPlant(),
             line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(),
-            (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
-                line.getLength() == null ? null : new BigDecimal(line.getLength())
+            (checkIfWarehouse(savedPo) ? null :
+                (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
+                    line.getLength() == null ? null : new BigDecimal(line.getLength())
+                )
             ),
-            (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
-                line.getWidth() == null ? null : new BigDecimal(line.getWidth())
+            (checkIfWarehouse(savedPo) ? null :
+                (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
+                    line.getWidth() == null ? null : new BigDecimal(line.getWidth())
+                )
             ),
-            (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
-                line.getHeight() == null ? null : new BigDecimal(line.getHeight())
+            (checkIfWarehouse(savedPo) ? null :
+                (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) :
+                    line.getHeight() == null ? null : new BigDecimal(line.getHeight())
+                )
             ),
             "cm", "cm", "cm",
             (line.getGrossWeight() == null ? null : new BigDecimal(line.getGrossWeight())),
@@ -630,25 +636,29 @@ public class PurchaseOrderResource {
     public Callable<ResponseEntity<HandlingUnitDetails>> getHuDetails(@PathVariable Long id, @PathVariable(value="deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
         log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", id, id, deliveryNo);
         return () -> {
-            HandlingUnitDetails hud = null;
-            PurchaseOrder purchaseOrder;
-            purchaseOrder = purchaseOrderRepository.findOne(id);
-            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-
-            if(purchaseOrder != null){
-                hud = mobileService.getHandlingUnitDetails(deliveryNo);
-                if(hud.getHuheader().isEmpty()) {
-                    log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, id, deliveryNo);
+            if (SecurityUtils.isUserXeonOrAdmin()) {
+                HandlingUnitDetails hud = null;
+                PurchaseOrder purchaseOrder;
+                purchaseOrder = purchaseOrderRepository.findOne(id);
+                User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+                if(purchaseOrder != null){
+                    hud = mobileService.getHandlingUnitDetails(deliveryNo);
+                    if(hud.getHuheader().isEmpty()) {
+                        log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, id, deliveryNo);
+                    }
+                }else{
+                    log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]", id, id, deliveryNo, user.getCompany().getName());
                 }
-            }else{
-                log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]", id, id, deliveryNo, user.getCompany().getName());
-            }
 
-            return Optional.ofNullable(hud)
-                .map(result -> new ResponseEntity<>(
-                    result,
-                    HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                return Optional.ofNullable(hud)
+                    .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                    .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            } else {
+                log.debug("[PO:{}] - Limiting huDetails due to not CSU or Admin", id);
+                return new ResponseEntity<>(new HandlingUnitDetails(),HttpStatus.OK);
+            }
         };
     }
 

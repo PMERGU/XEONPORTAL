@@ -37,6 +37,9 @@ public class HandlingUnitDetails {
         this.hunumbers = hunumbers;
     }
 
+    public HandlingUnitDetails() {
+    }
+
     public List<Huheader> getHuheader() {
         return huheader;
     }

@@ -26,6 +26,9 @@ angular.module('portalApp').controller('UserManagementDialogController',
         $scope.save = function () {
             $scope.isSaving = true;
             console.log($scope.user);
+            if($scope.user.authorities[0] === "ROLE_CUSTOMER_CSU"){
+                $scope.user.authorities.push("ROLE_CUSTOMER");
+            }
             if ($scope.user.id != null) {
                 User.update($scope.user, onSaveSuccess, onSaveError);
             } else {
