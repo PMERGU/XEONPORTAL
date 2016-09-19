@@ -271,7 +271,7 @@ public class PurchaseOrderResource {
     }
 
     private BigDecimal cubeEdge(BigDecimal volume){
-        return BigDecimal.valueOf(Math.cbrt(volume.doubleValue()));
+        return BigDecimal.valueOf(Math.cbrt(volume.doubleValue() * 1000000));
     }
 
     private ShippingType determineSerlvlSapType(PurchaseOrder po) throws Exception {
