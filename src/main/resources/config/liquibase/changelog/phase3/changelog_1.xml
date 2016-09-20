@@ -40,7 +40,7 @@
 
     <changeSet author="derick" id="phase3_changeset_3">
         <addColumn tableName="purchase_order">
-            <column name="service" type="varchar(255)">
+            <column name="service" type="varchar(255)" defaultValue="TRANSPORT">
                 <constraints nullable="true" />
             </column>
         </addColumn>
