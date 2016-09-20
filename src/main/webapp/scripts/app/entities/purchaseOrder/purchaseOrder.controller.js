@@ -220,7 +220,7 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     case "CROSS_HAUL":
                         forceSelected([ {name: 'transportParty', value: 'XEON'} ]);
                         limitSelect([
-                            {name: 'serviceLevel', values: ["STANDARD_CROSS_DOCK"], defaultValue: "STANDARD_CROSS_DOCK"},
+                            {name: 'serviceLevel', values: ["STANDARD_CROSS_HAUL"], defaultValue: "STANDARD_CROSS_HAUL"},
                             {name: 'modeOfTransport', values: ["ALL_MODES_OF_TRANSPORT_CH"], defaultValue: "ALL_MODES_OF_TRANSPORT_CH"},
                             {name: 'vehicleSize', values: ["LIGHT_CONTAINER_6m","HEAVY_CONTAINER_6m","EXTRA_HEAVY_CONTAINER_6m","LIGHT_CONTAINER_12m","HEAVY_CONTAINER_12m"], defaultValue: "LIGHT_CONTAINER_6m"}
                         ]);

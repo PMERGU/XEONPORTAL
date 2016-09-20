@@ -253,7 +253,7 @@
                                             <select class="form-control" id="field_pickUpParty" name="pickUpParty"
                                                     ng-required="requiredFields['pickUpParty']"
                                                     ng-model="purchaseOrder.pickUpParty"
-                                                    ng-options="party as party.name for party in (otherParties | orderBy:'name') track by party.id">
+                                                    ng-options="party as party.name for party in (otherParties | unique: 'id' | orderBy:'name') track by party.id">
                                             </select>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
@@ -319,7 +319,7 @@
                                             <select class="form-control" id="field_shipToParty" name="shipToParty"
                                                     ng-required="requiredFields['shipToParty']"
                                                     ng-model="purchaseOrder.shipToParty"
-                                                    ng-options="party as party.name for party in (otherParties | orderBy:'name') track by party.id">
+                                                    ng-options="party as party.name for party in (otherParties | unique: 'id' | orderBy:'name') track by party.id">
                                             </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default"

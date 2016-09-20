@@ -366,7 +366,7 @@
                 <th>Quantity</th>
                 <th>Volume</th>
                 <th>Total Weight</th>
-                <th>Total Cubes</th>
+                <th>UoM</th>
             </tr>
             </thead>
             <tbody>
@@ -384,7 +384,7 @@
                 <td>{{ po.orderQuantity }}</td>
                 <td>{{ po.volume }}</td>
                 <td>{{ po.grossWeight * po.orderQuantity }}kg</td>
-                <td>{{ (po.height * po.length * po.width)/1000000 * po.orderQuantity }}m&sup3;</td>
+                <td>{{ po.unitOfMeasure }} </td>
             </tr>
             </tbody>
         </table>
