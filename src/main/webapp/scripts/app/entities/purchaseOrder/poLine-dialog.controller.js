@@ -12,21 +12,6 @@ angular.module('portalApp').controller('PoLineDialogController',
         $timeout(function() {
             switch ($scope.serviceType){
                 case "INBOUND":
-                    hideOrShow([
-                        {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
-                        {name: 'orderQuantity', show: true, value: IFTET($scope.poLine.orderQuantity, 1)},
-                        {name: 'unitOfMeasure', show: true, value: IFTET($scope.poLine.unitOfMeasure, "PALLET")},
-                        {name: 'batchNumber', show: true, value: IFTET($scope.poLine.batchNumber, "")},
-                        {name: 'materialType'},
-                        {name: 'length'},
-                        {name: 'width'},
-                        {name: 'height'},
-                        {name: 'netWeight'},
-                        {name: 'grossWeight'},
-                        {name: 'dvType'},
-                        {name: 'volume'}
-                    ]);
-                    break;
                 case "OUTBOUND":
                     hideOrShow([
                         {name: 'materialNumber', show: true, value: IFTET($scope.poLine.materialNumber, "")},
