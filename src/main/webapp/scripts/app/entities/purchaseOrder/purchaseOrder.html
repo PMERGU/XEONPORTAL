@@ -297,7 +297,7 @@
                                             Reference</label>
                                         <input type="text" class="form-control" name="collectionReference"
                                                id="field_collectionReference"
-                                               ng-model="purchaseOrder.collectionReference" ng-maxlength="12"
+                                               ng-model="purchaseOrder.collectionReference" ng-maxlength="10"
                                                ng-required="requiredFields['collectionReference']"
                                         />
                                         <div ng-show="editForm.collectionReference.$invalid">
@@ -306,8 +306,8 @@
                                                 required
                                             </p>
                                             <p class="help-block small-help-block pull-right"
-                                               ng-show="editForm.accountReference.$error.maxlength">
-                                                Max 12
+                                               ng-show="editForm.collectionReference.$error.maxlength">
+                                                Max 10
                                             </p>
                                         </div>
                                     </div>

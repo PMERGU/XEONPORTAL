@@ -7,12 +7,7 @@ angular.module('portalApp').controller('UserManagementDialogController',
         $scope.user = entity;
         $scope.authorities = ["ROLE_USER", "ROLE_ADMIN", "ROLE_CUSTOMER", "ROLE_CUSTOMER_CSU"];
         $scope.companies = Company.query();
-        Company.getUsers({'id': 1}).$promise.then(function(data){
-            $log.debug(data);
-            var tmp = null;
-            var tmpArray = [tmp];
-            $scope.csuList = tmpArray.concat(data);
-        });
+        $scope.csuList = Company.getUsers({'id': 1});
 
         var onSaveSuccess = function (result) {
             $scope.isSaving = false;
@@ -29,6 +24,7 @@ angular.module('portalApp').controller('UserManagementDialogController',
             if($scope.user.authorities[0] === "ROLE_CUSTOMER_CSU"){
                 $scope.user.authorities.push("ROLE_CUSTOMER");
             }
+            $log.debug("csu : " + $scope.user.csu);
             if ($scope.user.id != null) {
                 User.update($scope.user, onSaveSuccess, onSaveError);
             } else {

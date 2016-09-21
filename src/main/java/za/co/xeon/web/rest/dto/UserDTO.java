@@ -147,6 +147,7 @@ public class UserDTO {
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
             ", activated=" + activated +
+            ", csu=" + csu.toString() +
             ", langKey='" + langKey + '\'' +
             ", authorities=" + authorities +
             "}";

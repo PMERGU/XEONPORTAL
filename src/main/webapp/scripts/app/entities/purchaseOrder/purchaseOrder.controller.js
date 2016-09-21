@@ -710,7 +710,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 $scope.totalCubes = 0;
                 $.each(lines, function(idx, line){
                     $scope.totalWeight += parseFloat(line.grossWeight * line.orderQuantity);
-                    $scope.totalCubes += parseFloat(((line.height * line.length * line.width)/1000000) * line.orderQuantity);
+                    $scope.totalCubes += (line.dvType === 'VOLUME' ?
+                        parseFloat(line.volume * line.orderQuantity) :
+                        parseFloat(((line.height * line.length * line.width)/1000000) * line.orderQuantity));
                 })
             }
 

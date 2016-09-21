@@ -25,6 +25,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Company</th>
+                                        <th>Employee</th>
                                         <th>Captured By</th>
                                         <th>Purchase Order</th>
                                         <th>Mode of Transport</th>
@@ -38,6 +39,7 @@
                                         <td><a ui-sref="purchaseOrder.detail({id:po.id})">{{po.id}}</a></td>
                                         <td>{{ po.user.company.name }}</td>
                                         <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
+                                        <td>{{ po.capturedBy.firstName + ' ' + po.capturedBy.lastName }}</td>
                                         <td>{{ po.poNumber }}</td>
                                         <td>{{ po.modeOfTransport }}</td>
                                         <td>{{ po.reference }}</td>
@@ -72,6 +74,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Company</th>
+                                        <th>Employee</th>
                                         <th>Captured By</th>
                                         <th>Purchase Order</th>
                                         <th>Mode of Transport</th>
@@ -85,6 +88,7 @@
                                         <td><a ui-sref="purchaseOrder.detail({id:po.id})">{{po.id}}</a></td>
                                         <td>{{ po.user.company.name }}</td>
                                         <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
+                                        <td>{{ po.capturedBy.firstName + ' ' + po.capturedBy.lastName }}</td>
                                         <td>{{ po.poNumber }}</td>
                                         <td>{{ po.modeOfTransport }}</td>
                                         <td>{{ po.reference }}</td>

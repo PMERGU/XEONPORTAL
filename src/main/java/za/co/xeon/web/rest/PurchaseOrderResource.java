@@ -184,7 +184,7 @@ public class PurchaseOrderResource {
                         ? purchaseOrder.getSpecialInstruction() + " - Number of labour required : " + purchaseOrder.getLabourRequired() : purchaseOrder.getSpecialInstruction()),
                     purchaseOrder.getCvOrigin(), purchaseOrder.getCvCarrierRef(), safeDate(purchaseOrder.getCaptureDate().toLocalDate()),
                     purchaseOrder.getPoNumber(), purchaseOrder.getPickUpParty().getArea().getHub(), imSerlvl, safeEnum(purchaseOrder.getServiceLevel()), purchaseOrder.getCvShipper(),
-                    purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getSoldToParty().getReference(),
+                    purchaseOrder.getCvCarrierRef(), Pad.left(purchaseOrder.getShipToParty().getSapId(), 10), purchaseOrder.getCollective(), //.getSoldToParty().getReference(),
                     Pad.left(purchaseOrder.getSoldToParty().getSapId(), 10), imSpart,
                     (purchaseOrder.getTradeType().equals(TradeType.DOMESTIC) ? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.EXPORT) ? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.IMPORT) ? "1" : ""),
                     purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg,

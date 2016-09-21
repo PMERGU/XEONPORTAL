@@ -112,6 +112,7 @@ public class UserService {
         user.setLastName(managedUserDTO.getLastName());
         user.setEmail(managedUserDTO.getEmail().toLowerCase().trim());
         user.setCompany(managedUserDTO.getCompany());
+        user.setCsu(managedUserDTO.getCsu());
         user.setFcSapId(managedUserDTO.getFcSapId().toUpperCase().trim());
         if (managedUserDTO.getLangKey() == null) {
             user.setLangKey("en"); // default language is English
