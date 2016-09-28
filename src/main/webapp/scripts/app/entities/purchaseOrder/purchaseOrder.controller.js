@@ -147,13 +147,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 switch (value){
                     case 'WAREHOUSING':
                         limitSelect([
-                            {name: 'serviceType', values: ["INBOUND","OUTBOUND"], defaultValue: "INBOUND"}
+                            {name: 'serviceType', values: ["INBOUND","OUTBOUND"], defaultValue: (entity === undefined ? 'INBOUND' : IFTET(entity.serviceType, 'INBOUND'))}
                         ]);
                         hideOrShow([{name: 'cargoClassification'},{name: 'cargoType'}]);
                         break;
                     case 'TRANSPORT':
                         limitSelect([
-                            {name: 'serviceType', values: ["BREAKBULK_TRANSPORT", "CROSS_HAUL","FULL_CONTAINER_LOAD","FULL_TRUCK_LOAD"], defaultValue: "CROSS_HAUL"}
+                            {name: 'serviceType', values: ["BREAKBULK_TRANSPORT", "CROSS_HAUL","FULL_CONTAINER_LOAD","FULL_TRUCK_LOAD"], defaultValue: (entity === undefined ? 'CROSS_HAUL' : IFTET(entity.serviceType, 'CROSS_HAUL'))}
                         ]);
                         break;
                 }
