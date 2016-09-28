@@ -147,10 +147,24 @@ public class Party implements Serializable {
     public String toString() {
         return "Party{" +
             "id=" + id +
-            ", name='" + name + "'" +
-            ", houseNumber='" + houseNumber + "'" +
-            ", streetName='" + streetName + "'" +
-            ", reference='" + reference + "'" +
+            ", name='" + name + '\'' +
+            ", houseNumber='" + houseNumber + '\'' +
+            ", streetName='" + streetName + '\'' +
+            ", area=" + (area == null ? "null" : area.toStringShort()) +
+            ", reference='" + reference + '\'' +
+            ", sapId='" + sapId + '\'' +
+            ", company=" + (company == null ? "null" : company.getName()) +
+            ", type=" + type +
             '}';
     }
+
+    public String toStringShort() {
+        return "Party{" +
+            "name='" + name + '\'' +
+            ", area=" + (area == null ? "null" : area.toStringShort()) +
+            ", sapId='" + sapId + '\'' +
+            ", company=" + (company == null ? "null" : company.getName()) +
+            '}';
+    }
+
 }

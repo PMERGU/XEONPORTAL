@@ -228,6 +228,7 @@ public class PoLine implements Serializable {
             ", netWeight='" + netWeight + "'" +
             ", batchNumber='" + batchNumber + "'" +
             ", dvType='" + dvType + "'" +
+            ", volume='" + volume + "'" +
             ", unitOfMeasure='" + unitOfMeasure + "'" +
             '}';
     }

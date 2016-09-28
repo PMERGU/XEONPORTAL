@@ -19,6 +19,7 @@ import za.co.xeon.service.PurchaseOrderService;
 import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
+import za.co.xeon.web.rest.errors.InvalidDataException;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -126,7 +127,10 @@ public class PurchaseOrderResource {
 
 
             //set PO as parent to PO.poLines
-            purchaseOrder.getPoLines().stream().forEach(line -> line.setPurchaseOrder(purchaseOrder));
+            purchaseOrder.getPoLines().stream().forEach(line -> {
+                line.setPurchaseOrder(purchaseOrder);
+                line.setVolume(line.getVolume() != null ? line.getVolume().setScale(3, BigDecimal.ROUND_CEILING) : null);
+            });
             log.debug("[PO:{}] -  purchaseOrder.getPoLines().size() : {}", purchaseOrder.getPoNumber(), purchaseOrder.getPoLines().size());
             log.debug(purchaseOrder.getPoLines().toString());
 
@@ -189,9 +193,9 @@ public class PurchaseOrderResource {
                     (purchaseOrder.getTradeType().equals(TradeType.DOMESTIC) ? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.EXPORT) ? "1" : ""), (purchaseOrder.getTradeType().equals(TradeType.IMPORT) ? "1" : ""),
                     purchaseOrder.getTelephone(), purchaseOrder.getCvName(), purchaseOrder.getCvNumber(), imVkorg, imVtweg,
                     pup.getSapId().equals("100000") ? new ImOtcAdrCol(pup.getName(), pup.getName(), pup.getReference(), pup.getStreetName(),
-                        pup.getArea().getCity(), pup.getArea().getSuburb(), pup.getArea().getProvince(), pup.getArea().getTrafficZone(),
-                        pup.getArea().getCountry(), pup.getArea().getPostalCode().toString(), pup.getArea().getPostalCode().toString(),
-                        pup.getArea().getCity(), "", "") : null,
+                    pup.getArea().getCity(), pup.getArea().getSuburb(), pup.getArea().getProvince(), pup.getArea().getTrafficZone(),
+                    pup.getArea().getCountry(), pup.getArea().getPostalCode().toString(), pup.getArea().getPostalCode().toString(),
+                    pup.getArea().getCity(), "", "") : null,
                     pup.getSapId().equals("100000") ? new ImOtcAdrShpto(stp.getName(), stp.getName(), stp.getReference(), stp.getStreetName(),
                         stp.getArea().getCity(), stp.getArea().getSuburb(), stp.getArea().getProvince(), stp.getArea().getTrafficZone(),
                         stp.getArea().getCountry(), stp.getArea().getPostalCode().toString(), stp.getArea().getPostalCode().toString(),
@@ -229,6 +233,10 @@ public class PurchaseOrderResource {
                             String.format("New purchase order [%s] created and sales order [%s] auto captured in SAP.", savedPo.getId(), savedPo.getSoNumber()),
                             savedPo.getId().toString()
                         )).body(savedPo);
+                } catch (InvalidDataException ide) {
+                    return ResponseEntity.badRequest()
+                        .headers(HeaderUtil.createFailureAlert(String.format("%s", ide.getMessage())))
+                        .body(null);
                 } catch (ValidSapException dpe) {
                     return ResponseEntity.badRequest()
                         .headers(HeaderUtil.createFailureAlert(String.format("%s - [Type:%s, Id:%s, Number:%s]:%s", dpe.getMessage(),dpe.getType(),dpe.getId(),dpe.getNumber(),dpe.getSapMessage())))
@@ -271,19 +279,19 @@ public class PurchaseOrderResource {
     }
 
     private BigDecimal cubeEdge(BigDecimal volume){
-        return BigDecimal.valueOf(Math.cbrt(volume.doubleValue() * 1000000));
+        return BigDecimal.valueOf(Math.cbrt(volume.doubleValue() * 1000000)).setScale(0, BigDecimal.ROUND_CEILING);
     }
 
     private ShippingType determineSerlvlSapType(PurchaseOrder po) throws Exception {
 
         if(po.getPickUpParty() == null || po.getPickUpParty().getCompany() == null || po.getPickUpParty().getArea() == null || po.getPickUpParty().getArea().getHub() == null){
             log.error(" PickupParty incorrectly setup : po.getPickUpParty() == null || po.getPickUpParty().getCompany() == null");
-            throw new Exception("PickupParty incorrectly setup, please contact Xeon support");
+            throw new InvalidDataException("Pickup party incorrectly setup, missing either Postal Code / Hub or not binded to a Company. " + po.getPickUpParty().toStringShort());
         }
 
         if(po.getShipToParty() == null || po.getShipToParty().getCompany() == null || po.getShipToParty().getArea() == null || po.getShipToParty().getArea().getHub() == null){
-            log.error(" PickupParty incorrectly setup : po.getPickUpParty() == null || po.getPickUpParty().getCompany() == null");
-            throw new Exception("ShipToParty incorrectly setup, please contact Xeon support");
+            log.error(" ShipToParty incorrectly setup : po.getShipToParty() == null || po.getShipToParty().getCompany() == null");
+            throw new InvalidDataException("Ship to party incorrectly setup, missing either Postal Code / Hub or not binded to a Company. " + po.getShipToParty().toStringShort());
         }
         ShippingType shippingType = null;
         log.debug("  determineBreakBulkSapType - [{}]", 1);

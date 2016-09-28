@@ -166,5 +166,13 @@ public class PostalArea implements Serializable {
             ", country='" + country + '\'' +
             '}';
     }
+
+    public String toStringShort() {
+        return "PostalArea{" +
+            "postalCode=" + postalCode +
+            ", hub='" + hub + '\'' +
+            ", plant='" + plant + '\'' +
+            '}';
+    }
 }
 

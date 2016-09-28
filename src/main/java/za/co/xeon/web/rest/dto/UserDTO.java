@@ -147,9 +147,12 @@ public class UserDTO {
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
             ", activated=" + activated +
-            ", csu=" + csu.toString() +
+            ", company=" + company +
             ", langKey='" + langKey + '\'' +
+            ", fcSapId='" + fcSapId + '\'' +
+            ", csu=" + (csu == null ? "null" : csu.toString()) +
+            ", enabled=" + enabled +
             ", authorities=" + authorities +
-            "}";
+            '}';
     }
 }
