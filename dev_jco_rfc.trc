@@ -960,3 +960,747 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161010 155100 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Mon Oct 10 15:51:00,698<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 10 15:51:00 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Oct 10 15:52:41,012<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 10 15:52:41 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161012 121303 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Wed Oct 12 12:13:03,918<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Wed Oct 12 12:13:03 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Wed Oct 12 14:03:16,224<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Wed Oct 12 14:03:16 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161013 102506 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Thu Oct 13 10:25:06,234<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 10:25:06 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 13 10:34:56,378<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 10:34:56 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 13 10:39:30,991<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 10:39:30 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 13 10:59:14,491<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 10:59:14 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 13 11:26:06,716<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 11:26:06 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     4
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 13 11:29:30,158<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 11:29:30 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     4
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161013 113312 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Thu Oct 13 11:33:12,414<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 11:33:12 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 13 11:39:27,170<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 11:39:27 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 13 11:39:46,421<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 11:39:46 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 13 11:39:51,274<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 13 11:39:51 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161017 105012 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Mon Oct 17 10:50:12,418<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 17 10:50:12 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     4
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Oct 17 10:51:42,531<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 17 10:51:42 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     3
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Oct 17 10:52:54,493<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 17 10:52:54 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     3
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Oct 17 10:55:41,925<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 17 10:55:41 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     3
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Oct 17 10:56:21,950<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 17 10:56:21 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     6
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Oct 17 11:07:01,406<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 17 11:07:01 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     5
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161017 124229 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Mon Oct 17 12:42:29,404<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Mon Oct 17 12:42:29 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161018 101847 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Tue Oct 18 10:18:47,818<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Tue Oct 18 10:18:47 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Tue Oct 18 10:27:17,287<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Tue Oct 18 10:27:17 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Tue Oct 18 10:50:25,009<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Tue Oct 18 10:50:25 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Tue Oct 18 11:13:21,760<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Tue Oct 18 11:13:21 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161019 091013 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Wed Oct 19 09:10:13,290<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Wed Oct 19 09:10:13 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Wed Oct 19 09:13:16,063<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Wed Oct 19 09:13:16 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Wed Oct 19 09:22:25,097<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Wed Oct 19 09:22:25 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161020 093623 Central African Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Thu Oct 20 09:36:23,464<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 20 09:36:23 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 20 15:52:04,663<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 20 15:52:04 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 20 15:52:50,047<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 20 15:52:50 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 20 15:53:38,117<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 20 15:53:38 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Oct 20 15:53:43,092<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=A12 ASHOST=128.87.245.163 SYSNR=00 SAPROUTER=/H/197.234.173.1/W/FunkyChicken99 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '197.234.173.1:3299' not reached
+TIME        Thu Oct 20 15:53:43 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 197.234.173.1:3299
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     4
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

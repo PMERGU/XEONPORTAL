@@ -23,11 +23,11 @@
                 <!--<small class="text-muted">in last 30 days</small>-->
             <!--</div>-->
             </br>
-            <span class="font-extra-bold font-uppercase">Roles</span>
+            <!-- <span class="font-extra-bold font-uppercase">Roles</span>
             </br>
             <div ng-repeat="role in identity.authorities">
                 <small class="text-muted">{{ role }}}</small>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -44,7 +44,7 @@
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('purchaseOrder')}">
                 <li ui-sref-active="active">
                     <a ui-sref="purchaseOrder.new" data-toggle="collapse" data-target=".navbar-collapse.in">
-                        <span class="glyphicon glyphicon-plus"></span>&#xA0;<span >Place Order</span>
+                        <span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span>
                     </a>
                 </li>
                 <li ui-sref-active="active" >
@@ -62,7 +62,7 @@
                         <span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span>In Progress</span>
                     </a>
                 </li>
-                <li ui-sref-active="active" has-any-authority="ROLE_USER,ROLE_CUSTOMER_CSU" >
+                <li ui-sref-active="active" has-any-authority="ROLE_USER,ROLE_CUSTOMER_CSU"  >
                     <a ui-sref="purchaseOrder({queryType: 'UNPROCESSED'})" data-toggle="collapse" data-target=".navbar-collapse.in">
                         <span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span>Un-processed</span>
                     </a>
@@ -92,6 +92,17 @@
                 </li>
                 <li ui-sref-active="active" >
                     <a ui-sref="party.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >New</span></a>
+                </li>
+            </ul>
+        </li>
+        
+          <li ng-class="{active: $state.includes('billing')}"  ng-show="identity.company.name == 'Dat' || identity.authorities.indexOf('ROLE_ADMIN')!=-1">
+            <a href="#">
+                <span class="nav-label">Rate Calculator</span><span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('billing')}">
+                <li ui-sref-active="active" >
+                    <a ui-sref="billing.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >Quotation</span></a>
                 </li>
             </ul>
         </li>

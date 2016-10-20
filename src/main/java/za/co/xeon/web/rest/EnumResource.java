@@ -29,6 +29,8 @@ public class EnumResource {
         enums.put("vehicleSizes", Arrays.asList(VehicleSize.values()));
         enums.put("modeOfTransports", Arrays.asList(ModeOfTransport.values()));
         enums.put("unitOfMeasures", Arrays.asList(UnitOfMeasure.values()));
+        enums.put("billinginfo", Arrays.asList(BillingInfoTypes.values()));
+        enums.put("zones", Arrays.asList(ZoneTypes.values()));
         return enums;
     }
 

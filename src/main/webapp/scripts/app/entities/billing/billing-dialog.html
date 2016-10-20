@@ -1,0 +1,119 @@
+
+<form name="editForm" role="form"  ng-submit="save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myBillingLabel">Rate calculator</h4>
+    </div>
+    <div class="modal-body">
+        <jh-alert-error></jh-alert-error>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" for="field_source">Source Location</label>
+                   <select class="form-control" name="source"
+                                                ng-model="billing.source"
+                                                id="field_soruce"
+                                                ng-options="(enum | uppercase) for enum in staticEnums['billinginfo'] ">
+                                        </select>
+                    <!-- <input type="text" class="form-control" name="name" id="field_name" ng-model="billing.name" required tabindex="1"/> -->
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="field_szone">Source Zone</label>
+                    <select class="form-control" name="szone" ng-model="billing.sourceZone" id="field_szone" >
+	                    <option value="ZONE1">ZONE1 (0 -40 KM)</option>
+	                    <option value="ZONE2">ZONE2(40 KM - 80 KM)</option>
+	                    <option value="ZONE3">ZONE3(80 KM - 120 KM)</option>
+	                    <option value="ZONE4">ZONE4(120 KM - 160 KM)</option>
+	                    <option value="ZONE5">ZONE5(160 KM +)</option>
+                    </select>                        
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label" for="field_stype">Service Type</label>
+                    <select class="form-control" name="stype" ng-model="billing.serviceType" id="field_stype" >
+	                    <option value="BB">Break Bulk</option>
+                    </select>                        
+                </div>
+                
+                
+             
+
+                
+
+                <div class="form-group"  >
+                
+                
+                    <label class="control-label" for="field_name" >Weight</label>
+                   <input type="number" class="form-control" name="name" id="field_name" ng-model="billing.weight" required tabindex="1"/>
+                </div>
+            </div>
+            <div class="col-md-4">
+            
+            
+            <div class="form-group">
+                    <label class="control-label" for="field_destination">Destination Location</label>
+                   <select class="form-control" name="destination"
+                                                ng-model="billing.destination"
+                                                id="field_destination"
+                                                ng-options="(enum | uppercase) for enum in staticEnums['billinginfo']">
+                                        </select>
+                    <!-- <input type="text" class="form-control" name="name" id="field_name" ng-model="billing.name" required tabindex="1"/> -->
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="field_dzone">Destination Zone</label>
+                    <!-- <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="billing.streetName"  tabindex="4"/> -->
+					<select class="form-control" name="dzone"
+						ng-model="billing.destinationZone" id="field_dzone">
+						<option value="ZONE1">ZONE1 (0 -40 KM)</option>
+						<option value="ZONE2">ZONE2(40 KM - 80 KM)</option>
+						<option value="ZONE3">ZONE3(80 KM - 120 KM)</option>
+						<option value="ZONE4">ZONE4(120 KM - 160 KM)</option>
+						<option value="ZONE5">ZONE5(160 KM +)</option>
+					</select>
+
+				</div>
+
+                   <div class="form-group">
+                    <label class="control-label" for="field_slevel">Service Level</label>
+                    <select class="form-control" name="slevel" ng-model="billing.serviceLevel" id="field_slevel" >
+	                    <option value="EC">Economy</option>
+	                    <option value="EX">Express</option>
+                    </select>                        
+                </div>
+
+                <div class="form-group"  >
+                      <label class="control-label" for="field_volume" >Volume</label>
+                   <input type="number" class="form-control" name="volume" id="field_volume" ng-model="billing.volume" required tabindex="1"/>
+                </div>
+                
+                
+                
+            </div>
+            
+        </div>
+        
+        <div class="form-group" ng-show="billing.calculatedBill"  >
+                      <label class="control-label" >Approximate invoice amount is : </label> R {{ billing.calculatedBill | number : 2}}
+                    <p>Note: Invoice value is bases on information provided above. Please ensure input data is as per
+
+shipment to attain and accurate estimate.
+
+Please note additional sur charges may apply</p>
+                </div>
+                
+                
+    </div> 
+   
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Calculate</span>
+        </button>
+    </div>
+</form>

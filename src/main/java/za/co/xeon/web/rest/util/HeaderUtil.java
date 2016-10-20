@@ -18,6 +18,10 @@ public class HeaderUtil {
     public static HttpHeaders createEntityCreationAlert(String entityName, String param) {
         return createAlert("A new " + entityName + " was created successfully. ID " + param, param);
     }
+    
+    public static HttpHeaders createCaluculationAlert(String entityName, String param) {
+        return createAlert("Calculated Bill is ", param);
+    }
 
     public static HttpHeaders createEntityUpdateAlert(String entityName, String param) {
         return createAlert("A " + entityName + " was updated successfully. ID " + param, param);
