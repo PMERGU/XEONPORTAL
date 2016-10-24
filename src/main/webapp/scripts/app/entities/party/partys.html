@@ -40,21 +40,21 @@
                             <td>{{party.reference}}</td>
                             <td>{{party.type}}</td>
                             <td class="text-right">
-                                <div class="btn-group flex-btn-group-container">
-                                    <button type="submit"
+                                  <div class="btn-group flex-btn-group-container">
+                                    <button type="submit" title="View Party" tooltip="Tooltip on left" tooltip-placement="left"
                                             ui-sref="party.detail({id:party.id})"
                                             class="btn btn-info btn-sm">
                                         <span class="glyphicon glyphicon-eye-open"></span>
                                         <span class="hidden-xs hidden-sm"></span>
                                     </button>
-                                    <button type="submit"
+                                    <button type="submit" title="Edit Party" tooltip="Tooltip on left" tooltip-placement="left"
                                             ui-sref="party.edit({id:party.id})"
                                             class="btn btn-primary btn-sm">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                         <span class="hidden-xs hidden-sm"></span>
                                     </button>
-                                    <button type="submit"
-                                            ui-sref="party.delete({id:party.id})"
+                                    <button type="submit"  title="Delete Party" tooltip="Tooltip on left" tooltip-placement="left"
+                                            ui-sref="party.delete({id:party.id})" 
                                             class="btn btn-danger btn-sm">
                                         <span class="glyphicon glyphicon-remove-circle"></span>
                                         <span class="hidden-xs hidden-sm"></span>
