@@ -60,7 +60,7 @@ public class BillingInfoResource {
 			String locationString = billingInfo.getSource().toUpperCase() + billingInfo.getDestination().toUpperCase() + "-" + billingInfo.getSourceZone() + "-" + billingInfo.getDestinationZone();
 			locationString = locationString.replace("ZONE", "Zone ");
 
-			Double calculatedVolume = billingInfo.getVolume() * 1000;
+			Double calculatedVolume = billingInfo.getVolume() * 500;
 
 			Double weight = billingInfo.getWeight();
 

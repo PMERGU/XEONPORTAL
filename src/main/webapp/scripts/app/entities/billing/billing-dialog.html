@@ -4,7 +4,7 @@
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true" ng-click="clear()">&times;</button>
-		<h4 class="modal-title" id="myBillingLabel">Rate calculator</h4>
+		<h4 class="modal-title" id="myBillingLabel">Rate calculator - DSV</h4>
 	</div>
 	<div class="modal-body">
 		<jh-alert-error></jh-alert-error>
@@ -104,7 +104,7 @@
 		<div class="form-group" ng-show="billing.calculatedBill">
 			<label class="control-label">Approximate invoice amount is :
 			</label> R {{ billing.calculatedBill | number : 2}}
-			<p>Note: Invoice value is bases on information provided above.
+			<p>Note: Invoice value is based on information provided above.
 				Please ensure input data is as per shipment to attain and accurate
 				estimate. Please note additional sur charges may apply</p>
 		</div>
