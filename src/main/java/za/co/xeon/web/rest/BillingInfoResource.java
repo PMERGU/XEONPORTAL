@@ -58,7 +58,7 @@ public class BillingInfoResource {
 		return () -> {
 
 			String locationString = billingInfo.getSource().toUpperCase() + billingInfo.getDestination().toUpperCase() + "-" + billingInfo.getSourceZone() + "-" + billingInfo.getDestinationZone();
-			locationString = locationString.replace("ZONE", "Zone ");
+			locationString = locationString.replace("ZONE", "Zone");
 
 			Double calculatedVolume = billingInfo.getVolume() * 500;
 
@@ -68,38 +68,43 @@ public class BillingInfoResource {
 				calculatedVolume = weight;
 			}
 
-			BillingInfo billingInfoDB = billingInfoRepository.findByLocationString(locationString, calculatedVolume);
+			try{
+				BillingInfo billingInfoDB = billingInfoRepository.findByLocationString(locationString, calculatedVolume);
 
-			log.debug(calculatedVolume + "  Volume");
-			if (billingInfoDB != null) {
-				
-				
-				if(billingInfo.getServiceLevel().equalsIgnoreCase("ex"))
-				{
-					calculatedVolume = billingInfoDB.getExRate() * weight;
+				log.debug(calculatedVolume + "  Volume");
+				if (billingInfoDB != null) {
+					
+					
+					if(billingInfo.getServiceLevel().equalsIgnoreCase("ex"))
+					{
+						calculatedVolume = billingInfoDB.getExRate() * weight;
 
-					if (billingInfoDB.getExMinRate() > calculatedVolume) {
-						calculatedVolume = billingInfoDB.getExMinRate();
+						if (billingInfoDB.getExMinRate() > calculatedVolume) {
+							calculatedVolume = billingInfoDB.getExMinRate();
+						}
+					}else{
+						calculatedVolume = billingInfoDB.getRate() * weight;
+
+						if (billingInfoDB.getMinRate() > calculatedVolume) {
+							calculatedVolume = billingInfoDB.getMinRate();
+						}
+
 					}
-				}else{
-					calculatedVolume = billingInfoDB.getRate() * weight;
-
-					if (billingInfoDB.getMinRate() > calculatedVolume) {
-						calculatedVolume = billingInfoDB.getMinRate();
-					}
-
+					
+					log.debug(calculatedVolume + "  Rate");
+					log.debug((calculatedVolume * 1.5)/100 + "  Etoll");
+					log.debug((calculatedVolume * 4.5)/100 + "  National Tool not including");
+					log.debug((calculatedVolume * 15)/100 + "  Rate");
+					calculatedVolume = calculatedVolume+ (calculatedVolume * 1.5)/100+ + (calculatedVolume * 15)/100;
 				}
-				
-				log.debug(calculatedVolume + "  Rate");
-				log.debug((calculatedVolume * 1.5)/100 + "  Etoll");
-				log.debug((calculatedVolume * 4.5)/100 + "  National Tool not including");
-				log.debug((calculatedVolume * 15)/100 + "  Rate");
-				calculatedVolume = calculatedVolume+ (calculatedVolume * 1.5)/100+ + (calculatedVolume * 15)/100;
+
+				log.debug(calculatedVolume + " locationString : [PO:{}] - REST request to Calculated Billing Info", billingInfoDB);
+
+				billingInfo.setCalculatedBill(calculatedVolume);
+			}catch(Exception e)
+			{
+				log.debug("Error : "+e.getMessage());
 			}
-
-			log.debug(calculatedVolume + " locationString : [PO:{}] - REST request to Calculated Billing Info", billingInfoDB);
-
-			billingInfo.setCalculatedBill(calculatedVolume);
 
 			return ResponseEntity.created(new URI("/api/billingInfo/")).headers(HeaderUtil.createCaluculationAlert("Claculatedbill", calculatedVolume + "")).body(billingInfo);
 		};

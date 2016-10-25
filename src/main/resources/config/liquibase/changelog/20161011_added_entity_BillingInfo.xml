@@ -39,16 +39,10 @@
 			<column name="destination_zone" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
-			<column name="rate" type="double">
+			<column name="eco_rate" type="double">
 				<constraints nullable="false" />
 			</column>
-			<column name="min_rate" type="double">
-				<constraints nullable="false" />
-			</column>
-			<column name="ex_rate" type="double">
-				<constraints nullable="false" />
-			</column>
-			<column name="ex_min_rate" type="double">
+			<column name="eco_min_rate" type="double">
 				<constraints nullable="false" />
 			</column>
 			<column name="eco_min" type="double">
@@ -58,12 +52,25 @@
 			<column name="eco_max" type="double">
 				<constraints nullable="false" />
 			</column>
+			<column name="exp_rate" type="double">
+				<constraints nullable="false" />
+			</column>
+			<column name="exp_min_rate" type="double">
+				<constraints nullable="false" />
+			</column>
+			<column name="exp_min" type="double">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="exp_max" type="double">
+				<constraints nullable="false" />
+			</column>
 			 
 			<!-- jhipster-needle-liquibase-add-column - Jhipster will add columns 
-				here, do not remove -->
+				here, do not remove    eco_rate;eco_min;eco_min;eco_max;exp_rate;exp_ min;exp_min;exp_max -->
 		</createTable>
 
-		<loadData encoding="UTF-8" file="config/liquibase/billingInfo_14102016.csv"
+		<loadData encoding="UTF-8" file="config/liquibase/billingInfo2_Xeon_10Oct2016.csv"
 			separator=";" tableName="billing_info" />
 
 	</changeSet>

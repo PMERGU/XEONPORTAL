@@ -51,20 +51,20 @@ public class BillingInfo implements Serializable {
 	private String destinationZone;
 
 	@NotNull
-	@Column(name = "rate", nullable = false)
+	@Column(name = "eco_rate", nullable = false)
 	private Double rate;
 
 	@NotNull
-	@Column(name = "min_rate", nullable = false)
+	@Column(name = "eco_min_rate", nullable = false)
 	private Double minRate;
 	
 	
 	@NotNull
-	@Column(name = "ex_rate", nullable = false)
+	@Column(name = "exp_rate", nullable = false)
 	private Double exRate;
 
 	@NotNull
-	@Column(name = "ex_min_rate", nullable = false)
+	@Column(name = "exp_min_rate", nullable = false)
 	private Double exMinRate;
 
 	@NotNull
