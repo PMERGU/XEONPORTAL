@@ -61,36 +61,36 @@ public class BillingInfoResource {
 			locationString = locationString.replace("ZONE", "Zone");
 
 			Double calculatedVolume = billingInfo.getVolume() * 500;
+			System.out.println("User input of volume " + billingInfo.getVolume());
+			System.out.println("Step 1 " + calculatedVolume );
 
 			Double weight = billingInfo.getWeight();
+			
+			System.out.println("User input of Weight " + billingInfo.getWeight());
 
 			if (weight > calculatedVolume) {
 				calculatedVolume = weight;
 			}
 
+			System.out.println("Step 2 " + calculatedVolume);
+			
 			try{
 				BillingInfo billingInfoDB = billingInfoRepository.findByLocationString(locationString, calculatedVolume);
-
-				log.debug(calculatedVolume + "  Volume");
+				System.out.println(  "********  Volume" + calculatedVolume);
+				//log.debug(calculatedVolume + "  Volume");
 				if (billingInfoDB != null) {
-					
-					
 					if(billingInfo.getServiceLevel().equalsIgnoreCase("ex"))
 					{
-						calculatedVolume = billingInfoDB.getExRate() * weight;
-
+						calculatedVolume = billingInfoDB.getExRate() * calculatedVolume;
 						if (billingInfoDB.getExMinRate() > calculatedVolume) {
-							calculatedVolume = billingInfoDB.getExMinRate();
+							calculatedVolume = billingInfoDB.getExMinRate();							
 						}
 					}else{
-						calculatedVolume = billingInfoDB.getRate() * weight;
-
+						calculatedVolume = billingInfoDB.getRate() * calculatedVolume;
 						if (billingInfoDB.getMinRate() > calculatedVolume) {
 							calculatedVolume = billingInfoDB.getMinRate();
 						}
-
-					}
-					
+					}					
 					log.debug(calculatedVolume + "  Rate");
 					log.debug((calculatedVolume * 1.5)/100 + "  Etoll");
 					log.debug((calculatedVolume * 4.5)/100 + "  National Tool not including");
