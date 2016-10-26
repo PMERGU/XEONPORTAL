@@ -13,27 +13,38 @@
 				<div class="form-group">
 					<label class="control-label" for="field_source">Source
 						Location</label> <select class="form-control" name="source"
-						ng-model="billing.source" id="field_soruce"
-						ng-options="(enum | uppercase) for enum in staticEnums['billinginfo'] ">
+						ng-model="billing.source" id="field_soruce" required >
+						
+						<option value="BFN">BLOEMFONTEIN</option>
+						<option value="CPT">CAPETOWN</option>
+						<option value="DUR">DURBAN</option>
+						<option value="ELS">ELASTLONDON</option>
+						<option value="GRG">GEORGE</option>
+						<option value="JNB">JOHANNESBURG</option>
+						<option value="KIM">KIMBERLEY</option>
+						<option value="KLD">KLERKSDORP</option>
+						<option value="NLP">NELSPRUIT</option>
+						<option value="PLZ">PORTELIZABETH</option>
+						<option value="PTG">PIETERSBURG</option>
 					</select>
 					<!-- <input type="text" class="form-control" name="name" id="field_name" ng-model="billing.name" required tabindex="1"/> -->
 				</div>
 
 				<div class="form-group">
 					<label class="control-label" for="field_szone">Source Zone</label>
-					<select class="form-control" name="szone"
+					<select class="form-control" name="szone" required
 						ng-model="billing.sourceZone" id="field_szone">
-						<option value="ZONE1">ZONE1 (0 -40 KM)</option>
-						<option value="ZONE2">ZONE2(40 KM - 80 KM)</option>
-						<option value="ZONE3">ZONE3(80 KM - 120 KM)</option>
-						<option value="ZONE4">ZONE4(120 KM - 160 KM)</option>
-						<option value="ZONE5">ZONE5(160 KM +)</option>
+						<option value="ZONE1">CENTRAL</option>
+						<option value="ZONE2">DISTRICT</option>
+						<option value="ZONE3">OUTLYING</option>
+						<option value="ZONE4">FAROUTLYING</option>
+						<option value="ZONE5">FAROUTLYING</option>
 					</select>
 				</div>
 
 				<div class="form-group">
 					<label class="control-label" for="field_stype">Service Type</label>
-					<select class="form-control" name="stype"
+					<select class="form-control" name="stype" required
 						ng-model="billing.serviceType" id="field_stype">
 						<option value="BB">Break Bulk</option>
 					</select>
@@ -56,8 +67,19 @@
 				<div class="form-group">
 					<label class="control-label" for="field_destination">Destination
 						Location</label> <select class="form-control" name="destination"
-						ng-model="billing.destination" id="field_destination"
-						ng-options="(enum | uppercase) for enum in staticEnums['billinginfo']">
+						ng-model="billing.destination" id="field_destination"  >
+						<option value="BFN">BLOEMFONTEIN</option>
+						<option value="CPT">CAPETOWN</option>
+						<option value="DUR">DURBAN</option>
+						<option value="ELS">ELASTLONDON</option>
+						<option value="GRG">GEORGE</option>
+						<option value="JNB">JOHANNESBURG</option>
+						<option value="KIM">KIMBERLEY</option>
+						<option value="KLD">KLERKSDORP</option>
+						<option value="NLP">NELSPRUIT</option>
+						<option value="PLZ">PORTELIZABETH</option>
+						<option value="PTG">PIETERSBURG</option>
+						  
 					</select>
 					<!-- <input type="text" class="form-control" name="name" id="field_name" ng-model="billing.name" required tabindex="1"/> -->
 				</div>
@@ -66,20 +88,20 @@
 					<label class="control-label" for="field_dzone">Destination
 						Zone</label>
 					<!-- <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="billing.streetName"  tabindex="4"/> -->
-					<select class="form-control" name="dzone"
+					<select class="form-control" name="dzone" required
 						ng-model="billing.destinationZone" id="field_dzone">
-						<option value="ZONE1">ZONE1 (0 -40 KM)</option>
-						<option value="ZONE2">ZONE2(40 KM - 80 KM)</option>
-						<option value="ZONE3">ZONE3(80 KM - 120 KM)</option>
-						<option value="ZONE4">ZONE4(120 KM - 160 KM)</option>
-						<option value="ZONE5">ZONE5(160 KM +)</option>
+						<option value="ZONE1">CENTRAL</option>
+						<option value="ZONE2">DISTRICT</option>
+						<option value="ZONE3">OUTLYING</option>
+						<option value="ZONE4">FAROUTLYING</option>
+						<option value="ZONE5">FAROUTLYING</option>
 					</select>
 
 				</div>
 
 				<div class="form-group">
 					<label class="control-label" for="field_slevel">Service
-						Level</label> <select class="form-control" name="slevel"
+						Level</label> <select class="form-control" name="slevel" required
 						ng-model="billing.serviceLevel" id="field_slevel">
 						<option value="EC">Economy</option>
 						<option value="EX">Express</option>
@@ -89,7 +111,7 @@
 				<div class="form-group">
 					<label class="control-label" for="field_volume">Volume</label>
 					<div class="input-group">
-						<input type="number" class="form-control" name="volume"
+						<input type="number" class="form-control" name="volume"  ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" required 
 							id="field_volume" ng-model="billing.volume" required tabindex="1" />
 						<span class="input-group-addon">m&sup3;</span>
 					</div>
