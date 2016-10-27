@@ -82,6 +82,8 @@ public class BillingInfoResource {
 					if(billingInfo.getServiceLevel().equalsIgnoreCase("ex"))
 					{
 						calculatedVolume = billingInfoDB.getExRate() * calculatedVolume;
+						System.out.println("1111111billingInfoDB.getExRate():: " + billingInfoDB.getExRate());
+						System.out.println("1111111calculatedVolume::: " + calculatedVolume);
 						if (billingInfoDB.getExMinRate() > calculatedVolume) {
 							calculatedVolume = billingInfoDB.getExMinRate();							
 						}
