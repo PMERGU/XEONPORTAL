@@ -4,20 +4,20 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2 class="font-light m-b-xs tc-green-dark"
+                        <h4 class="font-light m-b-xs tc-green-dark"
                             ng-show="purchaseOrder.id && purchaseOrder.state === 'PROCESSED'">
                             View Purchase Order : {{purchaseOrder.id}} binded to Sales Order : {{purchaseOrder.soNumber}}
-                        </h2>
-                        <h2 class="font-light m-b-xs"
+                        </h4>
+                        <h4 class="font-light m-b-xs"
                             ng-show="purchaseOrder.id && purchaseOrder.state !== 'PROCESSED'">
                             Purchase Order : {{purchaseOrder.id}}
-                        </h2>
-                        <h2 class="font-light m-b-xs" ng-hide="purchaseOrder.id">
+                        </h4>
+                        <h4 class="font-light m-b-xs" ng-hide="purchaseOrder.id">
                             Create new Purchase Order
                             <span has-authority="ROLE_USER">on behalf of </span>
                             <span ng-show="capturedAs.employee" class="text-info" >{{capturedAs.employee.firstName + ' ' + capturedAs.employee.lastName}}</span> for
                             <span ng-show="capturedAs.employee" class="text-info">{{capturedAs.company.name}}</span>
-                        </h2>
+                        </h4>
                         <div class="pull-right" style="margin-top: -20px;">
                             <button class="btn btn-default" ng-click="clearPO()" ng-hide="purchaseOrder.id">
                                 <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Clear Form</span>
@@ -349,12 +349,12 @@
                                         <label class="control-label" for="field_dropOffDate">Delivery Date</label>
                                         <div class="input-group">
                                             <input type="text" id="field_dropOffDate" class="form-control"
-                                                   uib-datepicker-popup
+                                                   uib-datepicker-popup 
                                                    ng-required="purchaseOrder['dropOffDate'] !== null"
                                                    name="dropOffDate" ng-required="requiredFields['dropOffDate']"
                                                    ng-model="purchaseOrder.dropOffDate" is-open="dateSetup.dpDropOff.opened"
                                                    datepicker-options="dateOptions" ng-required="true"
-                                                   close-text="Close"/>
+                                                   close-text="Close" min-date="minDate"/>
                                               <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default"
                                                         ng-click="dateSetup.dpDropOff.open()"><i
@@ -436,9 +436,9 @@
                                                 </div>
                                             </td>
                                             <td ng-hide="purchaseOrder.service === 'WAREHOUSING'">
-                                                <div>{{ po.grossWeight}}kg</div>
+                                                <div>{{ po.grossWeight | number:3 }}kg</div>
                                                 <small>
-                                                    <b>{{ po.grossWeight * po.orderQuantity }}</b>kg
+                                                    <b>{{ po.grossWeight * po.orderQuantity | number:3 }}</b>kg
                                                 </small>
                                             </td>
                                             <td ng-hide="po.materialType === 'DEDICATED' && purchaseOrder.service === 'WAREHOUSING'">
@@ -446,16 +446,16 @@
                                             </td>
                                             <td ng-show="(po.dvType === null || po.dvType === 'DIMENSIONS') && purchaseOrder.service !== 'WAREHOUSING'">
                                                 <div>{{ po.height * po.length * po.width / 1000000 |
-                                                    number:2}}m&sup3;</div>
+                                                    number:3 }}m&sup3;</div>
                                                 <small>
                                                     <b>{{(po.height * po.length * po.width)/1000000 * po.orderQuantity |
-                                                        number:2}}</b>m&sup3;
+                                                        number:3 }}</b>m&sup3;
                                                 </small>
                                             </td>
                                             <td ng-show="po.dvType === 'VOLUME'">
-                                                <div>{{ po.volume | number:2}}m&sup3;</div>
+                                                <div>{{ po.volume| number:3  }}m&sup3;</div>
                                                 <small>
-                                                    <b>{{po.volume * po.orderQuantity | number:2}}</b>m&sup3;
+                                                    <b>{{po.volume * po.orderQuantity | number:3 }}</b>m&sup3;
                                                 </small>
                                             </td>
                                             <td ng-hide="po.materialType === 'DEDICATED'">
@@ -479,7 +479,7 @@
 
                                         <tr>
                                             <td colspan="8">
-                                                <button class="btn btn-primary pull-right" ng-show="!purchaseOrder.poLines || purchaseOrder.poLines[0].materialType !== 'DEDICATED'"
+                                                <button class="btn btn-primary pull-right" ng-show="purchaseOrder.poLines[0].materialType !== 'DEDICATED'"
                                                         ui-sref="purchaseOrder.poLine({serviceType: purchaseOrder.serviceType})">
                                                     <span class="glyphicon glyphicon-plus"></span>
                                                 </button>
@@ -494,11 +494,11 @@
                                             <tbody>
                                             <tr>
                                                 <td><strong>Total Weight :</strong></td>
-                                                <td><strong>{{ totalWeight | number:2 }}</strong>kg</td>
+                                                <td><strong>{{ totalWeight | number:3 }}</strong>kg</td>
                                             </tr>
                                             <tr>
                                                 <td><strong>Total cubes :</strong></td>
-                                                <td><strong>{{ totalCubes | number:2 }}</strong>m&sup3;</td>
+                                                <td><strong>{{ totalCubes | number:3 }}</strong>m&sup3;</td>
                                             </tr>
                                             </tbody>
                                         </table>

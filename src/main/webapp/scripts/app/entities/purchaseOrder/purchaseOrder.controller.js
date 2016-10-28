@@ -5,7 +5,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
                   Party, User, AlertService, Principal, Company, currentUser, Attachment, UploadTools, sweet, FileSaver,
                   staticEnums) {
             $scope.user = currentUser;
+            $scope.minDate= new Date();
             $scope.isXeon = currentUser.company.type === "XEON";
+            $scope.isAdmin = currentUser.company.type === "ADMIN";
 
             Party.query({size: 10000, sort: 'name', type: 'OTHER'}).$promise.then(function(data){
                 $scope.otherParties = data;
@@ -41,22 +43,24 @@ angular.module('portalApp').controller('PurchaseOrderController',
                     transportParty: null,
                     vehicleSize: null,
                     labourRequired: null,
-                    //STEP 2
+                    // STEP 2
                     pickUpParty:  null,
                     collectionDate: new Date(),
                     collectionReference: '',
                     shipToParty: null,
                     dropOffDate: new Date(),
 
-                    //STEP 3
+                    // STEP 3
                     cargoClassification: "NON_HAZARDOUS",
                     poLines: [],
-                    //STEP 4
+                    // STEP 4
                     soldToParty: null,
-                    //extras
+                    // extras
                     company: null,
                     capturedBy: null
                 };
+                $scope.totalWeight = 0;
+                $scope.totalCubes = 0;
                 $scope.purchaseOrder.poLines.length = 0;
                 $scope.attachments = [];
             }
@@ -64,14 +68,15 @@ angular.module('portalApp').controller('PurchaseOrderController',
             if(entity === undefined){
                 resetPo();
 
-                //code below is for the 'capture as another user feature'
+                // code below is for the 'capture as another user feature'
                 if($scope.isXeon){
                     $scope.capturedAs = {
                         company: null,
                         employee: null
                     };
                     $scope.companies = Company.query();
-                    //WATCH when company is selected (for capture as company employee feature)
+                    // WATCH when company is selected (for capture as company
+					// employee feature)
                     $scope.$watch(function() {
                         return $scope.capturedAs.company
                     }, function (company) {
@@ -83,7 +88,8 @@ angular.module('portalApp').controller('PurchaseOrderController',
                         }
                     });
 
-                    //Tied to the above code, refreshed the screen once employee is set
+                    // Tied to the above code, refreshed the screen once
+					// employee is set
                     $scope.$watch(function() {
                         return $scope.capturedAs.employee;
                     }, function (employee) {
@@ -108,9 +114,9 @@ angular.module('portalApp').controller('PurchaseOrderController',
             }
 
             // $scope.load = function (id) {
-            //     PurchaseOrder.get({id: id}, function (result) {
-            //         $scope.purchaseOrder = result;
-            //     });
+            // PurchaseOrder.get({id: id}, function (result) {
+            // $scope.purchaseOrder = result;
+            // });
             // };
 
             // Initial step
@@ -119,10 +125,11 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.requiredFields = {};
 
             $scope.dateOptions = {
-                //dateDisabled: disabled,
+                // dateDisabled: disabled,
                 formatYear: 'yy',
-                // maxDate: new Date(new Date(todaysDate).setMonth(todaysDate.getMonth()+2)),
-                //minDate: new Date(),
+                // maxDate: new Date(new
+				// Date(todaysDate).setMonth(todaysDate.getMonth()+2)),
+                // minDate: new Date(),
                 startingDay: 0
             };
 
@@ -233,7 +240,8 @@ angular.module('portalApp').controller('PurchaseOrderController',
                 }
 
                 transportPartyWatch(IFTET($scope.purchaseOrder.transportParty, 'XEON'));
-                // serviceLevelWatch(IFTET($scope.purchaseOrder.serviceLevel, 'ECONOMY'));
+                // serviceLevelWatch(IFTET($scope.purchaseOrder.serviceLevel,
+				// 'ECONOMY'));
             };
 
             function addTruckCargoToPoLines(){
@@ -255,20 +263,21 @@ angular.module('portalApp').controller('PurchaseOrderController',
 
             // $scope.$watch('purchaseOrder.serviceLevel', serviceLevelWatch);
             // function serviceLevelWatch(value){
-            //     $log.debug("watch serviceLevel triggered with value : " + value);
-            //     switch (value){
-            //         // case 'ECONOMY':
-            //         // case 'EXPRESS':
-            //         //     if($scope.purchaseOrder.serviceType !== 'FULL_CONTAINER_LOAD'){
-            //         //         break;
-            //         //     }
-            //         case 'STANDARD_CROSS_DOCK':
-            //         case 'STANDARD_FTL':
-            //             break;
-            //         default:
-            //             hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
-            //             break;
-            //     }
+            // $log.debug("watch serviceLevel triggered with value : " + value);
+            // switch (value){
+            // // case 'ECONOMY':
+            // // case 'EXPRESS':
+            // // if($scope.purchaseOrder.serviceType !==
+			// 'FULL_CONTAINER_LOAD'){
+            // // break;
+            // // }
+            // case 'STANDARD_CROSS_DOCK':
+            // case 'STANDARD_FTL':
+            // break;
+            // default:
+            // hideOrShow([{name: 'vehicleSize'},{name: 'labourRequired'}]);
+            // break;
+            // }
             // };
 
             $scope.$watch('purchaseOrder.modeOfTransport', modeOfTransportWatch);
@@ -623,12 +632,24 @@ angular.module('portalApp').controller('PurchaseOrderController',
             $scope.wizard = {
                 show: function (number) {
                     $scope.step = number;
+                    if(number == 3 && $scope.purchaseOrder.poLines.length == 0){
+                    	$scope.totalWeight= 0;
+                    	$scope.totalCubes= 0;
+                    }
                 },
                 next: function () {
                     $scope.step++;
+                    if( $scope.step == 3 && $scope.purchaseOrder.poLines.length == 0 ){
+                    	$scope.totalWeight= 0;
+                    	$scope.totalCubes= 0;
+                   }
                 },
                 prev: function () {
                     $scope.step--;
+                    if( $scope.step == 3 && $scope.purchaseOrder.poLines.length == 0 ){
+                    	$scope.totalWeight= 0;
+                    	$scope.totalCubes= 0;
+                    }
                 }
             };
 
