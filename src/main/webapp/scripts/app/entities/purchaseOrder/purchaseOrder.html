@@ -28,7 +28,7 @@
                             </button>
                             <button class="btn btn-primary" ui-sref="purchaseOrder.process"
                                     ng-show="isXeon && purchaseOrder.id && purchaseOrder.state !== 'PROCESSED'">
-                                <span>{{purchaseOrder.state}}</span>
+                                <span>PROCESS PO</span>
                             </button>
                             <span ng-show="purchaseOrder.id && purchaseOrder.state === 'PROCESSING'" style="z-index: 999;font-size: 13px;position: absolute;top: 43px;color: #888;right: 25px;">
                                     by <strong>{{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}</strong>
