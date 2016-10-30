@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('portalApp', ['LocalStorageModule',
+angular.module('portalApp', ['LocalStorageModule','anguFixedHeaderTable',
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload', 'ngSanitize', 'ngAnimate',
     // jhipster-needle-angularjs-add-module JHipster will add new module here
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar', 'ui.gravatar',
