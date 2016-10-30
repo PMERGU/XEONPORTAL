@@ -1,11 +1,11 @@
 package za.co.xeon.repository;
 
-import za.co.xeon.domain.PersistentAuditEvent;
-
 import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import za.co.xeon.domain.PersistentAuditEvent;
 
 /**
  * Spring Data JPA repository for the PersistentAuditEvent entity.

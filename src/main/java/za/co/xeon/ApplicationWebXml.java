@@ -1,11 +1,11 @@
 package za.co.xeon;
 
-import za.co.xeon.config.Constants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+
+import za.co.xeon.config.Constants;
 
 /**
  * This is a helper Java class that provides an alternative to creating a web.xml.

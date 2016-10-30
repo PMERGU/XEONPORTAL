@@ -1,10 +1,10 @@
 package za.co.xeon.web.rest.util;
 
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 
 /**
  * Utility class for handling pagination.

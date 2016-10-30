@@ -1,8 +1,8 @@
 package za.co.xeon.repository;
 
-import za.co.xeon.domain.Authority;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import za.co.xeon.domain.Authority;
 
 /**
  * Spring Data JPA repository for the Authority entity.

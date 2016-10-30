@@ -4,6 +4,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
+
 import za.co.xeon.domain.PostalArea;
 
 /**

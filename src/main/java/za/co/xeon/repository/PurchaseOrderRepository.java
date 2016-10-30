@@ -1,18 +1,16 @@
 package za.co.xeon.repository;
 
-import com.mysema.query.types.Predicate;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
-import za.co.xeon.domain.Company;
-import za.co.xeon.domain.PostalArea;
-import za.co.xeon.domain.PurchaseOrder;
 
-import org.springframework.data.jpa.repository.*;
+import za.co.xeon.domain.Company;
+import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.domain.enumeration.PoState;
-
-import java.util.List;
 
 /**
  * Spring Data JPA repository for the PurchaseOrder entity.

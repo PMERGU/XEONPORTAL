@@ -1,11 +1,11 @@
 package za.co.xeon.external.ocr.dto;
 
-import za.co.xeon.external.ocr.OcrSettings;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import za.co.xeon.external.ocr.OcrSettings;
 
 /**
  * Created by derick on 2016/02/16.

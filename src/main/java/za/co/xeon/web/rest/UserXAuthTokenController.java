@@ -1,13 +1,10 @@
 package za.co.xeon.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import za.co.xeon.security.AuthoritiesConstants;
-import za.co.xeon.security.BlockedLoginException;
-import za.co.xeon.security.LoginAttemptService;
-import za.co.xeon.security.xauth.Token;
-import za.co.xeon.security.xauth.TokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.codahale.metrics.annotation.Timed;
+
+import za.co.xeon.security.AuthoritiesConstants;
+import za.co.xeon.security.BlockedLoginException;
+import za.co.xeon.security.LoginAttemptService;
+import za.co.xeon.security.xauth.Token;
+import za.co.xeon.security.xauth.TokenProvider;
 
 @RestController
 @RequestMapping("/api")

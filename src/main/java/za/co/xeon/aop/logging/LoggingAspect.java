@@ -1,6 +1,8 @@
 package za.co.xeon.aop.logging;
 
-import za.co.xeon.config.Constants;
+import java.util.Arrays;
+
+import javax.inject.Inject;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,8 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
-import javax.inject.Inject;
-import java.util.Arrays;
+import za.co.xeon.config.Constants;
 
 /**
  * Aspect for logging execution of service and repository Spring components.

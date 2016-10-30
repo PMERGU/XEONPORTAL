@@ -1,5 +1,7 @@
 package za.co.xeon.external.ocr;
 
+import java.net.URI;
+
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -11,8 +13,6 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.protocol.HttpContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-
-import java.net.URI;
 
 /**
  * Found here: http://stackoverflow.com/questions/21998405/spring-4-0-0-basic-

@@ -1,25 +1,19 @@
 package za.co.xeon.service;
 
-import com.mysema.query.types.Predicate;
-import org.springframework.security.access.annotation.Secured;
-import za.co.xeon.domain.PurchaseOrder;
-import za.co.xeon.domain.User;
-import za.co.xeon.external.sap.hibersap.dto.ExReturn;
-import za.co.xeon.repository.PurchaseOrderRepository;
-import za.co.xeon.security.AuthoritiesConstants;
-import za.co.xeon.web.rest.dto.PurchaseOrderDTO;
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
+import za.co.xeon.repository.PurchaseOrderRepository;
+import za.co.xeon.security.AuthoritiesConstants;
 
 /**
  * Service Implementation for managing PurchaseOrder.

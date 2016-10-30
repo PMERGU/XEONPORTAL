@@ -1,8 +1,8 @@
 package za.co.xeon.web.rest.dto;
 
-import za.co.xeon.external.sap.hibersap.dto.ExReturn;
-
 import java.util.List;
+
+import za.co.xeon.external.sap.hibersap.dto.ExReturn;
 
 /**
  * Created by derick on 2016/07/29.

@@ -1,9 +1,9 @@
 package za.co.xeon.service;
 
-import za.co.xeon.config.JHipsterProperties;
-import za.co.xeon.domain.Comment;
-import za.co.xeon.domain.PurchaseOrder;
-import za.co.xeon.domain.User;
+import java.util.Locale;
+
+import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
@@ -15,13 +15,13 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+
+import za.co.xeon.config.JHipsterProperties;
+import za.co.xeon.domain.Comment;
+import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
 import za.co.xeon.domain.enumeration.CompanyType;
 import za.co.xeon.repository.UserRepository;
-
-
-import javax.inject.Inject;
-import javax.mail.internet.MimeMessage;
-import java.util.Locale;
 
 /**
  * Service for sending e-mails.

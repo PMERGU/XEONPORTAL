@@ -7,7 +7,12 @@ import org.springframework.security.core.AuthenticationException;
  */
 public class BlockedLoginException extends AuthenticationException {
 
-    public BlockedLoginException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 352486946028921567L;
+
+	public BlockedLoginException(String message) {
         super(message);
     }
 

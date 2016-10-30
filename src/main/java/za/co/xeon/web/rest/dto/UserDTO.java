@@ -1,15 +1,17 @@
 package za.co.xeon.web.rest.dto;
 
-import za.co.xeon.domain.Authority;
-import za.co.xeon.domain.Company;
-import za.co.xeon.domain.User;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import za.co.xeon.domain.Authority;
+import za.co.xeon.domain.Company;
+import za.co.xeon.domain.User;
 /**
  * A DTO representing a user, with his authorities.
  */

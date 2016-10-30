@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import za.co.xeon.domain.Attachment;
-import za.co.xeon.domain.PoLine;
 import za.co.xeon.domain.PurchaseOrder;
 
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {

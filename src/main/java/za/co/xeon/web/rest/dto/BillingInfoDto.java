@@ -1,7 +1,5 @@
 package za.co.xeon.web.rest.dto;
 
-import java.io.Serializable;
-
 public class BillingInfoDto {
 
 	private String locationString;

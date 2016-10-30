@@ -1,27 +1,22 @@
 package za.co.xeon.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import za.co.xeon.domain.Company;
-import za.co.xeon.domain.Party;
-import za.co.xeon.domain.User;
-import za.co.xeon.domain.enumeration.CompanyType;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+
+import za.co.xeon.domain.Company;
+import za.co.xeon.domain.enumeration.CompanyType;
 
 /**
  * A Company.
  */
 public class CompanyDto implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2393975948876858137L;
+
+	private Long id;
 
     private String name;
 

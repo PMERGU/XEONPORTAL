@@ -2,14 +2,17 @@ package za.co.xeon.domain.dto;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Derick on 3/25/2016.
  */
 public class PurchaseOrderDto implements Serializable {
-    Map<String, SalesOrderDto> salesOrders = new HashMap<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1062578463937183289L;
+	Map<String, SalesOrderDto> salesOrders = new HashMap<>();
 
     public PurchaseOrderDto() {
     }

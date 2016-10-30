@@ -1,40 +1,35 @@
 package za.co.xeon.service;
 
-import com.amazonaws.services.s3.model.AmazonS3Exception;
+import static java.lang.String.format;
+
+import java.io.File;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Future;
+
 import org.hibersap.bapi.BapiRet2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.stereotype.Service;
+
 import za.co.xeon.config.MobileConfiguration;
 import za.co.xeon.domain.Attachment;
 import za.co.xeon.domain.User;
-import za.co.xeon.domain.dto.PurchaseOrderDto;
-import za.co.xeon.domain.enumeration.AttachmentCategories;
 import za.co.xeon.external.as3.S3Service;
 import za.co.xeon.external.as3.S3Settings;
 import za.co.xeon.external.ocr.OcrService;
 import za.co.xeon.external.ocr.OcrSettings;
 import za.co.xeon.external.ocr.dto.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import za.co.xeon.external.sap.hibersap.dto.*;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
-import za.co.xeon.web.rest.AttachmentResource;
+import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
+import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
+import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
+import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
-import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
-
-import java.io.File;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
-
-import static java.lang.String.format;
 
 /**
  * Created by derick on 2016/02/07.

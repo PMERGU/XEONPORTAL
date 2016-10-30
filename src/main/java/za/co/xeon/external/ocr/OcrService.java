@@ -1,7 +1,19 @@
 package za.co.xeon.external.ocr;
 
-import za.co.xeon.external.ocr.dto.Result;
-import za.co.xeon.external.ocr.dto.xsd.result.Document;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+
+import javax.annotation.PostConstruct;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.NodeList;
 
-import javax.annotation.PostConstruct;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
+import za.co.xeon.external.ocr.dto.Result;
+import za.co.xeon.external.ocr.dto.xsd.result.Document;
 
 /**
  * Created by derick on 2016/02/07.
