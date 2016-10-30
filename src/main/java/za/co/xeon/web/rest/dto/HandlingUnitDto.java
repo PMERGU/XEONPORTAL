@@ -6,7 +6,11 @@ import java.io.Serializable;
  * Created by Derick on 3/26/2016.
  */
 public class HandlingUnitDto implements Serializable{
-    private String handlingUnit;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7015688403305160853L;
+	private String handlingUnit;
 
     public HandlingUnitDto() {
     }

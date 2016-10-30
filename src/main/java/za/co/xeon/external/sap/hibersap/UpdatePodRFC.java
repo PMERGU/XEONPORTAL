@@ -1,7 +1,7 @@
 package za.co.xeon.external.sap.hibersap;
 
-import java.lang.String;
 import java.util.List;
+
 import org.hibersap.annotations.Bapi;
 import org.hibersap.annotations.Import;
 import org.hibersap.annotations.Parameter;

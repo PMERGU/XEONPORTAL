@@ -1,20 +1,26 @@
 package za.co.xeon.domain;
 
-import javafx.scene.paint.Material;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import za.co.xeon.domain.enumeration.DVType;
-import za.co.xeon.domain.enumeration.MaterialType;
-import za.co.xeon.domain.enumeration.PoState;
-import za.co.xeon.domain.enumeration.UnitOfMeasure;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import za.co.xeon.domain.enumeration.DVType;
+import za.co.xeon.domain.enumeration.MaterialType;
+import za.co.xeon.domain.enumeration.UnitOfMeasure;
 
 /**
  * A PoLine.
@@ -24,7 +30,12 @@ import java.util.Objects;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PoLine implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4612452073433387968L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

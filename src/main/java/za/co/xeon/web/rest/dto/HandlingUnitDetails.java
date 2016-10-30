@@ -1,13 +1,13 @@
 package za.co.xeon.web.rest.dto;
 
+import java.util.List;
+
 import org.hibersap.annotations.Parameter;
 import org.hibersap.annotations.Table;
-import org.hibersap.bapi.BapiRet2;
+
 import za.co.xeon.external.sap.hibersap.dto.Huheader;
 import za.co.xeon.external.sap.hibersap.dto.Huitem;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
-
-import java.util.List;
 
 /**
  * Created by Derick on 9/17/2016.

@@ -1,12 +1,11 @@
 package za.co.xeon.config;
 
-import za.co.xeon.config.liquibase.AsyncSpringLiquibase;
+import java.sql.SQLException;
+import java.util.Arrays;
 
-import com.codahale.metrics.MetricRegistry;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import liquibase.integration.spring.SpringLiquibase;
+import javax.inject.Inject;
+import javax.sql.DataSource;
+
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +22,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.sql.SQLException;
-import java.util.Arrays;
+import com.codahale.metrics.MetricRegistry;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import liquibase.integration.spring.SpringLiquibase;
+import za.co.xeon.config.liquibase.AsyncSpringLiquibase;
 
 @Configuration
 @EnableJpaRepositories("za.co.xeon.repository")

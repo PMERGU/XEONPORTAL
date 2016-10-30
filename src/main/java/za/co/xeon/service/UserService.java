@@ -1,14 +1,13 @@
 package za.co.xeon.service;
 
-import za.co.xeon.domain.Authority;
-import za.co.xeon.domain.User;
-import za.co.xeon.repository.AuthorityRepository;
-import za.co.xeon.repository.UserRepository;
-import za.co.xeon.security.SecurityUtils;
-import za.co.xeon.service.util.RandomUtil;
-import za.co.xeon.web.rest.dto.ManagedUserDTO;
 import java.time.ZonedDateTime;
-import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,9 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
-import javax.inject.Inject;
-import java.util.*;
+import za.co.xeon.domain.Authority;
+import za.co.xeon.domain.User;
+import za.co.xeon.repository.AuthorityRepository;
+import za.co.xeon.repository.UserRepository;
+import za.co.xeon.security.SecurityUtils;
+import za.co.xeon.service.util.RandomUtil;
+import za.co.xeon.web.rest.dto.ManagedUserDTO;
 
 /**
  * Service class for managing users.

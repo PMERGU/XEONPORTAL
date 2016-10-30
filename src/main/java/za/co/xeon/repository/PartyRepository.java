@@ -2,16 +2,11 @@ package za.co.xeon.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.parser.Part;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import za.co.xeon.domain.Company;
 import za.co.xeon.domain.Party;
-
-import org.springframework.data.jpa.repository.*;
-import za.co.xeon.domain.PurchaseOrder;
-import za.co.xeon.domain.User;
 import za.co.xeon.domain.enumeration.PartyType;
-
-import java.util.List;
 
 /**
  * Spring Data JPA repository for the Party entity.

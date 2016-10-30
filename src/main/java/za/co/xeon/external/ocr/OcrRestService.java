@@ -1,19 +1,15 @@
 package za.co.xeon.external.ocr;
 
-import za.co.xeon.config.MobileConfiguration;
-import za.co.xeon.external.ocr.dto.Result;
-import za.co.xeon.external.ocr.dto.Task;
-import za.co.xeon.external.ocr.dto.xsd.result.Document;
-import za.co.xeon.external.ocr.Converters;
+import java.util.concurrent.atomic.AtomicLong;
+
+import javax.servlet.annotation.MultipartConfig;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.annotation.MultipartConfig;
-import java.io.File;
-import java.util.concurrent.atomic.AtomicLong;
+import za.co.xeon.config.MobileConfiguration;
 
 /**
  * Created by derick on 2016/02/08.

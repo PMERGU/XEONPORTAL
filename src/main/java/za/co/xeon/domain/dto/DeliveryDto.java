@@ -1,18 +1,20 @@
 package za.co.xeon.domain.dto;
 
-import za.co.xeon.external.sap.hibersap.CustomerOrdersByDateRFC;
-import za.co.xeon.external.sap.hibersap.dto.EvResult;
-
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import za.co.xeon.external.sap.hibersap.dto.EvResult;
 
 /**
  * Created by Derick on 3/25/2016.
  */
 public class DeliveryDto implements Serializable {
-    private Map<String, EvResult> shipments = new HashMap<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6579009755477702424L;
+	private Map<String, EvResult> shipments = new HashMap<>();
 
     public DeliveryDto(Map<String, EvResult> shipments) {
         this.shipments = shipments;

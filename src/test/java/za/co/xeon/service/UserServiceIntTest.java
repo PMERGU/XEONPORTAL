@@ -1,24 +1,26 @@
 package za.co.xeon.service;
 
-import za.co.xeon.Application;
-import za.co.xeon.domain.User;
-import za.co.xeon.repository.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
+
 import java.time.ZonedDateTime;
-import za.co.xeon.service.util.RandomUtil;
-import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.Optional;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
+import za.co.xeon.Application;
+import za.co.xeon.domain.User;
+import za.co.xeon.repository.UserRepository;
+import za.co.xeon.service.util.RandomUtil;
 
 /**
  * Test class for the UserResource REST controller.

@@ -8,7 +8,11 @@ import java.util.List;
  * Created by Derick on 3/26/2016.
  */
 public class HandlingUnitUpdateDto implements Serializable{
-    private Date date;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4590141372347631664L;
+	private Date date;
     private List<HandlingUnitDto> handlingUnits;
 
     public HandlingUnitUpdateDto() {

@@ -1,9 +1,52 @@
 package za.co.xeon.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import za.co.xeon.domain.*;
-import za.co.xeon.domain.enumeration.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.codahale.metrics.annotation.Timed;
+
+import za.co.xeon.domain.Attachment;
+import za.co.xeon.domain.Comment;
+import za.co.xeon.domain.Party;
+import za.co.xeon.domain.PoLine;
+import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.User;
+import za.co.xeon.domain.enumeration.CompanyType;
+import za.co.xeon.domain.enumeration.DVType;
+import za.co.xeon.domain.enumeration.PoState;
+import za.co.xeon.domain.enumeration.SapCode;
+import za.co.xeon.domain.enumeration.ServiceType;
+import za.co.xeon.domain.enumeration.ShippingType;
+import za.co.xeon.domain.enumeration.TradeType;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.SalesOrderCreateRFC;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
@@ -11,7 +54,12 @@ import za.co.xeon.external.sap.hibersap.dto.ImItemDetail;
 import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrCol;
 import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrShpto;
 import za.co.xeon.external.sap.hibersap.errors.ValidSapException;
-import za.co.xeon.repository.*;
+import za.co.xeon.repository.AttachmentRepository;
+import za.co.xeon.repository.CommentRepository;
+import za.co.xeon.repository.PartyRepository;
+import za.co.xeon.repository.PoLineRepository;
+import za.co.xeon.repository.PurchaseOrderRepository;
+import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
 import za.co.xeon.service.MobileService;
@@ -22,29 +70,6 @@ import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
 import za.co.xeon.web.rest.errors.InvalidDataException;
 import za.co.xeon.web.rest.util.HeaderUtil;
 import za.co.xeon.web.rest.util.PaginationUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * REST controller for managing PurchaseOrder.

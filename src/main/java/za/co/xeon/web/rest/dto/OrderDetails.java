@@ -1,9 +1,9 @@
 package za.co.xeon.web.rest.dto;
 
+import java.util.List;
+
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
-
-import java.util.List;
 
 /**
  * Created by Derick on 9/10/2016.

@@ -1,8 +1,9 @@
 package za.co.xeon.config;
 
-import za.co.xeon.security.xauth.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import za.co.xeon.security.xauth.TokenProvider;
 
 /**
 * Configures x-auth-token security.

@@ -1,16 +1,18 @@
 package za.co.xeon.service;
 
-import za.co.xeon.config.audit.AuditEventConverter;
-import za.co.xeon.domain.PersistentAuditEvent;
-import za.co.xeon.repository.PersistenceAuditEventRepository;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.List;
-import java.util.Optional;
+import za.co.xeon.config.audit.AuditEventConverter;
+import za.co.xeon.domain.PersistentAuditEvent;
+import za.co.xeon.repository.PersistenceAuditEventRepository;
 
 /**
  * Service for managing audit events.

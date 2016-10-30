@@ -1,19 +1,46 @@
 package za.co.xeon.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import za.co.xeon.domain.enumeration.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import za.co.xeon.domain.enumeration.CargoClassificationType;
+import za.co.xeon.domain.enumeration.CargoType;
+import za.co.xeon.domain.enumeration.CustomerType;
+import za.co.xeon.domain.enumeration.DeliveryType;
+import za.co.xeon.domain.enumeration.ModeOfTransport;
+import za.co.xeon.domain.enumeration.PoState;
+import za.co.xeon.domain.enumeration.Service;
+import za.co.xeon.domain.enumeration.ServiceLevel;
+import za.co.xeon.domain.enumeration.ServiceType;
+import za.co.xeon.domain.enumeration.TradeType;
+import za.co.xeon.domain.enumeration.TransportParty;
+import za.co.xeon.domain.enumeration.VehicleSize;
 
 /**
  * A PurchaseOrder.
@@ -24,7 +51,12 @@ import za.co.xeon.domain.enumeration.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class PurchaseOrder implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4745545617591667683L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

@@ -9,9 +9,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.util.StopWatch;
 
-import za.co.xeon.config.Constants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
+import za.co.xeon.config.Constants;
 
 /**
  * Specific liquibase.integration.spring.SpringLiquibase that will update the database asynchronously.

@@ -1,13 +1,29 @@
 package za.co.xeon.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
-import za.co.xeon.domain.enumeration.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.servlet.annotation.MultipartConfig;
-import java.util.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import za.co.xeon.domain.enumeration.AttachmentCategories;
+import za.co.xeon.domain.enumeration.BillingInfoTypes;
+import za.co.xeon.domain.enumeration.CargoType;
+import za.co.xeon.domain.enumeration.DeliveryType;
+import za.co.xeon.domain.enumeration.MaterialType;
+import za.co.xeon.domain.enumeration.ModeOfTransport;
+import za.co.xeon.domain.enumeration.PartyType;
+import za.co.xeon.domain.enumeration.Service;
+import za.co.xeon.domain.enumeration.ServiceLevel;
+import za.co.xeon.domain.enumeration.ServiceType;
+import za.co.xeon.domain.enumeration.TradeType;
+import za.co.xeon.domain.enumeration.UnitOfMeasure;
+import za.co.xeon.domain.enumeration.VehicleSize;
+import za.co.xeon.domain.enumeration.ZoneTypes;
 
 @RestController
 @RequestMapping("/api/static")

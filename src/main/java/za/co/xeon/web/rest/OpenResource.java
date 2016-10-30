@@ -1,58 +1,43 @@
 package za.co.xeon.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import org.hibersap.bapi.BapiRet2;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.wiring.ClassNameBeanWiringInfoResolver;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.codahale.metrics.annotation.Timed;
+
 import za.co.xeon.config.MobileConfiguration;
-import za.co.xeon.domain.Company;
 import za.co.xeon.domain.PurchaseOrder;
-import za.co.xeon.domain.User;
-import za.co.xeon.domain.enumeration.ServiceType;
 import za.co.xeon.external.as3.S3Service;
-import za.co.xeon.external.as3.S3Settings;
 import za.co.xeon.external.ftp.FtpService;
-import za.co.xeon.external.ocr.Converters;
-import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
-import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
-import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
 import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
-import za.co.xeon.security.AuthoritiesConstants;
-import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
 import za.co.xeon.service.MobileService;
 import za.co.xeon.web.rest.dto.Contact;
-import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 import za.co.xeon.web.rest.dto.OrderDetails;
-import za.co.xeon.web.rest.util.HeaderUtil;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 /**
  * Created by derick on 2016/02/08.

@@ -1,9 +1,9 @@
 package za.co.xeon.security;
 
-import za.co.xeon.config.Constants;
-
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
+
+import za.co.xeon.config.Constants;
 
 /**
  * Implementation of AuditorAware based on Spring Security.

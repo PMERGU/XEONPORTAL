@@ -1,26 +1,29 @@
 package za.co.xeon.web.rest.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
-import za.co.xeon.domain.enumeration.PoState;
-import za.co.xeon.domain.enumeration.ServiceLevel;
+import javax.validation.constraints.NotNull;
+
 import za.co.xeon.domain.enumeration.CustomerType;
 import za.co.xeon.domain.enumeration.DeliveryType;
 import za.co.xeon.domain.enumeration.ModeOfTransport;
-import za.co.xeon.domain.enumeration.DeliveryType;
+import za.co.xeon.domain.enumeration.PoState;
+import za.co.xeon.domain.enumeration.ServiceLevel;
 
 /**
  * A DTO for the PurchaseOrder entity.
  */
 public class PurchaseOrderDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5162244287676682234L;
+
+	private Long id;
 
     @NotNull
     private PoState state;

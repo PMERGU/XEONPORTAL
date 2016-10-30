@@ -1,10 +1,9 @@
 package za.co.xeon.config;
 
-import za.co.xeon.security.*;
-import za.co.xeon.security.xauth.*;
+import javax.inject.Inject;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,12 +12,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
-
-import javax.inject.Inject;
+import za.co.xeon.security.AuthoritiesConstants;
+import za.co.xeon.security.CustomAccessDeniedHandler;
+import za.co.xeon.security.Http401UnauthorizedEntryPoint;
+import za.co.xeon.security.xauth.TokenProvider;
+import za.co.xeon.security.xauth.XAuthTokenConfigurer;
 
 @Configuration
 @EnableWebSecurity

@@ -1,7 +1,6 @@
 package za.co.xeon.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -25,7 +24,12 @@ import javax.validation.constraints.NotNull;
         })
 public class Attachment implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8653444127008812156L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

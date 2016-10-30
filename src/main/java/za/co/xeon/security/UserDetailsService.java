@@ -1,8 +1,11 @@
 package za.co.xeon.security;
 
-import za.co.xeon.domain.Authority;
-import za.co.xeon.domain.User;
-import za.co.xeon.repository.UserRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,11 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.*;
-import java.util.stream.Collectors;
+import za.co.xeon.domain.User;
+import za.co.xeon.repository.UserRepository;
 
 /**
  * Authenticate a user from the database.
