@@ -274,7 +274,7 @@
                                         <div class="input-group">
                                             <input id="field_collectionDate" type="text" class="form-control"
                                                    name="collectionDate"
-                                                   uib-datepicker-popup
+                                                   uib-datepicker-popup valid-date
                                                    ng-model="purchaseOrder.collectionDate"
                                                    datepicker-options="dateOptions"
                                                    ng-required="requiredFields['collectionDate']"
@@ -291,6 +291,7 @@
                                                 required
                                             </p>
                                         </div>
+                                         <p class="help-block small-help-block pull-right"  ng-show="editForm.collectionDate.$error.currentStartDate">Collection Date must be on or after Current date.</p>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label" for="field_collectionReference">Collection
@@ -349,7 +350,7 @@
                                         <label class="control-label" for="field_dropOffDate">Delivery Date</label>
                                         <div class="input-group">
                                             <input type="text" id="field_dropOffDate" class="form-control"
-                                                   uib-datepicker-popup 
+                                                   uib-datepicker-popup  valid-date
                                                    ng-required="purchaseOrder['dropOffDate'] !== null"
                                                    name="dropOffDate" ng-required="requiredFields['dropOffDate']"
                                                    ng-model="purchaseOrder.dropOffDate" is-open="dateSetup.dpDropOff.opened"
@@ -367,6 +368,11 @@
                                                 required
                                             </p>
                                         </div>
+                                        <p class="help-block small-help-block pull-right" ng-show="editForm.dropOffDate.$error.currentEndDate">Delivery Date must be on or after Current date.</p>
+                                        <p class="help-block small-help-block pull-right"
+                                           ng-show="editForm.dropOffDate.$error.endBeforeStart">
+                                            Delivery Date must be on or after Collection Date.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
