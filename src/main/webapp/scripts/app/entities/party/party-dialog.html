@@ -17,11 +17,11 @@
                         <p class="help-block small-help-block pull-right" ng-show="editForm.name.$error.required">required</p>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="control-label" for="field_streetName">Street Name</label>
-                    <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="party.streetName"  tabindex="4"/>
+ 				<div class="form-group">
+                    <label class="control-label" for="field_houseNumber">House Number</label>
+                    <input type="text" class="form-control" name="houseNumber" id="field_houseNumber" ng-model="party.houseNumber" tabindex="3"/>
                 </div>
+               
 
                 <div class="form-group" ng-show="isXeon">
                     <label class="control-label" for="field_sapId">SAP ID (Fin Con)</label>
@@ -47,8 +47,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="field_houseNumber">House Number</label>
-                    <input type="text" class="form-control" name="houseNumber" id="field_houseNumber" ng-model="party.houseNumber" tabindex="3"/>
+                    <label class="control-label" for="field_streetName">Address</label>
+                    <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="party.streetName"  tabindex="4"/>
                 </div>
                 <div class="form-group" ng-show="isXeon">
                     <label>Company</label>
@@ -68,8 +68,8 @@
                 </blockquote>
             </div>
             <div class="col-md-9">
-                <ui-select ng-model="party.area" style="padding-top:10px">
-                    <ui-select-match placeholder="Search for area...">{{$select.selected.suburb + ', ' + $select.selected.city + ' ' + $select.selected.province + ', ' + ("0000"+$select.selected.postalCode).slice(-4) }}</ui-select-match>
+                <ui-select ng-model="party.area" style="padding-top:10px" required>
+                    <ui-select-match placeholder="Search for area..." >{{$select.selected.suburb + ', ' + $select.selected.city + ' ' + $select.selected.province + ', ' + ("0000"+$select.selected.postalCode).slice(-4) }}</ui-select-match>
                     <ui-select-choices repeat="area in filteredAreas track by area.id" group-by="'province'" refresh="searchArea($select.search)" minimum-input-length="4">
                         <span ng-bind-html="area.suburb | highlight: $select.search"></span>
                         <small ng-bind-html="area.city + ' ' + area.province + ', ' + ('0000' + area.postalCode).slice(-4) | highlight: $select.search"></small>
@@ -98,7 +98,12 @@
                 </div>
             </div>
         </div>
-    </div>
+		<div class="form-group">
+			<p>Note: Please contact XEON CSU if postal code data is not found
+				for the party location.</p>
+		</div>
+
+	</div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
