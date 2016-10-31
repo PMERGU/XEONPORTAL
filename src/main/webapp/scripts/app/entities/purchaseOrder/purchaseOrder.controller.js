@@ -934,13 +934,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
 				}
 			},
 			prev : function() {
-				if (validate($scope.step)) {
+			//	if (validate($scope.step)) {
 					$scope.step--;
 					if ($scope.step == 3 && $scope.purchaseOrder.poLines.length == 0) {
 						$scope.totalWeight = 0;
 						$scope.totalCubes = 0;
 					}
-				}
+			//	}
 			}
 		};
 
