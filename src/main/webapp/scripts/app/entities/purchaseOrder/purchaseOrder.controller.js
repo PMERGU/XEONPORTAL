@@ -934,13 +934,13 @@ angular.module('portalApp').controller('PurchaseOrderController',
 				}
 			},
 			prev : function() {
-				if (validate($scope.step)) {
+			//	if (validate($scope.step)) {
 					$scope.step--;
 					if ($scope.step == 3 && $scope.purchaseOrder.poLines.length == 0) {
 						$scope.totalWeight = 0;
 						$scope.totalCubes = 0;
 					}
-				}
+			//	}
 			}
 		};
 
@@ -1092,5 +1092,64 @@ angular.module('portalApp').controller('PurchaseOrderController',
 			} else {
 				return ifThis;
 			}
-		}
+		};
+		
+		$scope.$watch('purchaseOrder.collectionDate', validateColDates);
+    	$scope.$watch('purchaseOrder.dropOffDate', validateDropDates);
+    	 
+    	function validateColDates() {
+    	    if (!$scope.purchaseOrder) return;
+    	    if ($scope.editForm.collectionDate.$error.invalidDate || $scope.editForm.dropOffDate.$error.invalidDate) {
+    	        $scope.editForm.dropOffDate.$setValidity("endBeforeStart", true);  
+    	        $scope.editForm.collectionDate.$setValidity("currentStartDate", true);
+    	        $scope.editForm.dropOffDate.$setValidity("currentEndDate", true);//already invalid (per validDate directive)
+    	    } else {
+    	        //depending on whether the user used the date picker or typed it, this will be different (text or date type).  
+    	        //creating a new date object takes care of that.  
+    	        var endDate = new Date($scope.purchaseOrder.dropOffDate);
+    	        var startDate = new Date($scope.purchaseOrder.collectionDate);
+    	        
+    	        var today=new Date();
+    	        today.setHours(0, 0, 0, 0);
+//    	        today.setMinutes(min, sec, ms)(0);
+//    	        today.setSeconds(0, 0);
+//    	        today.setMilliseconds(0);
+    	        $scope.displayDate=today+ "  "+startDate +" "+endDate;
+    	         
+    	        
+    	        $scope.editForm.collectionDate.$setValidity("currentStartDate", today <= startDate);
+    	        $scope.editForm.dropOffDate.$setValidity("currentEndDate", today <= endDate );
+    	        
+    	        if(today <= startDate && today <= endDate){ 
+    	        	$scope.editForm.dropOffDate.$setValidity("endBeforeStart", endDate >= startDate);
+    	        }
+    	    }
+    	};
+    	
+    	function validateDropDates() {
+    	    if (!$scope.purchaseOrder) return;
+    	    if ($scope.editForm.collectionDate.$error.invalidDate || $scope.editForm.dropOffDate.$error.invalidDate) {
+    	        $scope.editForm.collectionDate.$setValidity("endBeforeStart", true);  
+    	        $scope.editForm.dropOffDate.$setValidity("endBeforeStart", true);  
+    	        $scope.editForm.collectionDate.$setValidity("currentStartDate", true);
+    	        $scope.editForm.dropOffDate.$setValidity("currentEndDate", true);//already invalid (per validDate directive)
+    	    } else {
+    	        //depending on whether the user used the date picker or typed it, this will be different (text or date type).  
+    	        //creating a new date object takes care of that.  
+    	        var endDate = new Date($scope.purchaseOrder.dropOffDate);
+    	        var startDate = new Date($scope.purchaseOrder.collectionDate);
+    	        
+    	        var today=new Date();
+    	        today.setHours(0, 0, 0, 0);
+    	        
+    	        $scope.editForm.collectionDate.$setValidity("currentStartDate", today <= startDate);
+    	        $scope.editForm.dropOffDate.$setValidity("currentEndDate", today <= endDate );
+    	        
+    	        if(today <= startDate && today <= endDate){ 
+    	        	$scope.editForm.dropOffDate.$setValidity("endBeforeStart", endDate >= startDate);
+    	        	 
+    	        }
+    	    }
+    	};
+		
 	});
