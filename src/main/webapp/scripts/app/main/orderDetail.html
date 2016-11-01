@@ -205,10 +205,9 @@
                                         <th>Status 2</th>
                                         <th>Status 3</th>
                                         <th>Status 4</th>
-                                        <th>Volume / Dimensions</th>
-                                        <th>UoM</th>
+                                        <th>Volume / Dimensions</th>                                        
                                         <th>Weight</th>
-                                        <th>Weight UoM</th>
+                                        
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -262,14 +261,13 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <div>{{ hu.height * hu.length * hu.width / 1000000 | number:2}}m&sup3;</div>
+                                            <div>{{ hu.height * hu.lenght * hu.width / 1000000 | number:3}}M&sup3;</div>
                                             <small>
-                                                <b>H:{{hu.height|number:0}} * L:{{hu.lenght|number:0}} * W:{{hu.width|number:0}}</b>
+                                                <b>H:{{hu.height|number:0}} * L:{{hu.lenght|number:0}} * W:{{hu.width|number:0}} {{ hu.unitDim }}</b>
                                             </small>
                                         </td>
-                                        <td>{{ hu.unitDim }}</td>
-                                        <td>{{ hu.totalWght }}</td>
-                                        <td>{{ hu.maxUnitOfWght }}</td>
+                                        <td>{{ hu.totalWght }} {{ hu.maxUnitOfWght }}</td>
+                                        
                                     </tr>
                                     </tbody>
                                 </table>
