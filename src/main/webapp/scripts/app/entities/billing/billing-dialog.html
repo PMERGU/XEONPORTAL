@@ -118,12 +118,12 @@
 				</div>
 
 
-                <div class="form-group">
-                    <label for="surcharge">
-                        <input type="checkbox" id="surcharge" name="surcharge" ng-model="billing.surcharge" tabindex="8">
-                        <span>Surcharge</span>
-                    </label>
-                </div>
+				<div class="form-group">
+					<label for="surcharge"> <input type="checkbox"
+						id="surcharge" name="surcharge" ng-model="billing.surcharge" ng-click="save()"
+						tabindex="8"> <span>Surcharge</span>
+					</label>
+				</div>
 
 
 
@@ -134,9 +134,16 @@
 		<div class="form-group" ng-show="billing.calculatedBill">
 			<label class="control-label">Approximate invoice amount is :
 			</label> R {{ billing.calculatedBill | number : 2}}
-			<p>Note: Invoice value is based on information provided above.
-				Please ensure input data is as per shipment to attain and accurate
-				estimate. Please note additional sur charges may apply</p>
+			<p>
+			<ul>
+				<li>Invoice value is based on information provided above.</li>
+				<li>Please ensure input data is as per shipment to attain and
+					accurate estimate.</li>
+				<li>Fuel and e-toll surcharge has been added, additional
+					surcharges may apply (Tail-lift, redelivery, out-of-gauge, etc).</li>
+				<li>Rate quoted above excludes VAT</li>
+			</ul>
+			</p>
 		</div>
 
 
