@@ -71,7 +71,7 @@
                 </blockquote>
             </div>
             <div class="col-md-9">
-                <ui-select ng-model="party.area" style="padding-top:10px">
+                <ui-select ng-model="party.area" style="padding-top:10px" required>
                     <ui-select-match placeholder="Search for area...">{{$select.selected.suburb + ', ' + $select.selected.city + ' ' + $select.selected.province + ', ' + ("0000"+$select.selected.postalCode).slice(-4) }}</ui-select-match>
                     <ui-select-choices repeat="area in filteredAreas track by area.id" group-by="'province'" refresh="searchArea($select.search)" minimum-input-length="4">
                         <span ng-bind-html="area.suburb | highlight: $select.search"></span>
