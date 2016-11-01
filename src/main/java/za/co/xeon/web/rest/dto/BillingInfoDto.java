@@ -27,6 +27,7 @@ public class BillingInfoDto {
 	
 	private String serviceType;
 	private String serviceLevel;
+	private boolean surcharge;
 	
 
 	public String getLocationString() {
@@ -105,13 +106,13 @@ public class BillingInfoDto {
 	public String toString() {
 		return " BillingInfo{ source='" + source + '\'' + ", sourceZone= ' " + sourceZone + '\'' + ", destination="
 				+ destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate=" + rate + '\'' + ", calculatedBill= "+calculatedBill +'\''
-			+ ", volume=" + volume + '\''+ ", weight=" + weight + '\''	+ ", minRate=" + minRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", serviceType=" + serviceType + '\''+ ", serviceLevel=" + serviceLevel + '\'' + '}';
+			+ ", volume=" + volume + '\''+ ", weight=" + weight + '\''	+ ", minRate=" + minRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", serviceType=" + serviceType + '\''+ ", serviceLevel=" + serviceLevel + '\'' + ", surcharge=" + surcharge + '\'' + '}';
 	}
 
 	public String toStringFull() {
 		return " BillingInfo{ source='" + source + '\'' + ", sourceZone= ' " + sourceZone + '\'' + ", destination="
 				+ destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate=" + rate + '\'' + ", calculatedBill= "+calculatedBill +'\''
-			+ ", volume=" + volume + '\''+ ", weight=" + weight + '\''	+ ", minRate=" + minRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", serviceType=" + serviceType + '\''+ ", serviceLevel=" + serviceLevel + '\'' + '}';
+			+ ", volume=" + volume + '\''+ ", weight=" + weight + '\''	+ ", minRate=" + minRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", serviceType=" + serviceType + '\''+ ", serviceLevel=" + serviceLevel + '\'' + ", surcharge=" + surcharge + '\'' + '}';
 	}
 
 	public Double getWeight() {
@@ -152,6 +153,14 @@ public class BillingInfoDto {
 
 	public void setServiceLevel(String serviceLevel) {
 		this.serviceLevel = serviceLevel;
+	}
+
+	public boolean isSurcharge() {
+		return surcharge;
+	}
+
+	public void setSurcharge(boolean surcharge) {
+		this.surcharge = surcharge;
 	}
 
 }

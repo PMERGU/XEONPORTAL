@@ -75,14 +75,10 @@ public class BillingInfoResource {
 			
 			try{
 				BillingInfo billingInfoDB = billingInfoRepository.findByLocationString(locationString, calculatedVolume);
-				System.out.println(  "********  Volume" + calculatedVolume);
-				//log.debug(calculatedVolume + "  Volume");
 				if (billingInfoDB != null) {
 					if(billingInfo.getServiceLevel().equalsIgnoreCase("ex"))
 					{
-						calculatedVolume = billingInfoDB.getExRate() * calculatedVolume;
-						System.out.println("1111111billingInfoDB.getExRate():: " + billingInfoDB.getExRate());
-						System.out.println("1111111calculatedVolume::: " + calculatedVolume);
+						calculatedVolume = billingInfoDB.getExRate() * calculatedVolume;						
 						if (billingInfoDB.getExMinRate() > calculatedVolume) {
 							calculatedVolume = billingInfoDB.getExMinRate();							
 						}
@@ -96,7 +92,10 @@ public class BillingInfoResource {
 					log.debug((calculatedVolume * 1.5)/100 + "  Etoll");
 					log.debug((calculatedVolume * 4.5)/100 + "  National Tool not including");
 					log.debug((calculatedVolume * 15)/100 + "  Rate");
-					calculatedVolume = calculatedVolume+ (calculatedVolume * 1.5)/100+ + (calculatedVolume * 15)/100;
+					if(!billingInfo.isSurcharge())
+						calculatedVolume = calculatedVolume+ (calculatedVolume * 1.5)/100+ + (calculatedVolume * 15)/100;
+					else
+						calculatedVolume = calculatedVolume + (calculatedVolume * 25)/100 + (calculatedVolume * 1.5)/100+ + (calculatedVolume * 15)/100;
 				}
 
 				log.debug(calculatedVolume + " locationString : [PO:{}] - REST request to Calculated Billing Info", billingInfoDB);
