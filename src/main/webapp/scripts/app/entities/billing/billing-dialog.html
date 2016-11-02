@@ -60,6 +60,13 @@
 							ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" required
 							tabindex="1" /> <span class="input-group-addon">KG</span>
 					</div>
+					
+					<div class="form-group">
+					<label for="surcharge"> <input type="checkbox"
+						id="surcharge" name="surcharge" ng-model="billing.surcharge" ng-click="save()"	tabindex = "8"> 
+						<span>Hazardous Cargo ?</span>
+					</label>
+				</div>
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -115,14 +122,6 @@
 							required id="field_volume" ng-model="billing.volume" tabindex="1" />
 						<span class="input-group-addon">M&sup3;</span>
 					</div>
-				</div>
-
-
-				<div class="form-group">
-					<label for="surcharge"> <input type="checkbox"
-						id="surcharge" name="surcharge" ng-model="billing.surcharge" ng-click="save()"
-						tabindex="8"> <span>Surcharge</span>
-					</label>
 				</div>
 
 

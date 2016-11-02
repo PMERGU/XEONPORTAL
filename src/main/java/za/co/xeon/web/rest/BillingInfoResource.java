@@ -89,11 +89,11 @@ public class BillingInfoResource {
 						}
 					}					
 					log.debug(calculatedVolume + "  Rate");
-					log.debug((calculatedVolume * 1.5)/100 + "  Etoll");
+					log.debug((calculatedVolume * 1.65)/100 + "  Etoll");
 					log.debug((calculatedVolume * 4.5)/100 + "  National Tool not including");
 					log.debug((calculatedVolume * 15)/100 + "  Rate");
 					if(!billingInfo.isSurcharge())
-						calculatedVolume = calculatedVolume+ (calculatedVolume * 1.5)/100+ + (calculatedVolume * 15)/100;
+						calculatedVolume = calculatedVolume+ (calculatedVolume * 1.65)/100+ + (calculatedVolume * 15)/100;
 					else
 						calculatedVolume = calculatedVolume + (calculatedVolume * 25)/100 + (calculatedVolume * 1.5)/100+ + (calculatedVolume * 15)/100;
 				}
