@@ -19,22 +19,19 @@ spring:
         livereload:
             enabled: false # we use Grunt + BrowserSync for livereload
     datasource:
-        driver-class-name: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:mem:portal;DB_CLOSE_DELAY=-1
+        driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+        url: jdbc:mysql://dev01.xeon.co.za:3306/portal?useUnicode=true&characterEncoding=utf8
         name:
         username: portal
-        password:
-    h2:
-        console:
-            enabled: true
+        password: Summer1974
     jpa:
-        database-platform: za.co.xeon.domain.util.FixedH2Dialect
-        database: H2
+        database-platform: org.hibernate.dialect.MySQLInnoDBDialect
+        database: MYSQL
         show_sql: false
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
+            hibernate.generate_statistics: false
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     mail:
         host: smtp.office365.com
@@ -97,6 +94,10 @@ ftp:
   pass: kACpQg9B
   folder: "/"
 
+mobile:
+  podDirectory: /opt/data/portal/pod/
+  attachmentDirectory: /opt/data/portal/attachment/
+  httpServerName: http://uat1.xeon.co.za:8080/
 
 # ===================================================================
 # JHipster specific properties

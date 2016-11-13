@@ -1,8 +1,7 @@
 # ===================================================================
-# Spring Boot configuration.
+# Spring Boot configuration for the "dev" profile.
 #
-# This configuration will be overriden by the Spring profile you use,
-# for example application-dev.yml if you use the "dev" profile.
+# This configuration overrides the application.yml file.
 # ===================================================================
 
 # ===================================================================
@@ -10,27 +9,95 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-multipart:
-    maxFileSize: 15Mb
-    maxRequestSize: 15Mb
 
 spring:
+    profiles:
+        active: dev
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: false # we use Grunt + BrowserSync for livereload
+    datasource:
+        driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+        url: jdbc:mysql://dev01.xeon.co.za:3306/portal?useUnicode=true&characterEncoding=utf8
+        name:
+        username: portal
+        password: Summer1974
     jpa:
-        open-in-view: false
-        hibernate:
-            ddl-auto: none
-            naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+        database-platform: org.hibernate.dialect.MySQLInnoDBDialect
+        database: MYSQL
+        show_sql: false
+        properties:
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: false
+            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+    mail:
+        host: smtp.office365.com
+        port: 587
+        username: portal@xeon.co.za
+        password: Yuqa0092
+        tls: true
+        protocal: smtp
+        properties.mail.smtp:
+                    auth: true
+                    starttls.enable: true
+                    ssl.trust: smtp.office365.com
     messages:
-        basename: classpath:/i18n/messages
-    mvc:
-        favicon:
-            enabled: false
+        cache-seconds: 1
     thymeleaf:
-        mode: XHTML
+        cache: false
 
-security:
-    basic:
-        enabled: false
+liquibase:
+    contexts: dev
+
+server:
+    port: 8080
+
+# ===================================================================
+# Application specific properties
+# ===================================================================
+ocr:
+  application: TestApplication 1
+  password: nnoZ0x8e6Z+bX1QQ9C/dXjx0
+  uri: https://cloud.ocrsdk.com
+
+amazon:
+  s3:
+    bucketName: xeondocstore
+    accessKeyId: AKIAIXQWY62ESWPBJZLQ
+    secretKey: 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
+    url: https://936207874332.signin.aws.amazon.com/console
+    user: xeonbackend
+    folderPod: pod-dev
+    folderAttachment: attachment-dev
+
+sap:
+  jco:
+    sysnr: "00"
+    user: "dpotgieter"
+    lang: "en"
+    poolCapacity: "3"
+    peakLimit: "10"
+#    ashost: "128.87.245.163"
+    passwd: "mobile"
+    ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
+    client: "700"
+#    passwd: "xeon"
+#    ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.161/S/3200"
+#    client: "200"
+
+ftp:
+  host: 197.234.173.1
+  user: XeonInvoices
+  pass: kACpQg9B
+  folder: "/"
+
+mobile:
+  podDirectory: /opt/data/portal/pod/
+  attachmentDirectory: /opt/data/portal/attachment/
+  httpServerName: http://uat1.xeon.co.za:8080/
 
 # ===================================================================
 # JHipster specific properties
@@ -38,58 +105,24 @@ security:
 
 jhipster:
     async:
-        corePoolSize: 1
+        corePoolSize: 4
         maxPoolSize: 50
         queueCapacity: 10000
-    #cors: #By default CORS are not enabled. Uncomment to enable.
-        #allowed-origins: "*"
-        #allowed-methods: GET, PUT, POST, DELETE, OPTIONS
-        #allowed-headers: "*"
-        #exposed-headers:
-        #allow-credentials: true
-        #max-age: 1800
-    mail:
-        from: hptest@xeon.co.za
-    security:
-        authentication:
-            xauth:
-                secret: myXAuthSecret
-                # Token is valid 30 minutes
-                tokenValidityInSeconds: 1800
-        rememberme:
-            # security key (this key should be unique for your application, and kept secret)
-            key: ef0fb5a581f640f3ab0243c46794389b0fe07805
-    swagger:
-        title: Xeon Portal API
-        description: Customer portal API platform
-        version: 1.0.0
-        termsOfServiceUrl:
-        contact:
-        license:
-        licenseUrl:
+    cache: # Hibernate 2nd level cache, used by CacheConfiguration
+        timeToLiveSeconds: 3600
+        ehcache:
+            maxBytesLocalHeap: 16M
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: portal@xeon.co.za
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: portal
 
----
-
-spring:
-    profiles: dev.win
-mobile:
-  podDirectory: c:/dev/podTempDir
-  attachmentDirectory: c:/dev/attachmentTempDir
-  httpServerName: http://localhost:8080/
-
----
-
-spring:
-    profiles: dev.mac
-mobile:
-  podDirectory: ../podTempDir
-  attachmentDirectory: /tmp/attachmentTempDir
-  httpServerName: http://localhost:8080/
-
----
-
-spring:
-    profiles: dev.internal
-sap:
-    jco:
-        ashost: "128.87.245.163"
