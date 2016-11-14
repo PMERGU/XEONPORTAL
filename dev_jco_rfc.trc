@@ -1704,3 +1704,8 @@ COUNTER     4
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161114 183153 India Standard Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Mon Nov 14 18:31:53,882<    >RfcGetException rc (7) message: Invalid value in OPTION field of value table for IN itab operator. operator.
+<RfcGetException
+

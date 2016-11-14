@@ -43,7 +43,7 @@ public class StockReportRFCTest {
 		SMatkl obj = new SMatkl();
 		obj.set_sign("I");
 		obj.set_option("EQ");
-		obj.set_high("DAS");
+		obj.set_low("VERBATIM");
 		StockReportRFC rfc = new StockReportRFC();
 		List<SMatkl> vals = new ArrayList<SMatkl>();
 		vals.add(obj);
@@ -51,6 +51,7 @@ public class StockReportRFCTest {
 		Session session = sessionManager.openSession();
 		session.execute(rfc);
 		List<StockData> ret = rfc.get_stockData();
-		System.out.println(ret.size());
+		for (StockData data : ret)
+			System.out.println(data);
 	}
 }

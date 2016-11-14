@@ -13,6 +13,10 @@ angular.module('portalApp')
 					data = angular.fromJson(data);
 					return data;
 				}
-			}
+			},
+            'getByUser': {
+                url: 'api/stockReport/:id',
+                method: 'GET', isArray: true
+            }
 		});
 	});

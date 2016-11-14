@@ -286,7 +286,7 @@ public class HiberSapService {
 					SMatkl par = new SMatkl();
 					par.set_sign("I");
 					par.set_option("EQ");
-					par.set_high(dto.getCompany());
+					par.set_low(dto.getCompany().toUpperCase());
 					List<SMatkl> parList = new ArrayList<SMatkl>();
 					parList.add(par);
 					rfc.set_sMatkl(parList);
@@ -294,7 +294,7 @@ public class HiberSapService {
 					SMatnr par = new SMatnr();
 					par.set_sign("I");
 					par.set_option("EQ");
-					par.set_high(dto.getmName());
+					par.set_low(dto.getmName().toUpperCase());
 					List<SMatnr> parList = new ArrayList<SMatnr>();
 					parList.add(par);
 					rfc.set_sMatnr(parList);
@@ -302,7 +302,7 @@ public class HiberSapService {
 					SWerks par = new SWerks();
 					par.set_sign("I");
 					par.set_option("EQ");
-					par.set_high(dto.getPlantNo());
+					par.set_low(dto.getPlantNo().toUpperCase());
 					List<SWerks> parList = new ArrayList<SWerks>();
 					parList.add(par);
 					rfc.set_sWerks(parList);
@@ -310,7 +310,7 @@ public class HiberSapService {
 					SLgtyp par = new SLgtyp();
 					par.set_sign("I");
 					par.set_option("EQ");
-					par.set_high(dto.getsType());
+					par.set_low(dto.getsType().toUpperCase());
 					List<SLgtyp> parList = new ArrayList<SLgtyp>();
 					parList.add(par);
 					rfc.set_sLgtyp(parList);
