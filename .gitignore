@@ -116,6 +116,7 @@ Desktop.ini
 *.*~
 *~
 .merge_file*
+.forge_settings
 
 ######################
 # Gradle Wrapper
