@@ -1,0 +1,50 @@
+<form name="repForm" role="form" ng-submit="fetch()" show-validation>
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true" ng-click="clear()">&times;</button>
+		<h4 class="modal-title" id="myStockReportLabel">Stock Report</h4>
+	</div>
+	<div class="modal-body">
+		<jh-alert-error></jh-alert-error>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label class="control-label" for="field_cname">Company Name</label>
+					<input type="text" class="form-control" name="field_cname"
+						ng-model="report.company" tabindex="1" />
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="field_mat">Material</label>
+					<input type="text" class="form-control" name="field_mat"
+						ng-model="report.mName" tabindex="2" />
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label class="control-label" for="field_pno">Plant No</label>
+					<input type="text" class="form-control" name="field_pno"
+						ng-model="report.plantNo" tabindex="3" />
+				</div>
+
+				<div class="form-group">
+					<label class="control-label" for="field_stype">Storage Type</label>
+					<input type="text" class="form-control" name="field_stype"
+						ng-model="report.sType" tabindex="4" />
+				</div>
+			</div>
+		</div>
+		<div class="form-group" ng-show="report.stockData.size > 0"></div>
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal"
+			ng-click="clear()">
+			<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+		</button>
+		<button type="submit" ng-disabled="editForm.$invalid"
+			class="btn btn-primary">
+			<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Calculate</span>
+		</button>
+	</div>
+</form>

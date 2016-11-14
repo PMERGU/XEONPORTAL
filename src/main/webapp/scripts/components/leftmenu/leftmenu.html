@@ -96,13 +96,24 @@
             </ul>
         </li>
         
-          <li ng-class="{active: $state.includes('billing')}"  ng-show="identity.company.name == 'DSV' || identity.authorities.indexOf('ROLE_USER')!=-1"  >
+        <li ng-class="{active: $state.includes('billing')}"  ng-show="identity.company.name == 'DSV' || identity.authorities.indexOf('ROLE_USER')!=-1"  >
             <a href="#">
                 <span class="nav-label">Rate Calculator</span><span class="fa arrow"></span>
             </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('billing')}">
                 <li ui-sref-active="active" >
                     <a ui-sref="billing.new" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >Quotation - SEA</span></a>
+                </li>
+            </ul>
+        </li>
+
+        <li ng-class="{active: $state.includes('report')}"  ng-show="identity.company.name == 'DSV' || identity.authorities.indexOf('ROLE_USER')!=-1"  >
+            <a href="#">
+                <span class="nav-label">Reports</span><span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('report')}">
+                <li ui-sref-active="active" >
+                    <a ui-sref="report.stock" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >Stock Report</span></a>
                 </li>
             </ul>
         </li>
