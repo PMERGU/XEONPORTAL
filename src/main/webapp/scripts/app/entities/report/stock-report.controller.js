@@ -18,7 +18,7 @@ angular.module('portalApp')
 			 
 			
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
-				StockReport.getByUser({ id :'derick',
+				StockReport.getByUser({ id : $scope.user.login,
 					page : $scope.page - 1,
 					size : 20
 					//sort : [ $scope.predicate + ',' + ($scope.reverse ? 'asc' : 'desc'), 'id' ]
