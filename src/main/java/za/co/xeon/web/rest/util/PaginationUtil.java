@@ -2,6 +2,7 @@ package za.co.xeon.web.rest.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -39,4 +40,26 @@ public class PaginationUtil {
         headers.add(HttpHeaders.LINK, link);
         return headers;
     }
+    
+     public static HttpHeaders generateHttpHeaders(List list , String baseUrl)
+            throws URISyntaxException {
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("X-Total-Count", "" + list.size());
+            String link = "";
+//            if ((page.getNumber() + 1) < page.getTotalPages()) {
+//                link = "<" + (new URI(baseUrl +"?page=" + (page.getNumber() + 1) + "&size=" + page.getSize())).toString() + ">; rel=\"next\",";
+//            }
+            // prev link
+//            if ((page.getNumber()) > 0) {
+//                link += "<" + (new URI(baseUrl +"?page=" + (page.getNumber() - 1) + "&size=" + page.getSize())).toString() + ">; rel=\"prev\",";
+//            }
+            // last and first link
+            int lastPage = 1;
+             
+            link += "<" + (new URI(baseUrl +"?page=" + lastPage + "&size=" + list.size())).toString() + ">; rel=\"last\",";
+            link += "<" + (new URI(baseUrl +"?page=" + 0 + "&size=" + list.size())).toString() + ">; rel=\"first\"";
+            headers.add(HttpHeaders.LINK, link);
+            return headers;
+        }
 }

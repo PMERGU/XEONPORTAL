@@ -1,0 +1,73 @@
+<div>
+    <div small-header>
+        <div class="hpanel" style="margin-bottom: 15px;">
+            <div class="panel-body">
+                <h2 class="font-light m-b-xs">
+                    Stock Report
+                </h2>
+                
+                 
+            </div>
+            <jh-alert></jh-alert>
+        </div>
+    </div>
+    <div class="hpanel">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="jh-table table table-striped export-table" fixed-header>
+                    <thead>
+                    <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
+                        <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                        <th jh-sort-by="poNumber"><span>Warehouse Number</span> <span class="glyphicon glyphicon-sort"></span>
+                        </th>
+                        <th jh-sort-by="serviceType"><span>Material</span> <span class="glyphicon glyphicon-sort"></span>
+                        </th>
+                        <th jh-sort-by="serviceLevel"><span>Batch</span> <span
+                            class="glyphicon glyphicon-sort"></span></th>
+                            <th jh-sort-by="shipToPartyId"><span>Pick Quantity</span> <span
+                            class="glyphicon glyphicon-sort"></span></th>
+                        <th jh-sort-by="userFirstName"><span>Put Away Quantity</span> <span
+                            class="glyphicon glyphicon-sort"></span></th>
+                        <th jh-sort-by="captureDate"><span>Storage Type</span> <span
+                            class="glyphicon glyphicon-sort"></span></th>
+                        <th jh-sort-by="pickUpPartyId"><span>Available Quantity/span> <span
+                            class="glyphicon glyphicon-sort"></span></th>
+                        
+                        <th jh-sort-by="state"><span>UOM</span> <span class="glyphicon glyphicon-sort"></span></th>
+                         
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="purchaseOrder in (purchaseOrders | filter:pageFilter)">
+                        <td>
+                            {{$index+1}}
+                        </td>
+                        <td>{{purchaseOrder._lgnum}}</td>
+                        <td>{{purchaseOrder._matnr}}</td>
+                        <td>
+                            {{purchaseOrder._charge}}
+                        </td>
+                         <td>
+                             
+                        </td>
+                        <td>
+                             
+                        </td>
+                        <td>{{purchaseOrder._lgtyp }}</td>
+                        <td>
+                             {{purchaseOrder._verme}} 
+                        </td>
+                       
+                        <td>{{purchaseOrder._meins2}}</td>
+                         
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center">
+                <uib-pagination class="pagination-sm" total-items="totalItems" ng-model="page"
+                                ng-change="loadAll()"></uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>

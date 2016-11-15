@@ -3,6 +3,7 @@ package za.co.xeon.web.rest;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
+import za.co.xeon.domain.User;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.dto.StockData;
 import za.co.xeon.repository.UserRepository;
@@ -56,22 +58,25 @@ public class ReportResource {
 		};
 	}
 
-	@RequestMapping(value = "/stockReport/:id", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/stockReport/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<StockData>>> fetchStockDataByUser(@PathVariable Long id, Pageable pageable) {
-		log.debug("[Report:{}] - REST request to Fetch Stock Data for Report By User Id", id);
+	public Callable<ResponseEntity<List<StockData>>> fetchStockDataByUser(@PathVariable String login, Pageable pageable) {
+		log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User Id", login);
 		return () -> {
 			List<StockData> ret = new ArrayList<StockData>();
 			try {
-				String company = userRepository.findOne(id).getCompany().getName();
+				  Optional<User> user = userRepository.findOneByLogin(login);
+				String company = user.get().getCompany().getName();
 				StockReportDTO dto = new StockReportDTO();
 				dto.setCompany(company);
 				ret = hiberSapService.fetchStockData(dto);
+				log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User size", ret.size());
 			} catch (Exception e) {
-				log.debug("Error : " + e.getMessage());
+				e.printStackTrace();
+				log.debug("Errorss : " + e.getMessage());
 			}
 			Page<StockData> page = new PageImpl<StockData>(ret, pageable, ret.size());
-	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stockReport");
+	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stockReport/"+login);
 	        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 		};
 	}

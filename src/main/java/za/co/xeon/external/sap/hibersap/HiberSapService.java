@@ -282,7 +282,7 @@ public class HiberSapService {
 		try {
 			StockReportRFC rfc = new StockReportRFC();
 			if (dto != null) {
-				if (dto.getCompany() != null && dto.getCompany().length() == 0) {
+				if (dto.getCompany() != null && dto.getCompany().length() != 0) {
 					SMatkl par = new SMatkl();
 					par.set_sign("I");
 					par.set_option("EQ");
