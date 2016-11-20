@@ -116,6 +116,12 @@
                     <a ui-sref="report.stock" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >Stock Report</span></a>
                 </li>
             </ul>
+            <ul class="nav nav-second-level" ng-class="{in: $state.includes('report')}">
+                <li ui-sref-active="active" >
+                    <a ui-sref="report.pod" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span >POD Report</span></a>
+                </li>
+            </ul>
+            
         </li>
 
         <li ng-class="{active: $state.includes('company')}" has-authority="ROLE_USER">

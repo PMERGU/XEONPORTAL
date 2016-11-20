@@ -66,6 +66,48 @@ angular.module('portalApp')
                     }]
                 }
 
-            })
-             ;
+            }) .state('report.pod', {
+                parent: 'site',
+                url: '/report/pod',
+                data: {
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
+                    pageTitle: 'POD Report'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/entities/report/podReport.html',
+                        controller: 'PODReportController'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'PODReport', function($stateParams, PODReport) {
+                        if($stateParams.id){
+                            return PODReport.get({id : $stateParams.id});
+                        }else{
+                            return undefined;
+                        }
+                    }],
+                    entityLines: ['$stateParams', 'PODReport', function($stateParams, PODReport) {
+                        if($stateParams.id){
+                            return StockReport.getLines({id : $stateParams.id});
+                        }else{
+                            return undefined;
+                        }
+                    }],
+                    currentUser: ['$stateParams', 'Principal', function($stateParams, Principal) {
+                        return Principal.identity();
+                    }],
+                    staticEnums: ['$stateParams', 'StaticServices', function($stateParams, StaticServices) {
+                        return StaticServices.getAll()
+                            .$promise.then(function (data) {
+                                    return data;
+                                }, function (errResponse) {
+                                    console.error(errResponse);
+                                    return undefined;
+                                }
+                            );
+                    }]
+                }
+
+            });
     });

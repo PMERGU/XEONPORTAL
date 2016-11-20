@@ -256,6 +256,7 @@ public class ReportResource {
 	    	        table.addCell(pickQuantData);
 	    	        table.addCell(putAwayQnantData);
 	    	        table.addCell(availableQunatityData);
+	    	        i++;
 	        	}
 	        }
 	        //To avoid having the cell border and the content overlap, if you are having thick cell borders
