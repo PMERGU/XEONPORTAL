@@ -1,11 +1,6 @@
 package za.co.xeon.web.rest;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +11,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -42,9 +36,11 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import za.co.xeon.domain.Company;
 import za.co.xeon.domain.User;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.dto.StockData;
+import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.web.rest.dto.StockReportDTO;
 import za.co.xeon.web.rest.util.PaginationUtil;
@@ -57,6 +53,9 @@ public class ReportResource {
 	private HiberSapService hiberSapService;
 	@Inject
 	private UserRepository userRepository;
+	
+	@Inject
+	private CompanyRepository companyRepository;
 
 	@RequestMapping(value = "/stockReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
@@ -96,16 +95,16 @@ public class ReportResource {
 		};
 	}
 	
-	@RequestMapping(value = "/stockReport/download/{login}", method = RequestMethod.GET  ,produces = "application/pdf")
-	public @ResponseBody ResponseEntity  downloadStockDataByUser(@PathVariable String login) throws Exception {
-		log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User Id", login);
+	@RequestMapping(value = "/stockReport/download", method = RequestMethod.POST  ,produces = "application/pdf")
+	public @ResponseBody ResponseEntity  downloadStockDataByUser(@Valid @RequestBody StockReportDTO dto) throws Exception {
+		log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User Id", dto);
 		 
 			List<StockData> ret = new ArrayList<StockData>();
 			try {
-				  Optional<User> user = userRepository.findOneByLogin(login);
-				String company = user.get().getCompany().getName();
-				StockReportDTO dto = new StockReportDTO();
-				dto.setCompany(company);
+//				  Company company = companyRepository.findOne(comapanyId);
+//				String companyName = company.getName();
+//				StockReportDTO dto = new StockReportDTO();
+//				dto.setCompany(companyName);
 				ret = hiberSapService.fetchStockData(dto);
 				log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User size", ret.size());
 			} catch (Exception e) {
@@ -250,7 +249,7 @@ public class ReportResource {
 	    	        availableQunatityData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 	    	        
 	    	        
-	    	        table.addCell(iDHeader);
+	    	        table.addCell(iDdata);
 	    	        table.addCell(warehouseNumberData);
 	    	        table.addCell(materialData);
 	    	        table.addCell(batchData);

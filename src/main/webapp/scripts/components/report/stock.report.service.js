@@ -23,6 +23,14 @@ angular.module('portalApp')
                 method: 'GET',
                 responseType: 'arraybuffer',
 //                cache: true
+            },
+            'save': {
+                method: 'POST',
+                isArray: true,
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
             }
+            
 		});
 	});

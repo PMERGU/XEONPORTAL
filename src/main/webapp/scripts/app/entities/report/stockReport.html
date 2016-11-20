@@ -1,21 +1,57 @@
 <div>
     <div small-header>
         <div class="hpanel" style="margin-bottom: 15px;">
-            <div class="panel-body">
-                <h2 class="font-light m-b-xs">
-                    Stock Report
-                </h2>
-                
-                 
-            </div>
-            <jh-alert></jh-alert>
+             <div class="panel-body">
+             	<div class="row">
+             	<div class="col-md-6">
+                        <h2 class="font-light m-b-xs">
+                            Stock Report
+                        </h2>
+                        <jh-alert></jh-alert>
+                    </div>
+             	
+                    <div class="col-md-6" has-authority="ROLE_USER">
+                     
+                        <div class="col-md-6 text-right" style="margin-top: 10px;">
+                            <h4>Company</h4>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 15px;margin-bottom: 10px;">
+                            <ui-select    ng-model="selected.company" title="Choose a company">
+                                <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="company in companies | orderBy:'name' | filter: $select.search">
+                                    <span ng-bind-html="company.name | highlight: $select.search"></span>
+                                    <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                 </div>
+                <!--  <div class="row">
+                   <div class="col-md-6"  >
+                     <div class="col-md-6 text-right" style="margin-top: 10px;">
+                            <h4 >Warehouse</h4>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 15px;margin-bottom: 10px;">
+							<select class="form-control" name="warehouse"  
+								ng-model="warehouse" id="field_warehouse">
+								<option value="">All</option>
+								<option value=M01>JHB</option>
+								<option value="M03">DBN</option>
+								<option value="M04">PE</option>
+								<option value="M05">CPT</option>
+								
+							</select>
+						</div>
+                    </div>  -->
+                </div>
+            
         </div>
     </div>
     <div class="hpanel">
-        <div class="panel-body">
-            <div class="table-responsive">
+        <div class="panel-body" >
+            <div class="table-responsive" >
             
-                <table class="jh-table table table-striped export-table" id="stockReport" fixed-header>
+                <table class="jh-table table table-striped export-table" id="stockReport" fixed-header ng-show="showdownloadbuttons">
                     <thead>
                     <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
                         <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -38,8 +74,8 @@
                          
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr ng-repeat="purchaseOrder in (purchaseOrders | filter:pageFilter)">
+                    <tbody >
+                    <tr ng-repeat="purchaseOrder in (purchaseOrders | filter:pageFilter)"  >
                         <td>
                             {{$index+1}}
                         </td>
@@ -62,24 +98,25 @@
                         <td>{{purchaseOrder._meins2}}</td>
                          
                     </tr>
+                    
                     </tbody>
+                    
+                    
                 </table>
+                
+                
             </div>
-            <div class="text-center">
-                <uib-pagination class="pagination-sm" total-items="totalItems" ng-model="page"
-                                ng-change="loadAll()"></uib-pagination>
-            </div>
-
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary"  
+				<button type="button" class="btn btn-primary"   ng-show="showdownloadbuttons"
 					onclick="$('#stockReport').tableExport({type:'excel'});">
 					<span class="glyphicon glyphicon-save""></span>&nbsp;<span>Download Excel</span>
 				</button>
-				<button type="button" ng-click="downloadPdf()" 
+				<button type="button" ng-click="downloadPdf()"  ng-show="showdownloadbuttons"
 					class="btn btn-primary">
 					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download PDF</span>
 				</button>
 			</div>
 		</div>
+		
     </div>
 </div>

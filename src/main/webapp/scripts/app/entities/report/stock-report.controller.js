@@ -1,33 +1,113 @@
 'use strict';
 
 angular.module('portalApp')
-	.controller('StockReportController', function($scope, $log, $state, $stateParams,$http, StockReport, ParseLinks,Principal,FileSaver) {
+	.controller('StockReportController', function($scope, $log, $state, $stateParams,$http,Company, StockReport, ParseLinks,Principal) {
 
 		$scope.purchaseOrders = [];
 		$scope.predicate = 'id';
 		$scope.reverse = true;
 		$scope.page = 1;
+		$scope.warehouse = null;
+		$scope.showdownloadbuttons=false;
+		function resetSR() {
+			$log.debug("clearing po");
+			$scope.stockReport = {
+					plantNo: null,
+					sType: null,
+					mName:null,
+				company : null
+				 
+			};
+		  $scope.purchaseOrders = [];
+		  $scope.showdownloadbuttons=false;
+		}
 		
 		Principal.identity().then(function(user) {
+			 
             $scope.user = user;
+            $scope.authorities =user.authorities;
             $scope.isXeon = (user.company.type === "XEON");
-        });
+            
+            if($scope.user.authorities.indexOf("ROLE_CUSTOMER") != -1){
+                $scope.companies = [ $scope.user.company];
+                $scope.company =  $scope.user.company;
+                $scope.selected = {
+                    company:  $scope.user.company
+                };
+            }else{
+                $scope.companies = Company.query();
+                $scope.company = null;
+                $scope.selected = {
+                    company: null
+                };
+            }
 
-		$scope.loadAll = function() {
+
+
+            //WATCH when company is selected (for capture as company employee feature)
+            $scope.$watch(function() {
+                return $scope.selected.company
+            }, function (company) {
+                $log.debug("test");
+                if(company != null && company != undefined) {
+                    $log.debug("Comapnay Name ");
+                    $log.debug(company);
+                    $scope.purchaseOrders = [];
+                    $scope.showdownloadbuttons =false;
+                    $scope.loadAll(company);
+                }
+            });
+            
+            $scope.$watch(function() {
+                return $scope.warehouse
+            }, function (warehouse) {
+                $log.debug("test");
+                if(warehouse != null && warehouse != undefined && warehouse != '') {
+                    $log.debug("Comapnay Name ");
+                    $log.debug(company);
+                    $scope.loadAll(company);
+                }
+            });
+        });
+		
+		
+		 
+		var onSaveSuccess = function(result) {
+			$scope.purchaseOrders=result;
+			if(result!=null && result!= undefined && result.length>0)
+				{
+					$scope.showdownloadbuttons =true;
+				}else{
+					$scope.showdownloadbuttons =false;
+				}
+			 
+		};
+		
+		var onSaveError = function(result) {
+			$log.error(result);
+			var msg = "Failed to create order :\n\n";
+			$.each(result.data.fieldErrors, function(idx, error) {
+				msg += "Field " + error.field + " on " + error.objectName;
+				switch (error.message) {
+				case "NotNull":
+					msg += " cant be null. Please enter a valid value";
+					break;
+				default:
+					$log.log("have not seen this error before : " + error.message);
+				}
+				msg += "\n";
+			});
+		};
+
+		$scope.loadAll = function(company) {
 			
 			 
 			
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
-				StockReport.getByUser({ id : 'derick',
-					page : $scope.page - 1,
-					size : 20
-					//sort : [ $scope.predicate + ',' + ($scope.reverse ? 'asc' : 'desc'), 'id' ]
-				}, function(result, headers) {
-					$scope.links = ParseLinks.parse(headers('link'));
-					$scope.totalItems =  20;
-					$scope.purchaseOrders = result;
-					 
-				});
+				$scope.stockReport.company = company.name;
+//				$scope.stockReport.
+				StockReport.save($scope.stockReport, onSaveSuccess, onSaveError);
+				 
 			}  
 		};
 		
@@ -37,13 +117,14 @@ angular.module('portalApp')
 			 
 			
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
-				$http.get('api/stockReport/download/derick', { responseType: 'arraybuffer' }).then(function (response) {
+				
+				$log.debug($scope.selected.company.id);
+				$scope.stockReport.company = $scope.selected.company.name;
+				$http.post('api/stockReport/download/', $scope.stockReport, { responseType: 'arraybuffer' }).then(function (response) {
 					var fileName = "stock_report.pdf";
 		            var a = document.createElement("a");
-		            
 		            document.body.appendChild(a);
 		            a.style = "display: none";
-		            alert(response.data);
 		            var file = new Blob([response.data], {type: 'application/pdf'});
 	                var fileURL = window.URL.createObjectURL(file);
 	                a.href = fileURL;
@@ -67,15 +148,8 @@ angular.module('portalApp')
 //				});
 			}  
 		};
-		$scope.loadPage = function(page) {
-			$scope.page = page;
-			$scope.loadAll();
-		};
-		$scope.loadAll();
-
-		$scope.refresh = function() {
-			$scope.poFilter = null;
-			$scope.loadAll();
-			$scope.clear();
-		};
+		 
+		 
+		resetSR();
+		 
 	});
