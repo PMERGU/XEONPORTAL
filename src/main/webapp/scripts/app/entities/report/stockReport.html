@@ -14,7 +14,8 @@
     <div class="hpanel">
         <div class="panel-body">
             <div class="table-responsive">
-                <table class="jh-table table table-striped export-table" fixed-header>
+            
+                <table class="jh-table table table-striped export-table" id="stockReport" fixed-header>
                     <thead>
                     <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
                         <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -30,7 +31,7 @@
                             class="glyphicon glyphicon-sort"></span></th>
                         <th jh-sort-by="captureDate"><span>Storage Type</span> <span
                             class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="pickUpPartyId"><span>Available Quantity/span> <span
+                        <th jh-sort-by="pickUpPartyId"><span>Available Quantity</span> <span
                             class="glyphicon glyphicon-sort"></span></th>
                         
                         <th jh-sort-by="state"><span>UOM</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -68,6 +69,17 @@
                 <uib-pagination class="pagination-sm" total-items="totalItems" ng-model="page"
                                 ng-change="loadAll()"></uib-pagination>
             </div>
-        </div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"  
+					onclick="$('#stockReport').tableExport({type:'excel'});">
+					<span class="glyphicon glyphicon-save""></span>&nbsp;<span>Download Excel</span>
+				</button>
+				<button type="button" ng-click="downloadPdf()" 
+					class="btn btn-primary">
+					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download PDF</span>
+				</button>
+			</div>
+		</div>
     </div>
 </div>

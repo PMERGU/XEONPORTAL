@@ -17,6 +17,12 @@ angular.module('portalApp')
             'getByUser': {
                 url: 'api/stockReport/:id',
                 method: 'GET', isArray: true
+            },
+            'getByUserDownload': {
+                url: 'api/stockReport/download/:id',
+                method: 'GET',
+                responseType: 'arraybuffer',
+//                cache: true
             }
 		});
 	});
