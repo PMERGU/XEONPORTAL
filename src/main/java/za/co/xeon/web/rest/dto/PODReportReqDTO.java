@@ -5,7 +5,7 @@ import java.util.Date;
 public class PODReportReqDTO {
 	private Date fromDate;
 	private Date toDate;
-	private char podType;
+	private String podType;
 	private Long id;
 
 	public Date getFromDate() {
@@ -24,11 +24,11 @@ public class PODReportReqDTO {
 		this.toDate = toDate;
 	}
 
-	public char getPodType() {
+	public String getPodType() {
 		return podType;
 	}
 
-	public void setPodType(char podType) {
+	public void setPodType(String podType) {
 		this.podType = podType;
 	}
 

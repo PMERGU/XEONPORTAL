@@ -65,8 +65,9 @@ public class ReportResource {
 
 	@RequestMapping(value = "/stockReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<StockData>>> fetchStockData(@Valid @RequestBody StockReportDTO dto, HttpServletRequest request) {
+	public Callable<ResponseEntity<List<StockData>>> fetchStockData(@Valid @RequestBody StockReportDTO dto, Pageable pageable) {
 		log.debug("[Report:{}] - REST request to Fetch Stock Data for Report", dto.toString());
+		log.debug("Pageable options for Stock Report :: " + pageable.getOffset() + " :: " + pageable.getPageNumber() + " :: " + pageable.getPageSize());
 		return () -> {
 			List<StockData> ret = new ArrayList<StockData>();
 			try {
@@ -74,7 +75,9 @@ public class ReportResource {
 			} catch (Exception e) {
 				log.debug("Error : " + e.getMessage());
 			}
-			return ResponseEntity.created(new URI("/api/stockReport/")).body(ret);
+			Page<StockData> page = new PageImpl<StockData>(ret, pageable, ret.size());
+			HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stockReport/");
+			return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 		};
 	}
 
@@ -82,6 +85,7 @@ public class ReportResource {
 	@Timed
 	public Callable<ResponseEntity<List<StockData>>> fetchStockDataByUser(@PathVariable String login, Pageable pageable) {
 		log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User Id", login);
+		log.debug("Pageable options for Stock Report :: " + pageable.getOffset() + " :: " + pageable.getPageNumber() + " :: " + pageable.getPageSize());
 		return () -> {
 			List<StockData> ret = new ArrayList<StockData>();
 			try {
@@ -270,16 +274,21 @@ public class ReportResource {
 
 	@RequestMapping(value = "/podReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<PODReportResDTO>>> fetchPODData(@Valid @RequestBody PODReportReqDTO dto, HttpServletRequest request) {
+	public Callable<ResponseEntity<List<GtCustOrders>>> fetchPODData(@Valid @RequestBody PODReportReqDTO dto, HttpServletRequest request) {
 		log.debug("[Report:{}] - REST request to Fetch Stock Data for Report", dto.toString());
 		return () -> {
-			List<PODReportResDTO> ret = new ArrayList<PODReportResDTO>();
+			List<GtCustOrders> ret = new ArrayList<GtCustOrders>();
 			try {
 				List<GtCustOrders> custOrders = hiberSapService.getCustomerOrdersForPOD(dto.getFromDate(), dto.getToDate());
 				for (GtCustOrders order : custOrders) {
 					PurchaseOrder po = purchaseOrderRepository.getOne(Long.valueOf(order.getBstkd()));
 					List<Attachment> atts = attachmentRepository.findByPONumberAndPOD(po.getId());
-					
+					boolean pod = false;
+					for (Attachment att : atts)
+						pod = pod && att.getCategory().equalsIgnoreCase("POD");
+					if (pod && dto.getPodType() != null && order.getBstkd().equalsIgnoreCase(dto.getPodType()) && po.getUser().getCompany().getId() == dto.getId()) {
+						ret.add(order);
+					}
 				}
 			} catch (Exception e) {
 				log.debug("Error : " + e.getMessage());
