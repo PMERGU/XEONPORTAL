@@ -3,10 +3,11 @@
 angular.module('portalApp')
 	.controller('StockReportController', function($scope, $log, $state, $stateParams,$http,Company, StockReport, ParseLinks,Principal) {
 
-		$scope.purchaseOrders = [];
+		$scope.stockData = [];
 		$scope.predicate = 'id';
 		$scope.reverse = true;
 		$scope.page = 1;
+		$scope.warehouses = { 'M01' : 'JHB', 'M03' : 'DBN', 'M04' : 'PE', 'M05' : 'CPT'};
 		$scope.warehouse = null;
 		$scope.showdownloadbuttons=false;
 		function resetSR() {
@@ -18,7 +19,7 @@ angular.module('portalApp')
 				company : null
 				 
 			};
-		  $scope.purchaseOrders = [];
+		  $scope.stockData = [];
 		  $scope.showdownloadbuttons=false;
 		}
 		
@@ -52,7 +53,7 @@ angular.module('portalApp')
                 if(company != null && company != undefined) {
                     $log.debug("Comapnay Name ");
                     $log.debug(company);
-                    $scope.purchaseOrders = [];
+                    $scope.stockData = [];
                     $scope.showdownloadbuttons =false;
                     $scope.loadAll(company);
                 }
@@ -73,7 +74,7 @@ angular.module('portalApp')
 		
 		 
 		var onSaveSuccess = function(result) {
-			$scope.purchaseOrders=result;
+			$scope.stockData=result;
 			if(result!=null && result!= undefined && result.length>0)
 				{
 					$scope.showdownloadbuttons =true;

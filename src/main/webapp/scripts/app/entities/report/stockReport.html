@@ -52,63 +52,44 @@
             <div class="table-responsive" >
             
                 <table class="jh-table table table-striped export-table" id="stockReport" fixed-header ng-show="showdownloadbuttons">
-                    <thead>
-                    <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
-                        <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="poNumber"><span>Warehouse Number</span> <span class="glyphicon glyphicon-sort"></span>
-                        </th>
-                        <th jh-sort-by="serviceType"><span>Material</span> <span class="glyphicon glyphicon-sort"></span>
-                        </th>
-                        <th jh-sort-by="serviceLevel"><span>Batch</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                            <th jh-sort-by="shipToPartyId"><span>Pick Quantity</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="userFirstName"><span>Put Away Quantity</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="captureDate"><span>Storage Type</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="pickUpPartyId"><span>Available Quantity</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                        
-                        <th jh-sort-by="state"><span>UOM</span> <span class="glyphicon glyphicon-sort"></span></th>
-                         
-                    </tr>
-                    </thead>
-                    <tbody >
-                    <tr ng-repeat="purchaseOrder in (purchaseOrders | filter:pageFilter)"  >
-                        <td>
-                            {{$index+1}}
-                        </td>
-                        <td>{{purchaseOrder._lgnum}}</td>
-                        <td>{{purchaseOrder._matnr}}</td>
-                        <td>
-                            {{purchaseOrder._charge}}
-                        </td>
-                         <td>
-                             
-                        </td>
-                        <td>
-                             
-                        </td>
-                        <td>{{purchaseOrder._lgtyp }}</td>
-                        <td>
-                             {{purchaseOrder._verme}} 
-                        </td>
-                       
-                        <td>{{purchaseOrder._meins2}}</td>
-                         
-                    </tr>
-                    
-                    </tbody>
-                    
-                    
-                </table>
+					<thead>
+						<tr>
+							<th><span>ID</span></th>
+							<th><span>Warehouse Number</span>
+							<th><span>Material</span>
+							<th><span>Material Description</span>
+							<th><span>Storage_Type</span>
+							<th><span>Batch</span>
+							<th><span>Put ways</span>
+							<th><span>Available</span>
+							<th><span>Picks</span>
+							<th><span>UoM</span>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="stockReport in (stockData | filter:pageFilter)">
+							<td>{{$index+1}}</td>
+							<td>{{stockReport._lgnum}}</td>
+							<td>{{stockReport._matnr}}</td>
+							<td>{{stockReport._maktx}}</td>
+							<td>{{stockReport._lgtyp }}</td>
+							<td>{{stockReport._charg == '' ? 'N/A' : stockReport._charg }}</td>
+							<td>{{stockReport._einme}}</td>
+							<td>{{stockReport._verme}}</td>
+							<td>{{stockReport._einme}}</td>
+							<td>{{stockReport._meins}}</td>
+						</tr>
+
+					</tbody>
+
+
+				</table>
                 
                 
             </div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary"   ng-show="showdownloadbuttons"
-					onclick="$('#stockReport').tableExport({type:'excel'});">
+					onclick="$('#stockReport').tableExport({type:'excel' , escape:'false'});">
 					<span class="glyphicon glyphicon-save""></span>&nbsp;<span>Download Excel</span>
 				</button>
 				<button type="button" ng-click="downloadPdf()"  ng-show="showdownloadbuttons"
