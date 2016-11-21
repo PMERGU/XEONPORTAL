@@ -22,16 +22,7 @@ public class StockReportRFCTest {
 
 	@Before
 	public void init() {
-		SessionManagerConfig cfg = new SessionManagerConfig("A12").setContext(JCoContext.class.getName())
-				.setProperty(DestinationDataProvider.JCO_ASHOST,
-						"/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200")
-				.setProperty(DestinationDataProvider.JCO_SYSNR, "00")
-				.setProperty(DestinationDataProvider.JCO_CLIENT, "700")
-				.setProperty(DestinationDataProvider.JCO_USER, "dpotgieter")
-				.setProperty(DestinationDataProvider.JCO_PASSWD, "mobile")
-				.setProperty(DestinationDataProvider.JCO_LANG, "EN")
-				.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "3")
-				.setProperty(DestinationDataProvider.JCO_PEAK_LIMIT, "15");
+		SessionManagerConfig cfg = new SessionManagerConfig("A12").setContext(JCoContext.class.getName()).setProperty(DestinationDataProvider.JCO_ASHOST, "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200").setProperty(DestinationDataProvider.JCO_SYSNR, "00").setProperty(DestinationDataProvider.JCO_CLIENT, "700").setProperty(DestinationDataProvider.JCO_USER, "dpotgieter").setProperty(DestinationDataProvider.JCO_PASSWD, "mobile").setProperty(DestinationDataProvider.JCO_LANG, "EN").setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "3").setProperty(DestinationDataProvider.JCO_PEAK_LIMIT, "15");
 
 		AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
 		configuration.addBapiClasses(StockReportRFC.class);
@@ -53,5 +44,10 @@ public class StockReportRFCTest {
 		List<StockData> ret = rfc.get_stockData();
 		for (StockData data : ret)
 			System.out.println(data);
+	}
+
+	@Test
+	public void testPODReport() {
+
 	}
 }

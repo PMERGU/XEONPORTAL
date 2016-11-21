@@ -16,7 +16,7 @@ import za.co.xeon.external.sap.hibersap.dto.StockData;
 import org.hibersap.annotations.Parameter;
 import java.lang.Override;
 
-@Bapi("Z_STOCK_REPORT")
+@Bapi("Z_STOCK_INVENTORY")
 public class StockReportRFC {
 
 	@Table

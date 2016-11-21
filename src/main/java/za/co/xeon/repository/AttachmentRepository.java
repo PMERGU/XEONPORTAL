@@ -13,17 +13,20 @@ import za.co.xeon.domain.PurchaseOrder;
 
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
 
-    @Query("select a from Attachment a where a.uuid = ?1 and a.activated = true")
-    Optional<Attachment> findByUuidAndActivated(String uuid);
+	@Query("select a from Attachment a where a.uuid = ?1 and a.activated = true")
+	Optional<Attachment> findByUuidAndActivated(String uuid);
 
-    @Query("select a from Attachment a where a.uuid = ?1 and a.activated = ?2")
-    Optional<Attachment> findByUuidAndActivated(String uuid, Boolean activated);
+	@Query("select a from Attachment a where a.uuid = ?1 and a.activated = ?2")
+	Optional<Attachment> findByUuidAndActivated(String uuid, Boolean activated);
 
-    @Query("select a from Attachment a where a.deliveryNumber = ?1 and a.activated = true")
-    List<Attachment> findByDeliveryNumberAndActivated(String deliveryNumber);
+	@Query("select a from Attachment a where a.deliveryNumber = ?1 and a.activated = true")
+	List<Attachment> findByDeliveryNumberAndActivated(String deliveryNumber);
 
-    @Query("select a from Attachment a where a.deliveryNumber = ?1 and a.visible = ?2 and a.activated = true")
-    List<Attachment> findByDeliveryNumberAndVisibleAndActivated(String deliveryNumber, Boolean visible);
+	@Query("select a from Attachment a where a.purchaseOrder.id = ?1 and a.category = 'POD'")
+	List<Attachment> findByPONumberAndPOD(Long poNumber);
 
-    Page<Attachment> findByPurchaseOrder(PurchaseOrder purchaseOrder, Pageable pageable);
+	@Query("select a from Attachment a where a.deliveryNumber = ?1 and a.visible = ?2 and a.activated = true")
+	List<Attachment> findByDeliveryNumberAndVisibleAndActivated(String deliveryNumber, Boolean visible);
+
+	Page<Attachment> findByPurchaseOrder(PurchaseOrder purchaseOrder, Pageable pageable);
 }

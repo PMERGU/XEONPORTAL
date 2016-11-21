@@ -55,25 +55,14 @@ public class HiberSapService {
 	@PostConstruct
 	public void init() {
 		log.debug("SapService, post construct " + s3Settings.getAshost());
-		SessionManagerConfig cfg = new SessionManagerConfig("A12").setContext(JCoContext.class.getName())
-				.setProperty(DestinationDataProvider.JCO_ASHOST, s3Settings.getAshost())
-				.setProperty(DestinationDataProvider.JCO_SYSNR, s3Settings.getSysnr())
-				.setProperty(DestinationDataProvider.JCO_CLIENT, s3Settings.getClient())
-				.setProperty(DestinationDataProvider.JCO_USER, s3Settings.getUser())
-				.setProperty(DestinationDataProvider.JCO_PASSWD, s3Settings.getPasswd())
-				.setProperty(DestinationDataProvider.JCO_LANG, s3Settings.getLang())
-				.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, s3Settings.getPoolCapacity())
-				.setProperty(DestinationDataProvider.JCO_PEAK_LIMIT, s3Settings.getPeakLimit());
+		SessionManagerConfig cfg = new SessionManagerConfig("A12").setContext(JCoContext.class.getName()).setProperty(DestinationDataProvider.JCO_ASHOST, s3Settings.getAshost()).setProperty(DestinationDataProvider.JCO_SYSNR, s3Settings.getSysnr()).setProperty(DestinationDataProvider.JCO_CLIENT, s3Settings.getClient()).setProperty(DestinationDataProvider.JCO_USER, s3Settings.getUser()).setProperty(DestinationDataProvider.JCO_PASSWD, s3Settings.getPasswd()).setProperty(DestinationDataProvider.JCO_LANG, s3Settings.getLang()).setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, s3Settings.getPoolCapacity()).setProperty(DestinationDataProvider.JCO_PEAK_LIMIT, s3Settings.getPeakLimit());
 
 		AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
-		configuration.addBapiClasses(CustOrdersRFC.class, CustOrdersDetailRFC.class, CustomerOrdersByDateRFC.class,
-				HandlingUnitsRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class,
-				UpdateHandlingUnitsRFC.class, StockReportRFC.class, UpdatePodRFC.class);
+		configuration.addBapiClasses(CustOrdersRFC.class, CustOrdersDetailRFC.class, CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, UpdateHandlingUnitsRFC.class, StockReportRFC.class, UpdatePodRFC.class);
 		sessionManager = configuration.buildSessionManager();
 	}
 
-	public List<GtCustOrders> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict)
-			throws ParseException {
+	public List<GtCustOrders> getCustomerOrdersByDate(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
 		customerNumber = Pad.left(customerNumber, 10);
 		Session session = sessionManager.openSession();
 		try {
@@ -91,8 +80,7 @@ public class HiberSapService {
 		}
 	}
 
-	public List<GtCustOrdersDetail> getCustomerOrderDetails(String orderNumber, Date from, Date to)
-			throws ParseException {
+	public List<GtCustOrdersDetail> getCustomerOrderDetails(String orderNumber, Date from, Date to) throws ParseException {
 		orderNumber = Pad.left(orderNumber, 10);
 		Session session = sessionManager.openSession();
 		try {
@@ -116,8 +104,7 @@ public class HiberSapService {
 		try {
 			HandlingUnitsRFC rfc = new HandlingUnitsRFC(barcode);
 			session.execute(rfc);
-			rfc.getHunumbers().stream()
-					.forEach(hunumbers -> hunumbers.setHuExid(Long.valueOf(hunumbers.getHuExid()).toString()));
+			rfc.getHunumbers().stream().forEach(hunumbers -> hunumbers.setHuExid(Long.valueOf(hunumbers.getHuExid()).toString()));
 			return rfc;
 		} catch (Exception e) {
 			log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
@@ -143,26 +130,20 @@ public class HiberSapService {
 		}
 	}
 
-	public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto)
-			throws Exception {
+	public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
 		barcode = Pad.left(barcode, 10);
 		log.debug(String.format("[%s] - updateDeliveredHandelingUnits", barcode));
 		Session session = sessionManager.openSession();
 		try {
 			List<ImHuitem> imHuitems = new ArrayList<>();
-			log.debug(String.format("[%s] - hu count returned : %s", barcode,
-					handlingUnitUpdateDto.getHandlingUnits().size()));
+			log.debug(String.format("[%s] - hu count returned : %s", barcode, handlingUnitUpdateDto.getHandlingUnits().size()));
 			for (HandlingUnitDto dto : handlingUnitUpdateDto.getHandlingUnits()) {
-				log.debug(
-						String.format("[%s] - ImHuitem.getHuExid(): %s", barcode, Pad.left(dto.getHandlingUnit(), 20)));
-				imHuitems.add(new ImHuitem(barcode, Pad.left(dto.getHandlingUnit(), 20),
-						handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
+				log.debug(String.format("[%s] - ImHuitem.getHuExid(): %s", barcode, Pad.left(dto.getHandlingUnit(), 20)));
+				imHuitems.add(new ImHuitem(barcode, Pad.left(dto.getHandlingUnit(), 20), handlingUnitUpdateDto.getDate(), handlingUnitUpdateDto.getDate()));
 			}
 			;
 			if (imHuitems.size() == 0) {
-				log.debug(String.format(
-						"[%s] - hu count 0, so making a new imHuitem record with just barcode....nothing else...damn you fairwell!!!",
-						barcode));
+				log.debug(String.format("[%s] - hu count 0, so making a new imHuitem record with just barcode....nothing else...damn you fairwell!!!", barcode));
 				imHuitems.add(new ImHuitem(barcode, "", new Date(), new Date()));
 			}
 			UpdateHandlingUnitsRFC rfc = new UpdateHandlingUnitsRFC(imHuitems);
@@ -171,8 +152,7 @@ public class HiberSapService {
 			if (rfc.getReturn().isEmpty()) {
 				return new ArrayList<>();
 			} else if (rfc.getReturn().get(0).getType() == 'E') {
-				throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code "
-						+ rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
+				throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code " + rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
 			} else {
 				return rfc.getReturn();
 			}
@@ -193,8 +173,7 @@ public class HiberSapService {
 			imHuitems.stream().forEach(imHuupdate -> imHuupdate.setExidv(Pad.left(imHuupdate.getExidv(), 20)));
 			if (log.isDebugEnabled()) {
 				for (ImHuupdate tmp : imHuitems) {
-					log.debug(String.format("[%s] - imHuupdate.getExidv(): %s, imHuupdate.getExtIdHu2(): %s", barcode,
-							tmp.getExidv(), tmp.getExtIdHu2()));
+					log.debug(String.format("[%s] - imHuupdate.getExidv(): %s, imHuupdate.getExtIdHu2(): %s", barcode, tmp.getExidv(), tmp.getExtIdHu2()));
 				}
 			}
 			ReceivedHandlingUnitsRFC rfc = new ReceivedHandlingUnitsRFC(imHuitems);
@@ -203,8 +182,7 @@ public class HiberSapService {
 			if (rfc.getReturn().isEmpty()) {
 				return new ArrayList<>();
 			} else if (rfc.getReturn().get(0).getType() == 'E') {
-				throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code "
-						+ rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
+				throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code " + rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
 			} else {
 				return rfc.getReturn();
 			}
@@ -224,8 +202,7 @@ public class HiberSapService {
 			UpdatePodRFC rfc = new UpdatePodRFC(barcode, url);
 			session.execute(rfc);
 			if (rfc.getReturn().size() > 0 && rfc.getReturn().get(0).getType() == 'E') {
-				throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code "
-						+ rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
+				throw new Exception("Request [barcode:" + barcode + "] failed with SAP status code " + rfc.getReturn().get(0).getType() + " : " + rfc.getReturn().get(0).getMessage());
 			} else {
 				return rfc.getReturn();
 			}
@@ -245,24 +222,19 @@ public class HiberSapService {
 			log.debug("[{}] - SO created : {}", po, rfc.getExSalesorder());
 
 			if (rfc.getExReturn().size() > 0 && rfc.getExReturn().get(0).getType().equals("E")) {
-				throw new Exception("Request [po:" + po + "] failed with SAP status code "
-						+ rfc.getExReturn().get(0).getType() + " : " + rfc.getExReturn().get(0).getMessage());
+				throw new Exception("Request [po:" + po + "] failed with SAP status code " + rfc.getExReturn().get(0).getType() + " : " + rfc.getExReturn().get(0).getMessage());
 			} else {
 				log.debug("[{}] - Return count : [{}]", po, rfc.getExReturn().size());
 				log.debug("[{}] - return", po);
-				rfc.getExReturn().stream()
-						.forEach(exReturn -> log.debug("[{}] - return : \n{}", po, exReturn.toString()));
+				rfc.getExReturn().stream().forEach(exReturn -> log.debug("[{}] - return : \n{}", po, exReturn.toString()));
 				for (ExReturn exReturn : rfc.getExReturn()) {
 					if (exReturn.getType().equals("E") || exReturn.getType().equals("I")) {
-						if (exReturn.getType().equals("I") && exReturn.getMessage()
-								.startsWith("Purchase order number " + po + " already exists")) {
+						if (exReturn.getType().equals("I") && exReturn.getMessage().startsWith("Purchase order number " + po + " already exists")) {
 							throw new ValidSapException("Duplicate PO [" + po + "], please fix", exReturn);
-						} else if (exReturn.getType().equals("I") && exReturn.getMessage()
-								.startsWith("Mode of transport does not match Finance Controller")) {
+						} else if (exReturn.getType().equals("I") && exReturn.getMessage().startsWith("Mode of transport does not match Finance Controller")) {
 							throw new ValidSapException("Invalid mode of transport selected, please fix", exReturn);
 						} else {
-							throw new Exception("Request [po:" + po + "] failed with SAP status code "
-									+ exReturn.getType() + " : " + exReturn.getMessage());
+							throw new Exception("Request [po:" + po + "] failed with SAP status code " + exReturn.getType() + " : " + exReturn.getMessage());
 						}
 					}
 				}
@@ -322,6 +294,23 @@ public class HiberSapService {
 			throw new Exception("Cannot execute without any parameters");
 		} catch (Exception e) {
 			log.error("Couldn't complete createSalesOrder : " + e.getMessage(), e);
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<GtCustOrders> getCustomerOrdersForPOD(Date from, Date to) throws ParseException {
+		Session session = sessionManager.openSession();
+		try {
+			List<ImDateR> dateRange = new ArrayList<>();
+			dateRange.add(new ImDateR("I", "BT", from, to));
+			CustOrdersRFC rfc = new CustOrdersRFC(null, dateRange, "B");
+			session.execute(rfc);
+
+			return rfc.getGtCustOrders();
+		} catch (Exception e) {
+			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
 			throw e;
 		} finally {
 			session.close();
