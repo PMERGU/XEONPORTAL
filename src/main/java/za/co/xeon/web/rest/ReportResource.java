@@ -317,7 +317,6 @@ public class ReportResource {
 
 		return null;
 	}
-
 	@RequestMapping(value = "/podReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
 	public Callable<ResponseEntity<List<GtCustOrders>>> fetchPODData(@Valid @RequestBody PODReportReqDTO dto, HttpServletRequest request) {
@@ -325,15 +324,24 @@ public class ReportResource {
 		return () -> {
 			List<GtCustOrders> ret = new ArrayList<GtCustOrders>();
 			try {
-				List<GtCustOrders> custOrders = hiberSapService.getCustomerOrdersForPOD(dto.getFromDate(), dto.getToDate());
+				List<GtCustOrders> custOrders = null;
+				if (dto.getPodType() != null)
+					custOrders = hiberSapService.getCustomerOrdersForPODStatus(dto.getFromDate(), dto.getToDate(), dto.getPodType());
+				else
+					custOrders = hiberSapService.getCustomerOrdersForPOD(dto.getFromDate(), dto.getToDate());
 				for (GtCustOrders order : custOrders) {
 					PurchaseOrder po = purchaseOrderRepository.getOne(Long.valueOf(order.getBstkd()));
 					List<Attachment> atts = attachmentRepository.findByPONumberAndPOD(po.getId());
 					boolean pod = false;
-					for (Attachment att : atts)
+					for (Attachment att : atts) {
 						pod = pod && att.getCategory().equalsIgnoreCase("POD");
-					if (pod && dto.getPodType() != null && order.getBstkd().equalsIgnoreCase(dto.getPodType()) && po.getUser().getCompany().getId() == dto.getId()) {
-						ret.add(order);
+						if (pod) {
+							if (dto.getId() != null) {
+								if (dto.getId().longValue() == po.getUser().getCompany().getId().longValue())
+									ret.add(order);
+							} else
+								ret.add(order);
+						}
 					}
 				}
 			} catch (Exception e) {
