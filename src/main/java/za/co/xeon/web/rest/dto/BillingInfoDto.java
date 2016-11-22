@@ -28,6 +28,7 @@ public class BillingInfoDto {
 	private String serviceType;
 	private String serviceLevel;
 	private boolean surcharge;
+	private String modeOfTrans;
 	
 
 	public String getLocationString() {
@@ -161,6 +162,14 @@ public class BillingInfoDto {
 
 	public void setSurcharge(boolean surcharge) {
 		this.surcharge = surcharge;
+	}
+
+	public String getModeOfTrans() {
+		return modeOfTrans;
+	}
+
+	public void setModeOfTrans(String modeOfTrans) {
+		this.modeOfTrans = modeOfTrans;
 	}
 
 }

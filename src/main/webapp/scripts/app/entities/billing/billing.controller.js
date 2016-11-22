@@ -25,7 +25,7 @@ angular.module('portalApp')
                     destination: null,
                     destinationZone: null,
                     weight: null,
-                     
+                    modeOfTrans: null,
                     volume : null
             };
         };

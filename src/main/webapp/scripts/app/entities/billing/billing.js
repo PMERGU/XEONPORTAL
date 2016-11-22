@@ -41,6 +41,7 @@ angular.module('portalApp')
                                     weight: null,
                                     serviceType: null,
                                     serviceLevel:null,
+                                    modeOfTrans: null,
                                     volume : null
                                 };
                             }
