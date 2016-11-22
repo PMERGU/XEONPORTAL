@@ -115,49 +115,33 @@
             
                 <table class="jh-table table table-striped export-table" id="stockReport" fixed-header ng-show="showdownloadbuttons">
                     <thead>
-                    <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
-                        <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="poNumber"><span>Warehouse Number</span> <span class="glyphicon glyphicon-sort"></span>
-                        </th>
-                        <th jh-sort-by="serviceType"><span>Material</span> <span class="glyphicon glyphicon-sort"></span>
-                        </th>
-                        <th jh-sort-by="serviceLevel"><span>Batch</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                            <th jh-sort-by="shipToPartyId"><span>Pick Quantity</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="userFirstName"><span>Put Away Quantity</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="captureDate"><span>Storage Type</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                        <th jh-sort-by="pickUpPartyId"><span>Available Quantity</span> <span
-                            class="glyphicon glyphicon-sort"></span></th>
-                        
-                        <th jh-sort-by="state"><span>UOM</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <tr >
+                         <th><span>deliver Number</span></th>
+                         <th><span>Sales Order Number</span></th>
+                         <th><span>Purchase Order Number</span></th>
+                         <th><span>Destination Location</span></th>
+                         <th><span>Pickup Party</span></th>
+                         <th><span>Ship to party</span></th>
+                         <th><span>Capture Date</span></th>
+                         <th><span>Deliver Date</span></th>
+                         <th><span>Deliver Status</span></th>
+                         <th><span>POD Attachments</span></th>
                          
                     </tr>
                     </thead>
                     <tbody >
-                    <tr ng-repeat="purchaseOrder in (purchaseOrders | filter:pageFilter)"  >
-                        <td>
-                            {{$index+1}}
-                        </td>
-                        <td>{{purchaseOrder._lgnum}}</td>
-                        <td>{{purchaseOrder._matnr}}</td>
-                        <td>
-                            {{purchaseOrder._charge}}
-                        </td>
-                         <td>
-                             
-                        </td>
-                        <td>
-                             
-                        </td>
-                        <td>{{purchaseOrder._lgtyp }}</td>
-                        <td>
-                             {{purchaseOrder._verme}} 
-                        </td>
-                       
-                        <td>{{purchaseOrder._meins2}}</td>
+                    <tr ng-repeat="podRec in (podData | filter:pageFilter)"  >
+                        
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
+                         <td> {{podRec.vbeln}}</td>
                          
                     </tr>
                     

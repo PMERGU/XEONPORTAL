@@ -24,7 +24,7 @@ angular.module('portalApp')
              
              
             .state('report.stock', {
-                parent: 'site',
+                parent: 'entity',
                 url: '/report/stock',
                 data: {
                     authorities: ['ROLE_USER','ROLE_CUSTOMER'],
@@ -67,7 +67,7 @@ angular.module('portalApp')
                 }
 
             }) .state('report.pod', {
-                parent: 'site',
+                parent: 'entity',
                 url: '/report/pod',
                 data: {
                     authorities: ['ROLE_USER','ROLE_CUSTOMER'],
