@@ -1,8 +1,7 @@
 <form name="editForm" role="form" ng-submit="save()" show-validation>
 
 	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true" ng-click="clear()">&times;</button>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="clear()">&times;</button>
 		<h4 class="modal-title" id="myBillingLabel">Rate calculator - DSV</h4>
 	</div>
 	<div class="modal-body">
@@ -10,9 +9,7 @@
 		<div class="row">
 			<div class="col-md-4">
 				<div class="form-group">
-					<label class="control-label" for="field_source">Source
-						Location</label> <select class="form-control" name="source"
-						ng-model="billing.source" id="field_soruce" required>
+					<label class="control-label" for="field_source">Source Location</label> <select class="form-control" name="source" ng-model="billing.source" id="field_soruce" required>
 
 						<option value="BFN">BLOEMFONTEIN</option>
 						<option value="CPT">CAPETOWN</option>
@@ -30,9 +27,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label" for="field_szone">Source Zone</label>
-					<select class="form-control" name="szone" required
-						ng-model="billing.sourceZone" id="field_szone">
+					<label class="control-label" for="field_szone">Source Zone</label> <select class="form-control" name="szone" required ng-model="billing.sourceZone" id="field_szone">
 						<option value="ZONE1">ZONE1 (0 -40 KM)</option>
 						<option value="ZONE2">ZONE2 (40 KM - 80 KM)</option>
 						<option value="ZONE3">ZONE3 (80 KM - 120 KM)</option>
@@ -42,9 +37,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label" for="field_stype">Service Type</label>
-					<select class="form-control" name="stype" required
-						ng-model="billing.serviceType" id="field_stype">
+					<label class="control-label" for="field_stype">Service Type</label> <select class="form-control" name="stype" required ng-model="billing.serviceType" id="field_stype">
 						<option value="BB">Breakbulk Transport</option>
 					</select>
 				</div>
@@ -54,25 +47,18 @@
 
 					<label class="control-label" for="field_name">Weight</label>
 					<div class="input-group">
-						<input type="number" class="form-control" name="name" valid-number
-							id="field_name" ng-model="billing.weight"
-							ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" required
-							tabindex="1" /> <span class="input-group-addon">KG</span>
+						<input type="number" class="form-control" name="name" valid-number id="field_name" ng-model="billing.weight" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" required tabindex="1" /> <span class="input-group-addon">KG</span>
 					</div>
-					
+
 					<div class="form-group">
-					<label for="surcharge"> <input type="checkbox"
-						id="surcharge" name="surcharge" ng-model="billing.surcharge" ng-click="save()"	tabindex = "8"> 
-						<span>Hazardous Cargo ?</span>
-					</label>
-				</div>
+						<label for="surcharge"> <input type="checkbox" id="surcharge" name="surcharge" ng-model="billing.surcharge" ng-click="save()" tabindex="8"> <span>Hazardous Cargo ?</span>
+						</label>
+					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
 				<div class="form-group">
-					<label class="control-label" for="field_destination">Destination
-						Location</label> <select class="form-control" name="destination"
-						ng-model="billing.destination" id="field_destination">
+					<label class="control-label" for="field_destination">Destination Location</label> <select class="form-control" name="destination" ng-model="billing.destination" id="field_destination">
 						<option value="BFN">BLOEMFONTEIN</option>
 						<option value="CPT">CAPETOWN</option>
 						<option value="DUR">DURBAN</option>
@@ -90,11 +76,9 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label" for="field_dzone">Destination
-						Zone</label>
+					<label class="control-label" for="field_dzone">Destination Zone</label>
 					<!-- <input type="text" class="form-control" name="streetName" id="field_streetName" ng-model="billing.streetName"  tabindex="4"/> -->
-					<select class="form-control" name="dzone" required
-						ng-model="billing.destinationZone" id="field_dzone">
+					<select class="form-control" name="dzone" required ng-model="billing.destinationZone" id="field_dzone">
 						<option value="ZONE1">ZONE1 (0 -40 KM)</option>
 						<option value="ZONE2">ZONE2 (40 KM - 80 KM)</option>
 						<option value="ZONE3">ZONE3 (80 KM - 120 KM)</option>
@@ -105,9 +89,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label" for="field_slevel">Service
-						Level</label> <select class="form-control" name="slevel" required
-						ng-model="billing.serviceLevel" id="field_slevel">
+					<label class="control-label" for="field_slevel">Service Level</label> <select class="form-control" name="slevel" required ng-model="billing.serviceLevel" id="field_slevel">
 						<option value="EC">Economy</option>
 						<option value="EX">Express</option>
 					</select>
@@ -116,45 +98,40 @@
 				<div class="form-group">
 					<label class="control-label" for="field_volume">Volume</label>
 					<div class="input-group">
-						<input type="number" class="form-control" name="volume"
-							valid-number ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001"
-							required id="field_volume" ng-model="billing.volume" tabindex="1" />
-						<span class="input-group-addon">M&sup3;</span>
+						<input type="number" class="form-control" name="volume" valid-number ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" required id="field_volume" ng-model="billing.volume" tabindex="1" /> <span class="input-group-addon">M&sup3;</span>
 					</div>
 				</div>
 
-
+				<div class="form-group">
+					<label class="control-label" for="field_smot">Mode of Transport </label> <select class="form-control" name="smot" required ng-model="billing.modeOfTrans" id="field_smot">
+						<option value="S">Seaway</option>
+						<option value="A">Airway</option>
+					</select>
+				</div>
 
 			</div>
 
+			<div class="form-group" ng-show="billing.calculatedBill">
+				<label class="control-label">Approximate invoice amount is : </label> R {{ billing.calculatedBill | number : 2}}
+				<p>
+				<ul>
+					<li>Invoice value is based on information provided above.</li>
+					<li>Please ensure input data is as per shipment to attain and accurate estimate.</li>
+					<li>Fuel and e-toll surcharge has been added, additional surcharges may apply (Tail-lift, redelivery, out-of-gauge, etc).</li>
+					<li>Rate quoted above excludes VAT</li>
+				</ul>
+				</p>
+			</div>
+
+
 		</div>
 
-		<div class="form-group" ng-show="billing.calculatedBill">
-			<label class="control-label">Approximate invoice amount is :
-			</label> R {{ billing.calculatedBill | number : 2}}
-			<p>
-			<ul>
-				<li>Invoice value is based on information provided above.</li>
-				<li>Please ensure input data is as per shipment to attain and
-					accurate estimate.</li>
-				<li>Fuel and e-toll surcharge has been added, additional
-					surcharges may apply (Tail-lift, redelivery, out-of-gauge, etc).</li>
-				<li>Rate quoted above excludes VAT</li>
-			</ul>
-			</p>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+				<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+			</button>
+			<button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+				<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Calculate</span>
+			</button>
 		</div>
-
-
-	</div>
-
-	<div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal"
-			ng-click="clear()">
-			<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
-		</button>
-		<button type="submit" ng-disabled="editForm.$invalid"
-			class="btn btn-primary">
-			<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Calculate</span>
-		</button>
-	</div>
 </form>

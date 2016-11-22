@@ -80,7 +80,9 @@ public class BillingInfo implements Serializable {
 	@Column(name = "eco_max", nullable = false)
 	private Double ecoMax;
 	
-	
+	@NotNull
+	@Column(name = "mod_of_trans", nullable = false)
+	private String modeOfTrans;	
 
 	public Long getId() {
 		return id;
@@ -213,6 +215,14 @@ public class BillingInfo implements Serializable {
 
 	public void setExMinRate(Double exMinRate) {
 		this.exMinRate = exMinRate;
+	}
+
+	public String getModeOfTrans() {
+		return modeOfTrans;
+	}
+
+	public void setModeOfTrans(String modeOfTrans) {
+		this.modeOfTrans = modeOfTrans;
 	}
 
 }
