@@ -305,7 +305,24 @@ public class HiberSapService {
 		try {
 			List<ImDateR> dateRange = new ArrayList<>();
 			dateRange.add(new ImDateR("I", "BT", from, to));
-			CustOrdersRFC rfc = new CustOrdersRFC(null, dateRange, "B");
+			CustOrdersRFC rfc = new CustOrdersRFC(null, dateRange, null);
+			session.execute(rfc);
+
+			return rfc.getGtCustOrders();
+		} catch (Exception e) {
+			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<GtCustOrders> getCustomerOrdersForPODStatus(Date from, Date to, String podStatus) throws ParseException {
+		Session session = sessionManager.openSession();
+		try {
+			List<ImDateR> dateRange = new ArrayList<>();
+			dateRange.add(new ImDateR("I", "BT", from, to));
+			CustOrdersRFC rfc = new CustOrdersRFC(null, dateRange, podStatus);
 			session.execute(rfc);
 
 			return rfc.getGtCustOrders();
