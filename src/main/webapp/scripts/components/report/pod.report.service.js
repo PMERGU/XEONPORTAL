@@ -2,7 +2,7 @@
 
 angular.module('portalApp')
 	.factory('PODReport', function($resource, DateUtils) {
-		return $resource('api/stockReport', {}, {
+		return $resource('api/podReport', {}, {
 			'query' : {
 				method : 'POST',
 				isArray : true
@@ -14,10 +14,6 @@ angular.module('portalApp')
 					return data;
 				}
 			},
-            'getByUser': {
-                url: 'api/stockReport/:id',
-                method: 'GET', isArray: true
-            },
             'getByUserDownload': {
                 url: 'api/stockReport/download/:id',
                 method: 'GET',

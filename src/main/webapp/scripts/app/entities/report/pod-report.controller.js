@@ -3,7 +3,7 @@
 angular.module('portalApp')
 	.controller('PODReportController', function($scope, $log, $state, $stateParams,$http,Company, PODReport, ParseLinks,Principal) {
 
-		$scope.purchaseOrders = [];
+		$scope.podData = [];
 		$scope.predicate = 'id';
 		$scope.reverse = true;
 		$scope.page = 1;
@@ -14,14 +14,14 @@ angular.module('portalApp')
 		$scope.podStatus= null;
 		function resetSR() {
 			$log.debug("clearing po");
-			$scope.stockReport = {
-					plantNo: null,
-					sType: null,
-					mName:null,
-				company : null
-				 
+			$scope.podReport = {
+					 
+					 fromDate: "2010-09-22",
+					 toDate : "2016-11-21",
+					 podType : 'A',
+					 id : "2"
 			};
-		  $scope.purchaseOrders = [];
+		  $scope.podData = [];
 		  $scope.showdownloadbuttons=false;
 		}
 		
@@ -54,7 +54,7 @@ angular.module('portalApp')
             if(podStatus != null && podStatus != undefined) {
                 $log.debug("POD Status ");
                 $log.debug(podStatus);
-                $scope.purchaseOrders = [];
+                $scope.podData = [];
                 $scope.showdownloadbuttons =false;
 //                $scope.loadAll(company);
             }
@@ -90,7 +90,7 @@ angular.module('portalApp')
                 if(company != null && company != undefined) {
                     $log.debug("Comapnay Name ");
                     $log.debug(company);
-                    $scope.purchaseOrders = [];
+                    $scope.podData = [];
                     $scope.showdownloadbuttons =false;
 //                    $scope.loadAll(company);
                 }
@@ -111,7 +111,7 @@ angular.module('portalApp')
 		
 		 
 		var onSaveSuccess = function(result) {
-			$scope.purchaseOrders=result;
+			$scope.podData=result;
 			if(result!=null && result!= undefined && result.length>0)
 				{
 					$scope.showdownloadbuttons =true;
@@ -142,10 +142,10 @@ angular.module('portalApp')
 			 
 			
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
-				$scope.stockReport.company = $scope.selected.company.name;
+				$scope.podReport.company = $scope.selected.company.id;
 //				$scope.stockReport.
 				$log.debug("test Status: "+$scope.podStatus);
-				PODReport.save($scope.stockReport, onSaveSuccess, onSaveError);
+				PODReport.save($scope.podReport, onSaveSuccess, onSaveError);
 				 
 			}  
 		};
@@ -158,9 +158,9 @@ angular.module('portalApp')
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
 				
 				$log.debug($scope.selected.company.id);
-				$scope.stockReport.company = $scope.selected.company.name;
-				$http.post('api/stockReport/download/', $scope.stockReport, { responseType: 'arraybuffer' }).then(function (response) {
-					var fileName = "stock_report.pdf";
+				$scope.podReport.company = $scope.selected.company.name;
+				$http.post('api/stockReport/download/', $scope.podReport, { responseType: 'arraybuffer' }).then(function (response) {
+					var fileName = "pod_report.pdf";
 		            var a = document.createElement("a");
 		            document.body.appendChild(a);
 		            a.style = "display: none";
@@ -172,19 +172,6 @@ angular.module('portalApp')
 					 
 				});
 				
-//				$http.get('api/stockReport/download/dercik',$scope.data,{responseType:'arraybuffer'})
-				
-//				StockReport.getByUserDownload({
-//					id : 'derick'
-//				}).$promise.then(function(imageBlob) {
-//					$log.debug(imageBlob.response.type);
-//					FileSaver.saveAs(imageBlob.response, 'derick' + "-" + 'derick');
-//					$scope.isDownloadingAttachment = false;
-//				}, function(err) {
-//					$scope.isDownloadingAttachment = false;
-//					$log.error("Count not download attachment");
-//					$log.error(err);
-//				});
 			}  
 		};
 		 
