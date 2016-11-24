@@ -14,7 +14,7 @@ public interface BillingInfoRepository extends JpaRepository<BillingInfo, Long>,
 	@Query("select a from BillingInfo a where a.locationString like ?1 and a.ecoMin <= ?2 and a.ecoMax >= ?2")
 	BillingInfo findByLocationString(String locationString, Double d);
 
-	@Query("select a from BillingInfo a where a.locationString like ?1 and a.ecoMin <= ?2 and a.ecoMax >= ?2 and a.mod_of_trans = ?3")
+	@Query("select a from BillingInfo a where a.locationString like ?1 and a.ecoMin <= ?2 and a.ecoMax >= ?2 and a.modeOfTrans = ?3")
 	BillingInfo findByLocationStringAndMOT(String locationString, Double d, String modeOfTrans);
 
 }

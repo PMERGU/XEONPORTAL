@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 
 import za.co.xeon.external.sap.SapSettings;
+import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.ExReturn;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
@@ -300,15 +301,15 @@ public class HiberSapService {
 		}
 	}
 
-	public List<GtCustOrders> getCustomerOrdersForPOD(Date from, Date to) throws ParseException {
+	public List<EvResult> getCustomerOrdersForPOD(Date from, Date to) throws ParseException {
 		Session session = sessionManager.openSession();
 		try {
 			List<ImDateR> dateRange = new ArrayList<>();
 			dateRange.add(new ImDateR("I", "BT", from, to));
-			CustOrdersRFC rfc = new CustOrdersRFC(null, dateRange, null);
+			CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(null, dateRange, null);
 			session.execute(rfc);
 
-			return rfc.getGtCustOrders();
+			return rfc.getEvResult();
 		} catch (Exception e) {
 			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
 			throw e;
@@ -317,15 +318,15 @@ public class HiberSapService {
 		}
 	}
 
-	public List<GtCustOrders> getCustomerOrdersForPODStatus(Date from, Date to, String podStatus) throws ParseException {
+	public List<EvResult> getCustomerOrdersForPODStatus(Date from, Date to, String podStatus) throws ParseException {
 		Session session = sessionManager.openSession();
 		try {
 			List<ImDateR> dateRange = new ArrayList<>();
 			dateRange.add(new ImDateR("I", "BT", from, to));
-			CustOrdersRFC rfc = new CustOrdersRFC(null, dateRange, podStatus);
+			CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(null, dateRange, podStatus);
 			session.execute(rfc);
 
-			return rfc.getGtCustOrders();
+			return rfc.getEvResult();
 		} catch (Exception e) {
 			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
 			throw e;

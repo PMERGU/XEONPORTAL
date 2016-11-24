@@ -18,18 +18,17 @@ public class BillingInfoDto {
 
 	private String ecoMin;
 	private String ecoMax;
-	
+
 	private Double weight;
-	
+
 	private Double calculatedBill;
-	
+
 	private Double volume;
-	
+
 	private String serviceType;
 	private String serviceLevel;
 	private boolean surcharge;
 	private String modeOfTrans;
-	
 
 	public String getLocationString() {
 		return locationString;
@@ -105,15 +104,11 @@ public class BillingInfoDto {
 
 	@Override
 	public String toString() {
-		return " BillingInfo{ source='" + source + '\'' + ", sourceZone= ' " + sourceZone + '\'' + ", destination="
-				+ destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate=" + rate + '\'' + ", calculatedBill= "+calculatedBill +'\''
-			+ ", volume=" + volume + '\''+ ", weight=" + weight + '\''	+ ", minRate=" + minRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", serviceType=" + serviceType + '\''+ ", serviceLevel=" + serviceLevel + '\'' + ", surcharge=" + surcharge + '\'' + '}';
+		return " BillingInfo{ source='" + source + '\'' + ", sourceZone= ' " + sourceZone + '\'' + ", destination=" + destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate=" + rate + '\'' + ", calculatedBill= " + calculatedBill + '\'' + ", volume=" + volume + '\'' + ", weight=" + weight + '\'' + ", minRate=" + minRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", serviceType=" + serviceType + '\'' + ", serviceLevel=" + serviceLevel + '\'' + ", surcharge=" + surcharge + '\'' + ", modeOfTrans=" + modeOfTrans + '\'' + '}';
 	}
 
 	public String toStringFull() {
-		return " BillingInfo{ source='" + source + '\'' + ", sourceZone= ' " + sourceZone + '\'' + ", destination="
-				+ destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate=" + rate + '\'' + ", calculatedBill= "+calculatedBill +'\''
-			+ ", volume=" + volume + '\''+ ", weight=" + weight + '\''	+ ", minRate=" + minRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", serviceType=" + serviceType + '\''+ ", serviceLevel=" + serviceLevel + '\'' + ", surcharge=" + surcharge + '\'' + '}';
+		return " BillingInfo{ source='" + source + '\'' + ", sourceZone= ' " + sourceZone + '\'' + ", destination=" + destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate=" + rate + '\'' + ", calculatedBill= " + calculatedBill + '\'' + ", volume=" + volume + '\'' + ", weight=" + weight + '\'' + ", minRate=" + minRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", serviceType=" + serviceType + '\'' + ", serviceLevel=" + serviceLevel + '\'' + ", surcharge=" + surcharge + '\'' + ", modeOfTrans=" + modeOfTrans + '\'' + '}';
 	}
 
 	public Double getWeight() {

@@ -19,6 +19,7 @@ angular.module('portalApp')
         };
 
         $scope.clear = function () {
+        	$scope.zeroBill = false;
             $scope.billing = {
             		source: null,
                     sourceZone: null,

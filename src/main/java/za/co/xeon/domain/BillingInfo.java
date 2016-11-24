@@ -17,7 +17,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-
 /**
  * A BillingInfo.
  */
@@ -62,8 +61,7 @@ public class BillingInfo implements Serializable {
 	@NotNull
 	@Column(name = "eco_min_rate", nullable = false)
 	private Double minRate;
-	
-	
+
 	@NotNull
 	@Column(name = "exp_rate", nullable = false)
 	private Double exRate;
@@ -75,14 +73,14 @@ public class BillingInfo implements Serializable {
 	@NotNull
 	@Column(name = "eco_min", nullable = false)
 	private Double ecoMin;
-	
+
 	@NotNull
 	@Column(name = "eco_max", nullable = false)
 	private Double ecoMax;
-	
+
 	@NotNull
 	@Column(name = "mod_of_trans", nullable = false)
-	private String modeOfTrans;	
+	private String modeOfTrans;
 
 	public Long getId() {
 		return id;
@@ -186,19 +184,11 @@ public class BillingInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return " BillingInfo{ " + "id=" + id + ", source=" + source + ", sourceZone= ' " + sourceZone + '\''
-				+ ", destination=" + destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate="
-				+ rate + '\'' + ", minRate=" + minRate + '\'' + ", exRate="
-						+ exRate + '\'' + ", exMinRate=" + exMinRate + '\'' +  ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax
-				+ '\'' + '}';
+		return " BillingInfo{ " + "id=" + id + ", source=" + source + ", sourceZone= ' " + sourceZone + '\'' + ", destination=" + destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate=" + rate + '\'' + ", minRate=" + minRate + '\'' + ", exRate=" + exRate + '\'' + ", exMinRate=" + exMinRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", modeOfTrans=" + modeOfTrans + '\'' + '}';
 	}
 
 	public String toStringFull() {
-		return " BillingInfo{ " + "id=" + id + ", source=" + source + ", sourceZone= ' " + sourceZone + '\''
-				+ ", destination=" + destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate="
-				+ rate + '\'' + ", minRate=" + minRate + '\'' + ", exRate="
-						+ exRate + '\'' + ", exMinRate=" + exMinRate + '\'' +  ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax
-				+ '\'' + '}';
+		return " BillingInfo{ " + "id=" + id + ", source=" + source + ", sourceZone= ' " + sourceZone + '\'' + ", destination=" + destination + '\'' + ", destinationZone=" + destinationZone + '\'' + ", rate=" + rate + '\'' + ", minRate=" + minRate + '\'' + ", exRate=" + exRate + '\'' + ", exMinRate=" + exMinRate + '\'' + ", ecoMin=" + ecoMin + '\'' + ", ecoMax=" + ecoMax + '\'' + ", modeOfTrans=" + modeOfTrans + '\'' + '}';
 	}
 
 	public Double getExRate() {
