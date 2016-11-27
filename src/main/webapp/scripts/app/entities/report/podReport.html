@@ -1,15 +1,12 @@
 <div>
-    <div small-header>
         <div class="hpanel" style="margin-bottom: 15px;">
              <div class="panel-body">
              	<div class="row">
-             	<div class="col-md-6">
-                        <h2 class="font-light m-b-xs">
-                            POD Report
-                        </h2>
-                        <jh-alert></jh-alert>
-                    </div>
-                 </div>
+					<div class="col-md-6">
+						<h2 class="font-light m-b-xs">POD Report</h2>
+						<jh-alert></jh-alert>
+					</div>
+				</div>
                 <!--  <div class="row">
                    <div class="col-md-6"  >
                      <div class="col-md-6 text-right" style="margin-top: 10px;">
@@ -33,16 +30,13 @@
 
 						
 						<div class="form-group">
-							<h4>Collection Date</h4>
+							<h4>From Date</h4>
 							<div class="input-group">
-								<input id="field_fromDate" type="text" class="form-control"
-									name="fromDate" ng-model="fromDate"
-									datepicker-options="dateOptions"
-									is-open="dateSetup.dpFromDate.opened" /> <span
-									class="input-group-btn">
-									<button type="button" class="btn btn-default"
-										ng-click="dateSetup.dpFromDate.open($event)">
+								<input id="field_fromDate" type="text" class="form-control" uib-datepicker-popup name="fromDate" ng-model="podReport.fromDate" datepicker-options="dateOptions" is-open="dateSetup.dpFromDate.opened" /> <span class="input-group-btn"> +
+									<button type="button" class="btn btn-default" style="margin-top: 0px !important;" ng-click="dateSetup.dpFromDate.open($event)">
+
 										<i class="glyphicon glyphicon-calendar"></i>
+
 									</button>
 								</span>
 							</div>
@@ -69,17 +63,15 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<h4>Collection Date</h4>
+							<h4>To Date</h4>
 							<div class="input-group">
-								<input id="field_toDate" type="text" class="form-control"
-									name="toDate" ng-model="toDate"
-									datepicker-options="dateOptions"
-									is-open="dateSetup.dpToDate.opened" /> <span
-									class="input-group-btn">
-									<button type="button" class="btn btn-default"
-										ng-click="dateSetup.dpToDate.open($event)">
+								<input id="field_toDate" type="text" class="form-control" uib-datepicker-popup name="toDate" ng-model="podReport.toDate" datepicker-options="dateOptions" is-open="dateSetup.dpToDate.opened" /> <span class="input-group-btn"> +
+									<button type="button" class="btn btn-default" ng-click="dateSetup.dpToDate.open($event)">
+
 										<i class="glyphicon glyphicon-calendar"></i>
+
 									</button>
+
 								</span>
 							</div>
 							<div class="form-group" has-authority="ROLE_USER">

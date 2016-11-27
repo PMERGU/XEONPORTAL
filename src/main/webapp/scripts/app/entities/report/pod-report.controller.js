@@ -16,10 +16,10 @@ angular.module('portalApp')
 			$log.debug("clearing po");
 			$scope.podReport = {
 					 
-					 fromDate: "2010-09-22",
-					 toDate : "2016-11-21",
-					 podType : 'A',
-					 id : "2"
+					 fromDate: null,
+					 toDate : null,
+					 podType : null,
+					 id : null
 			};
 		  $scope.podData = [];
 		  $scope.showdownloadbuttons=false;
@@ -44,16 +44,33 @@ angular.module('portalApp')
 			var date = data.date,
 				mode = data.mode;
 			return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-		}
-		;
+		};
+		
+		$scope.dateSetup = {
+				dpFromDate : {
+					opened : false,
+					open : function($event) {
+						 
+						$scope.dateSetup.dpFromDate.opened = true;
+					}
+				},
+				
+				dpToDate : {
+					opened : false,
+					open : function($event) {
+						$scope.dateSetup.dpToDate.opened = true;
+					}
+				}
+				 
+			};
 		
 		$scope.$watch(function() {
-            return $scope.podStatus
-        }, function (podStatus) {
+            return $scope.podReport.podType
+        }, function (podType) {
             $log.debug("test");
-            if(podStatus != null && podStatus != undefined) {
+            if(podType != null && podType != undefined) {
                 $log.debug("POD Status ");
-                $log.debug(podStatus);
+                $log.debug(podType);
                 $scope.podData = [];
                 $scope.showdownloadbuttons =false;
 //                $scope.loadAll(company);
@@ -142,7 +159,7 @@ angular.module('portalApp')
 			 
 			
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
-				$scope.podReport.company = $scope.selected.company.id;
+				$scope.podReport.id = $scope.selected.company.id;
 //				$scope.stockReport.
 				$log.debug("test Status: "+$scope.podStatus);
 				PODReport.save($scope.podReport, onSaveSuccess, onSaveError);
