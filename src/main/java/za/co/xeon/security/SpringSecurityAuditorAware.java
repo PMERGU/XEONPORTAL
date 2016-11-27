@@ -11,9 +11,9 @@ import za.co.xeon.config.Constants;
 @Component
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
-    @Override
-    public String getCurrentAuditor() {
-        String userName = SecurityUtils.getCurrentUserLogin();
-        return (userName != null ? userName : Constants.SYSTEM_ACCOUNT);
-    }
+	@Override
+	public String getCurrentAuditor() {
+		String userName = SecurityUtils.getCurrentUserLogin();
+		return (userName != null ? userName : Constants.SYSTEM_ACCOUNT);
+	}
 }

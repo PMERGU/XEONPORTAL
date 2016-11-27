@@ -10,32 +10,38 @@ import org.hibersap.bapi.BapiRet2;
 
 @Bapi("Z_SET_URL_ON_POD")
 public class UpdatePodRFC {
-    /**
-     * "Sales and Distribution Document Number" */
-    @Import
-    @Parameter("IM_DEL_VBELN")
-    private final String imDelVbeln;
+	/**
+	 * "Sales and Distribution Document Number"
+	 */
+	@Import
+	@Parameter("IM_DEL_VBELN")
+	private final String imDelVbeln;
 
-    /**
-     * "Character field of length 40" */
-    @Import
-    @Parameter("IM_POD_URL")
-    private final String imPodUrl;
+	/**
+	 * "Character field of length 40"
+	 */
+	@Import
+	@Parameter("IM_POD_URL")
+	private final String imPodUrl;
 
-    /**
-     * "Return parameter table"@return "Return" - "Return parameter table" */
-    @Table
-    @Parameter("RETURN")
-    private List<BapiRet2> returnType;
+	/**
+	 * "Return parameter table"@return "Return" - "Return parameter table"
+	 */
+	@Table
+	@Parameter("RETURN")
+	private List<BapiRet2> returnType;
 
-    /**
-     * @param "imDelVbeln" - "Sales and Distribution Document Number"@param "imPodUrl" - "Character field of length 40" */
-    public UpdatePodRFC(String imDelVbeln, String imPodUrl) {
-        this.imDelVbeln = imDelVbeln;
-        this.imPodUrl = imPodUrl;
-    }
+	/**
+	 * @param "imDelVbeln"
+	 *            - "Sales and Distribution Document Number"@param "imPodUrl" -
+	 *            "Character field of length 40"
+	 */
+	public UpdatePodRFC(String imDelVbeln, String imPodUrl) {
+		this.imDelVbeln = imDelVbeln;
+		this.imPodUrl = imPodUrl;
+	}
 
-    public List<BapiRet2> getReturn() {
-        return returnType;
-    }
+	public List<BapiRet2> getReturn() {
+		return returnType;
+	}
 }

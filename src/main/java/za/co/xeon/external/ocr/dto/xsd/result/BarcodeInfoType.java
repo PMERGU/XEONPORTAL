@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for BarcodeInfoType complex type.
+ * <p>
+ * Java class for BarcodeInfoType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="BarcodeInfoType">
@@ -36,61 +37,55 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "BarcodeInfoType")
 public class BarcodeInfoType {
 
-    @XmlAttribute(name = "type", required = true)
-    protected BarcodeTypeEnum type;
-    @XmlAttribute(name = "supplement")
-    protected String supplement;
+	@XmlAttribute(name = "type", required = true)
+	protected BarcodeTypeEnum type;
+	@XmlAttribute(name = "supplement")
+	protected String supplement;
 
-    /**
-     * Gets the value of the type property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BarcodeTypeEnum }
-     *
-     */
-    public BarcodeTypeEnum getType() {
-        return type;
-    }
+	/**
+	 * Gets the value of the type property.
+	 *
+	 * @return possible object is {@link BarcodeTypeEnum }
+	 *
+	 */
+	public BarcodeTypeEnum getType() {
+		return type;
+	}
 
-    /**
-     * Sets the value of the type property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BarcodeTypeEnum }
-     *
-     */
-    public void setType(BarcodeTypeEnum value) {
-        this.type = value;
-    }
+	/**
+	 * Sets the value of the type property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BarcodeTypeEnum }
+	 *
+	 */
+	public void setType(BarcodeTypeEnum value) {
+		this.type = value;
+	}
 
-    /**
-     * Gets the value of the supplement property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getSupplement() {
-        if (supplement == null) {
-            return "void";
-        } else {
-            return supplement;
-        }
-    }
+	/**
+	 * Gets the value of the supplement property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getSupplement() {
+		if (supplement == null) {
+			return "void";
+		} else {
+			return supplement;
+		}
+	}
 
-    /**
-     * Sets the value of the supplement property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setSupplement(String value) {
-        this.supplement = value;
-    }
+	/**
+	 * Sets the value of the supplement property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setSupplement(String value) {
+		this.supplement = value;
+	}
 
 }

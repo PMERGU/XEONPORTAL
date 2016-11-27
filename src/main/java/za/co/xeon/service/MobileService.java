@@ -36,117 +36,118 @@ import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
  */
 @Service
 public class MobileService {
-    private final static Logger log = LoggerFactory.getLogger(MobileService.class);
+	private final static Logger log = LoggerFactory.getLogger(MobileService.class);
 
-    @Autowired
-    private OcrSettings ocrSettings;
+	@Autowired
+	private OcrSettings ocrSettings;
 
-    @Autowired
-    private OcrService ocrService;
+	@Autowired
+	private OcrService ocrService;
 
-    @Autowired
-    private S3Service s3Service;
+	@Autowired
+	private S3Service s3Service;
 
-    @Autowired
-    private S3Settings s3Settings;
+	@Autowired
+	private S3Settings s3Settings;
 
-    @Autowired
-    private HiberSapService hiberSapService;
+	@Autowired
+	private HiberSapService hiberSapService;
 
-    @Autowired
-    private AttachmentService attachmentService;
+	@Autowired
+	private AttachmentService attachmentService;
 
-    @Autowired
-    private MobileConfiguration mobileConfiguration;
+	@Autowired
+	private MobileConfiguration mobileConfiguration;
 
-    @Async
-    public void submitPOD(String barcode, File podFile, String contentType, String originalExtension, User user){
-        //first long running task - Submit document for processing
-        Task task = ocrService.scanDocument(podFile.getPath()).getTask();
+	@Async
+	public void submitPOD(String barcode, File podFile, String contentType, String originalExtension, User user) {
+		// first long running task - Submit document for processing
+		Task task = ocrService.scanDocument(podFile.getPath()).getTask();
 
-        //second long running task - Poll document for completion
-        while(task.getStatus() != OcrSettings.TaskStatus.Completed){
-            log.debug("\tsleeping for " + task.getEstimatedProcessingTime() + "s");
-            try {
-                Thread.sleep(Integer.parseInt(task.getEstimatedProcessingTime())*1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            task = ocrService.getStatus(task.getId()).getTask();
-        }
+		// second long running task - Poll document for completion
+		while (task.getStatus() != OcrSettings.TaskStatus.Completed) {
+			log.debug("\tsleeping for " + task.getEstimatedProcessingTime() + "s");
+			try {
+				Thread.sleep(Integer.parseInt(task.getEstimatedProcessingTime()) * 1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			task = ocrService.getStatus(task.getId()).getTask();
+		}
 
-        //third long running task - get the barcode from the document sent in step 1
-        String ocrBarcode = null;
-        try {
-            ocrBarcode = ocrService.getCompletedBarcodeResult(task.getResultUrl());
+		// third long running task - get the barcode from the document sent in
+		// step 1
+		String ocrBarcode = null;
+		try {
+			ocrBarcode = ocrService.getCompletedBarcodeResult(task.getResultUrl());
 
-            ocrBarcode = org.apache.commons.lang.StringUtils.leftPad(ocrBarcode, 10, "0");
-            barcode = org.apache.commons.lang.StringUtils.leftPad(barcode, 10, "0");
-            log.debug("Padding both barcodes to 10 length [ocrBarcode:" + ocrBarcode + "] - [barcode:" + barcode + "]");
+			ocrBarcode = org.apache.commons.lang.StringUtils.leftPad(ocrBarcode, 10, "0");
+			barcode = org.apache.commons.lang.StringUtils.leftPad(barcode, 10, "0");
+			log.debug("Padding both barcodes to 10 length [ocrBarcode:" + ocrBarcode + "] - [barcode:" + barcode + "]");
 
-            if(ocrBarcode == null || barcode.equals(ocrBarcode)) {
-                log.debug("\t====> Found barcode : " + ocrBarcode);
-                if(ocrBarcode == null) {
-                    log.error("\t Failed to get OCR barcode from POD, using barcode passed in : " + barcode);
-                }
+			if (ocrBarcode == null || barcode.equals(ocrBarcode)) {
+				log.debug("\t====> Found barcode : " + ocrBarcode);
+				if (ocrBarcode == null) {
+					log.error("\t Failed to get OCR barcode from POD, using barcode passed in : " + barcode);
+				}
 
-                //fourth long running task - upload POD to amazon S3
-                Attachment podAttachment = attachmentService.createAttachment(barcode, "POD scanned via mobile scanner", "POD", contentType, true, podFile, user);
-                String url =  mobileConfiguration.getHttpServerName() + format("api/attachments/%s", podAttachment.getUuid());
-                log.debug("\t[" + barcode + "] - Submitted pod to S3 successfully : " + podAttachment.getFileName() + ". Now updating SAP with URL [" + url + "]");
+				// fourth long running task - upload POD to amazon S3
+				Attachment podAttachment = attachmentService.createAttachment(barcode, "POD scanned via mobile scanner", "POD", contentType, true, podFile, user);
+				String url = mobileConfiguration.getHttpServerName() + format("api/attachments/%s", podAttachment.getUuid());
+				log.debug("\t[" + barcode + "] - Submitted pod to S3 successfully : " + podAttachment.getFileName() + ". Now updating SAP with URL [" + url + "]");
 
-                try {
-                    hiberSapService.updatePod(barcode, url);
-                    log.debug("\tSap update successful for pod " + barcode);
-                    podFile.delete();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }else{
-                log.error("Invalid barcode match received. Called with [barcode:" + barcode + "] and ocr'ed [barcode:" + ocrBarcode + "]. Storing to S3 a mismached POD...");
-                String s3Path = s3Settings.getFolderPod() + "/mismatched/" + ocrBarcode + "-vs-" + barcode + "." + originalExtension;
-                s3Service.uploadFile(s3Path, podFile);
-                log.error("\tSubmitted mismatched pod [barcode:" + ocrBarcode + " to S3 successfully : ");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+				try {
+					hiberSapService.updatePod(barcode, url);
+					log.debug("\tSap update successful for pod " + barcode);
+					podFile.delete();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				log.error("Invalid barcode match received. Called with [barcode:" + barcode + "] and ocr'ed [barcode:" + ocrBarcode + "]. Storing to S3 a mismached POD...");
+				String s3Path = s3Settings.getFolderPod() + "/mismatched/" + ocrBarcode + "-vs-" + barcode + "." + originalExtension;
+				s3Service.uploadFile(s3Path, podFile);
+				log.error("\tSubmitted mismatched pod [barcode:" + ocrBarcode + " to S3 successfully : ");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public List<Hunumbers> getHandlingUnits(String barcode) throws Exception{
-        return hiberSapService.getHandelingUnits(barcode).getHunumbers();
-    }
+	public List<Hunumbers> getHandlingUnits(String barcode) throws Exception {
+		return hiberSapService.getHandelingUnits(barcode).getHunumbers();
+	}
 
-    public HandlingUnitDetails getHandlingUnitDetails(String barcode) throws Exception{
-        return hiberSapService.getHandlingUnitDetails(barcode);
-    }
+	public HandlingUnitDetails getHandlingUnitDetails(String barcode) throws Exception {
+		return hiberSapService.getHandlingUnitDetails(barcode);
+	}
 
-    @Async
-    public Future<List<GtCustOrders>> getCustomerOrders(String customerNumber, Date from, Date to) throws Exception{
-        return new AsyncResult<List<GtCustOrders>>(hiberSapService.getCustomerOrdersByDate(customerNumber, from, to, true));
-    }
+	@Async
+	public Future<List<GtCustOrders>> getCustomerOrders(String customerNumber, Date from, Date to) throws Exception {
+		return new AsyncResult<List<GtCustOrders>>(hiberSapService.getCustomerOrdersByDate(customerNumber, from, to, true));
+	}
 
-    @Async
-    public Future<List<GtCustOrdersDetail>> getCustomerOrderDetails(String deliveryNo, Date from, Date to) throws Exception{
-        return new AsyncResult<List<GtCustOrdersDetail>>(hiberSapService.getCustomerOrderDetails(deliveryNo, from, to));
-    }
+	@Async
+	public Future<List<GtCustOrdersDetail>> getCustomerOrderDetails(String deliveryNo, Date from, Date to) throws Exception {
+		return new AsyncResult<List<GtCustOrdersDetail>>(hiberSapService.getCustomerOrderDetails(deliveryNo, from, to));
+	}
 
-    public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception{
-        return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
-    }
+	public List<BapiRet2> updateDeliveredHandelingUnits(String barcode, HandlingUnitUpdateDto handlingUnitUpdateDto) throws Exception {
+		return hiberSapService.updateDeliveredHandelingUnits(barcode, handlingUnitUpdateDto);
+	}
 
-    public List<BapiRet2> pickupHandelingUnits(String barcode, List<ImHuupdate> imHuupdates) throws Exception{
-        return hiberSapService.pickupHandelingUnits(barcode, imHuupdates);
-    }
+	public List<BapiRet2> pickupHandelingUnits(String barcode, List<ImHuupdate> imHuupdates) throws Exception {
+		return hiberSapService.pickupHandelingUnits(barcode, imHuupdates);
+	}
 
-    public List<BapiRet2> updatePod(String barcode, String url) throws Exception {
-        return hiberSapService.updatePod(barcode, url);
-    }
+	public List<BapiRet2> updatePod(String barcode, String url) throws Exception {
+		return hiberSapService.updatePod(barcode, url);
+	}
 
-    public byte[] getPod(String barcode) throws Exception{
-        barcode = org.apache.commons.lang.StringUtils.leftPad(barcode, 10, "0");
-        String s3Path = s3Settings.getFolderPod() + "/" + barcode + ".jpg";
-        log.debug("Trying to retrieve pod " + s3Path);
-        return s3Service.retrieveFile(s3Path);
-    }
+	public byte[] getPod(String barcode) throws Exception {
+		barcode = org.apache.commons.lang.StringUtils.leftPad(barcode, 10, "0");
+		String s3Path = s3Settings.getFolderPod() + "/" + barcode + ".jpg";
+		log.debug("Trying to retrieve pod " + s3Path);
+		return s3Service.retrieveFile(s3Path);
+	}
 }

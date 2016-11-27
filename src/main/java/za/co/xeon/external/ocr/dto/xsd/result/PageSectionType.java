@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.util.ArrayList;
@@ -15,11 +14,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for PageSectionType complex type.
+ * <p>
+ * Java class for PageSectionType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="PageSectionType">
@@ -36,40 +37,39 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PageSectionType", propOrder = {
-    "pageStream"
-})
+@XmlType(name = "PageSectionType", propOrder = { "pageStream" })
 public class PageSectionType {
 
-    protected List<PageStreamType> pageStream;
+	protected List<PageStreamType> pageStream;
 
-    /**
-     * Gets the value of the pageStream property.
-     *
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the pageStream property.
-     *
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getPageStream().add(newItem);
-     * </pre>
-     *
-     *
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PageStreamType }
-     *
-     *
-     */
-    public List<PageStreamType> getPageStream() {
-        if (pageStream == null) {
-            pageStream = new ArrayList<PageStreamType>();
-        }
-        return this.pageStream;
-    }
+	/**
+	 * Gets the value of the pageStream property.
+	 *
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the pageStream property.
+	 *
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getPageStream().add(newItem);
+	 * </pre>
+	 *
+	 *
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link PageStreamType }
+	 *
+	 *
+	 */
+	public List<PageStreamType> getPageStream() {
+		if (pageStream == null) {
+			pageStream = new ArrayList<PageStreamType>();
+		}
+		return this.pageStream;
+	}
 
 }

@@ -40,7 +40,6 @@ public class StockReportDTO {
 
 	@Override
 	public String toString() {
-		return "StockReportDTO [company=" + company + ", mName=" + mName + ", plantNo=" + plantNo + ", sType=" + sType
-				+ "]";
+		return "StockReportDTO [company=" + company + ", mName=" + mName + ", plantNo=" + plantNo + ", sType=" + sType + "]";
 	}
 }

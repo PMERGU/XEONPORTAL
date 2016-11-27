@@ -20,35 +20,35 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
  */
 public class AuthHttpComponentsClientHttpRequestFactory extends HttpComponentsClientHttpRequestFactory {
 
-    protected HttpHost host;
-    protected String userName;
-    protected String password;
+	protected HttpHost host;
+	protected String userName;
+	protected String password;
 
-    public AuthHttpComponentsClientHttpRequestFactory(final HttpHost host, final String userName, final String password) {
-        super();
-        this.host = host;
-        this.userName = userName;
-        this.password = password;
-    }
+	public AuthHttpComponentsClientHttpRequestFactory(final HttpHost host, final String userName, final String password) {
+		super();
+		this.host = host;
+		this.userName = userName;
+		this.password = password;
+	}
 
-    @Override
-    protected HttpContext createHttpContext(final HttpMethod httpMethod, final URI uri) {
-        // Create AuthCache instance
-        final AuthCache authCache = new BasicAuthCache();
-        // Generate BASIC scheme object and add it to the local auth cache
-        final BasicScheme basicAuth = new BasicScheme();
-        authCache.put(host, basicAuth);
+	@Override
+	protected HttpContext createHttpContext(final HttpMethod httpMethod, final URI uri) {
+		// Create AuthCache instance
+		final AuthCache authCache = new BasicAuthCache();
+		// Generate BASIC scheme object and add it to the local auth cache
+		final BasicScheme basicAuth = new BasicScheme();
+		authCache.put(host, basicAuth);
 
-        // Add AuthCache to the execution context
-        final HttpClientContext localcontext = HttpClientContext.create();
-        localcontext.setAuthCache(authCache);
+		// Add AuthCache to the execution context
+		final HttpClientContext localcontext = HttpClientContext.create();
+		localcontext.setAuthCache(authCache);
 
-        if (userName != null) {
-            final BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
-            credsProvider.setCredentials(new AuthScope(host), new UsernamePasswordCredentials(userName, password));
-            localcontext.setCredentialsProvider(credsProvider);
-        }
-        return localcontext;
-    }
+		if (userName != null) {
+			final BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
+			credsProvider.setCredentials(new AuthScope(host), new UsernamePasswordCredentials(userName, password));
+			localcontext.setCredentialsProvider(credsProvider);
+		}
+		return localcontext;
+	}
 
 }

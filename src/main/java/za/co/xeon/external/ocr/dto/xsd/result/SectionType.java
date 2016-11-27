@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.util.ArrayList;
@@ -15,11 +14,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for SectionType complex type.
+ * <p>
+ * Java class for SectionType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="SectionType">
@@ -36,40 +37,39 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "SectionType", propOrder = {
-    "stream"
-})
+@XmlType(name = "SectionType", propOrder = { "stream" })
 public class SectionType {
 
-    protected List<TextStreamType> stream;
+	protected List<TextStreamType> stream;
 
-    /**
-     * Gets the value of the stream property.
-     *
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the stream property.
-     *
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getStream().add(newItem);
-     * </pre>
-     *
-     *
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link TextStreamType }
-     *
-     *
-     */
-    public List<TextStreamType> getStream() {
-        if (stream == null) {
-            stream = new ArrayList<TextStreamType>();
-        }
-        return this.stream;
-    }
+	/**
+	 * Gets the value of the stream property.
+	 *
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the stream property.
+	 *
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getStream().add(newItem);
+	 * </pre>
+	 *
+	 *
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link TextStreamType }
+	 *
+	 *
+	 */
+	public List<TextStreamType> getStream() {
+		if (stream == null) {
+			stream = new ArrayList<TextStreamType>();
+		}
+		return this.stream;
+	}
 
 }

@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for BarcodeType complex type.
+ * <p>
+ * Java class for BarcodeType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="BarcodeType">
@@ -35,31 +36,28 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "BarcodeType")
 public class BarcodeType {
 
-    @XmlAttribute(name = "BarcodeValue", required = true)
-    protected String barcodeValue;
+	@XmlAttribute(name = "BarcodeValue", required = true)
+	protected String barcodeValue;
 
-    /**
-     * Gets the value of the barcodeValue property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getBarcodeValue() {
-        return barcodeValue;
-    }
+	/**
+	 * Gets the value of the barcodeValue property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getBarcodeValue() {
+		return barcodeValue;
+	}
 
-    /**
-     * Sets the value of the barcodeValue property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setBarcodeValue(String value) {
-        this.barcodeValue = value;
-    }
+	/**
+	 * Sets the value of the barcodeValue property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setBarcodeValue(String value) {
+		this.barcodeValue = value;
+	}
 
 }

@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.math.BigInteger;
@@ -17,11 +16,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for TextType complex type.
+ * <p>
+ * Java class for TextType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="TextType">
@@ -52,186 +53,170 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TextType", propOrder = {
-    "par"
-})
+@XmlType(name = "TextType", propOrder = { "par" })
 public class TextType {
 
-    protected List<ParagraphType> par;
-    @XmlAttribute(name = "id")
-    protected String id;
-    @XmlAttribute(name = "orientation")
-    protected String orientation;
-    @XmlAttribute(name = "backgroundColor")
-    protected BigInteger backgroundColor;
-    @XmlAttribute(name = "mirrored")
-    protected Boolean mirrored;
-    @XmlAttribute(name = "inverted")
-    protected Boolean inverted;
+	protected List<ParagraphType> par;
+	@XmlAttribute(name = "id")
+	protected String id;
+	@XmlAttribute(name = "orientation")
+	protected String orientation;
+	@XmlAttribute(name = "backgroundColor")
+	protected BigInteger backgroundColor;
+	@XmlAttribute(name = "mirrored")
+	protected Boolean mirrored;
+	@XmlAttribute(name = "inverted")
+	protected Boolean inverted;
 
-    /**
-     * Gets the value of the par property.
-     *
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the par property.
-     *
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getPar().add(newItem);
-     * </pre>
-     *
-     *
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ParagraphType }
-     *
-     *
-     */
-    public List<ParagraphType> getPar() {
-        if (par == null) {
-            par = new ArrayList<ParagraphType>();
-        }
-        return this.par;
-    }
+	/**
+	 * Gets the value of the par property.
+	 *
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the par property.
+	 *
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getPar().add(newItem);
+	 * </pre>
+	 *
+	 *
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link ParagraphType }
+	 *
+	 *
+	 */
+	public List<ParagraphType> getPar() {
+		if (par == null) {
+			par = new ArrayList<ParagraphType>();
+		}
+		return this.par;
+	}
 
-    /**
-     * Gets the value of the id property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getId() {
-        return id;
-    }
+	/**
+	 * Gets the value of the id property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getId() {
+		return id;
+	}
 
-    /**
-     * Sets the value of the id property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setId(String value) {
-        this.id = value;
-    }
+	/**
+	 * Sets the value of the id property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setId(String value) {
+		this.id = value;
+	}
 
-    /**
-     * Gets the value of the orientation property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getOrientation() {
-        if (orientation == null) {
-            return "Normal";
-        } else {
-            return orientation;
-        }
-    }
+	/**
+	 * Gets the value of the orientation property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getOrientation() {
+		if (orientation == null) {
+			return "Normal";
+		} else {
+			return orientation;
+		}
+	}
 
-    /**
-     * Sets the value of the orientation property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setOrientation(String value) {
-        this.orientation = value;
-    }
+	/**
+	 * Sets the value of the orientation property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setOrientation(String value) {
+		this.orientation = value;
+	}
 
-    /**
-     * Gets the value of the backgroundColor property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getBackgroundColor() {
-        if (backgroundColor == null) {
-            return new BigInteger("16777215");
-        } else {
-            return backgroundColor;
-        }
-    }
+	/**
+	 * Gets the value of the backgroundColor property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getBackgroundColor() {
+		if (backgroundColor == null) {
+			return new BigInteger("16777215");
+		} else {
+			return backgroundColor;
+		}
+	}
 
-    /**
-     * Sets the value of the backgroundColor property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setBackgroundColor(BigInteger value) {
-        this.backgroundColor = value;
-    }
+	/**
+	 * Sets the value of the backgroundColor property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setBackgroundColor(BigInteger value) {
+		this.backgroundColor = value;
+	}
 
-    /**
-     * Gets the value of the mirrored property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isMirrored() {
-        if (mirrored == null) {
-            return false;
-        } else {
-            return mirrored;
-        }
-    }
+	/**
+	 * Gets the value of the mirrored property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isMirrored() {
+		if (mirrored == null) {
+			return false;
+		} else {
+			return mirrored;
+		}
+	}
 
-    /**
-     * Sets the value of the mirrored property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setMirrored(Boolean value) {
-        this.mirrored = value;
-    }
+	/**
+	 * Sets the value of the mirrored property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setMirrored(Boolean value) {
+		this.mirrored = value;
+	}
 
-    /**
-     * Gets the value of the inverted property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isInverted() {
-        if (inverted == null) {
-            return false;
-        } else {
-            return inverted;
-        }
-    }
+	/**
+	 * Gets the value of the inverted property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isInverted() {
+		if (inverted == null) {
+			return false;
+		} else {
+			return inverted;
+		}
+	}
 
-    /**
-     * Sets the value of the inverted property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setInverted(Boolean value) {
-        this.inverted = value;
-    }
+	/**
+	 * Sets the value of the inverted property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setInverted(Boolean value) {
+		this.inverted = value;
+	}
 
 }

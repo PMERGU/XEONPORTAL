@@ -27,99 +27,46 @@ import za.co.xeon.security.xauth.XAuthTokenConfigurer;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Inject
-    private Http401UnauthorizedEntryPoint authenticationEntryPoint;
+	@Inject
+	private Http401UnauthorizedEntryPoint authenticationEntryPoint;
 
-    @Inject
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
+	@Inject
+	private CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    @Inject
-    private UserDetailsService userDetailsService;
+	@Inject
+	private UserDetailsService userDetailsService;
 
-    @Inject
-    private TokenProvider tokenProvider;
+	@Inject
+	private TokenProvider tokenProvider;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Inject
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
+	@Inject
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	}
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-            .antMatchers("/scripts/**/*.{js,html}")
-            .antMatchers("/bower_components/**")
-            .antMatchers("/i18n/**")
-            .antMatchers("/assets/**")
-            .antMatchers("/swagger-ui/index.html")
-            .antMatchers("/test/**")
-            .antMatchers("/h2-console/**");
-    }
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/scripts/**/*.{js,html}").antMatchers("/bower_components/**").antMatchers("/i18n/**").antMatchers("/assets/**").antMatchers("/swagger-ui/index.html").antMatchers("/test/**").antMatchers("/h2-console/**");
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .exceptionHandling()
-            .authenticationEntryPoint(authenticationEntryPoint)
-            .accessDeniedHandler(customAccessDeniedHandler)
-        .and()
-            .csrf()
-            .disable()
-            .headers()
-            .frameOptions()
-            .disable()
-        .and()
-            .sessionManagement()
-            .sessionFixation()
-                .changeSessionId()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            .authorizeRequests()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/open/**").permitAll()
-            .antMatchers("/api/account/reset_password/init").permitAll()
-            .antMatchers("/api/account/reset_password/finish").permitAll()
-            .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/configprops/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/liquibase/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/health/**").permitAll()
-            .antMatchers("/v2/api-docs/**").permitAll()
-            .antMatchers("/configuration/security").permitAll()
-            .antMatchers("/configuration/ui").permitAll()
-            .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/protected/**").authenticated()
-        .and()
-            .apply(securityConfigurerAdapter());
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(customAccessDeniedHandler).and().csrf().disable().headers().frameOptions().disable().and().sessionManagement().sessionFixation().changeSessionId().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().antMatchers("/api/register").permitAll().antMatchers("/api/activate").permitAll().antMatchers("/api/authenticate").permitAll().antMatchers("/api/open/**").permitAll().antMatchers("/api/account/reset_password/init").permitAll().antMatchers("/api/account/reset_password/finish").permitAll().antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/api/**").authenticated().antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/configprops/**")
+				.hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/liquibase/**").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/health/**").permitAll().antMatchers("/v2/api-docs/**").permitAll().antMatchers("/configuration/security").permitAll().antMatchers("/configuration/ui").permitAll().antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN).antMatchers("/protected/**").authenticated().and().apply(securityConfigurerAdapter());
 
-    }
+	}
 
-    private XAuthTokenConfigurer securityConfigurerAdapter() {
-      return new XAuthTokenConfigurer(userDetailsService, tokenProvider);
-    }
+	private XAuthTokenConfigurer securityConfigurerAdapter() {
+		return new XAuthTokenConfigurer(userDetailsService, tokenProvider);
+	}
 
-    @Bean
-    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
-        return new SecurityEvaluationContextExtension();
-    }
+	@Bean
+	public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+		return new SecurityEvaluationContextExtension();
+	}
 }

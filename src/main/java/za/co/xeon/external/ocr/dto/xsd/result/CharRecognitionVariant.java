@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.math.BigInteger;
@@ -16,11 +15,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
-
 /**
- * <p>Java class for CharRecognitionVariant complex type.
+ * <p>
+ * Java class for CharRecognitionVariant complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="CharRecognitionVariant">
@@ -36,88 +37,77 @@ import javax.xml.bind.annotation.XmlValue;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "CharRecognitionVariant", propOrder = {
-    "content"
-})
+@XmlType(name = "CharRecognitionVariant", propOrder = { "content" })
 public class CharRecognitionVariant {
 
-    @XmlValue
-    protected String content;
-    @XmlAttribute(name = "charConfidence")
-    protected BigInteger charConfidence;
-    @XmlAttribute(name = "serifProbability")
-    protected BigInteger serifProbability;
+	@XmlValue
+	protected String content;
+	@XmlAttribute(name = "charConfidence")
+	protected BigInteger charConfidence;
+	@XmlAttribute(name = "serifProbability")
+	protected BigInteger serifProbability;
 
-    /**
-     * Gets the value of the content property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getContent() {
-        return content;
-    }
+	/**
+	 * Gets the value of the content property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getContent() {
+		return content;
+	}
 
-    /**
-     * Sets the value of the content property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setContent(String value) {
-        this.content = value;
-    }
+	/**
+	 * Sets the value of the content property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setContent(String value) {
+		this.content = value;
+	}
 
-    /**
-     * Gets the value of the charConfidence property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getCharConfidence() {
-        return charConfidence;
-    }
+	/**
+	 * Gets the value of the charConfidence property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getCharConfidence() {
+		return charConfidence;
+	}
 
-    /**
-     * Sets the value of the charConfidence property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setCharConfidence(BigInteger value) {
-        this.charConfidence = value;
-    }
+	/**
+	 * Sets the value of the charConfidence property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setCharConfidence(BigInteger value) {
+		this.charConfidence = value;
+	}
 
-    /**
-     * Gets the value of the serifProbability property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getSerifProbability() {
-        return serifProbability;
-    }
+	/**
+	 * Gets the value of the serifProbability property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getSerifProbability() {
+		return serifProbability;
+	}
 
-    /**
-     * Sets the value of the serifProbability property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setSerifProbability(BigInteger value) {
-        this.serifProbability = value;
-    }
+	/**
+	 * Sets the value of the serifProbability property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setSerifProbability(BigInteger value) {
+		this.serifProbability = value;
+	}
 
 }

@@ -8,69 +8,79 @@ import org.hibersap.annotations.Parameter;
  */
 @BapiStructure
 public class GtCustOrders {
-    /**
-     * "Customer Number 1" */
-    @Parameter("SKUNNR")
-    private java.lang.String skunnr;
+	/**
+	 * "Customer Number 1"
+	 */
+	@Parameter("SKUNNR")
+	private java.lang.String skunnr;
 
-    /**
-     * "Sales and Distribution Document Number" */
-    @Parameter("VBELN")
-    private java.lang.String vbeln;
+	/**
+	 * "Sales and Distribution Document Number"
+	 */
+	@Parameter("VBELN")
+	private java.lang.String vbeln;
 
-    /**
-     * "Sales and Distribution Document Number" */
-    @Parameter("DBELN")
-    private java.lang.String dbeln;
+	/**
+	 * "Sales and Distribution Document Number"
+	 */
+	@Parameter("DBELN")
+	private java.lang.String dbeln;
 
-    /**
-     * "Customer purchase order number" */
-    @Parameter("BSTKD")
-    private java.lang.String bstkd;
+	/**
+	 * "Customer purchase order number"
+	 */
+	@Parameter("BSTKD")
+	private java.lang.String bstkd;
 
-    /**
-     * "POD status on header level" */
-    @Parameter("PDSTK")
-    private java.lang.String pdstk;
+	/**
+	 * "POD status on header level"
+	 */
+	@Parameter("PDSTK")
+	private java.lang.String pdstk;
 
-    public GtCustOrders(java.lang.String skunnr, java.lang.String vbeln, java.lang.String dbeln, java.lang.String bstkd, java.lang.String pdstk) {
-        this.skunnr = skunnr;
-        this.vbeln = vbeln;
-        this.dbeln = dbeln;
-        this.bstkd = bstkd;
-        this.pdstk = pdstk;
-    }
+	public GtCustOrders(java.lang.String skunnr, java.lang.String vbeln, java.lang.String dbeln, java.lang.String bstkd, java.lang.String pdstk) {
+		this.skunnr = skunnr;
+		this.vbeln = vbeln;
+		this.dbeln = dbeln;
+		this.bstkd = bstkd;
+		this.pdstk = pdstk;
+	}
 
-    public GtCustOrders() {
-    }
+	public GtCustOrders() {
+	}
 
-    /**
-     * @return "Skunnr" - "Customer Number 1" */
-    public java.lang.String getSkunnr() {
-        return skunnr;
-    }
+	/**
+	 * @return "Skunnr" - "Customer Number 1"
+	 */
+	public java.lang.String getSkunnr() {
+		return skunnr;
+	}
 
-    /**
-     * @return "Vbeln" - "Sales and Distribution Document Number" */
-    public java.lang.String getVbeln() {
-        return vbeln;
-    }
+	/**
+	 * @return "Vbeln" - "Sales and Distribution Document Number"
+	 */
+	public java.lang.String getVbeln() {
+		return vbeln;
+	}
 
-    /**
-     * @return "Dbeln" - "Sales and Distribution Document Number" */
-    public java.lang.String getDbeln() {
-        return dbeln;
-    }
+	/**
+	 * @return "Dbeln" - "Sales and Distribution Document Number"
+	 */
+	public java.lang.String getDbeln() {
+		return dbeln;
+	}
 
-    /**
-     * @return "Bstkd" - "Customer purchase order number" */
-    public java.lang.String getBstkd() {
-        return bstkd;
-    }
+	/**
+	 * @return "Bstkd" - "Customer purchase order number"
+	 */
+	public java.lang.String getBstkd() {
+		return bstkd;
+	}
 
-    /**
-     * @return "Pdstk" - "POD status on header level" */
-    public java.lang.String getPdstk() {
-        return pdstk;
-    }
+	/**
+	 * @return "Pdstk" - "POD status on header level"
+	 */
+	public java.lang.String getPdstk() {
+		return pdstk;
+	}
 }

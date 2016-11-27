@@ -32,151 +32,145 @@ import za.co.xeon.domain.enumeration.CompanyType;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Company implements Serializable {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4129048559158712159L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @NotNull
-    @Column(name = "name", nullable = false)
-    private String name;
+	@NotNull
+	@Column(name = "name", nullable = false)
+	private String name;
 
-    @NotNull
-    @Column(name = "sap_id", nullable = false)
-    private String sapId;
+	@NotNull
+	@Column(name = "sap_id", nullable = false)
+	private String sapId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private CompanyType type;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type")
+	private CompanyType type;
 
-    @Lob
-    @Column(name = "background")
-    @JsonIgnore
-    private byte[] background;
+	@Lob
+	@Column(name = "background")
+	@JsonIgnore
+	private byte[] background;
 
-    @Column(name = "background_content_type")
-    private String backgroundContentType;
+	@Column(name = "background_content_type")
+	private String backgroundContentType;
 
-    @OneToMany(mappedBy = "company")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<User> employees = new ArrayList<>();
+	@OneToMany(mappedBy = "company")
+	@JsonIgnore
+	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	private List<User> employees = new ArrayList<>();
 
-    @OneToMany(mappedBy = "company")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<Party> locations = new ArrayList<>();
+	@OneToMany(mappedBy = "company")
+	@JsonIgnore
+	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	private List<Party> locations = new ArrayList<>();
 
-    public Company() {
-    }
+	public Company() {
+	}
 
-    public Company(Long id) {
-        this.id = id;
-    }
+	public Company(Long id) {
+		this.id = id;
+	}
 
-    public Company(Long id, String name, String sapId, CompanyType type) {
-        this.id = id;
-        this.name = name;
-        this.sapId = sapId;
-        this.type = type;
-    }
+	public Company(Long id, String name, String sapId, CompanyType type) {
+		this.id = id;
+		this.name = name;
+		this.sapId = sapId;
+		this.type = type;
+	}
 
-    public CompanyType getType() {
-        return type;
-    }
+	public CompanyType getType() {
+		return type;
+	}
 
-    public void setType(CompanyType type) {
-        this.type = type;
-    }
+	public void setType(CompanyType type) {
+		this.type = type;
+	}
 
-    public List<Party> getLocations() {
-        return locations;
-    }
+	public List<Party> getLocations() {
+		return locations;
+	}
 
-    public void setLocations(List<Party> locations) {
-        this.locations = locations;
-    }
+	public void setLocations(List<Party> locations) {
+		this.locations = locations;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getSapId() {
-        return sapId;
-    }
+	public String getSapId() {
+		return sapId;
+	}
 
-    public void setSapId(String sapId) {
-        this.sapId = sapId;
-    }
+	public void setSapId(String sapId) {
+		this.sapId = sapId;
+	}
 
-    public byte[] getBackground() {
-        return background;
-    }
+	public byte[] getBackground() {
+		return background;
+	}
 
-    public void setBackground(byte[] background) {
-        this.background = background;
-    }
+	public void setBackground(byte[] background) {
+		this.background = background;
+	}
 
-    public String getBackgroundContentType() {
-        return backgroundContentType;
-    }
+	public String getBackgroundContentType() {
+		return backgroundContentType;
+	}
 
-    public void setBackgroundContentType(String backgroundContentType) {
-        this.backgroundContentType = backgroundContentType;
-    }
+	public void setBackgroundContentType(String backgroundContentType) {
+		this.backgroundContentType = backgroundContentType;
+	}
 
-    public List<User> getEmployees() {
-        return employees;
-    }
+	public List<User> getEmployees() {
+		return employees;
+	}
 
-    public void setEmployees(List<User> employees) {
-        this.employees = employees;
-    }
+	public void setEmployees(List<User> employees) {
+		this.employees = employees;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Company company = (Company) o;
-        if(company.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, company.id);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Company company = (Company) o;
+		if (company.id == null || id == null) {
+			return false;
+		}
+		return Objects.equals(id, company.id);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
 
-    @Override
-    public String toString() {
-        return "Company{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", sapId='" + sapId + "'" +
-            ", background='" + background + "'" +
-            ", backgroundContentType='" + backgroundContentType + "'" +
-            '}';
-    }
+	@Override
+	public String toString() {
+		return "Company{" + "id=" + id + ", name='" + name + "'" + ", sapId='" + sapId + "'" + ", background='" + background + "'" + ", backgroundContentType='" + backgroundContentType + "'" + '}';
+	}
 }

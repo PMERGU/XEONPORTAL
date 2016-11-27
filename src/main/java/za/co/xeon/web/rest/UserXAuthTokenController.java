@@ -27,60 +27,60 @@ import za.co.xeon.security.xauth.TokenProvider;
 @RestController
 @RequestMapping("/api")
 public class UserXAuthTokenController {
-    private final Logger log = LoggerFactory.getLogger(UserXAuthTokenController.class);
+	private final Logger log = LoggerFactory.getLogger(UserXAuthTokenController.class);
 
-    @Inject
-    private TokenProvider tokenProvider;
+	@Inject
+	private TokenProvider tokenProvider;
 
-    @Inject
-    private AuthenticationManager authenticationManager;
+	@Inject
+	private AuthenticationManager authenticationManager;
 
-    @Inject
-    private LoginAttemptService loginAttemptService;
+	@Inject
+	private LoginAttemptService loginAttemptService;
 
-    @Inject
-    private UserDetailsService userDetailsService;
+	@Inject
+	private UserDetailsService userDetailsService;
 
-    @Inject
-    private HttpServletRequest request;
+	@Inject
+	private HttpServletRequest request;
 
-    @RequestMapping(value = "/authenticate",
-        method = RequestMethod.POST)
-    @Timed
-    public Token authorize(@RequestParam String username, @RequestParam String password) {
-        String ip = getClientIP();
-        String lowercaseLogin = username.toLowerCase();
-        log.debug("[ip:{}] - Authenticating {}", ip, lowercaseLogin);
-        if (loginAttemptService.isBlocked(ip)) {
-            log.debug("[ip:{}] - Blocking {} from trying to login. Brute force detected. Rejecting access", ip, lowercaseLogin);
-            throw new BlockedLoginException("User " + lowercaseLogin + " does not exists. Authentication Blocked");
-        }
+	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@Timed
+	public Token authorize(@RequestParam String username, @RequestParam String password) {
+		String ip = getClientIP();
+		String lowercaseLogin = username.toLowerCase();
+		log.debug("[ip:{}] - Authenticating {}", ip, lowercaseLogin);
+		if (loginAttemptService.isBlocked(ip)) {
+			log.debug("[ip:{}] - Blocking {} from trying to login. Brute force detected. Rejecting access", ip, lowercaseLogin);
+			throw new BlockedLoginException("User " + lowercaseLogin + " does not exists. Authentication Blocked");
+		}
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authentication = this.authenticationManager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetails details = this.userDetailsService.loadUserByUsername(username);
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+		Authentication authentication = this.authenticationManager.authenticate(token);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		UserDetails details = this.userDetailsService.loadUserByUsername(username);
 
-        loginAttemptService.loginSucceeded(ip);
+		loginAttemptService.loginSucceeded(ip);
 
-        if (details.getAuthorities().stream()
-            .filter(authority ->
-                authority.getAuthority().equals(AuthoritiesConstants.ADMIN) || authority.getAuthority().equals(AuthoritiesConstants.USER)
-            ).count() > 0) {
-            log.debug("Providing long lived token for Xeon/Admin user.");
-            return tokenProvider.createToken(details, (60 * 60 * 12));// auth token valid for 10 hours
-        } else {
-            return tokenProvider.createToken(details, (60 * 60));
-        }
+		if (details.getAuthorities().stream().filter(authority -> authority.getAuthority().equals(AuthoritiesConstants.ADMIN) || authority.getAuthority().equals(AuthoritiesConstants.USER)).count() > 0) {
+			log.debug("Providing long lived token for Xeon/Admin user.");
+			return tokenProvider.createToken(details, (60 * 60 * 12));// auth
+																		// token
+																		// valid
+																		// for
+																		// 10
+																		// hours
+		} else {
+			return tokenProvider.createToken(details, (60 * 60));
+		}
 
-    }
+	}
 
-
-    private String getClientIP() {
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader == null){
-            return request.getRemoteAddr();
-        }
-        return xfHeader.split(",")[0];
-    }
+	private String getClientIP() {
+		String xfHeader = request.getHeader("X-Forwarded-For");
+		if (xfHeader == null) {
+			return request.getRemoteAddr();
+		}
+		return xfHeader.split(",")[0];
+	}
 }

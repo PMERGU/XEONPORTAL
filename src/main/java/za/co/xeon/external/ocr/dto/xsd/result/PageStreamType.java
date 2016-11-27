@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.util.ArrayList;
@@ -16,11 +15,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for PageStreamType complex type.
+ * <p>
+ * Java class for PageStreamType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="PageStreamType">
@@ -38,66 +39,62 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PageStreamType", propOrder = {
-    "pageElement"
-})
+@XmlType(name = "PageStreamType", propOrder = { "pageElement" })
 public class PageStreamType {
 
-    protected List<PageElementType> pageElement;
-    @XmlAttribute(name = "streamType", required = true)
-    protected String streamType;
+	protected List<PageElementType> pageElement;
+	@XmlAttribute(name = "streamType", required = true)
+	protected String streamType;
 
-    /**
-     * Gets the value of the pageElement property.
-     *
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the pageElement property.
-     *
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getPageElement().add(newItem);
-     * </pre>
-     *
-     *
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PageElementType }
-     *
-     *
-     */
-    public List<PageElementType> getPageElement() {
-        if (pageElement == null) {
-            pageElement = new ArrayList<PageElementType>();
-        }
-        return this.pageElement;
-    }
+	/**
+	 * Gets the value of the pageElement property.
+	 *
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the pageElement property.
+	 *
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getPageElement().add(newItem);
+	 * </pre>
+	 *
+	 *
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link PageElementType }
+	 *
+	 *
+	 */
+	public List<PageElementType> getPageElement() {
+		if (pageElement == null) {
+			pageElement = new ArrayList<PageElementType>();
+		}
+		return this.pageElement;
+	}
 
-    /**
-     * Gets the value of the streamType property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getStreamType() {
-        return streamType;
-    }
+	/**
+	 * Gets the value of the streamType property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getStreamType() {
+		return streamType;
+	}
 
-    /**
-     * Sets the value of the streamType property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setStreamType(String value) {
-        this.streamType = value;
-    }
+	/**
+	 * Sets the value of the streamType property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setStreamType(String value) {
+		this.streamType = value;
+	}
 
 }

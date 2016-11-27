@@ -18,16 +18,16 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-    private final Logger log = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
+	private final Logger log = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
 
-    @Inject
-    private LoginAttemptService loginAttemptService;
+	@Inject
+	private LoginAttemptService loginAttemptService;
 
-    @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        log.debug("================================== B-LOGIN ==================================");
-        log.debug("Login failed");
-        log.debug("================================== E-LOGIN ==================================");
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied");
-    }
+	@Override
+	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+		log.debug("================================== B-LOGIN ==================================");
+		log.debug("Login failed");
+		log.debug("================================== E-LOGIN ==================================");
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied");
+	}
 }

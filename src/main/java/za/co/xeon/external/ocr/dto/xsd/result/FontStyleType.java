@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.math.BigInteger;
@@ -15,11 +14,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for FontStyleType complex type.
+ * <p>
+ * Java class for FontStyleType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="FontStyleType">
@@ -49,375 +50,339 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "FontStyleType")
 public class FontStyleType {
 
-    @XmlAttribute(name = "id", required = true)
-    protected String id;
-    @XmlAttribute(name = "baseFont")
-    protected Boolean baseFont;
-    @XmlAttribute(name = "italic")
-    protected Boolean italic;
-    @XmlAttribute(name = "bold")
-    protected Boolean bold;
-    @XmlAttribute(name = "underline")
-    protected Boolean underline;
-    @XmlAttribute(name = "strikeout")
-    protected Boolean strikeout;
-    @XmlAttribute(name = "smallcaps")
-    protected Boolean smallcaps;
-    @XmlAttribute(name = "scaling")
-    protected BigInteger scaling;
-    @XmlAttribute(name = "spacing")
-    protected BigInteger spacing;
-    @XmlAttribute(name = "color")
-    protected BigInteger color;
-    @XmlAttribute(name = "backgroundColor")
-    protected BigInteger backgroundColor;
-    @XmlAttribute(name = "ff", required = true)
-    protected String ff;
-    @XmlAttribute(name = "fs", required = true)
-    protected float fs;
+	@XmlAttribute(name = "id", required = true)
+	protected String id;
+	@XmlAttribute(name = "baseFont")
+	protected Boolean baseFont;
+	@XmlAttribute(name = "italic")
+	protected Boolean italic;
+	@XmlAttribute(name = "bold")
+	protected Boolean bold;
+	@XmlAttribute(name = "underline")
+	protected Boolean underline;
+	@XmlAttribute(name = "strikeout")
+	protected Boolean strikeout;
+	@XmlAttribute(name = "smallcaps")
+	protected Boolean smallcaps;
+	@XmlAttribute(name = "scaling")
+	protected BigInteger scaling;
+	@XmlAttribute(name = "spacing")
+	protected BigInteger spacing;
+	@XmlAttribute(name = "color")
+	protected BigInteger color;
+	@XmlAttribute(name = "backgroundColor")
+	protected BigInteger backgroundColor;
+	@XmlAttribute(name = "ff", required = true)
+	protected String ff;
+	@XmlAttribute(name = "fs", required = true)
+	protected float fs;
 
-    /**
-     * Gets the value of the id property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getId() {
-        return id;
-    }
+	/**
+	 * Gets the value of the id property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getId() {
+		return id;
+	}
 
-    /**
-     * Sets the value of the id property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setId(String value) {
-        this.id = value;
-    }
+	/**
+	 * Sets the value of the id property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setId(String value) {
+		this.id = value;
+	}
 
-    /**
-     * Gets the value of the baseFont property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isBaseFont() {
-        if (baseFont == null) {
-            return false;
-        } else {
-            return baseFont;
-        }
-    }
+	/**
+	 * Gets the value of the baseFont property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isBaseFont() {
+		if (baseFont == null) {
+			return false;
+		} else {
+			return baseFont;
+		}
+	}
 
-    /**
-     * Sets the value of the baseFont property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setBaseFont(Boolean value) {
-        this.baseFont = value;
-    }
+	/**
+	 * Sets the value of the baseFont property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setBaseFont(Boolean value) {
+		this.baseFont = value;
+	}
 
-    /**
-     * Gets the value of the italic property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isItalic() {
-        if (italic == null) {
-            return false;
-        } else {
-            return italic;
-        }
-    }
+	/**
+	 * Gets the value of the italic property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isItalic() {
+		if (italic == null) {
+			return false;
+		} else {
+			return italic;
+		}
+	}
 
-    /**
-     * Sets the value of the italic property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setItalic(Boolean value) {
-        this.italic = value;
-    }
+	/**
+	 * Sets the value of the italic property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setItalic(Boolean value) {
+		this.italic = value;
+	}
 
-    /**
-     * Gets the value of the bold property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isBold() {
-        if (bold == null) {
-            return false;
-        } else {
-            return bold;
-        }
-    }
+	/**
+	 * Gets the value of the bold property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isBold() {
+		if (bold == null) {
+			return false;
+		} else {
+			return bold;
+		}
+	}
 
-    /**
-     * Sets the value of the bold property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setBold(Boolean value) {
-        this.bold = value;
-    }
+	/**
+	 * Sets the value of the bold property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setBold(Boolean value) {
+		this.bold = value;
+	}
 
-    /**
-     * Gets the value of the underline property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isUnderline() {
-        if (underline == null) {
-            return false;
-        } else {
-            return underline;
-        }
-    }
+	/**
+	 * Gets the value of the underline property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isUnderline() {
+		if (underline == null) {
+			return false;
+		} else {
+			return underline;
+		}
+	}
 
-    /**
-     * Sets the value of the underline property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setUnderline(Boolean value) {
-        this.underline = value;
-    }
+	/**
+	 * Sets the value of the underline property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setUnderline(Boolean value) {
+		this.underline = value;
+	}
 
-    /**
-     * Gets the value of the strikeout property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isStrikeout() {
-        if (strikeout == null) {
-            return false;
-        } else {
-            return strikeout;
-        }
-    }
+	/**
+	 * Gets the value of the strikeout property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isStrikeout() {
+		if (strikeout == null) {
+			return false;
+		} else {
+			return strikeout;
+		}
+	}
 
-    /**
-     * Sets the value of the strikeout property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setStrikeout(Boolean value) {
-        this.strikeout = value;
-    }
+	/**
+	 * Sets the value of the strikeout property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setStrikeout(Boolean value) {
+		this.strikeout = value;
+	}
 
-    /**
-     * Gets the value of the smallcaps property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isSmallcaps() {
-        if (smallcaps == null) {
-            return false;
-        } else {
-            return smallcaps;
-        }
-    }
+	/**
+	 * Gets the value of the smallcaps property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isSmallcaps() {
+		if (smallcaps == null) {
+			return false;
+		} else {
+			return smallcaps;
+		}
+	}
 
-    /**
-     * Sets the value of the smallcaps property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setSmallcaps(Boolean value) {
-        this.smallcaps = value;
-    }
+	/**
+	 * Sets the value of the smallcaps property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setSmallcaps(Boolean value) {
+		this.smallcaps = value;
+	}
 
-    /**
-     * Gets the value of the scaling property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getScaling() {
-        if (scaling == null) {
-            return new BigInteger("1000");
-        } else {
-            return scaling;
-        }
-    }
+	/**
+	 * Gets the value of the scaling property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getScaling() {
+		if (scaling == null) {
+			return new BigInteger("1000");
+		} else {
+			return scaling;
+		}
+	}
 
-    /**
-     * Sets the value of the scaling property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setScaling(BigInteger value) {
-        this.scaling = value;
-    }
+	/**
+	 * Sets the value of the scaling property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setScaling(BigInteger value) {
+		this.scaling = value;
+	}
 
-    /**
-     * Gets the value of the spacing property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getSpacing() {
-        if (spacing == null) {
-            return new BigInteger("0");
-        } else {
-            return spacing;
-        }
-    }
+	/**
+	 * Gets the value of the spacing property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getSpacing() {
+		if (spacing == null) {
+			return new BigInteger("0");
+		} else {
+			return spacing;
+		}
+	}
 
-    /**
-     * Sets the value of the spacing property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setSpacing(BigInteger value) {
-        this.spacing = value;
-    }
+	/**
+	 * Sets the value of the spacing property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setSpacing(BigInteger value) {
+		this.spacing = value;
+	}
 
-    /**
-     * Gets the value of the color property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getColor() {
-        if (color == null) {
-            return new BigInteger("0");
-        } else {
-            return color;
-        }
-    }
+	/**
+	 * Gets the value of the color property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getColor() {
+		if (color == null) {
+			return new BigInteger("0");
+		} else {
+			return color;
+		}
+	}
 
-    /**
-     * Sets the value of the color property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setColor(BigInteger value) {
-        this.color = value;
-    }
+	/**
+	 * Sets the value of the color property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setColor(BigInteger value) {
+		this.color = value;
+	}
 
-    /**
-     * Gets the value of the backgroundColor property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getBackgroundColor() {
-        if (backgroundColor == null) {
-            return new BigInteger("0");
-        } else {
-            return backgroundColor;
-        }
-    }
+	/**
+	 * Gets the value of the backgroundColor property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getBackgroundColor() {
+		if (backgroundColor == null) {
+			return new BigInteger("0");
+		} else {
+			return backgroundColor;
+		}
+	}
 
-    /**
-     * Sets the value of the backgroundColor property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setBackgroundColor(BigInteger value) {
-        this.backgroundColor = value;
-    }
+	/**
+	 * Sets the value of the backgroundColor property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setBackgroundColor(BigInteger value) {
+		this.backgroundColor = value;
+	}
 
-    /**
-     * Gets the value of the ff property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getFf() {
-        return ff;
-    }
+	/**
+	 * Gets the value of the ff property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getFf() {
+		return ff;
+	}
 
-    /**
-     * Sets the value of the ff property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setFf(String value) {
-        this.ff = value;
-    }
+	/**
+	 * Sets the value of the ff property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setFf(String value) {
+		this.ff = value;
+	}
 
-    /**
-     * Gets the value of the fs property.
-     *
-     */
-    public float getFs() {
-        return fs;
-    }
+	/**
+	 * Gets the value of the fs property.
+	 *
+	 */
+	public float getFs() {
+		return fs;
+	}
 
-    /**
-     * Sets the value of the fs property.
-     *
-     */
-    public void setFs(float value) {
-        this.fs = value;
-    }
+	/**
+	 * Sets the value of the fs property.
+	 *
+	 */
+	public void setFs(float value) {
+		this.fs = value;
+	}
 
 }

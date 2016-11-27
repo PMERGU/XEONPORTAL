@@ -170,5 +170,4 @@ angular.module('portalApp', ['LocalStorageModule','anguFixedHeaderTable',
               });
             }
           };
-        });;
-
+        });

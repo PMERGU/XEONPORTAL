@@ -11,9 +11,12 @@ import za.co.xeon.domain.enumeration.PartyType;
 /**
  * Spring Data JPA repository for the Party entity.
  */
-public interface PartyRepository extends JpaRepository<Party,Long> {
-    Page<Party> findByCompany(Company company, Pageable pageable);
-    Party findFirstByName(String name);
-    Page<Party> findByType(PartyType type, Pageable pageable);
-    Page<Party> findByCompanyAndType(Company company, PartyType type, Pageable pageable);
+public interface PartyRepository extends JpaRepository<Party, Long> {
+	Page<Party> findByCompany(Company company, Pageable pageable);
+
+	Party findFirstByName(String name);
+
+	Page<Party> findByType(PartyType type, Pageable pageable);
+
+	Page<Party> findByCompanyAndType(Company company, PartyType type, Pageable pageable);
 }

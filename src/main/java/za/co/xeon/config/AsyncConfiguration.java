@@ -22,26 +22,26 @@ import za.co.xeon.async.ExceptionHandlingAsyncTaskExecutor;
 @EnableScheduling
 public class AsyncConfiguration implements AsyncConfigurer {
 
-    private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
+	private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
 
-    @Inject
-    private JHipsterProperties jHipsterProperties;
+	@Inject
+	private JHipsterProperties jHipsterProperties;
 
-    @Override
-    @Bean(name = "taskExecutor")
-    public Executor getAsyncExecutor() {
-        log.debug("Creating Async Task Executor");
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(jHipsterProperties.getAsync().getCorePoolSize());
-        executor.setMaxPoolSize(jHipsterProperties.getAsync().getMaxPoolSize());
-        executor.setQueueCapacity(jHipsterProperties.getAsync().getQueueCapacity());
-        executor.setKeepAliveSeconds(120);
-        executor.setThreadNamePrefix("portal-Executor-");
-        return new ExceptionHandlingAsyncTaskExecutor(executor);
-    }
+	@Override
+	@Bean(name = "taskExecutor")
+	public Executor getAsyncExecutor() {
+		log.debug("Creating Async Task Executor");
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(jHipsterProperties.getAsync().getCorePoolSize());
+		executor.setMaxPoolSize(jHipsterProperties.getAsync().getMaxPoolSize());
+		executor.setQueueCapacity(jHipsterProperties.getAsync().getQueueCapacity());
+		executor.setKeepAliveSeconds(120);
+		executor.setThreadNamePrefix("portal-Executor-");
+		return new ExceptionHandlingAsyncTaskExecutor(executor);
+	}
 
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SimpleAsyncUncaughtExceptionHandler();
-    }
+	@Override
+	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+		return new SimpleAsyncUncaughtExceptionHandler();
+	}
 }

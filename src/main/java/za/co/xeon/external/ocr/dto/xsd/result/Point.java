@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.math.BigInteger;
@@ -15,11 +14,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Point complex type.
+ * <p>
+ * Java class for Point complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="Point">
@@ -38,57 +39,51 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "Point")
 public class Point {
 
-    @XmlAttribute(name = "x", required = true)
-    protected BigInteger x;
-    @XmlAttribute(name = "y", required = true)
-    protected BigInteger y;
+	@XmlAttribute(name = "x", required = true)
+	protected BigInteger x;
+	@XmlAttribute(name = "y", required = true)
+	protected BigInteger y;
 
-    /**
-     * Gets the value of the x property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getX() {
-        return x;
-    }
+	/**
+	 * Gets the value of the x property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getX() {
+		return x;
+	}
 
-    /**
-     * Sets the value of the x property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setX(BigInteger value) {
-        this.x = value;
-    }
+	/**
+	 * Sets the value of the x property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setX(BigInteger value) {
+		this.x = value;
+	}
 
-    /**
-     * Gets the value of the y property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getY() {
-        return y;
-    }
+	/**
+	 * Gets the value of the y property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getY() {
+		return y;
+	}
 
-    /**
-     * Sets the value of the y property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setY(BigInteger value) {
-        this.y = value;
-    }
+	/**
+	 * Sets the value of the y property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setY(BigInteger value) {
+		this.y = value;
+	}
 
 }

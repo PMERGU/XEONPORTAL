@@ -5,19 +5,21 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ParagraphAlignment.
- *
- * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
+ * Java class for ParagraphAlignment.
+ *
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * <p>
+ * 
  * <pre>
  * &lt;simpleType name="ParagraphAlignment">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -36,35 +38,24 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum ParagraphAlignment {
 
-    @XmlEnumValue("Left")
-    LEFT("Left"),
-    @XmlEnumValue("Center")
-    CENTER("Center"),
-    @XmlEnumValue("Right")
-    RIGHT("Right"),
-    @XmlEnumValue("Justified")
-    JUSTIFIED("Justified"),
-    @XmlEnumValue("CjkJustified")
-    CJK_JUSTIFIED("CjkJustified"),
-    @XmlEnumValue("ThaiJustified")
-    THAI_JUSTIFIED("ThaiJustified");
-    private final String value;
+	@XmlEnumValue("Left") LEFT("Left"), @XmlEnumValue("Center") CENTER("Center"), @XmlEnumValue("Right") RIGHT("Right"), @XmlEnumValue("Justified") JUSTIFIED("Justified"), @XmlEnumValue("CjkJustified") CJK_JUSTIFIED("CjkJustified"), @XmlEnumValue("ThaiJustified") THAI_JUSTIFIED("ThaiJustified");
+	private final String value;
 
-    ParagraphAlignment(String v) {
-        value = v;
-    }
+	ParagraphAlignment(String v) {
+		value = v;
+	}
 
-    public String value() {
-        return value;
-    }
+	public String value() {
+		return value;
+	}
 
-    public static ParagraphAlignment fromValue(String v) {
-        for (ParagraphAlignment c: ParagraphAlignment.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
+	public static ParagraphAlignment fromValue(String v) {
+		for (ParagraphAlignment c : ParagraphAlignment.values()) {
+			if (c.value.equals(v)) {
+				return c;
+			}
+		}
+		throw new IllegalArgumentException(v);
+	}
 
 }

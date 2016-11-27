@@ -13,24 +13,26 @@ import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 
 @Bapi("Z_SET_HANDLING_UNITS")
 public class UpdateHandlingUnitsRFC {
-    /**
-     * "table type for handling unit" */
-    @Import
-    @Parameter(value="IM_HUITEM", type = ParameterType.TABLE_STRUCTURE)
-    private final List<ImHuitem> imHuitem;
+	/**
+	 * "table type for handling unit"
+	 */
+	@Import
+	@Parameter(value = "IM_HUITEM", type = ParameterType.TABLE_STRUCTURE)
+	private final List<ImHuitem> imHuitem;
 
-    /**
-     * "Return parameter table"@return "Return" - "Return parameter table" */
-    @Table
-    @Parameter("RETURN")
-    private List<BapiRet2> returnType;
+	/**
+	 * "Return parameter table"@return "Return" - "Return parameter table"
+	 */
+	@Table
+	@Parameter("RETURN")
+	private List<BapiRet2> returnType;
 
-    public UpdateHandlingUnitsRFC(List<ImHuitem> imHuitem) {
-        this.imHuitem = imHuitem;
-    }
+	public UpdateHandlingUnitsRFC(List<ImHuitem> imHuitem) {
+		this.imHuitem = imHuitem;
+	}
 
-    public List<BapiRet2> getReturn() {
-        return returnType;
-    }
+	public List<BapiRet2> getReturn() {
+		return returnType;
+	}
 
 }

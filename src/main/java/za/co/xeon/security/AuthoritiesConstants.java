@@ -5,20 +5,20 @@ package za.co.xeon.security;
  */
 public final class AuthoritiesConstants {
 
-    public static final String ADMIN = "ROLE_ADMIN";
+	public static final String ADMIN = "ROLE_ADMIN";
 
-    public static final String HEALTH = "ROLE_HEALTH";
+	public static final String HEALTH = "ROLE_HEALTH";
 
-    public static final String MOBILE = "ROLE_MOBILE";
+	public static final String MOBILE = "ROLE_MOBILE";
 
-    public static final String USER = "ROLE_USER";
+	public static final String USER = "ROLE_USER";
 
-    public static final String CUSTOMER = "ROLE_CUSTOMER";
+	public static final String CUSTOMER = "ROLE_CUSTOMER";
 
-    public static final String CUSTOMER_CSU = "ROLE_CUSTOMER_CSU";
+	public static final String CUSTOMER_CSU = "ROLE_CUSTOMER_CSU";
 
-    public static final String ANONYMOUS = "ROLE_ANONYMOUS";
+	public static final String ANONYMOUS = "ROLE_ANONYMOUS";
 
-    private AuthoritiesConstants() {
-    }
+	private AuthoritiesConstants() {
+	}
 }

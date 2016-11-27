@@ -5,19 +5,21 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for TableCellBorderType.
- *
- * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
+ * Java class for TableCellBorderType.
+ *
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * <p>
+ * 
  * <pre>
  * &lt;simpleType name="TableCellBorderType">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -34,31 +36,24 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum TableCellBorderType {
 
-    @XmlEnumValue("Absent")
-    ABSENT("Absent"),
-    @XmlEnumValue("Unknown")
-    UNKNOWN("Unknown"),
-    @XmlEnumValue("White")
-    WHITE("White"),
-    @XmlEnumValue("Black")
-    BLACK("Black");
-    private final String value;
+	@XmlEnumValue("Absent") ABSENT("Absent"), @XmlEnumValue("Unknown") UNKNOWN("Unknown"), @XmlEnumValue("White") WHITE("White"), @XmlEnumValue("Black") BLACK("Black");
+	private final String value;
 
-    TableCellBorderType(String v) {
-        value = v;
-    }
+	TableCellBorderType(String v) {
+		value = v;
+	}
 
-    public String value() {
-        return value;
-    }
+	public String value() {
+		return value;
+	}
 
-    public static TableCellBorderType fromValue(String v) {
-        for (TableCellBorderType c: TableCellBorderType.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
+	public static TableCellBorderType fromValue(String v) {
+		for (TableCellBorderType c : TableCellBorderType.values()) {
+			if (c.value.equals(v)) {
+				return c;
+			}
+		}
+		throw new IllegalArgumentException(v);
+	}
 
 }

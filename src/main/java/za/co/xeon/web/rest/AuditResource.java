@@ -25,32 +25,26 @@ import za.co.xeon.service.AuditEventService;
 @RequestMapping(value = "/api/audits", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuditResource {
 
-    private AuditEventService auditEventService;
+	private AuditEventService auditEventService;
 
-    @Inject
-    public AuditResource(AuditEventService auditEventService) {
-        this.auditEventService = auditEventService;
-    }
+	@Inject
+	public AuditResource(AuditEventService auditEventService) {
+		this.auditEventService = auditEventService;
+	}
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<AuditEvent> getAll() {
-        return auditEventService.findAll();
-    }
+	@RequestMapping(method = RequestMethod.GET)
+	public List<AuditEvent> getAll() {
+		return auditEventService.findAll();
+	}
 
-    @RequestMapping(method = RequestMethod.GET,
-        params = {"fromDate", "toDate"})
-    public List<AuditEvent> getByDates(
-        @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-        @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+	@RequestMapping(method = RequestMethod.GET, params = { "fromDate", "toDate" })
+	public List<AuditEvent> getByDates(@RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate, @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
 
-        return auditEventService.findByDates(fromDate.atTime(0, 0), toDate.atTime(23, 59));
-    }
+		return auditEventService.findByDates(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+	}
 
-    @RequestMapping(value = "/{id:.+}",
-        method = RequestMethod.GET)
-    public ResponseEntity<AuditEvent> get(@PathVariable Long id) {
-        return auditEventService.find(id)
-                .map((entity) -> new ResponseEntity<>(entity, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+	@RequestMapping(value = "/{id:.+}", method = RequestMethod.GET)
+	public ResponseEntity<AuditEvent> get(@PathVariable Long id) {
+		return auditEventService.find(id).map((entity) -> new ResponseEntity<>(entity, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
 }

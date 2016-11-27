@@ -12,149 +12,128 @@ import org.hibernate.validator.constraints.Email;
 import za.co.xeon.domain.Authority;
 import za.co.xeon.domain.Company;
 import za.co.xeon.domain.User;
+
 /**
  * A DTO representing a user, with his authorities.
  */
 public class UserDTO {
 
-    public static final int PASSWORD_MIN_LENGTH = 5;
-    public static final int PASSWORD_MAX_LENGTH = 100;
+	public static final int PASSWORD_MIN_LENGTH = 5;
+	public static final int PASSWORD_MAX_LENGTH = 100;
 
-    @Pattern(regexp = "^[a-z0-9]*$")
-    @NotNull
-    @Size(min = 1, max = 50)
-    private String login;
+	@Pattern(regexp = "^[a-z0-9]*$")
+	@NotNull
+	@Size(min = 1, max = 50)
+	private String login;
 
-    @NotNull
-    @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
-    private String password;
+	@NotNull
+	@Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
+	private String password;
 
-    @Size(max = 50)
-    private String firstName;
+	@Size(max = 50)
+	private String firstName;
 
-    @Size(max = 50)
-    private String lastName;
+	@Size(max = 50)
+	private String lastName;
 
-    @Email
-    @Size(min = 5, max = 100)
-    private String email;
+	@Email
+	@Size(min = 5, max = 100)
+	private String email;
 
-    private boolean activated = false;
+	private boolean activated = false;
 
-    private Company company;
+	private Company company;
 
-    @Size(min = 2, max = 5)
-    private String langKey;
+	@Size(min = 2, max = 5)
+	private String langKey;
 
-    private String fcSapId;
+	private String fcSapId;
 
-    private User csu;
+	private User csu;
 
-//    private List<UserDTO> assignedUsers;
+	// private List<UserDTO> assignedUsers;
 
-    private boolean enabled;
+	private boolean enabled;
 
-    private Set<String> authorities;
+	private Set<String> authorities;
 
-    public UserDTO() {
-    }
+	public UserDTO() {
+	}
 
-    public UserDTO(User user) {
-        this(user.getLogin(), null, user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getLangKey(),
-            user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getFcSapId(),
-            user.getCsu(),
-            (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getName(), user.getCompany().getSapId(), user.getCompany().getType())) : new Company()),
-            user.getEnabled()
-        );
-    }
+	public UserDTO(User user) {
+		this(user.getLogin(), null, user.getFirstName(), user.getLastName(), user.getEmail(), user.getActivated(), user.getLangKey(), user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()), user.getFcSapId(), user.getCsu(), (user.getCompany() != null ? (new Company(user.getCompany().getId(), user.getCompany().getName(), user.getCompany().getSapId(), user.getCompany().getType())) : new Company()), user.getEnabled());
+	}
 
-    public UserDTO(String login, String password, String firstName, String lastName,
-        String email, boolean activated, String langKey, Set<String> authorities, String fcSapId, User csu, Company company, boolean enabled) {
+	public UserDTO(String login, String password, String firstName, String lastName, String email, boolean activated, String langKey, Set<String> authorities, String fcSapId, User csu, Company company, boolean enabled) {
 
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.activated = activated;
-        this.langKey = langKey;
-        this.authorities = authorities;
-        this.fcSapId = fcSapId;
-        this.csu = csu;
-        this.company = company;
-        this.enabled = enabled;
-    }
+		this.login = login;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.activated = activated;
+		this.langKey = langKey;
+		this.authorities = authorities;
+		this.fcSapId = fcSapId;
+		this.csu = csu;
+		this.company = company;
+		this.enabled = enabled;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getLogin() {
-        return login;
-    }
+	public String getLogin() {
+		return login;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public boolean isActivated() {
-        return activated;
-    }
+	public boolean isActivated() {
+		return activated;
+	}
 
-    public String getLangKey() {
-        return langKey;
-    }
+	public String getLangKey() {
+		return langKey;
+	}
 
-    public Set<String> getAuthorities() {
-        return authorities;
-    }
+	public Set<String> getAuthorities() {
+		return authorities;
+	}
 
-    public Company getCompany() {
-        return company;
-    }
+	public Company getCompany() {
+		return company;
+	}
 
-    public String getFcSapId() {
-        return fcSapId;
-    }
+	public String getFcSapId() {
+		return fcSapId;
+	}
 
-    public User getCsu() {
-        return csu;
-    }
+	public User getCsu() {
+		return csu;
+	}
 
-//    public List<UserDTO> getAssignedUsers() {
-//        return assignedUsers;
-//    }
+	// public List<UserDTO> getAssignedUsers() {
+	// return assignedUsers;
+	// }
 
+	public boolean isEnabled() {
+		return enabled;
+	}
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-            "login='" + login + '\'' +
-            ", password='" + password + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", activated=" + activated +
-            ", company=" + company +
-            ", langKey='" + langKey + '\'' +
-            ", fcSapId='" + fcSapId + '\'' +
-            ", csu=" + (csu == null ? "null" : csu.toString()) +
-            ", enabled=" + enabled +
-            ", authorities=" + authorities +
-            '}';
-    }
+	@Override
+	public String toString() {
+		return "UserDTO{" + "login='" + login + '\'' + ", password='" + password + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", activated=" + activated + ", company=" + company + ", langKey='" + langKey + '\'' + ", fcSapId='" + fcSapId + '\'' + ", csu=" + (csu == null ? "null" : csu.toString()) + ", enabled=" + enabled + ", authorities=" + authorities + '}';
+	}
 }

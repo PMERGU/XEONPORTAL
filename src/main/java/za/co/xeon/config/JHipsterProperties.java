@@ -9,452 +9,450 @@ import org.springframework.web.cors.CorsConfiguration;
  * Properties specific to JHipster.
  *
  * <p>
- *     Properties are configured in the application.yml file.
+ * Properties are configured in the application.yml file.
  * </p>
  */
 @ConfigurationProperties(prefix = "jhipster", ignoreUnknownFields = false)
 public class JHipsterProperties {
 
-    private final Async async = new Async();
+	private final Async async = new Async();
 
-    private final Http http = new Http();
+	private final Http http = new Http();
 
-    private final Datasource datasource = new Datasource();
+	private final Datasource datasource = new Datasource();
 
-    private final Cache cache = new Cache();
+	private final Cache cache = new Cache();
 
-    private final Mail mail = new Mail();
+	private final Mail mail = new Mail();
 
-    private final Security security = new Security();
+	private final Security security = new Security();
 
-    private final Swagger swagger = new Swagger();
+	private final Swagger swagger = new Swagger();
 
-    private final Metrics metrics = new Metrics();
+	private final Metrics metrics = new Metrics();
 
-    private final CorsConfiguration cors = new CorsConfiguration();
+	private final CorsConfiguration cors = new CorsConfiguration();
 
+	public Async getAsync() {
+		return async;
+	}
 
+	public Http getHttp() {
+		return http;
+	}
 
-    public Async getAsync() {
-        return async;
-    }
+	public Datasource getDatasource() {
+		return datasource;
+	}
 
-    public Http getHttp() {
-        return http;
-    }
+	public Cache getCache() {
+		return cache;
+	}
 
-    public Datasource getDatasource() {
-        return datasource;
-    }
+	public Mail getMail() {
+		return mail;
+	}
 
-    public Cache getCache() {
-        return cache;
-    }
+	public Security getSecurity() {
+		return security;
+	}
 
-    public Mail getMail() {
-        return mail;
-    }
+	public Swagger getSwagger() {
+		return swagger;
+	}
 
-    public Security getSecurity() {
-        return security;
-    }
+	public Metrics getMetrics() {
+		return metrics;
+	}
 
-    public Swagger getSwagger() {
-        return swagger;
-    }
+	public CorsConfiguration getCors() {
+		return cors;
+	}
 
-    public Metrics getMetrics() {
-        return metrics;
-    }
+	public static class Async {
 
-    public CorsConfiguration getCors() {
-        return cors;
-    }
+		private int corePoolSize = 2;
 
+		private int maxPoolSize = 50;
 
-    public static class Async {
+		private int queueCapacity = 10000;
 
-        private int corePoolSize = 2;
+		public int getCorePoolSize() {
+			return corePoolSize;
+		}
 
-        private int maxPoolSize = 50;
+		public void setCorePoolSize(int corePoolSize) {
+			this.corePoolSize = corePoolSize;
+		}
 
-        private int queueCapacity = 10000;
+		public int getMaxPoolSize() {
+			return maxPoolSize;
+		}
 
-        public int getCorePoolSize() {
-            return corePoolSize;
-        }
+		public void setMaxPoolSize(int maxPoolSize) {
+			this.maxPoolSize = maxPoolSize;
+		}
 
-        public void setCorePoolSize(int corePoolSize) {
-            this.corePoolSize = corePoolSize;
-        }
+		public int getQueueCapacity() {
+			return queueCapacity;
+		}
 
-        public int getMaxPoolSize() {
-            return maxPoolSize;
-        }
+		public void setQueueCapacity(int queueCapacity) {
+			this.queueCapacity = queueCapacity;
+		}
+	}
 
-        public void setMaxPoolSize(int maxPoolSize) {
-            this.maxPoolSize = maxPoolSize;
-        }
+	public static class Http {
 
-        public int getQueueCapacity() {
-            return queueCapacity;
-        }
+		private final Cache cache = new Cache();
 
-        public void setQueueCapacity(int queueCapacity) {
-            this.queueCapacity = queueCapacity;
-        }
-    }
+		public Cache getCache() {
+			return cache;
+		}
 
-    public static class Http {
+		public static class Cache {
 
-        private final Cache cache = new Cache();
+			private int timeToLiveInDays = 31;
 
-        public Cache getCache() {
-            return cache;
-        }
+			public int getTimeToLiveInDays() {
+				return timeToLiveInDays;
+			}
 
-        public static class Cache {
+			public void setTimeToLiveInDays(int timeToLiveInDays) {
+				this.timeToLiveInDays = timeToLiveInDays;
+			}
+		}
+	}
 
-            private int timeToLiveInDays = 31;
+	public static class Datasource {
 
-            public int getTimeToLiveInDays() {
-                return timeToLiveInDays;
-            }
+		private boolean cachePrepStmts = true;
 
-            public void setTimeToLiveInDays(int timeToLiveInDays) {
-                this.timeToLiveInDays = timeToLiveInDays;
-            }
-        }
-    }
+		private int prepStmtCacheSize = 250;
 
-    public static class Datasource {
+		private int prepStmtCacheSqlLimit = 2048;
 
-        private boolean cachePrepStmts = true;
+		private boolean useServerPrepStmts = true;
 
-        private int prepStmtCacheSize = 250;
+		public boolean isCachePrepStmts() {
+			return cachePrepStmts;
+		}
 
-        private int prepStmtCacheSqlLimit = 2048;
+		public void setCachePrepStmts(boolean cachePrepStmts) {
+			this.cachePrepStmts = cachePrepStmts;
+		}
 
-        private boolean useServerPrepStmts = true;
+		public int getPrepStmtCacheSize() {
+			return prepStmtCacheSize;
+		}
 
-        public boolean isCachePrepStmts() {
-            return cachePrepStmts;
-        }
+		public void setPrepStmtCacheSize(int prepStmtCacheSize) {
+			this.prepStmtCacheSize = prepStmtCacheSize;
+		}
 
-        public void setCachePrepStmts(boolean cachePrepStmts) {
-            this.cachePrepStmts = cachePrepStmts;
-        }
+		public int getPrepStmtCacheSqlLimit() {
+			return prepStmtCacheSqlLimit;
+		}
 
-        public int getPrepStmtCacheSize() {
-            return prepStmtCacheSize;
-        }
+		public void setPrepStmtCacheSqlLimit(int prepStmtCacheSqlLimit) {
+			this.prepStmtCacheSqlLimit = prepStmtCacheSqlLimit;
+		}
 
-        public void setPrepStmtCacheSize(int prepStmtCacheSize) {
-            this.prepStmtCacheSize = prepStmtCacheSize;
-        }
+		public boolean isUseServerPrepStmts() {
+			return useServerPrepStmts;
+		}
 
-        public int getPrepStmtCacheSqlLimit() {
-            return prepStmtCacheSqlLimit;
-        }
+		public void setUseServerPrepStmts(boolean useServerPrepStmts) {
+			this.useServerPrepStmts = useServerPrepStmts;
+		}
+	}
 
-        public void setPrepStmtCacheSqlLimit(int prepStmtCacheSqlLimit) {
-            this.prepStmtCacheSqlLimit = prepStmtCacheSqlLimit;
-        }
+	public static class Cache {
 
-        public boolean isUseServerPrepStmts() {
-            return useServerPrepStmts;
-        }
+		private int timeToLiveSeconds = 3600;
 
-        public void setUseServerPrepStmts(boolean useServerPrepStmts) {
-            this.useServerPrepStmts = useServerPrepStmts;
-        }
-    }
+		private final Ehcache ehcache = new Ehcache();
 
-    public static class Cache {
+		public int getTimeToLiveSeconds() {
+			return timeToLiveSeconds;
+		}
 
-        private int timeToLiveSeconds = 3600;
+		public void setTimeToLiveSeconds(int timeToLiveSeconds) {
+			this.timeToLiveSeconds = timeToLiveSeconds;
+		}
 
-        private final Ehcache ehcache = new Ehcache();
+		public Ehcache getEhcache() {
+			return ehcache;
+		}
 
-        public int getTimeToLiveSeconds() {
-            return timeToLiveSeconds;
-        }
+		public static class Ehcache {
 
-        public void setTimeToLiveSeconds(int timeToLiveSeconds) {
-            this.timeToLiveSeconds = timeToLiveSeconds;
-        }
+			private String maxBytesLocalHeap = "16M";
 
-        public Ehcache getEhcache() {
-            return ehcache;
-        }
+			public String getMaxBytesLocalHeap() {
+				return maxBytesLocalHeap;
+			}
 
-        public static class Ehcache {
+			public void setMaxBytesLocalHeap(String maxBytesLocalHeap) {
+				this.maxBytesLocalHeap = maxBytesLocalHeap;
+			}
+		}
+	}
 
-            private String maxBytesLocalHeap = "16M";
+	public static class Mail {
 
-            public String getMaxBytesLocalHeap() {
-                return maxBytesLocalHeap;
-            }
+		private String from = "portal@localhost";
 
-            public void setMaxBytesLocalHeap(String maxBytesLocalHeap) {
-                this.maxBytesLocalHeap = maxBytesLocalHeap;
-            }
-        }
-    }
+		public String getFrom() {
+			return from;
+		}
 
-    public static class Mail {
+		public void setFrom(String from) {
+			this.from = from;
+		}
+	}
 
-        private String from = "portal@localhost";
+	public static class Security {
 
-        public String getFrom() {
-            return from;
-        }
+		private final Rememberme rememberme = new Rememberme();
 
-        public void setFrom(String from) {
-            this.from = from;
-        }
-    }
+		private final Authentication authentication = new Authentication();
 
-    public static class Security {
+		public Rememberme getRememberme() {
+			return rememberme;
+		}
 
-        private final Rememberme rememberme = new Rememberme();
+		public Authentication getAuthentication() {
+			return authentication;
+		}
 
-        private final Authentication authentication = new Authentication();
+		public static class Authentication {
 
-        public Rememberme getRememberme() {
-            return rememberme;
-        }
+			private final Xauth xauth = new Xauth();
 
-        public Authentication getAuthentication() {
-            return authentication;
-        }
+			public Xauth getXauth() {
+				return xauth;
+			}
 
-        public static class Authentication {
+			public static class Xauth {
 
-            private final Xauth xauth = new Xauth();
+				private String secret;
 
-            public Xauth getXauth() {
-                return xauth;
-            }
+				private int tokenValidityInSeconds = 1800;
 
-            public static class Xauth {
+				public String getSecret() {
+					return secret;
+				}
 
-                private String secret;
+				public void setSecret(String secret) {
+					this.secret = secret;
+				}
 
-                private int tokenValidityInSeconds = 1800;
+				public int getTokenValidityInSeconds() {
+					return tokenValidityInSeconds;
+				}
 
-                public String getSecret() {
-                    return secret;
-                }
+				public void setTokenValidityInSeconds(int tokenValidityInSeconds) {
+					this.tokenValidityInSeconds = tokenValidityInSeconds;
+				}
+			}
+		}
 
-                public void setSecret(String secret) {
-                    this.secret = secret;
-                }
+		public static class Rememberme {
 
-                public int getTokenValidityInSeconds() {
-                    return tokenValidityInSeconds;
-                }
+			@NotNull
+			private String key;
 
-                public void setTokenValidityInSeconds(int tokenValidityInSeconds) {
-                    this.tokenValidityInSeconds = tokenValidityInSeconds;
-                }
-            }
-        }
-        public static class Rememberme {
+			public String getKey() {
+				return key;
+			}
 
-            @NotNull
-            private String key;
+			public void setKey(String key) {
+				this.key = key;
+			}
+		}
+	}
 
-            public String getKey() {
-                return key;
-            }
+	public static class Swagger {
 
-            public void setKey(String key) {
-                this.key = key;
-            }
-        }
-    }
+		private String title = "portal API";
 
-    public static class Swagger {
+		private String description = "portal API documentation";
 
-        private String title = "portal API";
+		private String version = "0.0.1";
 
-        private String description = "portal API documentation";
+		private String termsOfServiceUrl;
 
-        private String version = "0.0.1";
+		private String contact;
 
-        private String termsOfServiceUrl;
+		private String license;
 
-        private String contact;
+		private String licenseUrl;
 
-        private String license;
+		public String getTitle() {
+			return title;
+		}
 
-        private String licenseUrl;
+		public void setTitle(String title) {
+			this.title = title;
+		}
 
-        public String getTitle() {
-            return title;
-        }
+		public String getDescription() {
+			return description;
+		}
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+		public void setDescription(String description) {
+			this.description = description;
+		}
 
-        public String getDescription() {
-            return description;
-        }
+		public String getVersion() {
+			return version;
+		}
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+		public void setVersion(String version) {
+			this.version = version;
+		}
 
-        public String getVersion() {
-            return version;
-        }
+		public String getTermsOfServiceUrl() {
+			return termsOfServiceUrl;
+		}
 
-        public void setVersion(String version) {
-            this.version = version;
-        }
+		public void setTermsOfServiceUrl(String termsOfServiceUrl) {
+			this.termsOfServiceUrl = termsOfServiceUrl;
+		}
 
-        public String getTermsOfServiceUrl() {
-            return termsOfServiceUrl;
-        }
+		public String getContact() {
+			return contact;
+		}
 
-        public void setTermsOfServiceUrl(String termsOfServiceUrl) {
-            this.termsOfServiceUrl = termsOfServiceUrl;
-        }
+		public void setContact(String contact) {
+			this.contact = contact;
+		}
 
-        public String getContact() {
-            return contact;
-        }
+		public String getLicense() {
+			return license;
+		}
 
-        public void setContact(String contact) {
-            this.contact = contact;
-        }
+		public void setLicense(String license) {
+			this.license = license;
+		}
 
-        public String getLicense() {
-            return license;
-        }
+		public String getLicenseUrl() {
+			return licenseUrl;
+		}
 
-        public void setLicense(String license) {
-            this.license = license;
-        }
+		public void setLicenseUrl(String licenseUrl) {
+			this.licenseUrl = licenseUrl;
+		}
+	}
 
-        public String getLicenseUrl() {
-            return licenseUrl;
-        }
+	public static class Metrics {
 
-        public void setLicenseUrl(String licenseUrl) {
-            this.licenseUrl = licenseUrl;
-        }
-    }
+		private final Jmx jmx = new Jmx();
 
-    public static class Metrics {
+		private final Spark spark = new Spark();
 
-        private final Jmx jmx = new Jmx();
+		private final Graphite graphite = new Graphite();
 
-        private final Spark spark = new Spark();
+		public Jmx getJmx() {
+			return jmx;
+		}
 
-        private final Graphite graphite = new Graphite();
+		public Spark getSpark() {
+			return spark;
+		}
 
-        public Jmx getJmx() {
-            return jmx;
-        }
+		public Graphite getGraphite() {
+			return graphite;
+		}
 
-        public Spark getSpark() {
-            return spark;
-        }
+		public static class Jmx {
 
-        public Graphite getGraphite() {
-            return graphite;
-        }
+			private boolean enabled = true;
 
-        public static class Jmx {
+			public boolean isEnabled() {
+				return enabled;
+			}
 
-            private boolean enabled = true;
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
+		}
 
-            public boolean isEnabled() {
-                return enabled;
-            }
+		public static class Spark {
 
-            public void setEnabled(boolean enabled) {
-                this.enabled = enabled;
-            }
-        }
+			private boolean enabled = false;
 
-        public static class Spark {
+			private String host = "localhost";
 
-            private boolean enabled = false;
+			private int port = 9999;
 
-            private String host = "localhost";
+			public boolean isEnabled() {
+				return enabled;
+			}
 
-            private int port = 9999;
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
 
-            public boolean isEnabled() {
-                return enabled;
-            }
+			public String getHost() {
+				return host;
+			}
 
-            public void setEnabled(boolean enabled) {
-                this.enabled = enabled;
-            }
+			public void setHost(String host) {
+				this.host = host;
+			}
 
-            public String getHost() {
-                return host;
-            }
+			public int getPort() {
+				return port;
+			}
 
-            public void setHost(String host) {
-                this.host = host;
-            }
+			public void setPort(int port) {
+				this.port = port;
+			}
+		}
 
-            public int getPort() {
-                return port;
-            }
+		public static class Graphite {
 
-            public void setPort(int port) {
-                this.port = port;
-            }
-        }
+			private boolean enabled = false;
 
-        public static class Graphite {
+			private String host = "localhost";
 
-            private boolean enabled = false;
+			private int port = 2003;
 
-            private String host = "localhost";
+			private String prefix = "portal";
 
-            private int port = 2003;
+			public boolean isEnabled() {
+				return enabled;
+			}
 
-            private String prefix = "portal";
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
 
-            public boolean isEnabled() {
-                return enabled;
-            }
+			public String getHost() {
+				return host;
+			}
 
-            public void setEnabled(boolean enabled) {
-                this.enabled = enabled;
-            }
+			public void setHost(String host) {
+				this.host = host;
+			}
 
-            public String getHost() {
-                return host;
-            }
+			public int getPort() {
+				return port;
+			}
 
-            public void setHost(String host) {
-                this.host = host;
-            }
+			public void setPort(int port) {
+				this.port = port;
+			}
 
-            public int getPort() {
-                return port;
-            }
+			public String getPrefix() {
+				return prefix;
+			}
 
-            public void setPort(int port) {
-                this.port = port;
-            }
-
-            public String getPrefix() {
-                return prefix;
-            }
-
-            public void setPrefix(String prefix) {
-                this.prefix = prefix;
-            }
-        }
-    }
+			public void setPrefix(String prefix) {
+				this.prefix = prefix;
+			}
+		}
+	}
 }

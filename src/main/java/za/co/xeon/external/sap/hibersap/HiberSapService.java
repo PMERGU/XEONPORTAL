@@ -21,19 +21,21 @@ import org.springframework.stereotype.Service;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 
 import za.co.xeon.external.sap.SapSettings;
-import za.co.xeon.external.sap.hibersap.dto.EvResult;
 import za.co.xeon.external.sap.hibersap.dto.ExReturn;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
-import za.co.xeon.external.sap.hibersap.dto.ImDateR;
 import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
-import za.co.xeon.external.sap.hibersap.dto.SLgtyp;
-import za.co.xeon.external.sap.hibersap.dto.SMatkl;
-import za.co.xeon.external.sap.hibersap.dto.SMatnr;
-import za.co.xeon.external.sap.hibersap.dto.SWerks;
-import za.co.xeon.external.sap.hibersap.dto.StockData;
 import za.co.xeon.external.sap.hibersap.errors.ValidSapException;
+import za.co.xeon.external.sap.hibersap.forge.dto.EvResult;
+import za.co.xeon.external.sap.hibersap.forge.dto.ImDateR;
+import za.co.xeon.external.sap.hibersap.forge.dto.SLgtyp;
+import za.co.xeon.external.sap.hibersap.forge.dto.SMatkl;
+import za.co.xeon.external.sap.hibersap.forge.dto.SMatnr;
+import za.co.xeon.external.sap.hibersap.forge.dto.SWerks;
+import za.co.xeon.external.sap.hibersap.forge.dto.StockInventory;
+import za.co.xeon.external.sap.hibersap.forge.rfc.ZGetCustomerOrdersByDate;
+import za.co.xeon.external.sap.hibersap.forge.rfc.ZStockInventory;
 import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
@@ -59,7 +61,7 @@ public class HiberSapService {
 		SessionManagerConfig cfg = new SessionManagerConfig("A12").setContext(JCoContext.class.getName()).setProperty(DestinationDataProvider.JCO_ASHOST, s3Settings.getAshost()).setProperty(DestinationDataProvider.JCO_SYSNR, s3Settings.getSysnr()).setProperty(DestinationDataProvider.JCO_CLIENT, s3Settings.getClient()).setProperty(DestinationDataProvider.JCO_USER, s3Settings.getUser()).setProperty(DestinationDataProvider.JCO_PASSWD, s3Settings.getPasswd()).setProperty(DestinationDataProvider.JCO_LANG, s3Settings.getLang()).setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, s3Settings.getPoolCapacity()).setProperty(DestinationDataProvider.JCO_PEAK_LIMIT, s3Settings.getPeakLimit());
 
 		AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
-		configuration.addBapiClasses(CustOrdersRFC.class, CustOrdersDetailRFC.class, CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, UpdateHandlingUnitsRFC.class, StockReportRFC.class, UpdatePodRFC.class);
+		configuration.addBapiClasses(CustOrdersRFC.class, CustOrdersDetailRFC.class, CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, UpdateHandlingUnitsRFC.class, ZStockInventory.class, UpdatePodRFC.class, ZGetCustomerOrdersByDate.class);
 		sessionManager = configuration.buildSessionManager();
 	}
 
@@ -67,8 +69,8 @@ public class HiberSapService {
 		customerNumber = Pad.left(customerNumber, 10);
 		Session session = sessionManager.openSession();
 		try {
-			List<ImDateR> dateRange = new ArrayList<>();
-			dateRange.add(new ImDateR("I", "BT", from, to));
+			List<za.co.xeon.external.sap.hibersap.dto.ImDateR> dateRange = new ArrayList<>();
+			dateRange.add(new za.co.xeon.external.sap.hibersap.dto.ImDateR("I", "BT", from, to));
 			CustOrdersRFC rfc = new CustOrdersRFC(customerNumber, dateRange, "B");
 			session.execute(rfc);
 
@@ -85,8 +87,8 @@ public class HiberSapService {
 		orderNumber = Pad.left(orderNumber, 10);
 		Session session = sessionManager.openSession();
 		try {
-			List<ImDateR> dateRange = new ArrayList<>();
-			dateRange.add(new ImDateR("I", "BT", from, to));
+			List<za.co.xeon.external.sap.hibersap.dto.ImDateR> dateRange = new ArrayList<>();
+			dateRange.add(new za.co.xeon.external.sap.hibersap.dto.ImDateR("I", "BT", from, to));
 			CustOrdersDetailRFC rfc = new CustOrdersDetailRFC(dateRange, orderNumber);
 			session.execute(rfc);
 
@@ -249,11 +251,11 @@ public class HiberSapService {
 		}
 	}
 
-	public List<StockData> fetchStockData(StockReportDTO dto) throws Exception {
+	public List<StockInventory> fetchStockData(StockReportDTO dto) throws Exception {
 		log.debug("[{}] - fetchStockData", dto);
 		Session session = sessionManager.openSession();
 		try {
-			StockReportRFC rfc = new StockReportRFC();
+			ZStockInventory rfc = new ZStockInventory();
 			if (dto != null) {
 				if (dto.getCompany() != null && dto.getCompany().length() != 0) {
 					SMatkl par = new SMatkl();
@@ -290,7 +292,7 @@ public class HiberSapService {
 				} else
 					throw new Exception("Cannot execute without any parameters");
 				session.execute(rfc);
-				return rfc.get_stockData();
+				return rfc.get_stockInventory();
 			}
 			throw new Exception("Cannot execute without any parameters");
 		} catch (Exception e) {
@@ -306,10 +308,10 @@ public class HiberSapService {
 		try {
 			List<ImDateR> dateRange = new ArrayList<>();
 			dateRange.add(new ImDateR("I", "BT", from, to));
-			CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(null, dateRange, null);
+			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, null, null);
 			session.execute(rfc);
 
-			return rfc.getEvResult();
+			return rfc.get_evResult();
 		} catch (Exception e) {
 			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
 			throw e;
@@ -321,12 +323,12 @@ public class HiberSapService {
 	public List<EvResult> getCustomerOrdersForPODStatus(Date from, Date to, String podStatus) throws ParseException {
 		Session session = sessionManager.openSession();
 		try {
-			List<ImDateR> dateRange = new ArrayList<>();
+			List<ImDateR> dateRange = new ArrayList<ImDateR>();
 			dateRange.add(new ImDateR("I", "BT", from, to));
-			CustomerOrdersByDateRFC rfc = new CustomerOrdersByDateRFC(null, dateRange, podStatus);
+			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, null, podStatus);
 			session.execute(rfc);
 
-			return rfc.getEvResult();
+			return rfc.get_evResult();
 		} catch (Exception e) {
 			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
 			throw e;

@@ -10,6 +10,6 @@ import za.co.xeon.domain.PurchaseOrder;
 /**
  * Spring Data JPA repository for the PoLine entity.
  */
-public interface PoLineRepository extends JpaRepository<PoLine,Long> {
-    Page<PoLine> findByPurchaseOrder(PurchaseOrder purchaseOrder, Pageable pageable);
+public interface PoLineRepository extends JpaRepository<PoLine, Long> {
+	Page<PoLine> findByPurchaseOrder(PurchaseOrder purchaseOrder, Pageable pageable);
 }

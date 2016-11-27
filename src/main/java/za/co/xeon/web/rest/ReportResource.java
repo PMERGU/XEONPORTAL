@@ -42,9 +42,8 @@ import za.co.xeon.domain.Attachment;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
-import za.co.xeon.external.sap.hibersap.dto.EvResult;
-import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
-import za.co.xeon.external.sap.hibersap.dto.StockData;
+import za.co.xeon.external.sap.hibersap.forge.dto.EvResult;
+import za.co.xeon.external.sap.hibersap.forge.dto.StockInventory;
 import za.co.xeon.repository.AttachmentRepository;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
@@ -67,17 +66,17 @@ public class ReportResource {
 
 	@RequestMapping(value = "/stockReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<StockData>>> fetchStockData(@Valid @RequestBody StockReportDTO dto, Pageable pageable) {
+	public Callable<ResponseEntity<List<StockInventory>>> fetchStockData(@Valid @RequestBody StockReportDTO dto, Pageable pageable) {
 		log.debug("[Report:{}] - REST request to Fetch Stock Data for Report", dto.toString());
 		log.debug("Pageable options for Stock Report :: " + pageable.getOffset() + " :: " + pageable.getPageNumber() + " :: " + pageable.getPageSize());
 		return () -> {
-			List<StockData> ret = new ArrayList<StockData>();
+			List<StockInventory> ret = new ArrayList<StockInventory>();
 			try {
 				ret = hiberSapService.fetchStockData(dto);
 			} catch (Exception e) {
 				log.debug("Error : " + e.getMessage());
 			}
-			Page<StockData> page = new PageImpl<StockData>(ret, pageable, ret.size());
+			Page<StockInventory> page = new PageImpl<StockInventory>(ret, pageable, ret.size());
 			HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stockReport/");
 			return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 		};
@@ -85,11 +84,11 @@ public class ReportResource {
 
 	@RequestMapping(value = "/stockReport/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<StockData>>> fetchStockDataByUser(@PathVariable String login, Pageable pageable) {
+	public Callable<ResponseEntity<List<StockInventory>>> fetchStockDataByUser(@PathVariable String login, Pageable pageable) {
 		log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User Id", login);
 		log.debug("Pageable options for Stock Report :: " + pageable.getOffset() + " :: " + pageable.getPageNumber() + " :: " + pageable.getPageSize());
 		return () -> {
-			List<StockData> ret = new ArrayList<StockData>();
+			List<StockInventory> ret = new ArrayList<StockInventory>();
 			try {
 				Optional<User> user = userRepository.findOneByLogin(login);
 				String company = user.get().getCompany().getName();
@@ -101,7 +100,7 @@ public class ReportResource {
 				e.printStackTrace();
 				log.debug("Errorss : " + e.getMessage());
 			}
-			Page<StockData> page = new PageImpl<StockData>(ret, pageable, ret.size());
+			Page<StockInventory> page = new PageImpl<StockInventory>(ret, pageable, ret.size());
 			HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stockReport/" + login);
 			return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 		};
@@ -112,7 +111,7 @@ public class ReportResource {
 	public @ResponseBody ResponseEntity downloadStockDataByUser(@Valid @RequestBody StockReportDTO dto) throws Exception {
 		log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User Id", dto);
 
-		List<StockData> ret = new ArrayList<StockData>();
+		List<StockInventory> ret = new ArrayList<StockInventory>();
 		try {
 			// Company company = companyRepository.findOne(comapanyId);
 			// String companyName = company.getName();
@@ -140,7 +139,7 @@ public class ReportResource {
 		}
 	}
 
-	public ByteArrayOutputStream createPdf(List<StockData> ret) {
+	public ByteArrayOutputStream createPdf(List<StockInventory> ret) {
 		Document document = new Document(PageSize.A3);
 		try {
 			// PdfWriter writer = PdfWriter.getInstance(document, new
@@ -149,13 +148,13 @@ public class ReportResource {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			PdfWriter writer = PdfWriter.getInstance(document, out);
 			document.open();
-			PdfPTable table = new PdfPTable(10); // 3 columns.
+			PdfPTable table = new PdfPTable(9); // 9 columns.
 			table.setWidthPercentage(100); // Width 100%
 			table.setSpacingBefore(10f); // Space before table
 			table.setSpacingAfter(10f); // Space after table
 
 			// Set Column widths
-			float[] columnWidths = { 0.3f, 0.5f, 1f, 2f, 1f, 0.5f, 0.5f, 1f, 0.5f, 0.5f };
+			float[] columnWidths = { 0.3f, 0.5f, 1f, 2f, 1f, 0.5f, 0.5f, 1f, 0.5f };
 			table.setWidths(columnWidths);
 
 			PdfPCell iDHeader = new PdfPCell(new Paragraph("ID", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
@@ -214,23 +213,16 @@ public class ReportResource {
 			availableQunatity.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(availableQunatity);
 
-			PdfPCell pickQuant = new PdfPCell(new Paragraph("Picks", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			PdfPCell pickQuant = new PdfPCell(new Paragraph("Quantity to Remove", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			pickQuant.setBorderColor(BaseColor.BLACK);
 			pickQuant.setPaddingLeft(10);
 			pickQuant.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pickQuant.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(pickQuant);
 
-			PdfPCell uomHeader = new PdfPCell(new Paragraph("UoM", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
-			uomHeader.setBorderColor(BaseColor.BLACK);
-			uomHeader.setPaddingLeft(10);
-			uomHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
-			uomHeader.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			table.addCell(uomHeader);
-
 			if (ret != null && ret.size() > 0) {
 				int i = 1;
-				for (StockData data : ret) {
+				for (StockInventory data : ret) {
 					PdfPCell iDdata = new PdfPCell(new Paragraph(i + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					iDdata.setBorderColor(BaseColor.BLACK);
 					iDdata.setPaddingLeft(10);
@@ -238,7 +230,7 @@ public class ReportResource {
 					iDdata.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(iDdata);
 
-					PdfPCell wnData = new PdfPCell(new Paragraph(data.get_lgnum(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell wnData = new PdfPCell(new Paragraph(data.get_lgnumt(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					wnData.setBorderColor(BaseColor.BLACK);
 					wnData.setPaddingLeft(10);
 					wnData.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -259,7 +251,7 @@ public class ReportResource {
 					mtDsData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(mtDsData);
 
-					PdfPCell stData = new PdfPCell(new Paragraph(data.get_lgtyp(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell stData = new PdfPCell(new Paragraph(data.get_ltypt(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					stData.setBorderColor(BaseColor.BLACK);
 					stData.setPaddingLeft(10);
 					stData.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -293,13 +285,6 @@ public class ReportResource {
 					pickQuantData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					pickQuantData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(pickQuantData);
-
-					PdfPCell uomData = new PdfPCell(new Paragraph(data.get_meins(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
-					uomData.setBorderColor(BaseColor.BLACK);
-					uomData.setPaddingLeft(10);
-					uomData.setHorizontalAlignment(Element.ALIGN_CENTER);
-					uomData.setVerticalAlignment(Element.ALIGN_MIDDLE);
-					table.addCell(uomData);
 					i++;
 				}
 			}
@@ -317,10 +302,10 @@ public class ReportResource {
 
 	@RequestMapping(value = "/podReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<GtCustOrders>>> fetchPODData(@Valid @RequestBody PODReportReqDTO dto, HttpServletRequest request) {
+	public Callable<ResponseEntity<List<EvResult>>> fetchPODData(@Valid @RequestBody PODReportReqDTO dto, HttpServletRequest request) {
 		log.debug("[Report:{}] - REST request to Fetch Stock Data for Report", dto.toString());
 		return () -> {
-			List<GtCustOrders> ret = new ArrayList<GtCustOrders>();
+			List<EvResult> ret = new ArrayList<EvResult>();
 			try {
 				List<EvResult> evResult = null;
 				if (dto.getPodType() != null)
@@ -328,8 +313,7 @@ public class ReportResource {
 				else
 					evResult = hiberSapService.getCustomerOrdersForPOD(dto.getFromDate(), dto.getToDate());
 				for (EvResult evr : evResult) {
-					GtCustOrders order = new GtCustOrders();
-					PurchaseOrder po = purchaseOrderRepository.getOne(Long.valueOf(order.getBstkd()));
+					PurchaseOrder po = purchaseOrderRepository.getOne(Long.valueOf(evr.get_bstkd()));
 					List<Attachment> atts = attachmentRepository.findByPONumberAndPOD(po.getId());
 					boolean pod = false;
 					for (Attachment att : atts) {
@@ -338,9 +322,9 @@ public class ReportResource {
 					if (pod) {
 						if (dto.getId() != null) {
 							if (dto.getId().longValue() == po.getUser().getCompany().getId().longValue())
-								ret.add(order);
+								ret.add(evr);
 						} else
-							ret.add(order);
+							ret.add(evr);
 					}
 				}
 			} catch (Exception e) {

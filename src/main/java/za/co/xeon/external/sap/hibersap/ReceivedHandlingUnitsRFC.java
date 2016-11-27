@@ -13,27 +13,26 @@ import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
 
 @Bapi("Z_SET_HANDLING_UNITS_UPDATE")
 public class ReceivedHandlingUnitsRFC {
-    /**
-     * "Mobile Handing Unit Field Update" */
-    @Import
-    @Parameter(
-        value = "IM_HUUPDATE",
-        type = ParameterType.TABLE_STRUCTURE
-    )
-    private final List<ImHuupdate> imHuupdate;
+	/**
+	 * "Mobile Handing Unit Field Update"
+	 */
+	@Import
+	@Parameter(value = "IM_HUUPDATE", type = ParameterType.TABLE_STRUCTURE)
+	private final List<ImHuupdate> imHuupdate;
 
-    /**
-     * "Return Parameter"@return "Return" - "Return Parameter" */
-    @Table
-    @Parameter("RETURN")
-    private List<BapiRet2> returnType;
+	/**
+	 * "Return Parameter"@return "Return" - "Return Parameter"
+	 */
+	@Table
+	@Parameter("RETURN")
+	private List<BapiRet2> returnType;
 
-    public ReceivedHandlingUnitsRFC(List<ImHuupdate> imHuupdate) {
-        this.imHuupdate = imHuupdate;
-    }
+	public ReceivedHandlingUnitsRFC(List<ImHuupdate> imHuupdate) {
+		this.imHuupdate = imHuupdate;
+	}
 
-    public List<BapiRet2> getReturn() {
-        return returnType;
-    }
+	public List<BapiRet2> getReturn() {
+		return returnType;
+	}
 
 }

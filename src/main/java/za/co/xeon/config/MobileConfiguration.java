@@ -7,36 +7,36 @@ import org.springframework.context.annotation.Configuration;
  * Created by derick on 2016/02/07.
  */
 @Configuration
-@ConfigurationProperties(prefix="mobile", locations={"application.yml"})
+@ConfigurationProperties(prefix = "mobile", locations = { "application.yml" })
 public class MobileConfiguration {
-    private String podDirectory;
-    private String attachmentDirectory;
-    private String httpServerName;
+	private String podDirectory;
+	private String attachmentDirectory;
+	private String httpServerName;
 
-    public MobileConfiguration() {
-    }
+	public MobileConfiguration() {
+	}
 
-    public String getPodDirectory() {
-        return podDirectory;
-    }
+	public String getPodDirectory() {
+		return podDirectory;
+	}
 
-    public void setPodDirectory(String podDirectory) {
-        this.podDirectory = podDirectory;
-    }
+	public void setPodDirectory(String podDirectory) {
+		this.podDirectory = podDirectory;
+	}
 
-    public String getAttachmentDirectory() {
-        return attachmentDirectory;
-    }
+	public String getAttachmentDirectory() {
+		return attachmentDirectory;
+	}
 
-    public void setAttachmentDirectory(final String attachmentDirectory) {
-        this.attachmentDirectory = attachmentDirectory;
-    }
+	public void setAttachmentDirectory(final String attachmentDirectory) {
+		this.attachmentDirectory = attachmentDirectory;
+	}
 
-    public String getHttpServerName() {
-        return httpServerName;
-    }
+	public String getHttpServerName() {
+		return httpServerName;
+	}
 
-    public void setHttpServerName(String httpServerName) {
-        this.httpServerName = httpServerName;
-    }
+	public void setHttpServerName(String httpServerName) {
+		this.httpServerName = httpServerName;
+	}
 }

@@ -8,25 +8,27 @@ import org.hibersap.annotations.Parameter;
  */
 @BapiStructure
 public class Hunumbers {
-    /**
-     * "External Handling Unit Identification" */
-    @Parameter("HU_EXID")
-    private java.lang.String huExid;
+	/**
+	 * "External Handling Unit Identification"
+	 */
+	@Parameter("HU_EXID")
+	private java.lang.String huExid;
 
-    public Hunumbers(java.lang.String huExid) {
-        this.huExid = huExid;
-    }
+	public Hunumbers(java.lang.String huExid) {
+		this.huExid = huExid;
+	}
 
-    public Hunumbers() {
-    }
+	public Hunumbers() {
+	}
 
-    /**
-     * @return "HuExid" - "External Handling Unit Identification" */
-    public java.lang.String getHuExid() {
-        return huExid;
-    }
+	/**
+	 * @return "HuExid" - "External Handling Unit Identification"
+	 */
+	public java.lang.String getHuExid() {
+		return huExid;
+	}
 
-    public void setHuExid(String huExid) {
-        this.huExid = huExid;
-    }
+	public void setHuExid(String huExid) {
+		this.huExid = huExid;
+	}
 }

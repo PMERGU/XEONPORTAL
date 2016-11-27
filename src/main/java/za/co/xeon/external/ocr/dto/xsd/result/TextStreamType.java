@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.math.BigInteger;
@@ -17,11 +16,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for TextStreamType complex type.
+ * <p>
+ * Java class for TextStreamType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="TextStreamType">
@@ -69,311 +70,289 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TextStreamType", propOrder = {
-    "mainText",
-    "elemId"
-})
+@XmlType(name = "TextStreamType", propOrder = { "mainText", "elemId" })
 public class TextStreamType {
 
-    protected TextStreamType.MainText mainText;
-    protected List<ElemId> elemId;
-    @XmlAttribute(name = "role")
-    protected String role;
-    @XmlAttribute(name = "vertCjk")
-    protected Boolean vertCjk;
-    @XmlAttribute(name = "beginPage", required = true)
-    protected BigInteger beginPage;
-    @XmlAttribute(name = "endPage")
-    protected BigInteger endPage;
+	protected TextStreamType.MainText mainText;
+	protected List<ElemId> elemId;
+	@XmlAttribute(name = "role")
+	protected String role;
+	@XmlAttribute(name = "vertCjk")
+	protected Boolean vertCjk;
+	@XmlAttribute(name = "beginPage", required = true)
+	protected BigInteger beginPage;
+	@XmlAttribute(name = "endPage")
+	protected BigInteger endPage;
 
-    /**
-     * Gets the value of the mainText property.
-     *
-     * @return
-     *     possible object is
-     *     {@link TextStreamType.MainText }
-     *
-     */
-    public TextStreamType.MainText getMainText() {
-        return mainText;
-    }
+	/**
+	 * Gets the value of the mainText property.
+	 *
+	 * @return possible object is {@link TextStreamType.MainText }
+	 *
+	 */
+	public TextStreamType.MainText getMainText() {
+		return mainText;
+	}
 
-    /**
-     * Sets the value of the mainText property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link TextStreamType.MainText }
-     *
-     */
-    public void setMainText(TextStreamType.MainText value) {
-        this.mainText = value;
-    }
+	/**
+	 * Sets the value of the mainText property.
+	 *
+	 * @param value
+	 *            allowed object is {@link TextStreamType.MainText }
+	 *
+	 */
+	public void setMainText(TextStreamType.MainText value) {
+		this.mainText = value;
+	}
 
-    /**
-     * Gets the value of the elemId property.
-     *
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the elemId property.
-     *
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getElemId().add(newItem);
-     * </pre>
-     *
-     *
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link TextStreamType.ElemId }
-     *
-     *
-     */
-    public List<ElemId> getElemId() {
-        if (elemId == null) {
-            elemId = new ArrayList<ElemId>();
-        }
-        return this.elemId;
-    }
+	/**
+	 * Gets the value of the elemId property.
+	 *
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the elemId property.
+	 *
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getElemId().add(newItem);
+	 * </pre>
+	 *
+	 *
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link TextStreamType.ElemId }
+	 *
+	 *
+	 */
+	public List<ElemId> getElemId() {
+		if (elemId == null) {
+			elemId = new ArrayList<ElemId>();
+		}
+		return this.elemId;
+	}
 
-    /**
-     * Gets the value of the role property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getRole() {
-        if (role == null) {
-            return "text";
-        } else {
-            return role;
-        }
-    }
+	/**
+	 * Gets the value of the role property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getRole() {
+		if (role == null) {
+			return "text";
+		} else {
+			return role;
+		}
+	}
 
-    /**
-     * Sets the value of the role property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setRole(String value) {
-        this.role = value;
-    }
+	/**
+	 * Sets the value of the role property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setRole(String value) {
+		this.role = value;
+	}
 
-    /**
-     * Gets the value of the vertCjk property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isVertCjk() {
-        if (vertCjk == null) {
-            return false;
-        } else {
-            return vertCjk;
-        }
-    }
+	/**
+	 * Gets the value of the vertCjk property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isVertCjk() {
+		if (vertCjk == null) {
+			return false;
+		} else {
+			return vertCjk;
+		}
+	}
 
-    /**
-     * Sets the value of the vertCjk property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setVertCjk(Boolean value) {
-        this.vertCjk = value;
-    }
+	/**
+	 * Sets the value of the vertCjk property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setVertCjk(Boolean value) {
+		this.vertCjk = value;
+	}
 
-    /**
-     * Gets the value of the beginPage property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getBeginPage() {
-        return beginPage;
-    }
+	/**
+	 * Gets the value of the beginPage property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getBeginPage() {
+		return beginPage;
+	}
 
-    /**
-     * Sets the value of the beginPage property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setBeginPage(BigInteger value) {
-        this.beginPage = value;
-    }
+	/**
+	 * Sets the value of the beginPage property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setBeginPage(BigInteger value) {
+		this.beginPage = value;
+	}
 
-    /**
-     * Gets the value of the endPage property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getEndPage() {
-        return endPage;
-    }
+	/**
+	 * Gets the value of the endPage property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getEndPage() {
+		return endPage;
+	}
 
-    /**
-     * Sets the value of the endPage property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setEndPage(BigInteger value) {
-        this.endPage = value;
-    }
+	/**
+	 * Sets the value of the endPage property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setEndPage(BigInteger value) {
+		this.endPage = value;
+	}
 
+	/**
+	 * <p>
+	 * Java class for anonymous complex type.
+	 *
+	 * <p>
+	 * The following schema fragment specifies the expected content contained
+	 * within this class.
+	 *
+	 * <pre>
+	 * &lt;complexType>
+	 *   &lt;complexContent>
+	 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *       &lt;attribute name="id" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+	 *     &lt;/restriction>
+	 *   &lt;/complexContent>
+	 * &lt;/complexType>
+	 * </pre>
+	 *
+	 *
+	 */
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@XmlType(name = "")
+	public static class ElemId {
 
-    /**
-     * <p>Java class for anonymous complex type.
-     *
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     *
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;attribute name="id" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     *
-     *
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "")
-    public static class ElemId {
+		@XmlAttribute(name = "id", required = true)
+		protected String id;
 
-        @XmlAttribute(name = "id", required = true)
-        protected String id;
+		/**
+		 * Gets the value of the id property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getId() {
+			return id;
+		}
 
-        /**
-         * Gets the value of the id property.
-         *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *
-         */
-        public String getId() {
-            return id;
-        }
+		/**
+		 * Sets the value of the id property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setId(String value) {
+			this.id = value;
+		}
 
-        /**
-         * Sets the value of the id property.
-         *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *
-         */
-        public void setId(String value) {
-            this.id = value;
-        }
+	}
 
-    }
+	/**
+	 * <p>
+	 * Java class for anonymous complex type.
+	 *
+	 * <p>
+	 * The following schema fragment specifies the expected content contained
+	 * within this class.
+	 *
+	 * <pre>
+	 * &lt;complexType>
+	 *   &lt;complexContent>
+	 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *       &lt;attribute name="rtl" type="{http://www.w3.org/2001/XMLSchema}boolean" default="false" />
+	 *       &lt;attribute name="columnCount" use="required" type="{http://www.w3.org/2001/XMLSchema}integer" />
+	 *     &lt;/restriction>
+	 *   &lt;/complexContent>
+	 * &lt;/complexType>
+	 * </pre>
+	 *
+	 *
+	 */
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@XmlType(name = "")
+	public static class MainText {
 
+		@XmlAttribute(name = "rtl")
+		protected Boolean rtl;
+		@XmlAttribute(name = "columnCount", required = true)
+		protected BigInteger columnCount;
 
-    /**
-     * <p>Java class for anonymous complex type.
-     *
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     *
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;attribute name="rtl" type="{http://www.w3.org/2001/XMLSchema}boolean" default="false" />
-     *       &lt;attribute name="columnCount" use="required" type="{http://www.w3.org/2001/XMLSchema}integer" />
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     *
-     *
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "")
-    public static class MainText {
+		/**
+		 * Gets the value of the rtl property.
+		 *
+		 * @return possible object is {@link Boolean }
+		 *
+		 */
+		public boolean isRtl() {
+			if (rtl == null) {
+				return false;
+			} else {
+				return rtl;
+			}
+		}
 
-        @XmlAttribute(name = "rtl")
-        protected Boolean rtl;
-        @XmlAttribute(name = "columnCount", required = true)
-        protected BigInteger columnCount;
+		/**
+		 * Sets the value of the rtl property.
+		 *
+		 * @param value
+		 *            allowed object is {@link Boolean }
+		 *
+		 */
+		public void setRtl(Boolean value) {
+			this.rtl = value;
+		}
 
-        /**
-         * Gets the value of the rtl property.
-         *
-         * @return
-         *     possible object is
-         *     {@link Boolean }
-         *
-         */
-        public boolean isRtl() {
-            if (rtl == null) {
-                return false;
-            } else {
-                return rtl;
-            }
-        }
+		/**
+		 * Gets the value of the columnCount property.
+		 *
+		 * @return possible object is {@link BigInteger }
+		 *
+		 */
+		public BigInteger getColumnCount() {
+			return columnCount;
+		}
 
-        /**
-         * Sets the value of the rtl property.
-         *
-         * @param value
-         *     allowed object is
-         *     {@link Boolean }
-         *
-         */
-        public void setRtl(Boolean value) {
-            this.rtl = value;
-        }
+		/**
+		 * Sets the value of the columnCount property.
+		 *
+		 * @param value
+		 *            allowed object is {@link BigInteger }
+		 *
+		 */
+		public void setColumnCount(BigInteger value) {
+			this.columnCount = value;
+		}
 
-        /**
-         * Gets the value of the columnCount property.
-         *
-         * @return
-         *     possible object is
-         *     {@link BigInteger }
-         *
-         */
-        public BigInteger getColumnCount() {
-            return columnCount;
-        }
-
-        /**
-         * Sets the value of the columnCount property.
-         *
-         * @param value
-         *     allowed object is
-         *     {@link BigInteger }
-         *
-         */
-        public void setColumnCount(BigInteger value) {
-            this.columnCount = value;
-        }
-
-    }
+	}
 
 }

@@ -45,78 +45,70 @@ import za.co.xeon.web.rest.dto.OrderDetails;
 
 @RestController
 @RequestMapping("/api")
-//Max uploaded file size (here it is 20 MB)
+// Max uploaded file size (here it is 20 MB)
 @MultipartConfig(fileSizeThreshold = 15971520)
 public class OpenResource {
-    private final static Logger log = LoggerFactory.getLogger(OpenResource.class);
+	private final static Logger log = LoggerFactory.getLogger(OpenResource.class);
 
-    @Inject
-    private UserRepository userRepository;
+	@Inject
+	private UserRepository userRepository;
 
-    @Inject
-    private CompanyRepository companyRepository;
+	@Inject
+	private CompanyRepository companyRepository;
 
-    @Inject
-    private PurchaseOrderRepository purchaseOrderRepository;
+	@Inject
+	private PurchaseOrderRepository purchaseOrderRepository;
 
-    @Autowired
-    private MobileService mobileService;
+	@Autowired
+	private MobileService mobileService;
 
-    @Autowired
-    private MobileConfiguration mobileConf;
+	@Autowired
+	private MobileConfiguration mobileConf;
 
-    @Autowired
-    private FtpService ftpService;
+	@Autowired
+	private FtpService ftpService;
 
-    @Autowired
-    private S3Service s3Service;
+	@Autowired
+	private S3Service s3Service;
 
-    @Autowired
-    private MailService mailService;
+	@Autowired
+	private MailService mailService;
 
-    private static File tmpDir = null;
+	private static File tmpDir = null;
 
-    @RequestMapping(value = "/open/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public Callable<ResponseEntity<OrderDetails>> getCustomerOrderDetail(@PathVariable(value="deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
-        log.debug("Service [GET] /mobile/orders/" + deliveryNo);
-        return () -> {
-            OrderDetails order = null;
-            List<GtCustOrdersDetail> sapOrders = mobileService.getCustomerOrderDetails(deliveryNo, new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
-            if(!sapOrders.isEmpty()) {
-                PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(sapOrders.get(0).getBstkd());
-                order = new OrderDetails(purchaseOrder, sapOrders);
-            }
-            return Optional.ofNullable(order)
-                .map(result -> new ResponseEntity<>(
-                    result,
-                    HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-        };
-    }
+	@RequestMapping(value = "/open/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public Callable<ResponseEntity<OrderDetails>> getCustomerOrderDetail(@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
+		log.debug("Service [GET] /mobile/orders/" + deliveryNo);
+		return () -> {
+			OrderDetails order = null;
+			List<GtCustOrdersDetail> sapOrders = mobileService.getCustomerOrderDetails(deliveryNo, new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
+			if (!sapOrders.isEmpty()) {
+				PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(sapOrders.get(0).getBstkd());
+				order = new OrderDetails(purchaseOrder, sapOrders);
+			}
+			return Optional.ofNullable(order).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+		};
+	}
 
-    @RequestMapping(value = "/open/contact", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public Callable<ResponseEntity> contact(@RequestBody Contact contact, HttpServletRequest request) throws Exception {
-        log.debug("Service [POST] /mobile/contact");
-        return () -> {
-            mailService.sendCSUMail(userRepository.findAllByEnabledIsTrueAndCompany(companyRepository.findXeon()).get(0),
-                String.format("Xeon Portal: New website enquiry for %s", contact.getAction().getDesc()),
-                String.format("Enquiry from %s %s [email:%s] for %s : %s ",
-                    contact.getFirstName(), contact.getLastName(), contact.getEmail(), contact.getAction().getDesc(), contact.getMessage()
-                ),
-                null, null, getBaseUrl(request));
-            return new ResponseEntity<>("",HttpStatus.OK);
-        };
-    }
+	@RequestMapping(value = "/open/contact", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public Callable<ResponseEntity> contact(@RequestBody Contact contact, HttpServletRequest request) throws Exception {
+		log.debug("Service [POST] /mobile/contact");
+		return () -> {
+			mailService.sendCSUMail(userRepository.findAllByEnabledIsTrueAndCompany(companyRepository.findXeon()).get(0), String.format("Xeon Portal: New website enquiry for %s", contact.getAction().getDesc()), String.format("Enquiry from %s %s [email:%s] for %s : %s ", contact.getFirstName(), contact.getLastName(), contact.getEmail(), contact.getAction().getDesc(), contact.getMessage()), null, null, getBaseUrl(request));
+			return new ResponseEntity<>("", HttpStatus.OK);
+		};
+	}
 
-    public String getBaseUrl(HttpServletRequest request) {
-        return request.getScheme() + // "http"
-            "://" +                                // "://"
-            request.getServerName() +              // "myhost"
-            ":" +                                  // ":"
-            request.getServerPort() +              // "80"
-            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
-    }
+	public String getBaseUrl(HttpServletRequest request) {
+		return request.getScheme() + // "http"
+				"://" + // "://"
+				request.getServerName() + // "myhost"
+				":" + // ":"
+				request.getServerPort() + // "80"
+				request.getContextPath(); // "/myContextPath" or "" if deployed
+											// in root context
+	}
 
 }

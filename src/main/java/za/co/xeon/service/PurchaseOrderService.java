@@ -22,59 +22,63 @@ import za.co.xeon.security.AuthoritiesConstants;
 @Transactional
 public class PurchaseOrderService {
 
-    private final Logger log = LoggerFactory.getLogger(PurchaseOrderService.class);
+	private final Logger log = LoggerFactory.getLogger(PurchaseOrderService.class);
 
-    @Inject
-    private PurchaseOrderRepository purchaseOrderRepository;
+	@Inject
+	private PurchaseOrderRepository purchaseOrderRepository;
 
-    /**
-     * Save a purchaseOrder.
-     * @return the persisted entity
-     */
-    public PurchaseOrder save(PurchaseOrder purchaseOrder) {
-        log.debug("Request to save PurchaseOrder : {}", purchaseOrder);
-        return purchaseOrderRepository.save(purchaseOrder);
-    }
+	/**
+	 * Save a purchaseOrder.
+	 * 
+	 * @return the persisted entity
+	 */
+	public PurchaseOrder save(PurchaseOrder purchaseOrder) {
+		log.debug("Request to save PurchaseOrder : {}", purchaseOrder);
+		return purchaseOrderRepository.save(purchaseOrder);
+	}
 
-    /**
-     *  get all the purchaseOrders.
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    @Secured(AuthoritiesConstants.USER)
-    public Page<PurchaseOrder> findAll(Pageable pageable) {
-        log.debug("Request to get all PurchaseOrders");
-        Page<PurchaseOrder> result = purchaseOrderRepository.findAll(pageable);
-        return result;
-    }
+	/**
+	 * get all the purchaseOrders.
+	 * 
+	 * @return the list of entities
+	 */
+	@Transactional(readOnly = true)
+	@Secured(AuthoritiesConstants.USER)
+	public Page<PurchaseOrder> findAll(Pageable pageable) {
+		log.debug("Request to get all PurchaseOrders");
+		Page<PurchaseOrder> result = purchaseOrderRepository.findAll(pageable);
+		return result;
+	}
 
-    /**
-     *  get all the purchaseOrders.
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public Page<PurchaseOrder> findAllByUser(User user, Pageable pageable) {
-        log.debug("Request to get all PurchaseOrders");
-        Page<PurchaseOrder> result = purchaseOrderRepository.findByUser(user, pageable);
-        return result;
-    }
+	/**
+	 * get all the purchaseOrders.
+	 * 
+	 * @return the list of entities
+	 */
+	@Transactional(readOnly = true)
+	public Page<PurchaseOrder> findAllByUser(User user, Pageable pageable) {
+		log.debug("Request to get all PurchaseOrders");
+		Page<PurchaseOrder> result = purchaseOrderRepository.findByUser(user, pageable);
+		return result;
+	}
 
-    /**
-     *  get one purchaseOrder by id.
-     *  @return the entity
-     */
-    @Transactional(readOnly = true)
-    public PurchaseOrder findOne(Long id) {
-        log.debug("Request to get PurchaseOrder : {}", id);
-        return purchaseOrderRepository.findOne(id);
-    }
+	/**
+	 * get one purchaseOrder by id.
+	 * 
+	 * @return the entity
+	 */
+	@Transactional(readOnly = true)
+	public PurchaseOrder findOne(Long id) {
+		log.debug("Request to get PurchaseOrder : {}", id);
+		return purchaseOrderRepository.findOne(id);
+	}
 
-    /**
-     *  delete the  purchaseOrder by id.
-     */
-    public void delete(Long id) {
-        log.debug("Request to delete PurchaseOrder : {}", id);
-        purchaseOrderRepository.delete(id);
-    }
+	/**
+	 * delete the purchaseOrder by id.
+	 */
+	public void delete(Long id) {
+		log.debug("Request to delete PurchaseOrder : {}", id);
+		purchaseOrderRepository.delete(id);
+	}
 
 }

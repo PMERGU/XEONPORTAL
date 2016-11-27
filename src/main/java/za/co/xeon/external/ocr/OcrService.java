@@ -35,93 +35,90 @@ import za.co.xeon.external.ocr.dto.xsd.result.Document;
  */
 @Service
 public class OcrService {
-    private final static Logger log = LoggerFactory.getLogger(OcrService.class);
-    private XPath xPath = XPathFactory.newInstance().newXPath();
+	private final static Logger log = LoggerFactory.getLogger(OcrService.class);
+	private XPath xPath = XPathFactory.newInstance().newXPath();
 
-    @Autowired
-    private OcrSettings ocrSettings;
+	@Autowired
+	private OcrSettings ocrSettings;
 
-    @PostConstruct
-    public void init(){
-        log.debug("initializing OcrService for " + ocrSettings.getApplication() + " on url " + ocrSettings.getUri());
-    }
+	@PostConstruct
+	public void init() {
+		log.debug("initializing OcrService for " + ocrSettings.getApplication() + " on url " + ocrSettings.getUri());
+	}
 
-    public Result scanDocument(String filePath){
-        String url = "http://cloud.ocrsdk.com/processImage?language=english&profile=barcodeRecognition&exportformat=xml";
+	public Result scanDocument(String filePath) {
+		String url = "http://cloud.ocrsdk.com/processImage?language=english&profile=barcodeRecognition&exportformat=xml";
 
-        RestTemplate restTemplate = new RestTemplate();
+		RestTemplate restTemplate = new RestTemplate();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(org.springframework.http.MediaType.TEXT_XML);
-        headers.set("Authorization", "Basic U0FQIEludGVncmF0b3I6ajZ0eEJzekZmNTVkZ3M5dFNnSkxpOWZO");
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(org.springframework.http.MediaType.TEXT_XML);
+		headers.set("Authorization", "Basic U0FQIEludGVncmF0b3I6ajZ0eEJzekZmNTVkZ3M5dFNnSkxpOWZO");
 
-        PathResource pathResource = new PathResource(filePath);
+		PathResource pathResource = new PathResource(filePath);
 
-        ResponseEntity<Result> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(pathResource, headers), Result.class);
-        log.debug(response.getBody().toString());
-        return response.getBody();
-    }
+		ResponseEntity<Result> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(pathResource, headers), Result.class);
+		log.debug(response.getBody().toString());
+		return response.getBody();
+	}
 
+	public Result getStatus(String id) {
+		String url = "http://cloud.ocrsdk.com/getTaskStatus?taskId=" + id;
 
+		RestTemplate restTemplate = new RestTemplate();
 
-    public Result getStatus(String id){
-        String url = "http://cloud.ocrsdk.com/getTaskStatus?taskId=" + id;
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Basic U0FQIEludGVncmF0b3I6ajZ0eEJzekZmNTVkZ3M5dFNnSkxpOWZO");
 
-        RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Result> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), Result.class);
+		log.debug(response.getBody().toString());
+		return response.getBody();
+	}
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Basic U0FQIEludGVncmF0b3I6ajZ0eEJzekZmNTVkZ3M5dFNnSkxpOWZO");
+	public Document getCompletedResult(String resultUrl) throws Exception {
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.getMessageConverters().add(new ByteArrayHttpMessageConverter());
 
-        ResponseEntity<Result> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), Result.class);
-        log.debug(response.getBody().toString());
-        return response.getBody();
-    }
+		HttpHeaders headers = new HttpHeaders();
+		// headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
+		// headers.set("Authorization", "Basic
+		// U0FQIEludGVncmF0b3I6ajZ0eEJzekZmNTVkZ3M5dFNnSkxpOWZO");
 
-    public Document getCompletedResult(String resultUrl) throws Exception{
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(
-                new ByteArrayHttpMessageConverter());
+		// HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-        HttpHeaders headers = new HttpHeaders();
-//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
-//        headers.set("Authorization", "Basic U0FQIEludGVncmF0b3I6ajZ0eEJzekZmNTVkZ3M5dFNnSkxpOWZO");
+		// ResponseEntity<String> response = restTemplate.exchange(resultUrl,
+		// HttpMethod.GET, new HttpEntity<>(headers), byte[].class);
+		ResponseEntity<Document> response = restTemplate.getForEntity(new URI(resultUrl), Document.class);
 
-//        HttpEntity<String> entity = new HttpEntity<String>(headers);
+		return response.getBody();
+	}
 
-//        ResponseEntity<String> response = restTemplate.exchange(resultUrl, HttpMethod.GET, new HttpEntity<>(headers), byte[].class);
-        ResponseEntity<Document> response = restTemplate.getForEntity(new URI(resultUrl), Document.class);
+	public String getCompletedBarcodeResult(String resultUrl) throws Exception {
+		String xpathExpression = "//formatting/text()";
 
-        return response.getBody();
-    }
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.getMessageConverters().add(new ByteArrayHttpMessageConverter());
 
-    public String getCompletedBarcodeResult(String resultUrl) throws Exception{
-        String xpathExpression = "//formatting/text()";
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuild = dbf.newDocumentBuilder();
+		org.w3c.dom.Document doc = docBuild.parse(resultUrl);
 
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new ByteArrayHttpMessageConverter());
+		XPathExpression expr = xPath.compile(xpathExpression);
+		NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+		try {
+			return nl.item(0).getNodeValue();
+		} catch (NullPointerException npe) {
+			return null;
+		}
+	}
 
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuild = dbf.newDocumentBuilder();
-        org.w3c.dom.Document doc = docBuild.parse(resultUrl);
-
-        XPathExpression expr = xPath.compile(xpathExpression);
-        NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants. NODESET);
-        try {
-            return nl.item(0).getNodeValue();
-        }catch(NullPointerException npe){
-            return null;
-        }
-    }
-
-    public String getCompletedResult2(String resultUrl) throws Exception{
-        URL url = new URL(resultUrl);
+	public String getCompletedResult2(String resultUrl) throws Exception {
+		URL url = new URL(resultUrl);
 		URLConnection connection = url.openConnection(); // do not use
 															// authenticated
 															// connection
 
-		BufferedInputStream reader = new BufferedInputStream(
-				connection.getInputStream());
+		BufferedInputStream reader = new BufferedInputStream(connection.getInputStream());
 
 		FileOutputStream out = new FileOutputStream("/Users/derick/code/sap/test.xml");
 
@@ -134,10 +131,10 @@ public class OcrService {
 		} finally {
 			out.close();
 		}
-        return "success";
-    }
+		return "success";
+	}
 
-    private String encodeUserPassword(String applicationId, String password) {
+	private String encodeUserPassword(String applicationId, String password) {
 		String toEncode = applicationId + ":" + password;
 		return Base64.encode(toEncode);
 	}

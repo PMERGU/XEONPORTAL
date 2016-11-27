@@ -5,7 +5,6 @@
 // Generated on: 2016.02.29 at 06:44:09 PM SAST
 //
 
-
 package za.co.xeon.external.ocr.dto.xsd.result;
 
 import java.math.BigInteger;
@@ -17,11 +16,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ParagraphStyleType complex type.
+ * <p>
+ * Java class for ParagraphStyleType complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType name="ParagraphStyleType">
@@ -72,470 +73,424 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ParagraphStyleType", propOrder = {
-    "fontStyle"
-})
+@XmlType(name = "ParagraphStyleType", propOrder = { "fontStyle" })
 public class ParagraphStyleType {
 
-    protected List<FontStyleType> fontStyle;
-    @XmlAttribute(name = "id", required = true)
-    protected String id;
-    @XmlAttribute(name = "name", required = true)
-    protected String name;
-    @XmlAttribute(name = "mainFontStyleId", required = true)
-    protected String mainFontStyleId;
-    @XmlAttribute(name = "role", required = true)
-    protected String role;
-    @XmlAttribute(name = "roleLevel")
-    protected BigInteger roleLevel;
-    @XmlAttribute(name = "align", required = true)
-    protected ParagraphAlignment align;
-    @XmlAttribute(name = "rtl")
-    protected Boolean rtl;
-    @XmlAttribute(name = "before")
-    protected BigInteger before;
-    @XmlAttribute(name = "after")
-    protected BigInteger after;
-    @XmlAttribute(name = "startIndent")
-    protected BigInteger startIndent;
-    @XmlAttribute(name = "leftIndent")
-    protected BigInteger leftIndent;
-    @XmlAttribute(name = "rightIndent")
-    protected BigInteger rightIndent;
-    @XmlAttribute(name = "lineSpacing")
-    protected BigInteger lineSpacing;
-    @XmlAttribute(name = "lineSpacingRatio")
-    protected BigInteger lineSpacingRatio;
-    @XmlAttribute(name = "fixedLineSpacing")
-    protected Boolean fixedLineSpacing;
+	protected List<FontStyleType> fontStyle;
+	@XmlAttribute(name = "id", required = true)
+	protected String id;
+	@XmlAttribute(name = "name", required = true)
+	protected String name;
+	@XmlAttribute(name = "mainFontStyleId", required = true)
+	protected String mainFontStyleId;
+	@XmlAttribute(name = "role", required = true)
+	protected String role;
+	@XmlAttribute(name = "roleLevel")
+	protected BigInteger roleLevel;
+	@XmlAttribute(name = "align", required = true)
+	protected ParagraphAlignment align;
+	@XmlAttribute(name = "rtl")
+	protected Boolean rtl;
+	@XmlAttribute(name = "before")
+	protected BigInteger before;
+	@XmlAttribute(name = "after")
+	protected BigInteger after;
+	@XmlAttribute(name = "startIndent")
+	protected BigInteger startIndent;
+	@XmlAttribute(name = "leftIndent")
+	protected BigInteger leftIndent;
+	@XmlAttribute(name = "rightIndent")
+	protected BigInteger rightIndent;
+	@XmlAttribute(name = "lineSpacing")
+	protected BigInteger lineSpacing;
+	@XmlAttribute(name = "lineSpacingRatio")
+	protected BigInteger lineSpacingRatio;
+	@XmlAttribute(name = "fixedLineSpacing")
+	protected Boolean fixedLineSpacing;
 
-    /**
-     * Gets the value of the fontStyle property.
-     *
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the fontStyle property.
-     *
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getFontStyle().add(newItem);
-     * </pre>
-     *
-     *
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link FontStyleType }
-     *
-     *
-     */
-    public List<FontStyleType> getFontStyle() {
-        if (fontStyle == null) {
-            fontStyle = new ArrayList<FontStyleType>();
-        }
-        return this.fontStyle;
-    }
+	/**
+	 * Gets the value of the fontStyle property.
+	 *
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the fontStyle property.
+	 *
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getFontStyle().add(newItem);
+	 * </pre>
+	 *
+	 *
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link FontStyleType }
+	 *
+	 *
+	 */
+	public List<FontStyleType> getFontStyle() {
+		if (fontStyle == null) {
+			fontStyle = new ArrayList<FontStyleType>();
+		}
+		return this.fontStyle;
+	}
 
-    /**
-     * Gets the value of the id property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getId() {
-        return id;
-    }
+	/**
+	 * Gets the value of the id property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getId() {
+		return id;
+	}
 
-    /**
-     * Sets the value of the id property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setId(String value) {
-        this.id = value;
-    }
+	/**
+	 * Sets the value of the id property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setId(String value) {
+		this.id = value;
+	}
 
-    /**
-     * Gets the value of the name property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Gets the value of the name property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Sets the value of the name property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+	/**
+	 * Sets the value of the name property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setName(String value) {
+		this.name = value;
+	}
 
-    /**
-     * Gets the value of the mainFontStyleId property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getMainFontStyleId() {
-        return mainFontStyleId;
-    }
+	/**
+	 * Gets the value of the mainFontStyleId property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getMainFontStyleId() {
+		return mainFontStyleId;
+	}
 
-    /**
-     * Sets the value of the mainFontStyleId property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setMainFontStyleId(String value) {
-        this.mainFontStyleId = value;
-    }
+	/**
+	 * Sets the value of the mainFontStyleId property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setMainFontStyleId(String value) {
+		this.mainFontStyleId = value;
+	}
 
-    /**
-     * Gets the value of the role property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getRole() {
-        return role;
-    }
+	/**
+	 * Gets the value of the role property.
+	 *
+	 * @return possible object is {@link String }
+	 *
+	 */
+	public String getRole() {
+		return role;
+	}
 
-    /**
-     * Sets the value of the role property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setRole(String value) {
-        this.role = value;
-    }
+	/**
+	 * Sets the value of the role property.
+	 *
+	 * @param value
+	 *            allowed object is {@link String }
+	 *
+	 */
+	public void setRole(String value) {
+		this.role = value;
+	}
 
-    /**
-     * Gets the value of the roleLevel property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getRoleLevel() {
-        if (roleLevel == null) {
-            return new BigInteger("-1");
-        } else {
-            return roleLevel;
-        }
-    }
+	/**
+	 * Gets the value of the roleLevel property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getRoleLevel() {
+		if (roleLevel == null) {
+			return new BigInteger("-1");
+		} else {
+			return roleLevel;
+		}
+	}
 
-    /**
-     * Sets the value of the roleLevel property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setRoleLevel(BigInteger value) {
-        this.roleLevel = value;
-    }
+	/**
+	 * Sets the value of the roleLevel property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setRoleLevel(BigInteger value) {
+		this.roleLevel = value;
+	}
 
-    /**
-     * Gets the value of the align property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ParagraphAlignment }
-     *
-     */
-    public ParagraphAlignment getAlign() {
-        return align;
-    }
+	/**
+	 * Gets the value of the align property.
+	 *
+	 * @return possible object is {@link ParagraphAlignment }
+	 *
+	 */
+	public ParagraphAlignment getAlign() {
+		return align;
+	}
 
-    /**
-     * Sets the value of the align property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ParagraphAlignment }
-     *
-     */
-    public void setAlign(ParagraphAlignment value) {
-        this.align = value;
-    }
+	/**
+	 * Sets the value of the align property.
+	 *
+	 * @param value
+	 *            allowed object is {@link ParagraphAlignment }
+	 *
+	 */
+	public void setAlign(ParagraphAlignment value) {
+		this.align = value;
+	}
 
-    /**
-     * Gets the value of the rtl property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isRtl() {
-        if (rtl == null) {
-            return false;
-        } else {
-            return rtl;
-        }
-    }
+	/**
+	 * Gets the value of the rtl property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isRtl() {
+		if (rtl == null) {
+			return false;
+		} else {
+			return rtl;
+		}
+	}
 
-    /**
-     * Sets the value of the rtl property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setRtl(Boolean value) {
-        this.rtl = value;
-    }
+	/**
+	 * Sets the value of the rtl property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setRtl(Boolean value) {
+		this.rtl = value;
+	}
 
-    /**
-     * Gets the value of the before property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getBefore() {
-        if (before == null) {
-            return new BigInteger("0");
-        } else {
-            return before;
-        }
-    }
+	/**
+	 * Gets the value of the before property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getBefore() {
+		if (before == null) {
+			return new BigInteger("0");
+		} else {
+			return before;
+		}
+	}
 
-    /**
-     * Sets the value of the before property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setBefore(BigInteger value) {
-        this.before = value;
-    }
+	/**
+	 * Sets the value of the before property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setBefore(BigInteger value) {
+		this.before = value;
+	}
 
-    /**
-     * Gets the value of the after property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getAfter() {
-        if (after == null) {
-            return new BigInteger("0");
-        } else {
-            return after;
-        }
-    }
+	/**
+	 * Gets the value of the after property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getAfter() {
+		if (after == null) {
+			return new BigInteger("0");
+		} else {
+			return after;
+		}
+	}
 
-    /**
-     * Sets the value of the after property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setAfter(BigInteger value) {
-        this.after = value;
-    }
+	/**
+	 * Sets the value of the after property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setAfter(BigInteger value) {
+		this.after = value;
+	}
 
-    /**
-     * Gets the value of the startIndent property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getStartIndent() {
-        if (startIndent == null) {
-            return new BigInteger("0");
-        } else {
-            return startIndent;
-        }
-    }
+	/**
+	 * Gets the value of the startIndent property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getStartIndent() {
+		if (startIndent == null) {
+			return new BigInteger("0");
+		} else {
+			return startIndent;
+		}
+	}
 
-    /**
-     * Sets the value of the startIndent property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setStartIndent(BigInteger value) {
-        this.startIndent = value;
-    }
+	/**
+	 * Sets the value of the startIndent property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setStartIndent(BigInteger value) {
+		this.startIndent = value;
+	}
 
-    /**
-     * Gets the value of the leftIndent property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getLeftIndent() {
-        if (leftIndent == null) {
-            return new BigInteger("0");
-        } else {
-            return leftIndent;
-        }
-    }
+	/**
+	 * Gets the value of the leftIndent property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getLeftIndent() {
+		if (leftIndent == null) {
+			return new BigInteger("0");
+		} else {
+			return leftIndent;
+		}
+	}
 
-    /**
-     * Sets the value of the leftIndent property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setLeftIndent(BigInteger value) {
-        this.leftIndent = value;
-    }
+	/**
+	 * Sets the value of the leftIndent property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setLeftIndent(BigInteger value) {
+		this.leftIndent = value;
+	}
 
-    /**
-     * Gets the value of the rightIndent property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getRightIndent() {
-        if (rightIndent == null) {
-            return new BigInteger("0");
-        } else {
-            return rightIndent;
-        }
-    }
+	/**
+	 * Gets the value of the rightIndent property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getRightIndent() {
+		if (rightIndent == null) {
+			return new BigInteger("0");
+		} else {
+			return rightIndent;
+		}
+	}
 
-    /**
-     * Sets the value of the rightIndent property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setRightIndent(BigInteger value) {
-        this.rightIndent = value;
-    }
+	/**
+	 * Sets the value of the rightIndent property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setRightIndent(BigInteger value) {
+		this.rightIndent = value;
+	}
 
-    /**
-     * Gets the value of the lineSpacing property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getLineSpacing() {
-        if (lineSpacing == null) {
-            return new BigInteger("-1");
-        } else {
-            return lineSpacing;
-        }
-    }
+	/**
+	 * Gets the value of the lineSpacing property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getLineSpacing() {
+		if (lineSpacing == null) {
+			return new BigInteger("-1");
+		} else {
+			return lineSpacing;
+		}
+	}
 
-    /**
-     * Sets the value of the lineSpacing property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setLineSpacing(BigInteger value) {
-        this.lineSpacing = value;
-    }
+	/**
+	 * Sets the value of the lineSpacing property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setLineSpacing(BigInteger value) {
+		this.lineSpacing = value;
+	}
 
-    /**
-     * Gets the value of the lineSpacingRatio property.
-     *
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *
-     */
-    public BigInteger getLineSpacingRatio() {
-        if (lineSpacingRatio == null) {
-            return new BigInteger("1");
-        } else {
-            return lineSpacingRatio;
-        }
-    }
+	/**
+	 * Gets the value of the lineSpacingRatio property.
+	 *
+	 * @return possible object is {@link BigInteger }
+	 *
+	 */
+	public BigInteger getLineSpacingRatio() {
+		if (lineSpacingRatio == null) {
+			return new BigInteger("1");
+		} else {
+			return lineSpacingRatio;
+		}
+	}
 
-    /**
-     * Sets the value of the lineSpacingRatio property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *
-     */
-    public void setLineSpacingRatio(BigInteger value) {
-        this.lineSpacingRatio = value;
-    }
+	/**
+	 * Sets the value of the lineSpacingRatio property.
+	 *
+	 * @param value
+	 *            allowed object is {@link BigInteger }
+	 *
+	 */
+	public void setLineSpacingRatio(BigInteger value) {
+		this.lineSpacingRatio = value;
+	}
 
-    /**
-     * Gets the value of the fixedLineSpacing property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *
-     */
-    public boolean isFixedLineSpacing() {
-        if (fixedLineSpacing == null) {
-            return true;
-        } else {
-            return fixedLineSpacing;
-        }
-    }
+	/**
+	 * Gets the value of the fixedLineSpacing property.
+	 *
+	 * @return possible object is {@link Boolean }
+	 *
+	 */
+	public boolean isFixedLineSpacing() {
+		if (fixedLineSpacing == null) {
+			return true;
+		} else {
+			return fixedLineSpacing;
+		}
+	}
 
-    /**
-     * Sets the value of the fixedLineSpacing property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *
-     */
-    public void setFixedLineSpacing(Boolean value) {
-        this.fixedLineSpacing = value;
-    }
+	/**
+	 * Sets the value of the fixedLineSpacing property.
+	 *
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 *
+	 */
+	public void setFixedLineSpacing(Boolean value) {
+		this.fixedLineSpacing = value;
+	}
 
 }

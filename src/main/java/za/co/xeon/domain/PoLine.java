@@ -30,217 +30,203 @@ import za.co.xeon.domain.enumeration.UnitOfMeasure;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PoLine implements Serializable {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4612452073433387968L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @Column(name = "material_number")
-    private String materialNumber;
+	@Column(name = "material_number")
+	private String materialNumber;
 
-    @Column(name = "order_quantity")
-    private Integer orderQuantity;
+	@Column(name = "order_quantity")
+	private Integer orderQuantity;
 
-    @Column(name = "warehouse")
-    private String warehouse;
+	@Column(name = "warehouse")
+	private String warehouse;
 
-    @Column(name = "length")
-    private Integer length;
+	@Column(name = "length")
+	private Integer length;
 
-    @Column(name = "width")
-    private Integer width;
+	@Column(name = "width")
+	private Integer width;
 
-    @Column(name = "height")
-    private Integer height;
+	@Column(name = "height")
+	private Integer height;
 
-    @Column(name = "gross_weight")
-    private Integer grossWeight;
+	@Column(name = "gross_weight")
+	private Integer grossWeight;
 
-    @Column(name = "net_weight")
-    private Integer netWeight;
+	@Column(name = "net_weight")
+	private Integer netWeight;
 
-    @Column(name = "batch_number")
-    private String batchNumber;
+	@Column(name = "batch_number")
+	private String batchNumber;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "material_type")
-    private MaterialType materialType;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "material_type")
+	private MaterialType materialType;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "unit_of_measure")
-    private UnitOfMeasure unitOfMeasure;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "unit_of_measure")
+	private UnitOfMeasure unitOfMeasure;
 
-    @ManyToOne
-    @JoinColumn(name = "purchase_order_id")
-    private PurchaseOrder purchaseOrder;
+	@ManyToOne
+	@JoinColumn(name = "purchase_order_id")
+	private PurchaseOrder purchaseOrder;
 
-    @Column(name = "volume")
-    private BigDecimal volume;
+	@Column(name = "volume")
+	private BigDecimal volume;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "dv_type")
-    private DVType dvType;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "dv_type")
+	private DVType dvType;
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getMaterialNumber() {
-        return materialNumber;
-    }
+	public String getMaterialNumber() {
+		return materialNumber;
+	}
 
-    public void setMaterialNumber(String materialNumber) {
-        this.materialNumber = materialNumber;
-    }
+	public void setMaterialNumber(String materialNumber) {
+		this.materialNumber = materialNumber;
+	}
 
-    public Integer getOrderQuantity() {
-        return orderQuantity;
-    }
+	public Integer getOrderQuantity() {
+		return orderQuantity;
+	}
 
-    public void setOrderQuantity(Integer orderQuantity) {
-        this.orderQuantity = orderQuantity;
-    }
+	public void setOrderQuantity(Integer orderQuantity) {
+		this.orderQuantity = orderQuantity;
+	}
 
-    public String getWarehouse() {
-        return warehouse;
-    }
+	public String getWarehouse() {
+		return warehouse;
+	}
 
-    public void setWarehouse(String warehouse) {
-        this.warehouse = warehouse;
-    }
+	public void setWarehouse(String warehouse) {
+		this.warehouse = warehouse;
+	}
 
-    public Integer getLength() {
-        return length;
-    }
+	public Integer getLength() {
+		return length;
+	}
 
-    public void setLength(Integer length) {
-        this.length = length;
-    }
+	public void setLength(Integer length) {
+		this.length = length;
+	}
 
-    public Integer getWidth() {
-        return width;
-    }
+	public Integer getWidth() {
+		return width;
+	}
 
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
 
-    public Integer getHeight() {
-        return height;
-    }
+	public Integer getHeight() {
+		return height;
+	}
 
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
 
-    public Integer getGrossWeight() {
-        return grossWeight;
-    }
+	public Integer getGrossWeight() {
+		return grossWeight;
+	}
 
-    public void setGrossWeight(Integer grossWeight) {
-        this.grossWeight = grossWeight;
-    }
+	public void setGrossWeight(Integer grossWeight) {
+		this.grossWeight = grossWeight;
+	}
 
-    public Integer getNetWeight() {
-        return netWeight;
-    }
+	public Integer getNetWeight() {
+		return netWeight;
+	}
 
-    public void setNetWeight(Integer netWeight) {
-        this.netWeight = netWeight;
-    }
+	public void setNetWeight(Integer netWeight) {
+		this.netWeight = netWeight;
+	}
 
-    public String getBatchNumber() {
-        return batchNumber;
-    }
+	public String getBatchNumber() {
+		return batchNumber;
+	}
 
-    public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
-    }
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
 
-    public PurchaseOrder getPurchaseOrder() {
-        return purchaseOrder;
-    }
+	public PurchaseOrder getPurchaseOrder() {
+		return purchaseOrder;
+	}
 
-    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
-        this.purchaseOrder = purchaseOrder;
-    }
+	public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+		this.purchaseOrder = purchaseOrder;
+	}
 
-    public MaterialType getMaterialType() {
-        return materialType;
-    }
+	public MaterialType getMaterialType() {
+		return materialType;
+	}
 
-    public void setMaterialType(MaterialType materialType) {
-        this.materialType = materialType;
-    }
+	public void setMaterialType(MaterialType materialType) {
+		this.materialType = materialType;
+	}
 
-    public BigDecimal getVolume() {
-        return volume;
-    }
+	public BigDecimal getVolume() {
+		return volume;
+	}
 
-    public void setVolume(BigDecimal volume) {
-        this.volume = volume;
-    }
+	public void setVolume(BigDecimal volume) {
+		this.volume = volume;
+	}
 
-    public DVType getDvType() {
-        return dvType;
-    }
+	public DVType getDvType() {
+		return dvType;
+	}
 
-    public void setDvType(DVType dvType) {
-        this.dvType = dvType;
-    }
+	public void setDvType(DVType dvType) {
+		this.dvType = dvType;
+	}
 
-    public UnitOfMeasure getUnitOfMeasure() {
-        return unitOfMeasure;
-    }
+	public UnitOfMeasure getUnitOfMeasure() {
+		return unitOfMeasure;
+	}
 
-    public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
-        this.unitOfMeasure = unitOfMeasure;
-    }
+	public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
+		this.unitOfMeasure = unitOfMeasure;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        PoLine poLine = (PoLine) o;
-        if(poLine.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, poLine.id);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		PoLine poLine = (PoLine) o;
+		if (poLine.id == null || id == null) {
+			return false;
+		}
+		return Objects.equals(id, poLine.id);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
 
-    @Override
-    public String toString() {
-        return "PoLine{" +
-            "id=" + id +
-            ", materialNumber='" + materialNumber + "'" +
-            ", orderQuantity='" + orderQuantity + "'" +
-            ", warehouse='" + warehouse + "'" +
-            ", length='" + length + "'" +
-            ", width='" + width + "'" +
-            ", height='" + height + "'" +
-            ", grossWeight='" + grossWeight + "'" +
-            ", netWeight='" + netWeight + "'" +
-            ", batchNumber='" + batchNumber + "'" +
-            ", dvType='" + dvType + "'" +
-            ", volume='" + volume + "'" +
-            ", unitOfMeasure='" + unitOfMeasure + "'" +
-            '}';
-    }
+	@Override
+	public String toString() {
+		return "PoLine{" + "id=" + id + ", materialNumber='" + materialNumber + "'" + ", orderQuantity='" + orderQuantity + "'" + ", warehouse='" + warehouse + "'" + ", length='" + length + "'" + ", width='" + width + "'" + ", height='" + height + "'" + ", grossWeight='" + grossWeight + "'" + ", netWeight='" + netWeight + "'" + ", batchNumber='" + batchNumber + "'" + ", dvType='" + dvType + "'" + ", volume='" + volume + "'" + ", unitOfMeasure='" + unitOfMeasure + "'" + '}';
+	}
 }

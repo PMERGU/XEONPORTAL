@@ -8,24 +8,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by derick on 2016/02/16.
  */
-@XmlRootElement(name="response")
+@XmlRootElement(name = "response")
 @XmlAccessorType(XmlAccessType.NONE)
 public class Result {
-    @XmlElement(name="task")
-    private Task task;
+	@XmlElement(name = "task")
+	private Task task;
 
-    public Task getTask() {
-        return task;
-    }
+	public Task getTask() {
+		return task;
+	}
 
-    public void setTask(Task task) {
-        this.task = task;
-    }
+	public void setTask(Task task) {
+		this.task = task;
+	}
 
-    @Override
-    public String toString() {
-        return "Result{" +
-                "task=" + task +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Result{" + "task=" + task + '}';
+	}
 }

@@ -17,29 +17,29 @@ import za.co.xeon.domain.User;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findOneByActivationKey(String activationKey);
+	Optional<User> findOneByActivationKey(String activationKey);
 
-    Page<User> findAllByEnabledIsTrue(Pageable pageable);
+	Page<User> findAllByEnabledIsTrue(Pageable pageable);
 
-    List<User> findAllByEnabledIsTrueAndAuthorities(Authority authority);
+	List<User> findAllByEnabledIsTrueAndAuthorities(Authority authority);
 
-    List<User> findAllByEnabledIsTrueAndCompany(Company company);
+	List<User> findAllByEnabledIsTrueAndCompany(Company company);
 
-    List<User> findAllByEnabledIsTrueAndActivatedIsFalseAndCreatedDateBefore(ZonedDateTime dateTime);
+	List<User> findAllByEnabledIsTrueAndActivatedIsFalseAndCreatedDateBefore(ZonedDateTime dateTime);
 
-    Optional<User> findOneByResetKey(String resetKey);
+	Optional<User> findOneByResetKey(String resetKey);
 
-    Optional<User> findOneByEmail(String email);
+	Optional<User> findOneByEmail(String email);
 
-    Optional<User> findOneByLogin(String login);
+	Optional<User> findOneByLogin(String login);
 
-    Optional<User> findOneByEnabledIsTrueAndEmail(String email);
+	Optional<User> findOneByEnabledIsTrueAndEmail(String email);
 
-    Optional<User> findOneByEnabledIsTrueAndLogin(String login);
+	Optional<User> findOneByEnabledIsTrueAndLogin(String login);
 
-    Optional<User> findOneById(Long userId);
+	Optional<User> findOneById(Long userId);
 
-    @Override
-    void delete(User t);
+	@Override
+	void delete(User t);
 
 }

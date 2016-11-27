@@ -8,6 +8,6 @@ import za.co.xeon.domain.PostalArea;
 /**
  * Spring Data JPA repository for the Party entity.
  */
-public interface PostalAreaRepository extends JpaRepository<PostalArea,Long>, QueryDslPredicateExecutor<PostalArea> {
+public interface PostalAreaRepository extends JpaRepository<PostalArea, Long>, QueryDslPredicateExecutor<PostalArea> {
 
 }
