@@ -17,26 +17,37 @@ angular.module('portalApp')
                 company: $scope.identity.company
             };
         }else{
-            $scope.companies = Company.query();
-            $scope.company = null;
+        	
+        	$scope.company = null;
             $scope.selected = {
                 company: null
             };
-            // $scope.company = null;
-            // $scope.selected = {
-            //     company: null
-            // };
-            // Company.query().$promise.then(function(companies){
-            //     $.each(companies, function(idx, company){
-            //         $log.debug(idx + " - " + company.name);
-            //         if($stateParams.company === company.name){
-            //             $scope.selected.company = company;
-            //             $scope.company = company;
-            //         }
-            //     });
-            //     $scope.companies = companies;
-            //
-            // });
+           
+            if($stateParams.company !=null && $stateParams.company !=undefined)
+            	{
+            	
+            	Company.query().$promise.then(function(companies){
+                    $.each(companies, function(idx, company){
+                        $log.debug(idx + " - " + company.id);
+                        if($stateParams.company === company.id.toString()){
+                            $scope.selected.company = company;
+                            $scope.company = company;
+                        }
+                    });
+                    $scope.companies = companies;
+                    $scope.reloadData(false);
+                    $log.debug($scope.companies + " : Comapnies : " + $scope.company);
+                    
+                   
+               
+                });
+            	}else{
+            		 $scope.companies = Company.query();
+                     
+                     
+                     
+                     
+            	}
         }
 
 
@@ -44,11 +55,13 @@ angular.module('portalApp')
         //WATCH when company is selected (for capture as company employee feature)
         $scope.$watch(function() {
             return $scope.selected.company
-        }, function (company) {
-            $log.debug("test");
-            if(company != null && company != undefined) {
+        }, function (company, oldComapny) {
+            $log.debug("test : " + oldComapny);
+            if(company != null && company != undefined && ((oldComapny ==null || oldComapny == undefined ||  oldComapny.id != company.id ))) {
                 $log.debug(company);
-                $scope.reloadData(false);
+               var a=document.getElementById("salesOR");
+               a.click();
+               
             }
         });
 

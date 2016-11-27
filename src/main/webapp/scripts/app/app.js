@@ -120,6 +120,8 @@ angular.module('portalApp', ['LocalStorageModule','anguFixedHeaderTable',
             is: function(val) { return [true,false,0,1].indexOf(val) >= 0; },
             pattern: /bool|true|0|1/
         });
+    }]).factory('superCache', ['$cacheFactory', function($cacheFactory) {
+        return $cacheFactory('super-cache');
     }]).directive('validNumber', function() {
         return {
             require: '?ngModel',
