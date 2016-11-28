@@ -28,7 +28,7 @@ public class ZGetCustomerOrdersByDate {
 	@Parameter(value = "EV_RETURN", type = ParameterType.STRUCTURE)
 	private EvReturn _evReturn;
 	@Export
-	@Parameter("EV_RESULT")
+	@Parameter(value = "EV_RESULT", type = ParameterType.TABLE_STRUCTURE)
 	private List<EvResult> _evResult;
 
 	public ZGetCustomerOrdersByDate() {

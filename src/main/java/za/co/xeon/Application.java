@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import org.apache.catalina.connector.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
@@ -31,7 +30,6 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 import za.co.xeon.config.Constants;
 import za.co.xeon.config.JHipsterProperties;
-import za.co.xeon.external.sap.hibersap.HiberSapService;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class, CacheAutoConfiguration.class })
@@ -42,9 +40,6 @@ public class Application implements CommandLineRunner {
 
 	@Inject
 	private Environment env;
-
-	@Autowired
-	private HiberSapService hiberSapService;
 
 	/**
 	 * Initializes portal.

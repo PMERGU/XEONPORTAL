@@ -106,6 +106,40 @@ public class ReportResource {
 		};
 	}
 
+	@RequestMapping(value = "/podReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public Callable<ResponseEntity<List<EvResult>>> fetchPODData(@Valid @RequestBody PODReportReqDTO dto, HttpServletRequest request) {
+		log.debug("[Report:{}] - REST request to Fetch Stock Data for Report", dto.toString());
+		return () -> {
+			List<EvResult> ret = new ArrayList<EvResult>();
+			try {
+				List<EvResult> evResult = null;
+				if (dto.getPodType() != null)
+					evResult = hiberSapService.getCustomerOrdersForPODStatus(dto.getFromDate(), dto.getToDate(), dto.getPodType());
+				else
+					evResult = hiberSapService.getCustomerOrdersForPOD(dto.getFromDate(), dto.getToDate());
+				for (EvResult evr : evResult) {
+					PurchaseOrder po = purchaseOrderRepository.getOne(Long.valueOf(evr.get_bstkd()));
+					List<Attachment> atts = attachmentRepository.findByPONumberAndPOD(po.getId());
+					boolean pod = false;
+					for (Attachment att : atts) {
+						pod = pod && att.getCategory().equalsIgnoreCase("POD");
+					}
+					if (pod) {
+						if (dto.getId() != null) {
+							if (dto.getId().longValue() == po.getUser().getCompany().getId().longValue())
+								ret.add(evr);
+						} else
+							ret.add(evr);
+					}
+				}
+			} catch (Exception e) {
+				log.debug("Error : " + e.getMessage());
+			}
+			return ResponseEntity.created(new URI("/api/podReport/")).body(ret);
+		};
+	}
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/stockReport/download", method = RequestMethod.POST, produces = "application/pdf")
 	public @ResponseBody ResponseEntity downloadStockDataByUser(@Valid @RequestBody StockReportDTO dto) throws Exception {
@@ -113,10 +147,6 @@ public class ReportResource {
 
 		List<StockInventory> ret = new ArrayList<StockInventory>();
 		try {
-			// Company company = companyRepository.findOne(comapanyId);
-			// String companyName = company.getName();
-			// StockReportDTO dto = new StockReportDTO();
-			// dto.setCompany(companyName);
 			ret = hiberSapService.fetchStockData(dto);
 			log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User size", ret.size());
 		} catch (Exception e) {
@@ -142,19 +172,17 @@ public class ReportResource {
 	public ByteArrayOutputStream createPdf(List<StockInventory> ret) {
 		Document document = new Document(PageSize.A3);
 		try {
-			// PdfWriter writer = PdfWriter.getInstance(document, new
-			// FileOutputStream("AddTableExample.pdf"));
 			Float fntSize = 6.7f;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			PdfWriter writer = PdfWriter.getInstance(document, out);
 			document.open();
-			PdfPTable table = new PdfPTable(9); // 9 columns.
+			PdfPTable table = new PdfPTable(10); // 9 columns.
 			table.setWidthPercentage(100); // Width 100%
 			table.setSpacingBefore(10f); // Space before table
 			table.setSpacingAfter(10f); // Space after table
 
 			// Set Column widths
-			float[] columnWidths = { 0.3f, 0.5f, 1f, 2f, 1f, 0.5f, 0.5f, 1f, 0.5f };
+			float[] columnWidths = { 0.3f, 0.5f, 1f, 2f, 1f, 0.5f, 0.5f, 1f, 0.5f, 0.5f };
 			table.setWidths(columnWidths);
 
 			PdfPCell iDHeader = new PdfPCell(new Paragraph("ID", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
@@ -219,6 +247,13 @@ public class ReportResource {
 			pickQuant.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pickQuant.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(pickQuant);
+
+			PdfPCell uom = new PdfPCell(new Paragraph("UOM", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			uom.setBorderColor(BaseColor.BLACK);
+			uom.setPaddingLeft(10);
+			uom.setHorizontalAlignment(Element.ALIGN_CENTER);
+			uom.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(uom);
 
 			if (ret != null && ret.size() > 0) {
 				int i = 1;
@@ -285,6 +320,13 @@ public class ReportResource {
 					pickQuantData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					pickQuantData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(pickQuantData);
+
+					PdfPCell uomData = new PdfPCell(new Paragraph(data.get_meins() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					uomData.setBorderColor(BaseColor.BLACK);
+					uomData.setPaddingLeft(10);
+					uomData.setHorizontalAlignment(Element.ALIGN_CENTER);
+					uomData.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					table.addCell(uomData);
 					i++;
 				}
 			}
@@ -298,40 +340,6 @@ public class ReportResource {
 		}
 
 		return null;
-	}
-
-	@RequestMapping(value = "/podReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Timed
-	public Callable<ResponseEntity<List<EvResult>>> fetchPODData(@Valid @RequestBody PODReportReqDTO dto, HttpServletRequest request) {
-		log.debug("[Report:{}] - REST request to Fetch Stock Data for Report", dto.toString());
-		return () -> {
-			List<EvResult> ret = new ArrayList<EvResult>();
-			try {
-				List<EvResult> evResult = null;
-				if (dto.getPodType() != null)
-					evResult = hiberSapService.getCustomerOrdersForPODStatus(dto.getFromDate(), dto.getToDate(), dto.getPodType());
-				else
-					evResult = hiberSapService.getCustomerOrdersForPOD(dto.getFromDate(), dto.getToDate());
-				for (EvResult evr : evResult) {
-					PurchaseOrder po = purchaseOrderRepository.getOne(Long.valueOf(evr.get_bstkd()));
-					List<Attachment> atts = attachmentRepository.findByPONumberAndPOD(po.getId());
-					boolean pod = false;
-					for (Attachment att : atts) {
-						pod = pod && att.getCategory().equalsIgnoreCase("POD");
-					}
-					if (pod) {
-						if (dto.getId() != null) {
-							if (dto.getId().longValue() == po.getUser().getCompany().getId().longValue())
-								ret.add(evr);
-						} else
-							ret.add(evr);
-					}
-				}
-			} catch (Exception e) {
-				log.debug("Error : " + e.getMessage());
-			}
-			return ResponseEntity.created(new URI("/api/stockReport/")).body(ret);
-		};
 	}
 
 }

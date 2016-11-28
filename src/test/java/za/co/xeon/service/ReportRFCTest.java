@@ -1,10 +1,11 @@
 package za.co.xeon.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibersap.configuration.AnnotationConfiguration;
 import org.hibersap.configuration.xml.SessionManagerConfig;
 import org.hibersap.execution.jco.JCoContext;
@@ -23,6 +24,7 @@ import za.co.xeon.external.sap.hibersap.forge.dto.SMatkl;
 import za.co.xeon.external.sap.hibersap.forge.dto.StockInventory;
 import za.co.xeon.external.sap.hibersap.forge.rfc.ZGetCustomerOrdersByDate;
 import za.co.xeon.external.sap.hibersap.forge.rfc.ZStockInventory;
+import za.co.xeon.service.util.Pad;
 
 public class ReportRFCTest {
 	SessionManager sessionManager;
@@ -55,11 +57,12 @@ public class ReportRFCTest {
 
 	@Test
 	public void testPODReport() throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-		ImDateR date = new ImDateR("I", "BT", format.parse("01.01.2017"), format.parse("01.01.2011"));
+		String customerNumber = Pad.left("22", 10);
+		Date curr = new Date();
+		ImDateR date = new ImDateR("I", "BT", DateUtils.addDays(curr, -365), curr);
 		ArrayList<ImDateR> list = new ArrayList<ImDateR>();
 		list.add(date);
-		ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(list, "A", "213");
+		ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(list, "A", customerNumber);
 		Session session = sessionManager.openSession();
 		session.execute(rfc);
 		for (EvResult res : rfc.get_evResult())
@@ -68,11 +71,12 @@ public class ReportRFCTest {
 
 	@Test
 	public void testSalesOrder() throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-		za.co.xeon.external.sap.hibersap.dto.ImDateR date = new za.co.xeon.external.sap.hibersap.dto.ImDateR("I", "BT", format.parse("01.01.2017"), format.parse("01.01.2011"));
+		Date curr = new Date();
+		String customerNumber = Pad.left("213", 10);
+		za.co.xeon.external.sap.hibersap.dto.ImDateR date = new za.co.xeon.external.sap.hibersap.dto.ImDateR("I", "BT", DateUtils.addDays(curr, -190), curr);
 		ArrayList<za.co.xeon.external.sap.hibersap.dto.ImDateR> list = new ArrayList<za.co.xeon.external.sap.hibersap.dto.ImDateR>();
 		list.add(date);
-		CustOrdersRFC rfc = new CustOrdersRFC("A", list, "213");
+		CustOrdersRFC rfc = new CustOrdersRFC(customerNumber, list, null);
 		Session session = sessionManager.openSession();
 		session.execute(rfc);
 		for (GtCustOrders res : rfc.getGtCustOrders())

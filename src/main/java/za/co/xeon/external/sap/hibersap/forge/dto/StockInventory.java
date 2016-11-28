@@ -1,13 +1,15 @@
 package za.co.xeon.external.sap.hibersap.forge.dto;
 
 import org.hibersap.annotations.BapiStructure;
-import java.math.BigDecimal;
 import org.hibersap.annotations.Parameter;
+import java.math.BigDecimal;
 import java.lang.Override;
 
 @BapiStructure
 public class StockInventory {
 
+	@Parameter("MEINS")
+	String _meins;
 	@Parameter("VERME")
 	BigDecimal _verme;
 	@Parameter("LTYPT")
@@ -24,6 +26,14 @@ public class StockInventory {
 	String _maktx;
 	@Parameter("LGNUMT")
 	String _lgnumt;
+
+	public String get_meins() {
+		return this._meins;
+	}
+
+	public void set_meins(final String _meins) {
+		this._meins = _meins;
+	}
 
 	public BigDecimal get_verme() {
 		return this._verme;
@@ -92,8 +102,10 @@ public class StockInventory {
 	@Override
 	public String toString() {
 		String result = getClass().getSimpleName() + " ";
+		if (_meins != null && !_meins.trim().isEmpty())
+			result += "_meins: " + _meins;
 		if (_verme != null)
-			result += "_verme: " + _verme;
+			result += ", _verme: " + _verme;
 		if (_ltypt != null && !_ltypt.trim().isEmpty())
 			result += ", _ltypt: " + _ltypt;
 		if (_charg != null && !_charg.trim().isEmpty())

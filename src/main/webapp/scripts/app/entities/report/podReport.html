@@ -1,162 +1,115 @@
 <div>
-        <div class="hpanel" style="margin-bottom: 15px;">
-             <div class="panel-body">
-             	<div class="row">
-					<div class="col-md-6">
-						<h2 class="font-light m-b-xs">POD Report</h2>
-						<jh-alert></jh-alert>
-					</div>
+	<div class="hpanel" style="margin-bottom: 15px;">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6">
+					<h2 class="font-light m-b-xs">POD Report</h2>
+					<jh-alert></jh-alert>
 				</div>
-                <!--  <div class="row">
-                   <div class="col-md-6"  >
-                     <div class="col-md-6 text-right" style="margin-top: 10px;">
-                            <h4 >Warehouse</h4>
-                        </div>
-                        <div class="col-md-6" style="margin-top: 15px;margin-bottom: 10px;">
-							<select class="form-control" name="warehouse"  
-								ng-model="warehouse" id="field_warehouse">
-								<option value="">All</option>
-								<option value=M01>JHB</option>
-								<option value="M03">DBN</option>
-								<option value="M04">PE</option>
-								<option value="M05">CPT</option>
-								
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<h4>From Date</h4>
+						<div class="input-group">
+							<input id="field_fromDate" type="text" class="form-control" uib-datepicker-popup name="fromDate" ng-model="podReport.fromDate" datepicker-options="dateOptions" is-open="dateSetup.dpFromDate.opened" /> <span class="input-group-btn"> +
+								<button type="button" class="btn btn-default" style="margin-top: 0px !important;" ng-click="dateSetup.dpFromDate.open($event)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</div>
+						<div class="form-group">
+							<h4>POD Status</h4>
+							<select class="form-control" name="szone" ng-model="podStatus" id="field_podStatus">
+								<option value="">ALL</option>
+								<option value="C">C</option>
+								<option value="B">B</option>
+								<option value="A">A</option>
 							</select>
 						</div>
-                    </div>  -->
-
-				<div class="row">
-					<div class="col-md-4">
-
-						
-						<div class="form-group">
-							<h4>From Date</h4>
-							<div class="input-group">
-								<input id="field_fromDate" type="text" class="form-control" uib-datepicker-popup name="fromDate" ng-model="podReport.fromDate" datepicker-options="dateOptions" is-open="dateSetup.dpFromDate.opened" /> <span class="input-group-btn"> +
-									<button type="button" class="btn btn-default" style="margin-top: 0px !important;" ng-click="dateSetup.dpFromDate.open($event)">
-
-										<i class="glyphicon glyphicon-calendar"></i>
-
-									</button>
-								</span>
-							</div>
-							<div class="form-group">
-								<h4>POD Status</h4>
-								<select class="form-control" name="szone" 
-									ng-model="podStatus" id="field_podStatus">
-									<option value="">ALL</option>
-									<option value="C">C</option>
-									<option value="B">B</option>
-									<option value="A">A</option>
-								</select>
-							</div>
-							<!--  <div ng-show="fromDate.$invalid">
-                                            <p class="help-block small-help-block pull-right"
-                                               ng-show="fromDate.$error.required">
-                                                required
-                                            </p>
-                                        </div>
-                                         <p class="help-block small-help-block pull-right"  ng-show="fromDate.$error.currentStartDate">Collection Date must be on or after Current date.</p> -->
-						</div>
-
-
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<h4>To Date</h4>
-							<div class="input-group">
-								<input id="field_toDate" type="text" class="form-control" uib-datepicker-popup name="toDate" ng-model="podReport.toDate" datepicker-options="dateOptions" is-open="dateSetup.dpToDate.opened" /> <span class="input-group-btn"> +
-									<button type="button" class="btn btn-default" ng-click="dateSetup.dpToDate.open($event)">
-
-										<i class="glyphicon glyphicon-calendar"></i>
-
-									</button>
-
-								</span>
-							</div>
-							<div class="form-group" has-authority="ROLE_USER">
-							<h4>Company</h4>
-
-							<ui-select ng-model="selected.company" title="Choose a company">
-							<ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match>
-							<ui-select-choices
-								repeat="company in companies | orderBy:'name' | filter: $select.search">
-							<span ng-bind-html="company.name | highlight: $select.search"></span>
-							<small
-								ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small>
-							</ui-select-choices> </ui-select>
-						</div>
-							
-							
-						</div>
 					</div>
 				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<h4>To Date</h4>
+						<div class="input-group">
+							<input id="field_toDate" type="text" class="form-control" uib-datepicker-popup name="toDate" ng-model="podReport.toDate" datepicker-options="dateOptions" is-open="dateSetup.dpToDate.opened" /> <span class="input-group-btn"> +
+								<button type="button" class="btn btn-default" ng-click="dateSetup.dpToDate.open($event)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</div>
+						<!-- 						<div class="form-group" has-authority="ROLE_USER"> -->
+						<!-- 							<h4>Company</h4> -->
+
+						<!-- 							<ui-select ng-model="selected.company" title="Choose a company"> <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match> <ui-select-choices repeat="company in companies | orderBy:'name' | filter: $select.search"> <span ng-bind-html="company.name | highlight: $select.search"></span> <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small> </ui-select-choices> </ui-select> -->
+						<!-- 						</div> -->
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="modal-footer">
+
+			<button type="button" ng-click="loadAll()" class="btn btn-primary">
+				<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Show Report</span>
+			</button>
+		</div>
+	</div>
+	<div class="hpanel">
+		<div class="panel-body">
+			<div class="table-responsive">
+
+				<table class="jh-table table table-striped export-table" id="stockReport" fixed-header ng-show="showdownloadbuttons">
+					<thead>
+						<tr>
+							<th><span>Deliver Number</span></th>
+							<th><span>Sales Order Number</span></th>
+							<th><span>Purchase Order Number</span></th>
+							<th><span>Destination Location</span></th>
+							<th><span>Pickup Party</span></th>
+							<th><span>Ship to party</span></th>
+							<th><span>Capture Date</span></th>
+							<th><span>Deliver Date</span></th>
+							<th><span>Deliver Status</span></th>
+							<th><span>POD Attachments</span></th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="podRec in (podData | filter:pageFilter)">
+
+							<td>{{podRec._dbeln}}</td>
+							<td>{{podRec._vbeln}}</td>
+							<td>{{podRec._bstkd}}</td>
+							<td>{{podRec._vbeln}}</td>
+							<td>{{podRec._vbeln}}</td>
+							<td>{{podRec._vbeln}}</td>
+							<td>{{podRec._erzet}}</td>
+							<td>{{podRec._datbg}}</td>
+							<td>{{podRec._vbeln}}</td>
+							<td>{{podRec._pdstk}}</td>
+
+						</tr>
+
+					</tbody>
+
+
+				</table>
+
 
 			</div>
-        <div class="modal-footer">
-		 
-		<button type="button" ng-click="loadAll()" 
-			class="btn btn-primary">
-			<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Show Report</span>
-		</button>
-	</div>
-    </div>
-    <div class="hpanel">
-        <div class="panel-body" >
-            <div class="table-responsive" >
-            
-                <table class="jh-table table table-striped export-table" id="stockReport" fixed-header ng-show="showdownloadbuttons">
-                    <thead>
-                    <tr >
-                         <th><span>deliver Number</span></th>
-                         <th><span>Sales Order Number</span></th>
-                         <th><span>Purchase Order Number</span></th>
-                         <th><span>Destination Location</span></th>
-                         <th><span>Pickup Party</span></th>
-                         <th><span>Ship to party</span></th>
-                         <th><span>Capture Date</span></th>
-                         <th><span>Deliver Date</span></th>
-                         <th><span>Deliver Status</span></th>
-                         <th><span>POD Attachments</span></th>
-                         
-                    </tr>
-                    </thead>
-                    <tbody >
-                    <tr ng-repeat="podRec in (podData | filter:pageFilter)"  >
-                        
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         <td> {{podRec.vbeln}}</td>
-                         
-                    </tr>
-                    
-                    </tbody>
-                    
-                    
-                </table>
-                
-                
-            </div>
-            <br/>
-            
+			<br />
+
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary"   ng-show="showdownloadbuttons"
-					onclick="$('#stockReport').tableExport({type:'excel'});">
+				<button type="button" class="btn btn-primary" ng-show="showdownloadbuttons" onclick="$('#stockReport').tableExport({type:'excel'});">
 					<span class="glyphicon glyphicon-save""></span>&nbsp;<span>Download Excel</span>
 				</button>
-				<button type="button" ng-click="downloadPdf()"  ng-show="showdownloadbuttons"
-					class="btn btn-primary">
+				<button type="button" ng-click="downloadPdf()" ng-show="showdownloadbuttons" class="btn btn-primary">
 					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download PDF</span>
 				</button>
 			</div>
 		</div>
-		
-    </div>
+
+	</div>
 </div>

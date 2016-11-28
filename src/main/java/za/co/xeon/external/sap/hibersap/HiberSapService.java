@@ -308,7 +308,7 @@ public class HiberSapService {
 		try {
 			List<ImDateR> dateRange = new ArrayList<>();
 			dateRange.add(new ImDateR("I", "BT", from, to));
-			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, null, null);
+			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, null, Pad.left("213", 10));
 			session.execute(rfc);
 
 			return rfc.get_evResult();
@@ -325,7 +325,7 @@ public class HiberSapService {
 		try {
 			List<ImDateR> dateRange = new ArrayList<ImDateR>();
 			dateRange.add(new ImDateR("I", "BT", from, to));
-			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, null, podStatus);
+			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, podStatus, Pad.left("213", 10));
 			session.execute(rfc);
 
 			return rfc.get_evResult();
