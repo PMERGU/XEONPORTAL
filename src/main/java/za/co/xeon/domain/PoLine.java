@@ -49,19 +49,19 @@ public class PoLine implements Serializable {
 	private String warehouse;
 
 	@Column(name = "length")
-	private Integer length;
+	private BigDecimal length;
 
 	@Column(name = "width")
-	private Integer width;
+	private BigDecimal width;
 
 	@Column(name = "height")
-	private Integer height;
+	private BigDecimal height;
 
 	@Column(name = "gross_weight")
-	private Integer grossWeight;
+	private BigDecimal grossWeight;
 
 	@Column(name = "net_weight")
-	private Integer netWeight;
+	private BigDecimal netWeight;
 
 	@Column(name = "batch_number")
 	private String batchNumber;
@@ -117,43 +117,43 @@ public class PoLine implements Serializable {
 		this.warehouse = warehouse;
 	}
 
-	public Integer getLength() {
+	public BigDecimal getLength() {
 		return length;
 	}
 
-	public void setLength(Integer length) {
+	public void setLength(BigDecimal length) {
 		this.length = length;
 	}
 
-	public Integer getWidth() {
+	public BigDecimal getWidth() {
 		return width;
 	}
 
-	public void setWidth(Integer width) {
+	public void setWidth(BigDecimal width) {
 		this.width = width;
 	}
 
-	public Integer getHeight() {
+	public BigDecimal getHeight() {
 		return height;
 	}
 
-	public void setHeight(Integer height) {
+	public void setHeight(BigDecimal height) {
 		this.height = height;
 	}
 
-	public Integer getGrossWeight() {
+	public BigDecimal getGrossWeight() {
 		return grossWeight;
 	}
 
-	public void setGrossWeight(Integer grossWeight) {
+	public void setGrossWeight(BigDecimal grossWeight) {
 		this.grossWeight = grossWeight;
 	}
 
-	public Integer getNetWeight() {
+	public BigDecimal getNetWeight() {
 		return netWeight;
 	}
 
-	public void setNetWeight(Integer netWeight) {
+	public void setNetWeight(BigDecimal netWeight) {
 		this.netWeight = netWeight;
 	}
 
@@ -227,6 +227,10 @@ public class PoLine implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PoLine{" + "id=" + id + ", materialNumber='" + materialNumber + "'" + ", orderQuantity='" + orderQuantity + "'" + ", warehouse='" + warehouse + "'" + ", length='" + length + "'" + ", width='" + width + "'" + ", height='" + height + "'" + ", grossWeight='" + grossWeight + "'" + ", netWeight='" + netWeight + "'" + ", batchNumber='" + batchNumber + "'" + ", dvType='" + dvType + "'" + ", volume='" + volume + "'" + ", unitOfMeasure='" + unitOfMeasure + "'" + '}';
+		return "PoLine{" + "id=" + id + ", materialNumber='" + materialNumber + "'" + ", orderQuantity='"
+				+ orderQuantity + "'" + ", warehouse='" + warehouse + "'" + ", length='" + length + "'" + ", width='"
+				+ width + "'" + ", height='" + height + "'" + ", grossWeight='" + grossWeight + "'" + ", netWeight='"
+				+ netWeight + "'" + ", batchNumber='" + batchNumber + "'" + ", dvType='" + dvType + "'" + ", volume='"
+				+ volume + "'" + ", unitOfMeasure='" + unitOfMeasure + "'" + '}';
 	}
 }

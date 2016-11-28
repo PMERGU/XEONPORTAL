@@ -248,7 +248,7 @@ public class PurchaseOrderResource {
 	}
 
 	private BigDecimal cubeEdge(BigDecimal volume) {
-		return BigDecimal.valueOf(Math.cbrt(volume.doubleValue() * 1000000)).setScale(0, BigDecimal.ROUND_CEILING);
+		return BigDecimal.valueOf(Math.cbrt(volume.doubleValue() * 1000000)).setScale(3, BigDecimal.ROUND_CEILING);
 	}
 
 	private ShippingType determineSerlvlSapType(PurchaseOrder po) throws Exception {
@@ -320,8 +320,8 @@ public class PurchaseOrderResource {
 
 	// cubeEdge
 	private List<ImItemDetail> convertItems(PurchaseOrder savedPo, List<PoLine> poLines) {
-		return poLines.stream().map(line -> new ImItemDetail((checkIfTransportDedicated(savedPo) ? savedPo.getVehicleSize().getSapCode() : (checkIfWarehouse(savedPo) ? line.getMaterialNumber() : line.getMaterialType().getSapCode())), new BigDecimal(line.getOrderQuantity()), (checkIfTransport(savedPo) ? "EA" : checkIfWarehouse(savedPo) ? line.getUnitOfMeasure().getSapCode() : null), savedPo.getPickUpParty().getArea().getPlant(), line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(), (checkIfWarehouse(savedPo) ? null : (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) : line.getLength() == null ? null : new BigDecimal(line.getLength()))), (checkIfWarehouse(savedPo) ? null : (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) : line.getWidth() == null ? null : new BigDecimal(line.getWidth()))), (checkIfWarehouse(savedPo) ? null : (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) : line.getHeight() == null ? null : new BigDecimal(line.getHeight()))), "cm", "cm", "cm", (line.getGrossWeight() == null ? null : new BigDecimal(line.getGrossWeight())),
-				(checkIfTransportDedicated(savedPo) ? (line.getGrossWeight() == null ? null : new BigDecimal(line.getGrossWeight())) : line.getNetWeight() == null ? null : new BigDecimal(line.getNetWeight())), "KG", "KG")).collect(Collectors.toList());
+		return poLines.stream().map(line -> new ImItemDetail((checkIfTransportDedicated(savedPo) ? savedPo.getVehicleSize().getSapCode() : (checkIfWarehouse(savedPo) ? line.getMaterialNumber() : line.getMaterialType().getSapCode())), new BigDecimal(line.getOrderQuantity()), (checkIfTransport(savedPo) ? "EA" : checkIfWarehouse(savedPo) ? line.getUnitOfMeasure().getSapCode() : null), savedPo.getPickUpParty().getArea().getPlant(), line.getBatchNumber(), null, savedPo.getPickUpParty().getArea().getPlant(), (checkIfWarehouse(savedPo) ? null : (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) : line.getLength() == null ? null : line.getLength())), (checkIfWarehouse(savedPo) ? null : (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) : line.getWidth() == null ? null : line.getWidth())), (checkIfWarehouse(savedPo) ? null : (line.getDvType().equals(DVType.VOLUME) ? cubeEdge(line.getVolume()) : line.getHeight() == null ? null : line.getHeight())), "cm", "cm", "cm", (line.getGrossWeight() == null ? null : line.getGrossWeight()),
+				(checkIfTransportDedicated(savedPo) ? (line.getGrossWeight() == null ? null : line.getGrossWeight()) : line.getNetWeight() == null ? null : line.getNetWeight()), "KG", "KG")).collect(Collectors.toList());
 	}
 
 	private <T> String safeEnum(T t) {
