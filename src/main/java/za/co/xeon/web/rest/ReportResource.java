@@ -2,7 +2,9 @@ package za.co.xeon.web.rest;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -31,11 +33,16 @@ import com.codahale.metrics.annotation.Timed;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import za.co.xeon.domain.Attachment;
@@ -157,7 +164,7 @@ public class ReportResource {
 		ByteArrayOutputStream pdfFile;
 		byte[] input;
 		try {
-			pdfFile = createPdf(ret);
+			pdfFile = createPdf(ret, dto.getCompany());
 			input = pdfFile.toByteArray();
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.parseMediaType("application/pdf"));
@@ -169,12 +176,13 @@ public class ReportResource {
 		}
 	}
 
-	public ByteArrayOutputStream createPdf(List<StockInventory> ret) {
+	public ByteArrayOutputStream createPdf(List<StockInventory> ret, String string) {
 		Document document = new Document(PageSize.A3);
 		try {
 			Float fntSize = 6.7f;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			PdfWriter writer = PdfWriter.getInstance(document, out);
+			writer.setPageEvent(new InventoryReportHeader(string));
 			document.open();
 			PdfPTable table = new PdfPTable(10); // 9 columns.
 			table.setWidthPercentage(100); // Width 100%
@@ -234,19 +242,19 @@ public class ReportResource {
 			putAwayQnant.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(putAwayQnant);
 
-			PdfPCell availableQunatity = new PdfPCell(new Paragraph("Available", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
-			availableQunatity.setBorderColor(BaseColor.BLACK);
-			availableQunatity.setPaddingLeft(10);
-			availableQunatity.setHorizontalAlignment(Element.ALIGN_CENTER);
-			availableQunatity.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			table.addCell(availableQunatity);
-
 			PdfPCell pickQuant = new PdfPCell(new Paragraph("Quantity to Remove", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			pickQuant.setBorderColor(BaseColor.BLACK);
 			pickQuant.setPaddingLeft(10);
 			pickQuant.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pickQuant.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(pickQuant);
+
+			PdfPCell availableQunatity = new PdfPCell(new Paragraph("Available", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			availableQunatity.setBorderColor(BaseColor.BLACK);
+			availableQunatity.setPaddingLeft(10);
+			availableQunatity.setHorizontalAlignment(Element.ALIGN_CENTER);
+			availableQunatity.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(availableQunatity);
 
 			PdfPCell uom = new PdfPCell(new Paragraph("UOM", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			uom.setBorderColor(BaseColor.BLACK);
@@ -307,19 +315,19 @@ public class ReportResource {
 					putAwayQnantData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(putAwayQnantData);
 
-					PdfPCell availableQunatityData = new PdfPCell(new Paragraph(data.get_verme() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
-					availableQunatityData.setBorderColor(BaseColor.BLACK);
-					availableQunatityData.setPaddingLeft(10);
-					availableQunatityData.setHorizontalAlignment(Element.ALIGN_CENTER);
-					availableQunatityData.setVerticalAlignment(Element.ALIGN_MIDDLE);
-					table.addCell(availableQunatityData);
-
 					PdfPCell pickQuantData = new PdfPCell(new Paragraph(data.get_einme() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					pickQuantData.setBorderColor(BaseColor.BLACK);
 					pickQuantData.setPaddingLeft(10);
 					pickQuantData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					pickQuantData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(pickQuantData);
+
+					PdfPCell availableQunatityData = new PdfPCell(new Paragraph(data.get_verme() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					availableQunatityData.setBorderColor(BaseColor.BLACK);
+					availableQunatityData.setPaddingLeft(10);
+					availableQunatityData.setHorizontalAlignment(Element.ALIGN_CENTER);
+					availableQunatityData.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					table.addCell(availableQunatityData);
 
 					PdfPCell uomData = new PdfPCell(new Paragraph(data.get_meins() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					uomData.setBorderColor(BaseColor.BLACK);
@@ -340,6 +348,29 @@ public class ReportResource {
 		}
 
 		return null;
+	}
+
+	class InventoryReportHeader extends PdfPageEventHelper {
+		String companyName;
+
+		public InventoryReportHeader(String companyName) {
+			this.companyName = companyName;
+		}
+
+		Font ffont = new Font(Font.FontFamily.UNDEFINED, 20, Font.ITALIC);
+		Font rfont = new Font(Font.FontFamily.UNDEFINED, 20, Font.ITALIC);
+		Font lfont = new Font(Font.FontFamily.UNDEFINED, 20, Font.ITALIC);
+
+		public void onEndPage(PdfWriter writer, Document document) {
+			PdfContentByte cb = writer.getDirectContent();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+			Phrase hdrDate = new Phrase(sdf.format(new Date()), ffont);
+			Phrase hdrCenter = new Phrase("Inventory Report", ffont);
+			Phrase hdrCompany = new Phrase(companyName, lfont);
+			ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT, hdrDate, (document.right() - 25), document.top() + 10, 0);
+			ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, hdrCenter, (document.right() - document.left()) / 2 + document.leftMargin(), document.top() + 10, 0);
+			ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, hdrCompany, 50, document.top() + 10, 0);
+		}
 	}
 
 }
