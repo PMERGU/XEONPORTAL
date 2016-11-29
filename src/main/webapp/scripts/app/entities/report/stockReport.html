@@ -4,7 +4,7 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-6">
-						<h2 class="font-light m-b-xs">Stock Report</h2>
+						<h2 class="font-light m-b-xs">Inventory Report</h2>
 						<jh-alert></jh-alert>
 					</div>
 
@@ -28,15 +28,15 @@
 						<thead>
 							<tr>
 								<th><span>ID</span></th>
-								<th><span>Warehouse Number</span>
-								<th><span>Material</span>
+								<th><span>Warehouse Name</span>
+								<th><span>Material #</span>
 								<th><span>Material Description</span>
 								<th><span>Storage Type</span>
-								<th><span>Batch</span>
-								<th><span>Put ways</span>
+								<th><span>Batch #</span>
+								<th><span>Putaway</span>
 								<th><span>Available</span>
 								<th><span>UOM</span>
-								<th><span>Quantity to Remove</span>
+								<th><span>Picks</span>
 							</tr>
 						</thead>
 						<tbody>
@@ -60,7 +60,9 @@
 
 
 				</div>
+				
 				<div class="modal-footer">
+				<br>
 					<button type="button" class="btn btn-primary" ng-show="showdownloadbuttons" onclick="$('#stockReport').tableExport({type:'excel' , escape:'false'});">
 						<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download Excel</span>
 					</button>

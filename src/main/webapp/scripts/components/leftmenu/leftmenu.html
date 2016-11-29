@@ -96,7 +96,8 @@
             </ul>
         </li>
         
-        <li ng-class="{active: $state.includes('billing')}"  ng-show="identity.company.name == 'DSV' || identity.authorities.indexOf('ROLE_USER')!=-1"  >
+       <!--   <li ng-class="{active: $state.includes('billing')}"  ng-show="identity.company.name == 'DSV' || identity.authorities.indexOf('ROLE_USER')!=-1"  > -->
+       <li ng-class="{active: $state.includes('billing')}"  ng-show="identity.authorities.indexOf('ROLE_USER')!=-1"  >
             <a href="#">
                 <span class="nav-label">Rate Calculator</span><span class="fa arrow"></span>
             </a>
