@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -78,7 +79,8 @@ public class PoLine implements Serializable {
 	@JoinColumn(name = "purchase_order_id")
 	private PurchaseOrder purchaseOrder;
 
-	@Column(name = "volume")
+//	@Column(name = "volume")
+	@Transient
 	private BigDecimal volume;
 
 	@Enumerated(EnumType.STRING)

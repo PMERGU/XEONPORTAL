@@ -27,15 +27,15 @@
 
             <column name="warehouse" type="varchar(255)"/>
 
-            <column name="length" type="integer"/>
+            <column name="length" type="decimal"/>
 
-            <column name="width" type="integer"/>
+            <column name="width" type="decimal"/>
 
-            <column name="height" type="integer"/>
+            <column name="height" type="decimal"/>
 
-            <column name="gross_weight" type="integer"/>
+            <column name="gross_weight" type="decimal"/>
 
-            <column name="net_weight" type="integer"/>
+            <column name="net_weight" type="decimal"/>
 
             <column name="batch_number" type="varchar(255)"/>
 
