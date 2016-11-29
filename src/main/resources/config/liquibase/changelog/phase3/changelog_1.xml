@@ -24,7 +24,7 @@
                                  referencedTableName="jhi_user"/>
     </changeSet>
 
-    <changeSet author="derick" id="phase3_changeset_2">
+   <!--  <changeSet author="derick" id="phase3_changeset_2">
         <addColumn tableName="po_line">
             <column name="dv_type" type="varchar(255)" defaultValue="DIMENSIONS">
                 <constraints nullable="true" />
@@ -36,7 +36,7 @@
                 <constraints nullable="true" />
             </column>
         </addColumn>
-    </changeSet>
+    </changeSet> -->
 
     <changeSet author="derick" id="phase3_changeset_3">
         <addColumn tableName="purchase_order">
@@ -57,12 +57,12 @@
         </update>
     </changeSet>
 
-    <changeSet author="derick" id="phase3_changeset_4">
+    <!-- <changeSet author="derick" id="phase3_changeset_4">
         <addColumn tableName="po_line">
             <column name="unit_of_measure" type="varchar(30)">
                 <constraints nullable="true" />
             </column>
         </addColumn>
 
-    </changeSet>
+    </changeSet> -->
 </databaseChangeLog>

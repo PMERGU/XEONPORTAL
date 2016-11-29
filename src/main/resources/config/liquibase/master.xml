@@ -22,5 +22,5 @@
    <!--  <include file="classpath:config/liquibase/changelog/20161011_added_entity_BillingInfo.xml" relativeToChangelogFile="false"/> -->
 
     <include file="classpath:config/liquibase/changelog/phase3/changelog_1.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/phase3/changelog_2.xml" relativeToChangelogFile="false"/>
+    <!-- <include file="classpath:config/liquibase/changelog/phase3/changelog_2.xml" relativeToChangelogFile="false"/> -->
 </databaseChangeLog>
