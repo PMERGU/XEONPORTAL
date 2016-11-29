@@ -52,10 +52,10 @@ import za.co.xeon.Application;
 // *
 // * @see UserService
 // */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-@IntegrationTest
+//@RunWith(SpringJUnit4CzlassRunner.class)
+//@SpringApplicationConfiguration(classes = Application.class)
+//@WebAppConfiguration
+//@IntegrationTest
 public class AccountResourceIntTest {
 	//
 	// @Inject
