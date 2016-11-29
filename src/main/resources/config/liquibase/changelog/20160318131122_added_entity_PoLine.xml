@@ -42,6 +42,12 @@
             <column name="batch_number" type="varchar(255)"/>
 
             <column name="material_type" type="varchar(255)"/>
+            <column name="unit_of_measure" type="varchar(255)"/>
+            
+             <column name="dv_type" type="varchar(255)"/>
+             
+
+
 
             <column name="purchase_order_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
