@@ -79,8 +79,7 @@ public class PoLine implements Serializable {
 	@JoinColumn(name = "purchase_order_id")
 	private PurchaseOrder purchaseOrder;
 
-//	@Column(name = "volume")
-	@Transient
+	@Column(name = "volume")
 	private BigDecimal volume;
 
 	@Enumerated(EnumType.STRING)
