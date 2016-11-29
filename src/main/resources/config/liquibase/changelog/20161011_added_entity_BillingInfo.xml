@@ -65,6 +65,10 @@
 			<column name="exp_max" type="double">
 				<constraints nullable="false" />
 			</column>
+			<column name="mod_of_trans" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			 
 			 
 			<!-- jhipster-needle-liquibase-add-column - Jhipster will add columns 
 				here, do not remove    eco_rate;eco_min;eco_min;eco_max;exp_rate;exp_ min;exp_min;exp_max -->
