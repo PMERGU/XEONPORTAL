@@ -74,7 +74,7 @@
 				here, do not remove    eco_rate;eco_min;eco_min;eco_max;exp_rate;exp_ min;exp_min;exp_max -->
 		</createTable>
 
-		<loadData encoding="UTF-8" file="config/liquibase/billingInfo2_Xeon_10Oct2016.csv"
+		<loadData encoding="UTF-8" file="config/liquibase/billingInfo_Sea_22_Nov_2016.csv"
 			separator=";" tableName="billing_info" />
 
 	</changeSet>
