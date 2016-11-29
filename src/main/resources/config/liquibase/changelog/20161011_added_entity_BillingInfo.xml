@@ -50,7 +50,7 @@
 			</column>
 
 			<column name="eco_max" type="double">
-				<constraints nullable="false" />
+				<constraints nullable="false" /> 
 			</column>
 			<column name="exp_rate" type="double">
 				<constraints nullable="false" />
