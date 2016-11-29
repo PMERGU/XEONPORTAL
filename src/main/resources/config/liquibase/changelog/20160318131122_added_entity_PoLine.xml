@@ -36,6 +36,8 @@
             <column name="gross_weight" type="decimal"/>
 
             <column name="net_weight" type="decimal"/>
+            
+            <column name="volume" type="decimal"/>
 
             <column name="batch_number" type="varchar(255)"/>
 
