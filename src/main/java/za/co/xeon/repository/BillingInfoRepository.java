@@ -9,12 +9,12 @@ import za.co.xeon.domain.BillingInfo;
 /**
  * Spring Data JPA repository for the Party entity.
  */
-public interface BillingInfoRepository extends JpaRepository<BillingInfo, Long>, QueryDslPredicateExecutor<BillingInfo> {
+public interface BillingInfoRepository {
 
-	@Query("select a from BillingInfo a where a.locationString like ?1 and a.ecoMin <= ?2 and a.ecoMax >= ?2")
+//	@Query("select a from BillingInfo a where a.locationString like ?1 and a.ecoMin <= ?2 and a.ecoMax >= ?2")
 	BillingInfo findByLocationString(String locationString, Double d);
 
-	@Query("select a from BillingInfo a where a.locationString like ?1 and a.ecoMin <= ?2 and a.ecoMax >= ?2 and a.modeOfTrans = ?3")
+//	@Query("select a from BillingInfo a where a.locationString like ?1 and a.ecoMin <= ?2 and a.ecoMax >= ?2 and a.modeOfTrans = ?3")
 	BillingInfo findByLocationStringAndMOT(String locationString, Double d, String modeOfTrans);
 
 }
