@@ -103,7 +103,7 @@ angular.module('portalApp')
 
 		$scope.loadAll = function(company) {
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
-				$scope.stockReport.company = company.name;
+				$scope.stockReport.company = company.materialName;
 				StockReport.save($scope.stockReport, onSaveSuccess, onSaveError);
 			}
 		};
@@ -111,7 +111,7 @@ angular.module('portalApp')
 		$scope.downloadPdf = function() {
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
 				$log.debug($scope.selected.company.id);
-				$scope.stockReport.company = $scope.selected.company.name;
+				$scope.stockReport.company = $scope.selected.company.materialName;
 				$http.post('api/stockReport/download/', $scope.stockReport, {
 					responseType : 'arraybuffer'
 				}).then(function(response) {

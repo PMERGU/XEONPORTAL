@@ -33,7 +33,7 @@ public class BillingInfoResource {
 
 	private final Logger log = LoggerFactory.getLogger(BillingInfoResource.class);
 
-//	@Inject
+	@Inject
 	private BillingInfoRepository billingInfoRepository;
 
 	/**

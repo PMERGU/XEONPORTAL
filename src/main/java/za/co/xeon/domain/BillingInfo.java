@@ -20,10 +20,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 /**
  * A BillingInfo.
  */
-//@Entity
-//@Table(name = "billing_info")
-//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@Entity
+@Table(name = "billing_info")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class BillingInfo implements Serializable {
 
 	/**
