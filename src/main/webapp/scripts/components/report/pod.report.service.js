@@ -15,7 +15,7 @@ angular.module('portalApp')
 				}
 			},
             'getByUserDownload': {
-                url: 'api/stockReport/download/:id',
+                url: 'api/podReport/download/:id',
                 method: 'GET',
                 responseType: 'arraybuffer',
 //                cache: true

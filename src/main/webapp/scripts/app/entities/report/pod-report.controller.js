@@ -155,7 +155,7 @@ angular.module('portalApp')
 
 
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
-				$scope.podReport.id = $scope.selected.company.id;
+				$scope.podReport.sapId = $scope.selected.company.sapId;
 				//				$scope.stockReport.
 				$log.debug("test Status: " + $scope.podStatus);
 				PODReport.save($scope.podReport, onSaveSuccess, onSaveError);
@@ -171,8 +171,8 @@ angular.module('portalApp')
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
 
 				$log.debug($scope.selected.company.id);
-				$scope.podReport.company = $scope.selected.company.name;
-				$http.post('api/stockReport/download/', $scope.podReport, {
+				$scope.podReport.sapId = $scope.selected.company.sapId;
+				$http.post('api/podReport/download/', $scope.podReport, {
 					responseType : 'arraybuffer'
 				}).then(function(response) {
 					var fileName = "pod_report.pdf";
