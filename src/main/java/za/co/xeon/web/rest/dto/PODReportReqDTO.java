@@ -6,7 +6,7 @@ public class PODReportReqDTO {
 	private Date fromDate;
 	private Date toDate;
 	private String podType;
-	private Long id;
+	private String sapId;
 
 	public Date getFromDate() {
 		return fromDate;
@@ -32,11 +32,16 @@ public class PODReportReqDTO {
 		this.podType = podType;
 	}
 
-	public Long getId() {
-		return id;
+	public String getSapId() {
+		return sapId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setSapId(String sapId) {
+		this.sapId = sapId;
+	}
+
+	@Override
+	public String toString() {
+		return "PODReportReqDTO [fromDate=" + fromDate + ", toDate=" + toDate + ", podType=" + podType + ", sapId=" + sapId + "]";
 	}
 }

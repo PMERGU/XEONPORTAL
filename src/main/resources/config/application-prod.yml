@@ -1,54 +1,51 @@
 spring:
-    profiles:
-        active: prod
-    devtools:
-        restart:
-            enabled: false
-        livereload:
-            enabled: false
-    datasource:
-        driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://proddb.xeon.co.za:3066/portal?useUnicode=true&characterEncoding=utf8
-        name:
-        username: portal
-        password: Summer1974
-    jpa:
-        database-platform: org.hibernate.dialect.MySQLInnoDBDialect
-        database: MYSQL
-        show_sql: false
-        properties:
-            hibernate.cache.use_second_level_cache: true
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
-            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-    mail:
-        host: smtp.office365.com
-        port: 587
-        username: portal@xeon.co.za
-        password: Yuqa0092
-        tls: true
-        protocal: smtp
-        properties.mail.smtp:
-            auth: true
-            starttls.enable: true
-            ssl.trust: smtp.office365.com
-    thymeleaf:
-        cache: true
-
+  profiles:
+    active: prod
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+    url: jdbc:mysql://proddb.xeon.co.za:3066/portal?useUnicode=true&characterEncoding=utf8
+    name: null
+    username: portal
+    password: Summer1974
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLInnoDBDialect
+    database: MYSQL
+    show_sql: false
+    properties:
+      hibernate.cache.use_second_level_cache: true
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+  mail:
+    host: smtp.office365.com
+    port: 587
+    username: portal@xeon.co.za
+    password: Yuqa0092
+    tls: true
+    protocal: smtp
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp.office365.com
+  thymeleaf:
+    cache: true
 liquibase:
-    contexts: prod
-
+  contexts: prod
+  enabled: false
 server:
-    port: 8080
-    compression:
-        enabled: true
-        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
-
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
 ocr:
   application: TestApplication 1
   password: nnoZ0x8e6Z+bX1QQ9C/dXjx0
   uri: https://cloud.ocrsdk.com
-
 amazon:
   s3:
     bucketName: xeondocstore
@@ -58,51 +55,47 @@ amazon:
     user: xeonbackend
     folderPod: pod
     folderAttachment: attachment
-
 sap:
   jco:
-    sysnr: "00"
-    user: "dpotgieter"
-    passwd: "xeon"
-    lang: "en"
-    poolCapacity: "5"
-    peakLimit: "15"
-    ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.161/S/3200"
-    client: "200"
-
+    sysnr: '00'
+    user: dpotgieter
+    passwd: xeon
+    lang: en
+    poolCapacity: '5'
+    peakLimit: '15'
+    ashost: /H/197.234.173.1/W/FunkyChicken99/H/128.87.245.161/S/3200
+    client: '200'
 ftp:
   host: 197.234.173.1
   user: XeonInvoices
   pass: kACpQg9B
-  folder: "/"
-
+  folder: /
 mobile:
   podDirectory: /opt/data/portal/pod/
   attachmentDirectory: /opt/data/portal/attachment/
   httpServerName: http://prod1.xeon.co.za/
-
 jhipster:
-    async:
-        corePoolSize: 8
-        maxPoolSize: 50
-        queueCapacity: 10000
-    http:
-        cache: # Used by the CachingHttpHeadersFilter
-            timeToLiveInDays: 31
-    cache: # Hibernate 2nd level cache, used by CacheConfiguration
-        timeToLiveSeconds: 3600
-        ehcache:
-            maxBytesLocalHeap: 256M
-    mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: portal@xeon.co.za
-    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        jmx.enabled: true
-        spark:
-            enabled: false
-            host: localhost
-            port: 9999
-        graphite:
-            enabled: false
-            host: localhost
-            port: 2003
-            prefix: portal
+  async:
+    corePoolSize: 8
+    maxPoolSize: 50
+    queueCapacity: 10000
+  http:
+    cache:
+      timeToLiveInDays: 31
+  cache:
+    timeToLiveSeconds: 3600
+    ehcache:
+      maxBytesLocalHeap: 256M
+  mail:
+    from: portal@xeon.co.za
+  metrics:
+    jmx.enabled: true
+    spark:
+      enabled: false
+      host: localhost
+      port: 9999
+    graphite:
+      enabled: false
+      host: localhost
+      port: 2003
+      prefix: portal

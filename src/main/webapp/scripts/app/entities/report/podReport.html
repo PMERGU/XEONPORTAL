@@ -39,11 +39,10 @@
 								</button>
 							</span>
 						</div>
-						<!-- 						<div class="form-group" has-authority="ROLE_USER"> -->
-						<!-- 							<h4>Company</h4> -->
-
-						<!-- 							<ui-select ng-model="selected.company" title="Choose a company"> <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match> <ui-select-choices repeat="company in companies | orderBy:'name' | filter: $select.search"> <span ng-bind-html="company.name | highlight: $select.search"></span> <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small> </ui-select-choices> </ui-select> -->
-						<!-- 						</div> -->
+						<div class="form-group" has-authority="ROLE_USER">
+							<h4>Company</h4>
+							<ui-select ng-model="selected.company" title="Choose a company"> <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match> <ui-select-choices repeat="company in companies | orderBy:'name' | filter: $select.search"> <span ng-bind-html="company.name | highlight: $select.search"></span> <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small> </ui-select-choices> </ui-select>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -80,15 +79,15 @@
 						<tr ng-repeat="podRec in (podData | filter:pageFilter)">
 
 							<td>{{podRec._dbeln}}</td>
-							<td>{{podRec._vbeln}}</td>
+							<td>{{podRec.po.soNumber}}</td>
+							<td>{{podRec.po.PoNumber}}</td>
+							<td>{{podRec.po.cvDestination}}</td>
+							<td>{{podRec.po.pickupParty.reference}}</td>
+							<td>{{podRec.po.shipToParty.reference}}</td>
+							<td>{{podRec.po.captureDate}}</td>
+							<td>{{podRec.po.dropOffDate}}</td>
+							<td>{{podRec._wbstk}}</td>
 							<td>{{podRec._bstkd}}</td>
-							<td>{{podRec._vbeln}}</td>
-							<td>{{podRec._vbeln}}</td>
-							<td>{{podRec._vbeln}}</td>
-							<td>{{podRec._erzet}}</td>
-							<td>{{podRec._datbg}}</td>
-							<td>{{podRec._vbeln}}</td>
-							<td>{{podRec._pdstk}}</td>
 
 						</tr>
 
@@ -101,14 +100,14 @@
 			</div>
 			<br />
 
-<!-- 			<div class="modal-footer"> -->
-<!-- 				<button type="button" class="btn btn-primary" ng-show="showdownloadbuttons" onclick="$('#stockReport').tableExport({type:'excel'});"> -->
-<!-- 					<span class="glyphicon glyphicon-save""></span>&nbsp;<span>Download Excel</span> -->
-<!-- 				</button> -->
-<!-- 				<button type="button" ng-click="downloadPdf()" ng-show="showdownloadbuttons" class="btn btn-primary"> -->
-<!-- 					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download PDF</span> -->
-<!-- 				</button> -->
-<!-- 			</div> -->
+			<!-- 			<div class="modal-footer"> -->
+			<!-- 				<button type="button" class="btn btn-primary" ng-show="showdownloadbuttons" onclick="$('#stockReport').tableExport({type:'excel'});"> -->
+			<!-- 					<span class="glyphicon glyphicon-save""></span>&nbsp;<span>Download Excel</span> -->
+			<!-- 				</button> -->
+			<!-- 				<button type="button" ng-click="downloadPdf()" ng-show="showdownloadbuttons" class="btn btn-primary"> -->
+			<!-- 					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download PDF</span> -->
+			<!-- 				</button> -->
+			<!-- 			</div> -->
 		</div>
 
 	</div>

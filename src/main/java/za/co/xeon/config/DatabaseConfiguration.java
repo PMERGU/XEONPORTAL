@@ -92,7 +92,7 @@ public class DatabaseConfiguration {
 		return Server.createTcpServer("-tcp", "-tcpAllowOthers");
 	}
 
-	@Bean
+	// @Bean
 	public SpringLiquibase liquibase(DataSource dataSource, DataSourceProperties dataSourceProperties, LiquibaseProperties liquibaseProperties) {
 
 		// Use liquibase.integration.spring.SpringLiquibase if you don't want

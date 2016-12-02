@@ -51,6 +51,7 @@ spring:
 
 liquibase:
     contexts: dev
+    enabled: false
 
 server:
     port: 8080

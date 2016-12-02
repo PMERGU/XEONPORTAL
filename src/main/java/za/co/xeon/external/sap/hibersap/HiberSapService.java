@@ -303,29 +303,12 @@ public class HiberSapService {
 		}
 	}
 
-	public List<EvResult> getCustomerOrdersForPOD(Date from, Date to) throws ParseException {
-		Session session = sessionManager.openSession();
-		try {
-			List<ImDateR> dateRange = new ArrayList<>();
-			dateRange.add(new ImDateR("I", "BT", from, to));
-			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, null, Pad.left("213", 10));
-			session.execute(rfc);
-
-			return rfc.get_evResult();
-		} catch (Exception e) {
-			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
-			throw e;
-		} finally {
-			session.close();
-		}
-	}
-
-	public List<EvResult> getCustomerOrdersForPODStatus(Date from, Date to, String podStatus) throws ParseException {
+	public List<EvResult> getCustomerOrdersForPOD(String sapId, Date from, Date to, String podStatus) throws ParseException {
 		Session session = sessionManager.openSession();
 		try {
 			List<ImDateR> dateRange = new ArrayList<ImDateR>();
 			dateRange.add(new ImDateR("I", "BT", from, to));
-			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, podStatus, Pad.left("213", 10));
+			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, podStatus, Pad.left(sapId, 10));
 			session.execute(rfc);
 
 			return rfc.get_evResult();
