@@ -307,7 +307,7 @@ public class HiberSapService {
 		Session session = sessionManager.openSession();
 		try {
 			List<ImDateR> dateRange = new ArrayList<ImDateR>();
-			dateRange.add(new ImDateR("I", to, from, "BT"));
+			dateRange.add(new ImDateR("I", from, to, "BT"));
 			ZGetCustOrdersByDateNew rfc = new ZGetCustOrdersByDateNew(dateRange, podStatus, Pad.left(sapId, 10));
 			session.execute(rfc);
 

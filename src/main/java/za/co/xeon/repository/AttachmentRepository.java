@@ -23,10 +23,10 @@ public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
 	List<Attachment> findByDeliveryNumberAndActivated(String deliveryNumber);
 
 	@Query("select a from Attachment a where a.purchaseOrder.id = ?1 and a.category = 'POD'")
-	List<Attachment> findByPONumberAndPOD(Long poNumber);
+	List<Attachment> findByPONumberAndPOD(String poNumber);
 
 	@Query("select a from Attachment a where a.deliveryNumber = ?1 and a.category = 'POD'")
-	List<Attachment> findByDeliveryNumberAndPOD(Long delNumber);
+	List<Attachment> findByDeliveryNumberAndPOD(String delNumber);
 
 	@Query("select a from Attachment a where a.deliveryNumber = ?1 and a.visible = ?2 and a.activated = true")
 	List<Attachment> findByDeliveryNumberAndVisibleAndActivated(String deliveryNumber, Boolean visible);

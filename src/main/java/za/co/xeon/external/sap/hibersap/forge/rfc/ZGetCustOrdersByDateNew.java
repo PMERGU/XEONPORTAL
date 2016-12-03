@@ -16,7 +16,7 @@ import za.co.xeon.external.sap.hibersap.forge.dto.ImDateR;
 public class ZGetCustOrdersByDateNew {
 
 	@Import
-	@Parameter("IM_DATE_R")
+	@Parameter(value = "IM_DATE_R", type = ParameterType.TABLE_STRUCTURE)
 	private final List<ImDateR> _imDateR;
 	@Import
 	@Parameter("IM_STATUS_POD")
@@ -28,7 +28,7 @@ public class ZGetCustOrdersByDateNew {
 	@Parameter(value = "ET_RETURN", type = ParameterType.STRUCTURE)
 	private EtReturn _etReturn;
 	@Export
-	@Parameter("ET_CUST_ORDERS")
+	@Parameter(value = "ET_CUST_ORDERS", type = ParameterType.TABLE_STRUCTURE)
 	private List<EtCustOrders> _etCustOrders;
 
 	public ZGetCustOrdersByDateNew(final List<ImDateR> imDateR, final String imStatusPod, final String imCustomer) {

@@ -125,7 +125,7 @@ public class ReportResource {
 				for (EtCustOrders evr : evResult) {
 					PODReportResDTO resDto = new PODReportResDTO();
 					BeanUtils.copyProperties(resDto, evr);
-					List<Attachment> att = attachmentRepository.findByDeliveryNumberAndPOD(Long.valueOf(evr.get_dbeln()));
+					List<Attachment> att = attachmentRepository.findByDeliveryNumberAndPOD(evr.get_dbeln());
 					if (att != null && att.size() > 0)
 						resDto.setPodStatus("Y");
 					else
@@ -181,7 +181,7 @@ public class ReportResource {
 			for (EtCustOrders evr : evResult) {
 				PODReportResDTO resDto = new PODReportResDTO();
 				BeanUtils.copyProperties(resDto, evr);
-				List<Attachment> att = attachmentRepository.findByDeliveryNumberAndPOD(Long.valueOf(evr.get_dbeln()));
+				List<Attachment> att = attachmentRepository.findByDeliveryNumberAndPOD(evr.get_dbeln());
 				if (att != null && att.size() > 0)
 					resDto.setPodStatus("Y");
 				else
@@ -222,7 +222,7 @@ public class ReportResource {
 			table.setSpacingAfter(10f); // Space after table
 
 			// Set Column widths
-			float[] columnWidths = { 0.3f, 0.5f, 1f, 2f, 1f, 0.5f, 0.5f, 1f, 0.5f, 0.5f };
+			float[] columnWidths = { 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f, 0.5f };
 			table.setWidths(columnWidths);
 
 			PdfPCell iDHeader = new PdfPCell(new Paragraph("ID", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
@@ -388,7 +388,7 @@ public class ReportResource {
 			Float fntSize = 6.7f;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			PdfWriter writer = PdfWriter.getInstance(document, out);
-			writer.setPageEvent(new InventoryReportHeader(string));
+			writer.setPageEvent(new PODReportHeader(string));
 			document.open();
 			PdfPTable table = new PdfPTable(10); // 9 columns.
 			table.setWidthPercentage(100); // Width 100%
