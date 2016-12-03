@@ -222,7 +222,7 @@ public class ReportResource {
 			table.setSpacingAfter(10f); // Space after table
 
 			// Set Column widths
-			float[] columnWidths = { 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f, 0.5f };
+			float[] columnWidths = { 0.3f, 0.5f, 1f, 2f, 1f, 0.5f, 0.5f, 1f, 0.5f, 0.5f };
 			table.setWidths(columnWidths);
 
 			PdfPCell iDHeader = new PdfPCell(new Paragraph("ID", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
@@ -392,11 +392,11 @@ public class ReportResource {
 			document.open();
 			PdfPTable table = new PdfPTable(10); // 9 columns.
 			table.setWidthPercentage(100); // Width 100%
-			table.setSpacingBefore(10f); // Space before table
-			table.setSpacingAfter(10f); // Space after table
+			table.setSpacingBefore(5f); // Space before table
+			table.setSpacingAfter(5f); // Space after table
 
 			// Set Column widths
-			float[] columnWidths = { 0.3f, 0.5f, 1f, 2f, 1f, 0.5f, 0.5f, 1f, 0.5f, 0.5f };
+			float[] columnWidths = { 0.7f, 0.5f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.5f };
 			table.setWidths(columnWidths);
 
 			PdfPCell iDHeader = new PdfPCell(new Paragraph("Purchase Order", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
