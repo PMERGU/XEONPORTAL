@@ -81,7 +81,7 @@ sap:
     lang: "en"
     poolCapacity: "3"
     peakLimit: "10"
-    ashost: "128.87.245.163"
+#    ashost: "128.87.245.163"
     passwd: "mobile"
     ashost: "/H/197.234.173.1/W/FunkyChicken99/H/128.87.245.163/S/3200"
     client: "700"

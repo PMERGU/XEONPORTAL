@@ -27,14 +27,14 @@ import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
 import za.co.xeon.external.sap.hibersap.errors.ValidSapException;
-import za.co.xeon.external.sap.hibersap.forge.dto.EvResult;
+import za.co.xeon.external.sap.hibersap.forge.dto.EtCustOrders;
 import za.co.xeon.external.sap.hibersap.forge.dto.ImDateR;
 import za.co.xeon.external.sap.hibersap.forge.dto.SLgtyp;
 import za.co.xeon.external.sap.hibersap.forge.dto.SMatkl;
 import za.co.xeon.external.sap.hibersap.forge.dto.SMatnr;
 import za.co.xeon.external.sap.hibersap.forge.dto.SWerks;
 import za.co.xeon.external.sap.hibersap.forge.dto.StockInventory;
-import za.co.xeon.external.sap.hibersap.forge.rfc.ZGetCustomerOrdersByDate;
+import za.co.xeon.external.sap.hibersap.forge.rfc.ZGetCustOrdersByDateNew;
 import za.co.xeon.external.sap.hibersap.forge.rfc.ZStockInventory;
 import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
@@ -61,7 +61,7 @@ public class HiberSapService {
 		SessionManagerConfig cfg = new SessionManagerConfig("A12").setContext(JCoContext.class.getName()).setProperty(DestinationDataProvider.JCO_ASHOST, s3Settings.getAshost()).setProperty(DestinationDataProvider.JCO_SYSNR, s3Settings.getSysnr()).setProperty(DestinationDataProvider.JCO_CLIENT, s3Settings.getClient()).setProperty(DestinationDataProvider.JCO_USER, s3Settings.getUser()).setProperty(DestinationDataProvider.JCO_PASSWD, s3Settings.getPasswd()).setProperty(DestinationDataProvider.JCO_LANG, s3Settings.getLang()).setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, s3Settings.getPoolCapacity()).setProperty(DestinationDataProvider.JCO_PEAK_LIMIT, s3Settings.getPeakLimit());
 
 		AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
-		configuration.addBapiClasses(CustOrdersRFC.class, CustOrdersDetailRFC.class, CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, UpdateHandlingUnitsRFC.class, ZStockInventory.class, UpdatePodRFC.class, ZGetCustomerOrdersByDate.class);
+		configuration.addBapiClasses(CustOrdersRFC.class, CustOrdersDetailRFC.class, CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, UpdateHandlingUnitsRFC.class, ZStockInventory.class, UpdatePodRFC.class, ZGetCustOrdersByDateNew.class);
 		sessionManager = configuration.buildSessionManager();
 	}
 
@@ -303,15 +303,15 @@ public class HiberSapService {
 		}
 	}
 
-	public List<EvResult> getCustomerOrdersForPOD(String sapId, Date from, Date to, String podStatus) throws ParseException {
+	public List<EtCustOrders> getCustomerOrdersForPOD(String sapId, Date from, Date to, String podStatus) throws ParseException {
 		Session session = sessionManager.openSession();
 		try {
 			List<ImDateR> dateRange = new ArrayList<ImDateR>();
-			dateRange.add(new ImDateR("I", "BT", from, to));
-			ZGetCustomerOrdersByDate rfc = new ZGetCustomerOrdersByDate(dateRange, podStatus, Pad.left(sapId, 10));
+			dateRange.add(new ImDateR("I", to, from, "BT"));
+			ZGetCustOrdersByDateNew rfc = new ZGetCustOrdersByDateNew(dateRange, podStatus, Pad.left(sapId, 10));
 			session.execute(rfc);
 
-			return rfc.get_evResult();
+			return rfc.get_etCustOrders();
 		} catch (Exception e) {
 			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
 			throw e;

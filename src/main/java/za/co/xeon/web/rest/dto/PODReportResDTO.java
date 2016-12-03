@@ -1,22 +1,16 @@
 package za.co.xeon.web.rest.dto;
 
-import za.co.xeon.domain.PurchaseOrder;
-import za.co.xeon.external.sap.hibersap.forge.dto.EvResult;
+import za.co.xeon.external.sap.hibersap.forge.dto.EtCustOrders;
 
-public class PODReportResDTO extends EvResult {
-	private PurchaseOrder po;
+public class PODReportResDTO extends EtCustOrders {
+	private String podStatus;
 
-	public PurchaseOrder getPo() {
-		return po;
+	public String getPodStatus() {
+		return podStatus;
 	}
 
-	public void setPo(PurchaseOrder po) {
-		this.po = po;
-	}
-
-	@Override
-	public String toString() {
-		return "PODReportResDTO [po=" + po + "]";
+	public void setPodStatus(String podStatus) {
+		this.podStatus = podStatus;
 	}
 
 }

@@ -62,15 +62,15 @@
 				<table class="jh-table table table-striped export-table" id="stockReport" fixed-header ng-show="showdownloadbuttons">
 					<thead>
 						<tr>
-							<th><span>Deliver Number</span></th>
-							<th><span>Sales Order Number</span></th>
-							<th><span>Purchase Order Number</span></th>
-							<th><span>Destination Location</span></th>
+							<th><span>Purchase Order</span></th>
+							<th><span>Customer Controller</span></th>
+							<th><span>Captured By</span></th>
 							<th><span>Pickup Party</span></th>
+							<th><span>Pickup HUB</span></th>
 							<th><span>Ship to party</span></th>
-							<th><span>Capture Date</span></th>
-							<th><span>Deliver Date</span></th>
-							<th><span>Deliver Status</span></th>
+							<th><span>Consignee</span></th>
+							<th><span>Sales Order</span></th>
+							<th><span>Deliver No</span></th>
 							<th><span>POD Attachments</span></th>
 
 						</tr>
@@ -78,16 +78,16 @@
 					<tbody>
 						<tr ng-repeat="podRec in (podData | filter:pageFilter)">
 
-							<td>{{podRec._dbeln}}</td>
-							<td>{{podRec.po.soNumber}}</td>
-							<td>{{podRec.po.PoNumber}}</td>
-							<td>{{podRec.po.cvDestination}}</td>
-							<td>{{podRec.po.pickupParty.reference}}</td>
-							<td>{{podRec.po.shipToParty.reference}}</td>
-							<td>{{podRec.po.captureDate}}</td>
-							<td>{{podRec.po.dropOffDate}}</td>
-							<td>{{podRec._wbstk}}</td>
 							<td>{{podRec._bstkd}}</td>
+							<td>{{podRec._parvwYe}}</td>
+							<td>{{podRec._ernam}}</td>
+							<td>{{podRec._parvwYc}}</td>
+							<td>{{podRec._parvwYh}}</td>
+							<td>{{podRec._parvwWe}}</td>
+							<td>{{podRec._parvwAg}}</td>
+							<td>{{podRec._vbeln}}</td>
+							<td>{{podRec._dbeln}}</td>
+							<td>{{podRec.podStatus}}</td>
 
 						</tr>
 

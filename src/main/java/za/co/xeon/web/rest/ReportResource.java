@@ -46,13 +46,13 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.Attachment;
 import za.co.xeon.domain.User;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
-import za.co.xeon.external.sap.hibersap.forge.dto.EvResult;
+import za.co.xeon.external.sap.hibersap.forge.dto.EtCustOrders;
 import za.co.xeon.external.sap.hibersap.forge.dto.StockInventory;
+import za.co.xeon.repository.AttachmentRepository;
 import za.co.xeon.repository.CompanyRepository;
-import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.web.rest.dto.PODReportReqDTO;
 import za.co.xeon.web.rest.dto.PODReportResDTO;
@@ -70,7 +70,7 @@ public class ReportResource {
 	@Inject
 	private CompanyRepository companyRepository;
 	@Inject
-	private PurchaseOrderRepository purchaseOrderRepository;
+	private AttachmentRepository attachmentRepository;
 
 	@RequestMapping(value = "/stockReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
@@ -121,12 +121,15 @@ public class ReportResource {
 		return () -> {
 			List<PODReportResDTO> ret = new ArrayList<PODReportResDTO>();
 			try {
-				List<EvResult> evResult = hiberSapService.getCustomerOrdersForPOD(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType());
-				for (EvResult evr : evResult) {
+				List<EtCustOrders> evResult = hiberSapService.getCustomerOrdersForPOD(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType());
+				for (EtCustOrders evr : evResult) {
 					PODReportResDTO resDto = new PODReportResDTO();
 					BeanUtils.copyProperties(resDto, evr);
-					PurchaseOrder po = purchaseOrderRepository.getOne(Long.valueOf(evr.get_bstkd()));
-					resDto.setPo(po);
+					List<Attachment> att = attachmentRepository.findByDeliveryNumberAndPOD(Long.valueOf(evr.get_dbeln()));
+					if (att != null && att.size() > 0)
+						resDto.setPodStatus("Y");
+					else
+						resDto.setPodStatus("N");
 					ret.add(resDto);
 				}
 			} catch (Exception e) {
@@ -174,12 +177,15 @@ public class ReportResource {
 
 		List<PODReportResDTO> ret = new ArrayList<PODReportResDTO>();
 		try {
-			List<EvResult> evResult = hiberSapService.getCustomerOrdersForPOD(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType());
-			for (EvResult evr : evResult) {
+			List<EtCustOrders> evResult = hiberSapService.getCustomerOrdersForPOD(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType());
+			for (EtCustOrders evr : evResult) {
 				PODReportResDTO resDto = new PODReportResDTO();
 				BeanUtils.copyProperties(resDto, evr);
-				PurchaseOrder po = purchaseOrderRepository.getOne(Long.valueOf(evr.get_bstkd()));
-				resDto.setPo(po);
+				List<Attachment> att = attachmentRepository.findByDeliveryNumberAndPOD(Long.valueOf(evr.get_dbeln()));
+				if (att != null && att.size() > 0)
+					resDto.setPodStatus("Y");
+				else
+					resDto.setPodStatus("N");
 				ret.add(resDto);
 			}
 		} catch (Exception e) {
@@ -393,33 +399,26 @@ public class ReportResource {
 			float[] columnWidths = { 0.3f, 0.5f, 1f, 2f, 1f, 0.5f, 0.5f, 1f, 0.5f, 0.5f };
 			table.setWidths(columnWidths);
 
-			PdfPCell iDHeader = new PdfPCell(new Paragraph("Delivery Number", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			PdfPCell iDHeader = new PdfPCell(new Paragraph("Purchase Order", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			iDHeader.setBorderColor(BaseColor.BLACK);
 			iDHeader.setPaddingLeft(10);
 			iDHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
 			iDHeader.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(iDHeader);
 
-			PdfPCell wnHeader = new PdfPCell(new Paragraph("Sales Order Number", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			PdfPCell wnHeader = new PdfPCell(new Paragraph("Consumer Controller", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			wnHeader.setBorderColor(BaseColor.BLACK);
 			wnHeader.setPaddingLeft(10);
 			wnHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
 			wnHeader.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(wnHeader);
 
-			PdfPCell mtHeader = new PdfPCell(new Paragraph("Purchase Order Number", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			PdfPCell mtHeader = new PdfPCell(new Paragraph("Captured By", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			mtHeader.setBorderColor(BaseColor.BLACK);
 			mtHeader.setPaddingLeft(10);
 			mtHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
 			mtHeader.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(mtHeader);
-
-			PdfPCell mtDsHeader = new PdfPCell(new Paragraph("Destination Location", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
-			mtDsHeader.setBorderColor(BaseColor.BLACK);
-			mtDsHeader.setPaddingLeft(10);
-			mtDsHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
-			mtDsHeader.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			table.addCell(mtDsHeader);
 
 			PdfPCell stHeader = new PdfPCell(new Paragraph("Pickup Party", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			stHeader.setBorderColor(BaseColor.BLACK);
@@ -428,6 +427,13 @@ public class ReportResource {
 			stHeader.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(stHeader);
 
+			PdfPCell mtDsHeader = new PdfPCell(new Paragraph("Pickup HUB", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			mtDsHeader.setBorderColor(BaseColor.BLACK);
+			mtDsHeader.setPaddingLeft(10);
+			mtDsHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+			mtDsHeader.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(mtDsHeader);
+
 			PdfPCell batchCell = new PdfPCell(new Paragraph("Ship To Party", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			batchCell.setBorderColor(BaseColor.BLACK);
 			batchCell.setPaddingLeft(10);
@@ -435,21 +441,21 @@ public class ReportResource {
 			batchCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(batchCell);
 
-			PdfPCell putAwayQnant = new PdfPCell(new Paragraph("Capture Date", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			PdfPCell putAwayQnant = new PdfPCell(new Paragraph("Consignee", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			putAwayQnant.setBorderColor(BaseColor.BLACK);
 			putAwayQnant.setPaddingLeft(10);
 			putAwayQnant.setHorizontalAlignment(Element.ALIGN_CENTER);
 			putAwayQnant.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(putAwayQnant);
 
-			PdfPCell pickQuant = new PdfPCell(new Paragraph("Delivery Date", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			PdfPCell pickQuant = new PdfPCell(new Paragraph("Sales Order", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			pickQuant.setBorderColor(BaseColor.BLACK);
 			pickQuant.setPaddingLeft(10);
 			pickQuant.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pickQuant.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(pickQuant);
 
-			PdfPCell availableQunatity = new PdfPCell(new Paragraph("Delivery Status", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			PdfPCell availableQunatity = new PdfPCell(new Paragraph("Delivery No", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 			availableQunatity.setBorderColor(BaseColor.BLACK);
 			availableQunatity.setPaddingLeft(10);
 			availableQunatity.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -465,70 +471,70 @@ public class ReportResource {
 
 			if (ret != null && ret.size() > 0) {
 				for (PODReportResDTO data : ret) {
-					PdfPCell iDdata = new PdfPCell(new Paragraph(data.get_dbeln(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell iDdata = new PdfPCell(new Paragraph(data.get_bstkd(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					iDdata.setBorderColor(BaseColor.BLACK);
 					iDdata.setPaddingLeft(10);
 					iDdata.setHorizontalAlignment(Element.ALIGN_CENTER);
 					iDdata.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(iDdata);
 
-					PdfPCell wnData = new PdfPCell(new Paragraph(data.getPo().getSoNumber(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell wnData = new PdfPCell(new Paragraph(data.get_parvwYe(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					wnData.setBorderColor(BaseColor.BLACK);
 					wnData.setPaddingLeft(10);
 					wnData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					wnData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(wnData);
 
-					PdfPCell mtData = new PdfPCell(new Paragraph(data.getPo().getPoNumber(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell mtData = new PdfPCell(new Paragraph(data.get_ernam(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					mtData.setBorderColor(BaseColor.BLACK);
 					mtData.setPaddingLeft(10);
 					mtData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					mtData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(mtData);
 
-					PdfPCell mtDsData = new PdfPCell(new Paragraph(data.getPo().getCvDestination(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell mtDsData = new PdfPCell(new Paragraph(data.get_parvwYc(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					mtDsData.setBorderColor(BaseColor.BLACK);
 					mtDsData.setPaddingLeft(10);
 					mtDsData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					mtDsData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(mtDsData);
 
-					PdfPCell stData = new PdfPCell(new Paragraph(data.getPo().getPickUpParty().getReference(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell stData = new PdfPCell(new Paragraph(data.get_parvwYh(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					stData.setBorderColor(BaseColor.BLACK);
 					stData.setPaddingLeft(10);
 					stData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					stData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(stData);
 
-					PdfPCell batchCellData = new PdfPCell(new Paragraph(data.getPo().getShipToParty().getReference(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell batchCellData = new PdfPCell(new Paragraph(data.get_parvwWe(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					batchCellData.setBorderColor(BaseColor.BLACK);
 					batchCellData.setPaddingLeft(10);
 					batchCellData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					batchCellData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(batchCellData);
 
-					PdfPCell putAwayQnantData = new PdfPCell(new Paragraph(data.getPo().getCaptureDate() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell putAwayQnantData = new PdfPCell(new Paragraph(data.get_parvwAg() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					putAwayQnantData.setBorderColor(BaseColor.BLACK);
 					putAwayQnantData.setPaddingLeft(10);
 					putAwayQnantData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					putAwayQnantData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(putAwayQnantData);
 
-					PdfPCell pickQuantData = new PdfPCell(new Paragraph(data.getPo().getDropOffDate() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell pickQuantData = new PdfPCell(new Paragraph(data.get_vbeln() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					pickQuantData.setBorderColor(BaseColor.BLACK);
 					pickQuantData.setPaddingLeft(10);
 					pickQuantData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					pickQuantData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(pickQuantData);
 
-					PdfPCell availableQunatityData = new PdfPCell(new Paragraph(data.get_wbstk() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell availableQunatityData = new PdfPCell(new Paragraph(data.get_dbeln() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					availableQunatityData.setBorderColor(BaseColor.BLACK);
 					availableQunatityData.setPaddingLeft(10);
 					availableQunatityData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					availableQunatityData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(availableQunatityData);
 
-					PdfPCell uomData = new PdfPCell(new Paragraph(data.get_bstkd() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					PdfPCell uomData = new PdfPCell(new Paragraph(data.getPodStatus() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
 					uomData.setBorderColor(BaseColor.BLACK);
 					uomData.setPaddingLeft(10);
 					uomData.setHorizontalAlignment(Element.ALIGN_CENTER);

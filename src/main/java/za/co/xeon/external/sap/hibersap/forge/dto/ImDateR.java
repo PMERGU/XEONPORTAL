@@ -14,20 +14,17 @@ public class ImDateR {
 	Date _low;
 	@Parameter("HIGH")
 	Date _high;
-	@Parameter("OPTION")
-	String _option;
 
-	public ImDateR() {
-		super();
-	}
-
-	public ImDateR(String _sign, String _option, Date _low, Date _high) {
+	public ImDateR(String _sign, Date _low, Date _high, String _option) {
 		super();
 		this._sign = _sign;
 		this._low = _low;
 		this._high = _high;
 		this._option = _option;
 	}
+
+	@Parameter("OPTION")
+	String _option;
 
 	public String get_sign() {
 		return this._sign;
