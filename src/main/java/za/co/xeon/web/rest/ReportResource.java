@@ -47,6 +47,7 @@ import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import za.co.xeon.domain.Attachment;
+import za.co.xeon.domain.Company;
 import za.co.xeon.domain.User;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
 import za.co.xeon.external.sap.hibersap.forge.dto.EtCustOrders;
@@ -80,6 +81,8 @@ public class ReportResource {
 		return () -> {
 			List<StockInventory> ret = new ArrayList<StockInventory>();
 			try {
+				Company company = companyRepository.findOne(Long.valueOf(dto.getCompany()));
+				dto.setCompany(company.getMaterialName());
 				ret = hiberSapService.fetchStockData(dto);
 			} catch (Exception e) {
 				log.debug("Error : " + e.getMessage());
@@ -99,7 +102,7 @@ public class ReportResource {
 			List<StockInventory> ret = new ArrayList<StockInventory>();
 			try {
 				Optional<User> user = userRepository.findOneByLogin(login);
-				String company = user.get().getCompany().getName();
+				String company = user.get().getCompany().getMaterialName();
 				StockReportDTO dto = new StockReportDTO();
 				dto.setCompany(company);
 				ret = hiberSapService.fetchStockData(dto);
@@ -130,6 +133,11 @@ public class ReportResource {
 						resDto.setPodStatus("Y");
 					else
 						resDto.setPodStatus("N");
+					att = attachmentRepository.findByDeliveryNumberAndInv(evr.get_dbeln());
+					if (att != null && att.size() > 0)
+						resDto.setInvStatus("Y");
+					else
+						resDto.setInvStatus("N");
 					ret.add(resDto);
 				}
 			} catch (Exception e) {
@@ -186,6 +194,11 @@ public class ReportResource {
 					resDto.setPodStatus("Y");
 				else
 					resDto.setPodStatus("N");
+				att = attachmentRepository.findByDeliveryNumberAndInv(evr.get_dbeln());
+				if (att != null && att.size() > 0)
+					resDto.setInvStatus("Y");
+				else
+					resDto.setInvStatus("N");
 				ret.add(resDto);
 			}
 		} catch (Exception e) {
@@ -390,13 +403,13 @@ public class ReportResource {
 			PdfWriter writer = PdfWriter.getInstance(document, out);
 			writer.setPageEvent(new PODReportHeader(string));
 			document.open();
-			PdfPTable table = new PdfPTable(10); // 9 columns.
+			PdfPTable table = new PdfPTable(11); // 9 columns.
 			table.setWidthPercentage(100); // Width 100%
 			table.setSpacingBefore(5f); // Space before table
 			table.setSpacingAfter(5f); // Space after table
 
 			// Set Column widths
-			float[] columnWidths = { 0.7f, 0.5f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.5f };
+			float[] columnWidths = { 0.7f, 0.5f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.5f, 0.5f };
 			table.setWidths(columnWidths);
 
 			PdfPCell iDHeader = new PdfPCell(new Paragraph("Purchase Order", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
@@ -469,6 +482,13 @@ public class ReportResource {
 			uom.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			table.addCell(uom);
 
+			PdfPCell inv = new PdfPCell(new Paragraph("Invoice Status", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+			inv.setBorderColor(BaseColor.BLACK);
+			inv.setPaddingLeft(10);
+			inv.setHorizontalAlignment(Element.ALIGN_CENTER);
+			uom.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(inv);
+
 			if (ret != null && ret.size() > 0) {
 				for (PODReportResDTO data : ret) {
 					PdfPCell iDdata = new PdfPCell(new Paragraph(data.get_bstkd(), FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
@@ -540,6 +560,13 @@ public class ReportResource {
 					uomData.setHorizontalAlignment(Element.ALIGN_CENTER);
 					uomData.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					table.addCell(uomData);
+
+					PdfPCell invData = new PdfPCell(new Paragraph(data.getInvStatus() + "", FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize)));
+					invData.setBorderColor(BaseColor.BLACK);
+					invData.setPaddingLeft(10);
+					invData.setHorizontalAlignment(Element.ALIGN_CENTER);
+					invData.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					table.addCell(invData);
 				}
 			}
 			document.add(table);

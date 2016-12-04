@@ -73,8 +73,6 @@ angular.module('portalApp')
 			});
 		});
 
-
-
 		var onSaveSuccess = function(result) {
 			$scope.stockData = result;
 			if (result != null && result != undefined && result.length > 0) {
@@ -103,7 +101,10 @@ angular.module('portalApp')
 
 		$scope.loadAll = function(company) {
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
-				$scope.stockReport.company = company.materialName;
+				$scope.stockReport.company = company.id;
+				if ($scope.stockReport.company === undefined || $scope.stockReport.company === null) {
+					$scope.stockReport.company = $scope.user.company.id;
+				}
 				StockReport.save($scope.stockReport, onSaveSuccess, onSaveError);
 			}
 		};
@@ -111,7 +112,7 @@ angular.module('portalApp')
 		$scope.downloadPdf = function() {
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
 				$log.debug($scope.selected.company.id);
-				$scope.stockReport.company = $scope.selected.company.materialName;
+				$scope.stockReport.company = $scope.selected.company.id;
 				$http.post('api/stockReport/download/', $scope.stockReport, {
 					responseType : 'arraybuffer'
 				}).then(function(response) {

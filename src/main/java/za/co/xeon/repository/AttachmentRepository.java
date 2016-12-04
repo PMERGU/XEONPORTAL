@@ -28,6 +28,9 @@ public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
 	@Query("select a from Attachment a where a.deliveryNumber = ?1 and a.category = 'POD'")
 	List<Attachment> findByDeliveryNumberAndPOD(String delNumber);
 
+	@Query("select a from Attachment a where a.deliveryNumber = ?1 and lower(a.category) = lower('Invoice')")
+	List<Attachment> findByDeliveryNumberAndInv(String delNumber);
+
 	@Query("select a from Attachment a where a.deliveryNumber = ?1 and a.visible = ?2 and a.activated = true")
 	List<Attachment> findByDeliveryNumberAndVisibleAndActivated(String deliveryNumber, Boolean visible);
 
