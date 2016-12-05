@@ -1,47 +1,39 @@
 
 <div>
-    <h2><span>Company</span> {{company.id}}</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <span>Name</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{company.name}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>SapId</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{company.sapId}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Background</span>
-                </td>
-                <td>
-                    <img data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}" style="max-width: 100%;" ng-if="company.background"/>
-                    <div>{{company.backgroundContentType}}  {{byteSize(company.background)}}</div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+	<h2>
+		<span>Company</span> {{company.id}}
+	</h2>
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Field</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><span>Name</span></td>
+					<td><span class="form-control-static">{{company.name}}</span></td>
+				</tr>
+				<tr>
+					<td><span>SapId</span></td>
+					<td><span class="form-control-static">{{company.sapId}}</span></td>
+				</tr>
+				<tr>
+					<td><span>Material Name</span></td>
+					<td><span class="form-control-static">{{company.materialName}}</span></td>
+				</tr>
+				<tr>
+					<td><span>Background</span></td>
+					<td><img data-ng-src="{{'data:' + company.backgroundContentType + ';base64,' + company.background}}" style="max-width: 100%;" ng-if="company.background" />
+						<div>{{company.backgroundContentType}} {{byteSize(company.background)}}</div></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
+	<button type="submit" onclick="window.history.back()" class="btn btn-info">
+		<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+	</button>
 </div>

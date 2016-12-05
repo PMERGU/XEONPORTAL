@@ -148,7 +148,7 @@ public class CompanyResource {
 	/**
 	 * DELETE /companies/:id -> delete the "id" company.
 	 */
-	@RequestMapping(value = "/companies/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/companies/delete/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
 	public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
 		log.debug("REST request to delete Company : {}", id);
