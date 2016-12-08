@@ -97,7 +97,6 @@ angular.module('portalApp')
 					new Date(new Date(dateT).setDate(dateT.getDate() + 1)),
 					force
 				).then(function(data) {
-					$log.debug("data size :: " + data.size);
 					$scope.deliveredOrders = data.filter(function(el) {
 						return (el._pdstk === "B" || el._pdstk === "C");
 					});
