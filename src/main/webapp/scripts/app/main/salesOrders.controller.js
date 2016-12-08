@@ -97,14 +97,17 @@ angular.module('portalApp')
 					new Date(new Date(dateT).setDate(dateT.getDate() + 1)),
 					force
 				).then(function(data) {
+					$log.debug("data size :: " + data.size);
 					$scope.deliveredOrders = data.filter(function(el) {
-						return (el.pdstk === "B" || el.pdstk === "C");
+						return (el._pdstk === "B" || el._pdstk === "C");
 					});
 					$scope.undeliveredOrders = data.filter(function(el) {
-						return (el.pdstk === "A" || el.pdstk === "");
+						return (el._pdstk === "A" || el._pdstk === "");
 					});
 					$scope.loadingOrders = false;
 				});
+				$log.debug("delivered length :: " + $scope.deliveredOrders.length);
+				$log.debug("undelivered length :: " + $scope.undeliveredOrders.length);
 			}
 		}
 		;
@@ -112,25 +115,25 @@ angular.module('portalApp')
 		$scope.reloadData = function(refresh) {
 			var resetPaging = true;
 			getOrders(new Date(), refresh);
-			if ($scope.selected.company.id !== null) {
-				Company.getPurchaseOrders({
-					id : $scope.selected.company.id
-				}).$promise.then(function(data) {
-					$scope.purchaseOrders = {};
-					data.forEach(function(po, idx) {
-						$scope.purchaseOrders[po.poNumber] = po;
-					});
-				});
-			} else {
-				sweet.show({
-					title : 'Something went wrong...notify derick',
-					text : 'Company.id is null and we cant figure out why :'
-						+ '<div class="m">'
-						+ '    ' + $scope.selected
-						+ '</div>',
-					html : true
-				});
-			}
+		//			if ($scope.selected.company.id !== null) {
+		//				Company.getPurchaseOrders({
+		//					id : $scope.selected.company.id
+		//				}).$promise.then(function(data) {
+		//					$scope.purchaseOrders = {};
+		//					data.forEach(function(po, idx) {
+		//						$scope.purchaseOrders[po.poNumber] = po;
+		//					});
+		//				});
+		//			} else {
+		//				sweet.show({
+		//					title : 'Something went wrong...notify derick',
+		//					text : 'Company.id is null and we cant figure out why :'
+		//						+ '<div class="m">'
+		//						+ '    ' + $scope.selected
+		//						+ '</div>',
+		//					html : true
+		//				});
+		//			}
 		};
 
 		function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {

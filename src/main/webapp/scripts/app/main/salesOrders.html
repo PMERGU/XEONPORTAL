@@ -1,157 +1,121 @@
 <div>
-    <div small-header>
-        <div class="hpanel" style="margin-bottom: 15px;">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2 class="font-light m-b-xs">
-                            Sales orders
-                        </h2>
-                        <jh-alert></jh-alert>
-                        <small>All sales orders captured in SAP against a specific customer</small>
-                    </div>
-                    <div class="col-md-6" has-authority="ROLE_USER">
-                        <div class="col-md-6 text-right">
-                            <h2>Company</h2>
-                        </div>
-                        <div class="col-md-6" style="margin-top: 15px;margin-bottom: 10px;">
+	<div small-header>
+		<div class="hpanel" style="margin-bottom: 15px;">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-6">
+						<h2 class="font-light m-b-xs">Sales orders</h2>
+						<jh-alert></jh-alert>
+						<small>All sales orders captured in SAP against a specific customer</small>
+					</div>
+					<div class="col-md-6" has-authority="ROLE_USER">
+						<div class="col-md-6 text-right">
+							<h2>Company</h2>
+						</div>
+						<div class="col-md-6" style="margin-top: 15px;margin-bottom: 10px;">
 
 							<button type="submit" id="salesOR" style="display: none" ui-sref="salesOrders({company : selected.company.id})" class="btn btn-info btn-sm">
 								<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 							</button>
-							<ui-select  ng-model="selected.company" title="Choose a company">
-                                <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match>
-                                <ui-select-choices repeat="company in companies | orderBy:'name'">
-                                    <span ng-bind-html="company.name | highlight: $select.search"></span>
-                                    <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="hpanel" ng-show="selected.company">
-        <div class="panel-body">
-            <input ng-disabled="loadingOrders" ng-show="ordersStep !== 0" type="button"
-                   class="btn btn-primary pull-right" ng-click="ordersWizard.next()" value="Next 30 days"
-                   style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
-            <input ng-disabled="loadingOrders" type="button" class="btn btn-primary pull-right"
-                   ng-click="ordersWizard.prev()" value="Prev 30 days"
-                   style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
+							<ui-select ng-model="selected.company" title="Choose a company"> <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match> <ui-select-choices repeat="company in companies | orderBy:'name'"> <span ng-bind-html="company.name | highlight: $select.search"></span> <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small> </ui-select-choices> </ui-select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="hpanel" ng-show="selected.company">
+		<div class="panel-body">
+			<input ng-disabled="loadingOrders" ng-show="ordersStep !== 0" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.next()" value="Next 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;" /> <input ng-disabled="loadingOrders" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.prev()" value="Prev 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;" />
 
-            <uib-tabset>
-                <uib-tab>
-                    <uib-tab-heading>
-                        <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: 'dbeln').length}}</span>Undelivered&nbsp;
-                        <span class="btn btn-default btn-xs" ng-click="reloadData(true)" ng-disabled="loadingOrders">
-                            <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
-                        </span>
-                    </uib-tab-heading>
-                    <div class="panel-body" style="padding-top: 0px;">
-                        <div class="table-responsive">
-                            <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"
-                                   class="table table-striped hover table-centered" style="width: 100% !important;">
-                                <thead>
-                                <tr>
-                                    <th>Purchase Order</th>
-                                    <th>Employee</th>
-                                    <th>Captured By</th>
-                                    <th>CSU Allocated</th>
-                                    <th>Capture Date</th>
-                                    <th>Pickup Party</th>
-                                    <th>Pickup HUB</th>
-                                    <th>Ship to Party</th>
-                                    <th>Sales Order</th>
-                                    <th>Delivery No</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="order in undeliveredOrders | unique: 'dbeln'">
-                                    <td>{{ order.bstkd }}
-                                        <small ng-show="order.bezei">[{{ order.bezei }}]</small>
-                                    </td>
-                                    <td>{{ purchaseOrders[order.bstkd].user.firstName + ' ' + purchaseOrders[order.bstkd].user.lastName }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].user.csu.firstName + ' ' + purchaseOrders[order.bstkd].user.csu.lastName }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yy-MM-dd HH:mm' }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.area.hub}}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
-                                    <td>{{ order.vbeln }}</td>
-                                    <td>{{ order.dbeln }}</td>
-                                    <td width="10px">
-                                        <button type="submit"
-                                                ui-sref="orderdetail({poId: purchaseOrders[order.bstkd].id, deliveryNo: order.dbeln, orderStep: ordersStep})"
-                                                class="btn btn-info btn-sm">
-                                            <span class="glyphicon glyphicon-eye-open"></span>
-                                            <span class="hidden-xs hidden-sm"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </uib-tab>
-                <uib-tab>
-                    <uib-tab-heading>
-                        <span class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders | unique: 'dbeln').length}}</span>Delivered
-                    </uib-tab-heading>
-                    <div class="panel-body" style="padding-top: 0px;">
-                        <div class="table-responsive">
-                            <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"
-                                   class="table table-striped hover" style="width: 100% !important;">
-                                <thead>
-                                <tr>
-                                    <th>Purchase Order</th>
-                                    <th>Employee</th>
-                                    <th>Captured By</th>
-                                    <th>Capture Date</th>
-                                    <th>Pickup Party</th>
-                                    <th>Pickup HUB</th>
-                                    <th>Ship to Party</th>
-                                    <th>Sales Order</th>
-                                    <th>Delivery No</th>
-                                    <th>CSU Allocated</th>
-                                    <th>Consignee</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="order in deliveredOrders | unique: 'dbeln'">
-                                    <td>{{ order.bstkd }}
-                                        <small ng-show="order.bezei">[{{ order.bezei }}]</small>
-                                    </td>
-                                    <td>{{ purchaseOrders[order.bstkd].user.firstName + ' ' + purchaseOrders[order.bstkd].user.lastName }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].capturedBy.firstName + ' ' + purchaseOrders[order.bstkd].capturedBy.lastName }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.name + ' (' + purchaseOrders[order.bstkd].pickUpParty.city + ')' }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].pickUpParty.area.hub}}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].shipToParty.name + ' (' + purchaseOrders[order.bstkd].shipToParty.city + ')' }}</td>
-                                    <td>{{ order.vbeln }}</td>
-                                    <td>{{ order.dbeln }}</td>
-                                    <td>{{ purchaseOrders[order.bstkd].user.csu.firstName + ' ' + purchaseOrders[order.bstkd].user.csu.lastName }}</td>
-                                    <td>{{ order.skunnr }}</td>
-                                    <td>{{ order.pdstk }}</td>
-                                    <td width="10px">
-                                        <button type="submit"
-                                                ui-sref="orderdetail({poId: purchaseOrders[order.bstkd].id, deliveryNo: order.dbeln, orderStep: ordersStep})"
-                                                class="btn btn-info btn-sm">
-                                            <span class="glyphicon glyphicon-eye-open"></span>
-                                            <span class="hidden-xs hidden-sm"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </uib-tab>
-            </uib-tabset>
-        </div>
-    </div>
+			<uib-tabset> <uib-tab> <uib-tab-heading> <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: 'dbeln').length}}</span>Undelivered&nbsp; <span class="btn btn-default btn-xs" ng-click="reloadData(true)" ng-disabled="loadingOrders"> <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
+			</span> </uib-tab-heading>
+			<div class="panel-body" style="padding-top: 0px;">
+				<div class="table-responsive">
+					<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover table-centered" style="width: 100% !important;">
+						<thead>
+							<tr>
+								<th>Purchase Order</th>
+								<th>Customer Controller</th>
+								<th>Captured By</th>
+								<th>Capture Date - Time</th>
+								<th>Pickup Party</th>
+								<th>Pickup HUB</th>
+								<th>Ship to Party</th>
+								<th>Consignee</th>
+								<th>Sales Order</th>
+								<th>Delivery No</th>
+								<th>POD Status</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="order in undeliveredOrders | unique: 'dbeln'">
+								<td>{{ order._bstkd }}</td>
+								<td>{{ order._parvwYe }}</td>
+								<td>{{ order._ernam }}</td>
+								<td>{{ order._audat }} - {{ order._erzet }}</td>
+								<td>{{ order._parvwYc }}</td>
+								<td>{{ order._parvwYh }}</td>
+								<td>{{ order._parvwWe }}</td>
+								<td>{{ order._parvwAg }}</td>
+								<td>{{ order._vbeln }}</td>
+								<td>{{ order._dbeln }}</td>
+								<td>{{ order._pdstk }}</td>
+								<td width="10px">
+									<button type="submit" ui-sref="orderdetail({poId: order._bstkd, deliveryNo: order._dbeln, orderStep: ordersStep})" class="btn btn-info btn-sm">
+										<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			</uib-tab> <uib-tab> <uib-tab-heading> <span class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders | unique: 'dbeln').length}}</span>Delivered </uib-tab-heading>
+			<div class="panel-body" style="padding-top: 0px;">
+				<div class="table-responsive">
+					<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
+						<thead>
+							<tr>
+								<th>Purchase Order</th>
+								<th>Customer Controller</th>
+								<th>Captured By</th>
+								<th>Capture Date - Time</th>
+								<th>Pickup Party</th>
+								<th>Pickup HUB</th>
+								<th>Ship to Party</th>
+								<th>Consignee</th>
+								<th>Sales Order</th>
+								<th>Delivery No</th>
+								<th>POD Status</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="order in deliveredOrders | unique: 'dbeln'">
+								<td>{{ order._bstkd }}</td>
+								<td>{{ order._parvwYe }}</td>
+								<td>{{ order._ernam }}</td>
+								<td>{{ order._audat }} - {{ order._erzet }}</td>
+								<td>{{ order._parvwYc }}</td>
+								<td>{{ order._parvwYh }}</td>
+								<td>{{ order._parvwWe }}</td>
+								<td>{{ order._parvwAg }}</td>
+								<td>{{ order._vbeln }}</td>
+								<td>{{ order._dbeln }}</td>
+								<td>{{ order._pdstk }}</td>
+								<td width="10px">
+									<button type="submit" ui-sref="orderdetail({poId: order._bstkd, deliveryNo: order._dbeln, orderStep: ordersStep})" class="btn btn-info btn-sm">
+										<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			</uib-tab> </uib-tabset>
+		</div>
+	</div>
 </div>

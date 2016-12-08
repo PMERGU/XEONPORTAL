@@ -83,6 +83,24 @@ public class HiberSapService {
 		}
 	}
 
+	public List<EtCustOrders> getCustomerOrdersByDateNew(String customerNumber, Date from, Date to, boolean evict) throws ParseException {
+		customerNumber = Pad.left(customerNumber, 10);
+		Session session = sessionManager.openSession();
+		try {
+			List<ImDateR> dateRange = new ArrayList<>();
+			dateRange.add(new ImDateR("I", from, to, "BT"));
+			ZGetCustOrdersByDateNew rfc = new ZGetCustOrdersByDateNew(dateRange, null, customerNumber);
+			session.execute(rfc);
+
+			return rfc.get_etCustOrders();
+		} catch (Exception e) {
+			log.error("Couldnt complete getCustomerOrdersByDateNew : + " + e.getMessage(), e);
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
 	public List<GtCustOrdersDetail> getCustomerOrderDetails(String orderNumber, Date from, Date to) throws ParseException {
 		orderNumber = Pad.left(orderNumber, 10);
 		Session session = sessionManager.openSession();

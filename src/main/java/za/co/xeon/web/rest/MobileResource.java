@@ -42,6 +42,7 @@ import za.co.xeon.external.ocr.Converters;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
+import za.co.xeon.external.sap.hibersap.forge.dto.EtCustOrders;
 import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
@@ -214,6 +215,41 @@ public class MobileResource {
 				Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(companyRepository.findBySapId(customerNumber)).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
 
 				return future.get().stream().filter(ev -> poMap.containsKey(ev.getBstkd())).collect(Collectors.toList());
+				// return future.get().stream().collect(Collectors.toList());
+			}
+		};
+	}
+
+	@RequestMapping(value = "/mobile/customersNew/{customerNumber}/orders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public Callable<List<EtCustOrders>> getCustomerOrdersNew(@PathVariable(value = "customerNumber") String customerNumber, @RequestParam(value = "from") String from, @RequestParam(value = "to") String to, Pageable pageable) throws Exception {
+		log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders (new one)");
+
+		return () -> {
+			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+			Future<List<EtCustOrders>> future;
+			if (SecurityUtils.isUserCustomer()) {
+				log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
+				future = mobileService.getCustomerOrdersNew(user.getCompany().getSapId(), new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+
+				if (SecurityUtils.isUserCustomerCSU()) {
+					Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(user.getCompany()).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+					return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
+					// return
+					// future.get().stream().collect(Collectors.toList());
+				} else {
+					Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+					return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
+					// return
+					// future.get().stream().collect(Collectors.toList());
+				}
+
+			} else {
+				future = mobileService.getCustomerOrdersNew(customerNumber, new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+
+				Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(companyRepository.findBySapId(customerNumber)).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+
+				return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
 				// return future.get().stream().collect(Collectors.toList());
 			}
 		};
