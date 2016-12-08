@@ -35,6 +35,7 @@
 					<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover table-centered" style="width: 100% !important;">
 						<thead>
 							<tr>
+								 
 								<th>Purchase Order</th>
 								<th>Customer Controller</th>
 								<th>Captured By</th>
@@ -50,7 +51,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="order in undeliveredOrders | unique: 'dbeln'">
+							<tr ng-repeat="order in undeliveredOrders | unique: '_dbeln'">
+								 
 								<td>{{ order._bstkd }}</td>
 								<td>{{ order._parvwYe }}</td>
 								<td>{{ order._ernam }}</td>
