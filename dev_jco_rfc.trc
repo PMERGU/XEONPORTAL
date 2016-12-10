@@ -1709,3 +1709,159 @@ COUNTER     4
 Error:  >Mon Nov 14 18:31:53,882<    >RfcGetException rc (7) message: Invalid value in OPTION field of value table for IN itab operator. operator.
 <RfcGetException
 
+
+**** Error file opened at 20161208 141138 India Standard Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Thu Dec 08 14:11:38,397<    >RfcGetException rc (3) message: CPIC-CALL: CMRCV on convId: 88324228
+
+ERROR       connection to partner '197.234.173.1:3299' broken
+TIME        Thu Dec 08 14:11:38 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        5082
+DETAIL      NiIRead: P=197.234.173.1:3299; L=192.168.43.118:52836
+SYSTEM CALL recv
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+<RfcGetException
+
+Error: [1] >Thu Dec 08 14:11:38,411<    RfcException raised by system [ZED|mcsasap1]:
+    message: CPIC-CALL: CMRCV on convId: 88324228
+
+ERROR       connection to partner '197.234.173.1:3299' broken
+TIME        Thu Dec 08 14:11:38 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        5082
+DETAIL      NiIRead: P=197.234.173.1:3299; L=192.168.43.118:52836
+SYSTEM CALL recv
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+    return code: RFC_SYS_EXCEPTION (3)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Dec 08 14:11:44,373<    >RfcGetException rc (3) message: CPIC-CALL: CMRCV on convId: 88323212
+
+ERROR       connection to partner '197.234.173.1:3299' broken
+TIME        Thu Dec 08 14:11:44 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        5082
+DETAIL      NiIRead: P=197.234.173.1:3299; L=192.168.43.118:52835
+SYSTEM CALL recv
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+<RfcGetException
+
+Error: [2] >Thu Dec 08 14:11:44,374<    RfcException raised by system [ZED|mcsasap1]:
+    message: CPIC-CALL: CMRCV on convId: 88323212
+
+ERROR       connection to partner '197.234.173.1:3299' broken
+TIME        Thu Dec 08 14:11:44 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        5082
+DETAIL      NiIRead: P=197.234.173.1:3299; L=192.168.43.118:52835
+SYSTEM CALL recv
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+    return code: RFC_SYS_EXCEPTION (3)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20161210 154732 India Standard Time Rel. 3.0.14 (2015-12-16) [721.619]
+Error:  >Sat Dec 10 15:47:32,932<    >RfcGetException rc (3) message: CPIC-CALL: CMRCV on convId: 55657972
+
+ERROR       connection to partner '197.234.173.1:3299' broken
+TIME        Sat Dec 10 15:47:32 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=197.234.173.1:3299; L=192.168.0.107:61343
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+<RfcGetException
+
+Error: [3] >Sat Dec 10 15:47:32,943<    RfcException raised by system [ZED|mcsasap1]:
+    message: CPIC-CALL: CMRCV on convId: 55657972
+
+ERROR       connection to partner '197.234.173.1:3299' broken
+TIME        Sat Dec 10 15:47:32 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=197.234.173.1:3299; L=192.168.0.107:61343
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+    return code: RFC_SYS_EXCEPTION (3)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Sat Dec 10 15:47:34,214<    >RfcGetException rc (3) message: CPIC-CALL: CMRCV on convId: 55733672
+
+ERROR       connection to partner '197.234.173.1:3299' broken
+TIME        Sat Dec 10 15:47:34 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=197.234.173.1:3299; L=192.168.0.107:61359
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+<RfcGetException
+
+Error: [4] >Sat Dec 10 15:47:34,215<    RfcException raised by system [ZED|mcsasap1]:
+    message: CPIC-CALL: CMRCV on convId: 55733672
+
+ERROR       connection to partner '197.234.173.1:3299' broken
+TIME        Sat Dec 10 15:47:34 2016
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=197.234.173.1:3299; L=192.168.0.107:61359
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+    return code: RFC_SYS_EXCEPTION (3)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

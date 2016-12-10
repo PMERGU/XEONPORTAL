@@ -28,7 +28,7 @@
 		<div class="panel-body">
 			<input ng-disabled="loadingOrders" ng-show="ordersStep !== 0" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.next()" value="Next 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;" /> <input ng-disabled="loadingOrders" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.prev()" value="Prev 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;" />
 
-			<uib-tabset> <uib-tab> <uib-tab-heading> <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: 'dbeln').length}}</span>Undelivered&nbsp; <span class="btn btn-default btn-xs" ng-click="reloadData(true)" ng-disabled="loadingOrders"> <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
+			<uib-tabset> <uib-tab> <uib-tab-heading> <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: '_dbeln').length}}</span>Undelivered&nbsp; <span class="btn btn-default btn-xs" ng-click="reloadData(true)" ng-disabled="loadingOrders"> <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
 			</span> </uib-tab-heading>
 			<div class="panel-body" style="padding-top: 0px;">
 				<div class="table-responsive">
@@ -108,7 +108,7 @@
 								<td>{{ order._dbeln }}</td>
 								<td>{{ order._pdstk }}</td>
 								<td width="10px">
-									<button type="submit" ng-click="viewRow($index)" ui-sref="orderdetail({poId: order.id, deliveryNo: order._dbeln, orderStep: ordersStep})" class="btn btn-info btn-sm">
+									<button type="submit" ui-sref="orderdetail({poId: order._bstkd, deliveryNo: order._dbeln, orderStep: ordersStep})" class="btn btn-info btn-sm">
 										<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 									</button>
 								</td>

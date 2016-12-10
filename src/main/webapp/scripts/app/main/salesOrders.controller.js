@@ -102,7 +102,7 @@ angular.module('portalApp')
 						return (el._pdstk === "B" || el._pdstk === "C");
 					});
 					$scope.undeliveredOrders = data.filter(function(el) {
-						return (el._pdstk === "A" || el._pdstk === "");
+						return (el._pdstk === "A");
 					});
 					$scope.loadingOrders = false;
 					$log.debug("delivered length :: " + $scope.deliveredOrders.length);

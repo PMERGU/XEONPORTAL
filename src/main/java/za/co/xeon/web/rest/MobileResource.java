@@ -234,14 +234,14 @@ public class MobileResource {
 
 				if (SecurityUtils.isUserCustomerCSU()) {
 					Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(user.getCompany()).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-					return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
-					// return
-					// future.get().stream().collect(Collectors.toList());
+					//return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
+					return
+					future.get().stream().collect(Collectors.toList());
 				} else {
 					Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-					return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
-					// return
-					// future.get().stream().collect(Collectors.toList());
+					//return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
+					return
+					future.get().stream().collect(Collectors.toList());
 				}
 
 			} else {
@@ -249,8 +249,8 @@ public class MobileResource {
 
 				Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(companyRepository.findBySapId(customerNumber)).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
 
-				return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
-				// return future.get().stream().collect(Collectors.toList());
+				//return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
+				return future.get().stream().collect(Collectors.toList());
 			}
 		};
 	}
