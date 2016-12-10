@@ -98,15 +98,17 @@ angular.module('portalApp')
 					force
 				).then(function(data) {
 					$scope.deliveredOrders = data.filter(function(el) {
+						$log.debug("el._pdstk :: " + el._pdstk);
 						return (el._pdstk === "B" || el._pdstk === "C");
 					});
 					$scope.undeliveredOrders = data.filter(function(el) {
 						return (el._pdstk === "A" || el._pdstk === "");
 					});
 					$scope.loadingOrders = false;
+					$log.debug("delivered length :: " + $scope.deliveredOrders.length);
+					$log.debug("undelivered length :: " + $scope.undeliveredOrders.length);
 				});
-				$log.debug("delivered length :: " + $scope.deliveredOrders.length);
-				$log.debug("undelivered length :: " + $scope.undeliveredOrders.length);
+				
 			}
 		}
 		;
@@ -144,7 +146,13 @@ angular.module('portalApp')
 				});
 			});
 			return nRow;
+		};
+		
+		$scope.viewRow=function (index) {
+
+		    //var empname = $scope.undeliveredOrders[index];  
+		    alert(index);
+
 		}
-		;
 
 	});

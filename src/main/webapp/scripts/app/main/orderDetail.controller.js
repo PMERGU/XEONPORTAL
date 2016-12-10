@@ -11,7 +11,7 @@ angular.module('portalApp')
 
         $scope.states = {
             'RECEIVED': true,
-            'PROCESSED':  purchaseOrder.state === 'PROCESSED' ? true : false,
+            'PROCESSED':  true,// purchaseOrder.state === 'PROCESSED' ? true : false,
             'COLLECTED': false,
             'IN_TRANSIT': false,
             'DELIVERED': false,

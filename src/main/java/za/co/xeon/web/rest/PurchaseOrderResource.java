@@ -700,28 +700,23 @@ public class PurchaseOrderResource {
 
 	@RequestMapping(value = "/purchaseOrders/{id}/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(@PathVariable Long id,
+	public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(@PathVariable String id,
 			@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
 		log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", id, deliveryNo);
 		return () -> {
 			List<GtCustOrdersDetail> sapOrders = null;
 			PurchaseOrder purchaseOrder;
-			purchaseOrder = purchaseOrderRepository.findOne(id);
+			purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(id);
 			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
 
-			if (purchaseOrder != null) {
+			 {
 				sapOrders = mobileService.getCustomerOrderDetails(deliveryNo,
 						new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
 				if (sapOrders.isEmpty()) {
 					log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id,
 							deliveryNo);
 				}
-			} else {
-				log.debug(
-						"[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]",
-						id, deliveryNo, user.getCompany().getName());
-			}
-
+			} 
 			return Optional.ofNullable(sapOrders).map(result -> new ResponseEntity<>(result, HttpStatus.OK))
 					.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 		};
@@ -729,25 +724,21 @@ public class PurchaseOrderResource {
 
 	@RequestMapping(value = "/purchaseOrders/{id}/huDetails/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<HandlingUnitDetails>> getHuDetails(@PathVariable Long id,
+	public Callable<ResponseEntity<HandlingUnitDetails>> getHuDetails(@PathVariable String id,
 			@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
 		log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", id, id, deliveryNo);
 		return () -> {
 			if (SecurityUtils.isUserXeonOrAdmin()) {
 				HandlingUnitDetails hud = null;
 				PurchaseOrder purchaseOrder;
-				purchaseOrder = purchaseOrderRepository.findOne(id);
+				purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(id);
 				User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-				if (purchaseOrder != null) {
+				 {
 					hud = mobileService.getHandlingUnitDetails(deliveryNo);
 					if (hud.getHuheader().isEmpty()) {
 						log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders",
 								id, id, deliveryNo);
 					}
-				} else {
-					log.debug(
-							"[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find po against user's company [{}]",
-							id, id, deliveryNo, user.getCompany().getName());
 				}
 
 				return Optional.ofNullable(hud).map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -820,7 +811,7 @@ public class PurchaseOrderResource {
 	@Timed
 	public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable Long id) {
 		log.debug("[PO:{}] - REST request to get PurchaseOrder");
-		PurchaseOrder purchaseOrder = purchaseOrderService.findOne(id);
+		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(id+"");
 		if (!(SecurityUtils.isUserXeonOrAdmin())) {
 			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
 			if (purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()) {

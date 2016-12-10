@@ -74,7 +74,7 @@
 					</table>
 				</div>
 			</div>
-			</uib-tab> <uib-tab> <uib-tab-heading> <span class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders | unique: 'dbeln').length}}</span>Delivered </uib-tab-heading>
+			</uib-tab> <uib-tab> <uib-tab-heading> <span class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders | unique: '_dbeln').length}}</span>Delivered </uib-tab-heading>
 			<div class="panel-body" style="padding-top: 0px;">
 				<div class="table-responsive">
 					<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
@@ -95,7 +95,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="order in deliveredOrders | unique: 'dbeln'">
+							<tr ng-repeat="order in deliveredOrders | unique: '_dbeln'">
 								<td>{{ order._bstkd }}</td>
 								<td>{{ order._parvwYe }}</td>
 								<td>{{ order._ernam }}</td>
@@ -108,7 +108,7 @@
 								<td>{{ order._dbeln }}</td>
 								<td>{{ order._pdstk }}</td>
 								<td width="10px">
-									<button type="submit" ui-sref="orderdetail({poId: order._bstkd, deliveryNo: order._dbeln, orderStep: ordersStep})" class="btn btn-info btn-sm">
+									<button type="submit" ng-click="viewRow($index)" ui-sref="orderdetail({poId: order.id, deliveryNo: order._dbeln, orderStep: ordersStep})" class="btn btn-info btn-sm">
 										<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 									</button>
 								</td>
