@@ -1,4 +1,4 @@
-package za.co.xeon.external.sap.hibersap.forge.dto;
+package za.co.xeon.external.sap.hibersap.forge.dto.podr;
 
 import java.util.Date;
 

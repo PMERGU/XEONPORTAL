@@ -6,15 +6,15 @@ import org.hibersap.annotations.Bapi;
 import org.hibersap.annotations.Parameter;
 import org.hibersap.annotations.Table;
 
-import za.co.xeon.external.sap.hibersap.forge.dto.SBestq;
-import za.co.xeon.external.sap.hibersap.forge.dto.SLgber;
-import za.co.xeon.external.sap.hibersap.forge.dto.SLgnum;
-import za.co.xeon.external.sap.hibersap.forge.dto.SLgtyp;
-import za.co.xeon.external.sap.hibersap.forge.dto.SMatkl;
-import za.co.xeon.external.sap.hibersap.forge.dto.SMatnr;
-import za.co.xeon.external.sap.hibersap.forge.dto.SWerks;
-import za.co.xeon.external.sap.hibersap.forge.dto.StockData;
-import za.co.xeon.external.sap.hibersap.forge.dto.StockInventory;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.SBestq;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.SLgber;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.SLgnum;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.SLgtyp;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.SMatkl;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.SMatnr;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.SWerks;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.StockData;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.StockInventory;
 
 @Bapi("Z_STOCK_INVENTORY")
 public class ZStockInventory {

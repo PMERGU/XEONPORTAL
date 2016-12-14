@@ -228,10 +228,6 @@ public class PoLine implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PoLine{" + "id=" + id + ", materialNumber='" + materialNumber + "'" + ", orderQuantity='"
-				+ orderQuantity + "'" + ", warehouse='" + warehouse + "'" + ", length='" + length + "'" + ", width='"
-				+ width + "'" + ", height='" + height + "'" + ", grossWeight='" + grossWeight + "'" + ", netWeight='"
-				+ netWeight + "'" + ", batchNumber='" + batchNumber + "'" + ", dvType='" + dvType + "'" + ", volume='"
-				+ volume + "'" + ", unitOfMeasure='" + unitOfMeasure + "'" + '}';
+		return "PoLine{" + "id=" + id + ", materialNumber='" + materialNumber + "'" + ", orderQuantity='" + orderQuantity + "'" + ", warehouse='" + warehouse + "'" + ", length='" + length + "'" + ", width='" + width + "'" + ", height='" + height + "'" + ", grossWeight='" + grossWeight + "'" + ", netWeight='" + netWeight + "'" + ", batchNumber='" + batchNumber + "'" + ", dvType='" + dvType + "'" + ", volume='" + volume + "'" + ", unitOfMeasure='" + unitOfMeasure + "'" + '}';
 	}
 }

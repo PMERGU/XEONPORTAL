@@ -1,11 +1,11 @@
-package za.co.xeon.external.sap.hibersap.forge.dto;
+package za.co.xeon.external.sap.hibersap.forge.dto.sr;
 
 import org.hibersap.annotations.BapiStructure;
 import org.hibersap.annotations.Parameter;
 import java.lang.Override;
 
 @BapiStructure
-public class SMatkl {
+public class SBestq {
 
 	@Parameter("HIGH")
 	String _high;

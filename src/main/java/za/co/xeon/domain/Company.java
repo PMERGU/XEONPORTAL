@@ -60,11 +60,10 @@ public class Company implements Serializable {
 
 	@Column(name = "background_content_type")
 	private String backgroundContentType;
-	
+
 	@NotNull
 	@Column(name = "material_name", nullable = false)
 	private String materialName;
-
 
 	@OneToMany(mappedBy = "company")
 	@JsonIgnore
@@ -176,9 +175,9 @@ public class Company implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Company{" + "id=" + id + ", name='" + name + "'" + ", sapId='" + sapId + "'" + ", background='" + background + "'" + ", backgroundContentType='" + backgroundContentType + "'"+", materialName='" + materialName + "'" + '}';
+		return "Company{" + "id=" + id + ", name='" + name + "'" + ", sapId='" + sapId + "'" + ", background='" + background + "'" + ", backgroundContentType='" + backgroundContentType + "'" + ", materialName='" + materialName + "'" + '}';
 	}
-	
+
 	public String getMaterialName() {
 		return materialName;
 	}

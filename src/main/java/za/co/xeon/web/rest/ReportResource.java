@@ -50,11 +50,12 @@ import za.co.xeon.domain.Attachment;
 import za.co.xeon.domain.Company;
 import za.co.xeon.domain.User;
 import za.co.xeon.external.sap.hibersap.HiberSapService;
-import za.co.xeon.external.sap.hibersap.forge.dto.EtCustOrders;
-import za.co.xeon.external.sap.hibersap.forge.dto.StockInventory;
+import za.co.xeon.external.sap.hibersap.forge.dto.podr.EtCustOrders;
+import za.co.xeon.external.sap.hibersap.forge.dto.sr.StockInventory;
 import za.co.xeon.repository.AttachmentRepository;
 import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.UserRepository;
+import za.co.xeon.web.rest.dto.IORReportReqDTO;
 import za.co.xeon.web.rest.dto.PODReportReqDTO;
 import za.co.xeon.web.rest.dto.PODReportResDTO;
 import za.co.xeon.web.rest.dto.StockReportDTO;
@@ -145,6 +146,23 @@ public class ReportResource {
 				log.debug("Errorss : " + e.getMessage());
 			}
 			return ResponseEntity.created(new URI("/api/podReport/")).body(ret);
+		};
+
+	}
+
+	@RequestMapping(value = "/iorReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public Callable<ResponseEntity<List<za.co.xeon.external.sap.hibersap.forge.dto.ior.EtCustOrders>>> fetchIORData(@Valid @RequestBody IORReportReqDTO dto, HttpServletRequest request) {
+		log.debug("[Report:{}] - REST request to Fetch Stock Data for Report", dto.toString());
+		return () -> {
+			List<za.co.xeon.external.sap.hibersap.forge.dto.ior.EtCustOrders> ret = new ArrayList<za.co.xeon.external.sap.hibersap.forge.dto.ior.EtCustOrders>();
+			try {
+				ret = hiberSapService.getCustomerOrdersForIOR(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType());
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.debug("Errorss : " + e.getMessage());
+			}
+			return ResponseEntity.created(new URI("/api/iorReport/")).body(ret);
 		};
 
 	}

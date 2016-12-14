@@ -28,7 +28,7 @@ import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
-import za.co.xeon.external.sap.hibersap.forge.dto.EtCustOrders;
+import za.co.xeon.external.sap.hibersap.forge.dto.podr.EtCustOrders;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 

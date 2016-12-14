@@ -10,7 +10,7 @@ import za.co.xeon.domain.Comment;
 /**
  * Spring Data JPA repository for the Party entity.
  */
-public interface BillingInfoRepository  extends JpaRepository<Comment, Long> {
+public interface BillingInfoRepository extends JpaRepository<Comment, Long> {
 
 	@Query("select a from BillingInfo a where a.locationString like ?1 and a.ecoMin <= ?2 and a.ecoMax >= ?2")
 	BillingInfo findByLocationString(String locationString, Double d);

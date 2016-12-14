@@ -42,7 +42,7 @@ import za.co.xeon.external.ocr.Converters;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
-import za.co.xeon.external.sap.hibersap.forge.dto.EtCustOrders;
+import za.co.xeon.external.sap.hibersap.forge.dto.podr.EtCustOrders;
 import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
@@ -234,14 +234,14 @@ public class MobileResource {
 
 				if (SecurityUtils.isUserCustomerCSU()) {
 					Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(user.getCompany()).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-					//return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
-					return
-					future.get().stream().collect(Collectors.toList());
+					// return future.get().stream().filter(ev ->
+					// poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
+					return future.get().stream().collect(Collectors.toList());
 				} else {
 					Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-					//return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
-					return
-					future.get().stream().collect(Collectors.toList());
+					// return future.get().stream().filter(ev ->
+					// poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
+					return future.get().stream().collect(Collectors.toList());
 				}
 
 			} else {
@@ -249,7 +249,8 @@ public class MobileResource {
 
 				Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(companyRepository.findBySapId(customerNumber)).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
 
-				//return future.get().stream().filter(ev -> poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
+				// return future.get().stream().filter(ev ->
+				// poMap.containsKey(ev.get_bstkd())).collect(Collectors.toList());
 				return future.get().stream().collect(Collectors.toList());
 			}
 		};
