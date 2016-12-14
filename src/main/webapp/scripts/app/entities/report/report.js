@@ -109,5 +109,41 @@ angular.module('portalApp')
                     }]
                 }
 
+            }).state('report.ior', {
+                parent: 'entity',
+                url: '/report/ior',
+                data: {
+                    authorities: ['ROLE_USER','ROLE_CUSTOMER'],
+                    pageTitle: 'IO Report'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/entities/report/ioReport.html',
+                        controller: 'IOReportController'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'IOReport', function($stateParams, IOReport) {
+                        if($stateParams.id){
+                            return IOReport.get({id : $stateParams.id});
+                        }else{
+                            return undefined;
+                        }
+                    }],
+                    currentUser: ['$stateParams', 'Principal', function($stateParams, Principal) {
+                        return Principal.identity();
+                    }],
+                    staticEnums: ['$stateParams', 'StaticServices', function($stateParams, StaticServices) {
+                        return StaticServices.getAll()
+                            .$promise.then(function (data) {
+                                    return data;
+                                }, function (errResponse) {
+                                    console.error(errResponse);
+                                    return undefined;
+                                }
+                            );
+                    }]
+                }
+
             });
     });

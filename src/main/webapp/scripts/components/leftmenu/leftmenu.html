@@ -77,7 +77,12 @@
 			</ul>
 			<ul class="nav nav-second-level" ng-class="{in: $state.includes('report')}">
 				<li ui-sref-active="active"><a ui-sref="report.pod" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span>POD Report</span></a></li>
-			</ul></li>
+			</ul>
+			<ul class="nav nav-second-level" ng-class="{in: $state.includes('report')}">
+				<li ui-sref-active="active"><a ui-sref="report.ior" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus"></span>&#xA0;<span>IO Report</span></a></li>
+			</ul>
+			
+		</li>
 
 		<li ng-class="{active: $state.includes('company')}" has-authority="ROLE_USER"><a href="#"> <span class="nav-label">Company</span><span class="fa arrow"></span>
 		</a>

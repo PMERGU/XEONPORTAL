@@ -1,0 +1,144 @@
+<div>
+	<div class="hpanel" style="margin-bottom: 15px;">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6">
+					<h2 class="font-light m-b-xs">IO Report</h2>
+					<jh-alert></jh-alert>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<h4>From Date</h4>
+						<div class="input-group">
+							<input id="field_fromDate" type="text" class="form-control" uib-datepicker-popup name="fromDate" ng-model="ioReport.fromDate" datepicker-options="dateOptions" is-open="dateSetup.dpFromDate.opened" /> <span class="input-group-btn"> +
+								<button type="button" class="btn btn-default" style="margin-top: 0px !important;" ng-click="dateSetup.dpFromDate.open($event)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</div>
+						<div class="form-group">
+							<h4>IO Status</h4>
+							<select class="form-control" name="szone" ng-model="ioReport.ioType" id="field_ioStatus">
+								<option value="">ALL</option>
+								<option value="C">C</option>
+								<option value="B">B</option>
+								<option value="A">A</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<h4>To Date</h4>
+						<div class="input-group">
+							<input id="field_toDate" type="text" class="form-control" uib-datepicker-popup name="toDate" ng-model="ioReport.toDate" datepicker-options="dateOptions" is-open="dateSetup.dpToDate.opened" /> <span class="input-group-btn"> +
+								<button type="button" class="btn btn-default" ng-click="dateSetup.dpToDate.open($event)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</div>
+						<div class="form-group" has-authority="ROLE_USER">
+							<h4>Company</h4>
+							<ui-select ng-model="selected.company" title="Choose a company"> <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match> <ui-select-choices repeat="company in companies | orderBy:'name' | filter: $select.search"> <span ng-bind-html="company.name | highlight: $select.search"></span> <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small> </ui-select-choices> </ui-select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="modal-footer">
+
+			<button type="button" ng-click="loadAll()" class="btn btn-primary">
+				<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Show Report</span>
+			</button>
+		</div>
+	</div>
+	<div class="hpanel">
+		<div class="panel-body">
+			<div class="table-responsive">
+
+				<table class="jh-table table table-striped export-table" id="stockReport" fixed-header ng-show="showdownloadbuttons">
+					<thead>
+						<tr>
+							<th><span>Purchase Order</span></th>
+							<th><span>Customer Controller</span></th>
+							<th><span>Captured By</span></th>
+							<th><span>Pickup Party</span></th>
+							<th><span>Pickup HUB</span></th>
+							<th><span>Ship to party</span></th>
+							<th><span>Consignee</span></th>
+							<th><span>Sales Order</span></th>
+							<th><span>Deliver No</span></th>
+							<th><span>POD Attachments</span></th>
+							<th><span>Invoice Attachments</span></th>
+							<th><span>A</span></th>
+							<th><span>B</span></th>
+							<th><span>C</span></th>
+							<th><span>D</span></th>
+							<th><span>E</span></th>
+							<th><span>F</span></th>
+							<th><span>A</span></th>
+							<th><span>B</span></th>
+							<th><span>C</span></th>
+							<th><span>D</span></th>
+							<th><span>E</span></th>
+							<th><span>F</span></th>
+							<th><span>A</span></th>
+							<th><span>B</span></th>
+							<th><span>C</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="ioRec in (ioData | filter:pageFilter)">
+
+							<td>{{ioRec._bstkd}}</td>
+							<td>{{ioRec._parvwYe}}</td>
+							<td>{{ioRec._ernam}}</td>
+							<td>{{ioRec._parvwYc}}</td>
+							<td>{{ioRec._parvwYh}}</td>
+							<td>{{ioRec._parvwWe}}</td>
+							<td>{{ioRec._parvwAg}}</td>
+							<td>{{ioRec._vbeln}}</td>
+							<td>{{ioRec._dbeln}}</td>
+							<td>{{ioRec.podStatus}}</td>
+							<td>{{ioRec.invStatus}}</td>
+							<td>{{ioRec._parvwWe}}</td>
+							<td>{{ioRec._parvwAg}}</td>
+							<td>{{ioRec._podat}}</td>
+							<td>{{ioRec._potim}}</td>
+							<td>{{ioRec._pdstk}}</td>
+							<td>{{ioRec._skunnr}}</td>
+							<td>{{ioRec._audat}}</td>
+							<td>{{ioRec._posnr}}</td>
+							<td>{{ioRec._drzet}}</td>
+							<td>{{ioRec._fkdat}}</td>
+							<td>{{ioRec._arktx}}</td>
+							<td>{{ioRec._erzet}}</td>
+							<td>{{ioRec._parvwYh}}</td>
+							<td>{{ioRec._vrkme}}</td>
+							<td>{{ioRec._matnr}}</td>
+						</tr>
+
+					</tbody>
+
+
+				</table>
+
+
+			</div>
+			<br />
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" ng-show="showdownloadbuttons" onclick="$('#stockReport').tableExport({type:'excel', escape:'false'});">
+					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download Excel</span>
+				</button>
+				<button type="button" ng-click="downloadPdf()" ng-show="showdownloadbuttons" class="btn btn-primary">
+					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download PDF</span>
+				</button>
+			</div>
+		</div>
+
+	</div>
+</div>
