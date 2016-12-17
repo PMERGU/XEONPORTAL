@@ -27,6 +27,7 @@ import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.dto.ImHuitem;
 import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
 import za.co.xeon.external.sap.hibersap.errors.ValidSapException;
+import za.co.xeon.external.sap.hibersap.forge.hu.rfc.ZGetHandlingUnits;
 import za.co.xeon.external.sap.hibersap.forge.ior.rfc.ZOrdersReport;
 import za.co.xeon.external.sap.hibersap.forge.od.rfc.ZGetCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.forge.so.dto.EtCustOrders;
@@ -40,7 +41,6 @@ import za.co.xeon.external.sap.hibersap.forge.sr.dto.SWerks;
 import za.co.xeon.external.sap.hibersap.forge.sr.dto.StockInventory;
 import za.co.xeon.external.sap.hibersap.forge.sr.rfc.ZStockInventory;
 import za.co.xeon.service.util.Pad;
-import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 import za.co.xeon.web.rest.dto.SalesOrderCreatedDTO;
@@ -157,14 +157,13 @@ public class HiberSapService {
 		}
 	}
 
-	public HandlingUnitDetails getHandlingUnitDetails(String barcode) {
+	public ZGetHandlingUnits getHandlingUnitDetails(String barcode) {
 		barcode = Pad.left(barcode, 10);
 		Session session = sessionManager.openSession();
 		try {
-			HandlingUnitsRFC rfc = new HandlingUnitsRFC(barcode);
+			ZGetHandlingUnits rfc = new ZGetHandlingUnits(barcode);
 			session.execute(rfc);
-			HandlingUnitDetails hud = new HandlingUnitDetails(rfc.getHuheader(), rfc.getHuitem(), rfc.getHunumbers());
-			return hud;
+			return rfc;
 		} catch (Exception e) {
 			log.error("Couldnt complete getHandelingUnits : + " + e.getMessage(), e);
 			throw e;

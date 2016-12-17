@@ -5,9 +5,9 @@ import java.util.List;
 import org.hibersap.annotations.Parameter;
 import org.hibersap.annotations.Table;
 
-import za.co.xeon.external.sap.hibersap.dto.Huheader;
-import za.co.xeon.external.sap.hibersap.dto.Huitem;
-import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
+import za.co.xeon.external.sap.hibersap.forge.hu.dto.Huheader;
+import za.co.xeon.external.sap.hibersap.forge.hu.dto.Huitem;
+import za.co.xeon.external.sap.hibersap.forge.hu.dto.Hunumbers;
 
 /**
  * Created by Derick on 9/17/2016.

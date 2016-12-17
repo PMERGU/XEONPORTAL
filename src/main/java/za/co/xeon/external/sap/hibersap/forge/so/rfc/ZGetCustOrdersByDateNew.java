@@ -18,10 +18,10 @@ import java.lang.Override;
 public class ZGetCustOrdersByDateNew {
 
 	@Import
-	@Parameter("IM_AUART")
+	@Parameter(value = "IM_AUART", type = ParameterType.TABLE_STRUCTURE)
 	private final List<ImAuart> _imAuart;
 	@Import
-	@Parameter("IM_DATE_R")
+	@Parameter(value = "IM_DATE_R", type = ParameterType.TABLE_STRUCTURE)
 	private final List<ImDateR> _imDateR;
 	@Import
 	@Parameter("IM_STATUS_POD")

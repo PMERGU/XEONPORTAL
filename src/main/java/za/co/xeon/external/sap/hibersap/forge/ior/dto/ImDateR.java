@@ -20,7 +20,7 @@ public class ImDateR {
 	public ImDateR() {
 		super();
 	}
-	
+
 	public ImDateR(String _sign, Date _low, Date _high, String _option) {
 		super();
 		this._sign = _sign;

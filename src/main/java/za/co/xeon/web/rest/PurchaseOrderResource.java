@@ -54,6 +54,7 @@ import za.co.xeon.external.sap.hibersap.dto.ImItemDetail;
 import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrCol;
 import za.co.xeon.external.sap.hibersap.dto.ImOtcAdrShpto;
 import za.co.xeon.external.sap.hibersap.errors.ValidSapException;
+import za.co.xeon.external.sap.hibersap.forge.hu.rfc.ZGetHandlingUnits;
 import za.co.xeon.repository.AttachmentRepository;
 import za.co.xeon.repository.CommentRepository;
 import za.co.xeon.repository.PartyRepository;
@@ -567,7 +568,9 @@ public class PurchaseOrderResource {
 				purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(id);
 				User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
 				{
-					hud = mobileService.getHandlingUnitDetails(deliveryNo);
+
+					ZGetHandlingUnits rfc = mobileService.getHandlingUnitDetails(deliveryNo);
+					hud = new HandlingUnitDetails(rfc.get_huheader(), rfc.get_huitem(), rfc.get_hunumbers());
 					if (hud.getHuheader().isEmpty()) {
 						log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, id, deliveryNo);
 					}
