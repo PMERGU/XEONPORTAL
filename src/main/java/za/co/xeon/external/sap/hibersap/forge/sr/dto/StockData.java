@@ -1,4 +1,4 @@
-package za.co.xeon.external.sap.hibersap.forge.dto.sr;
+package za.co.xeon.external.sap.hibersap.forge.sr.dto;
 
 import org.hibersap.annotations.BapiStructure;
 import java.math.BigDecimal;

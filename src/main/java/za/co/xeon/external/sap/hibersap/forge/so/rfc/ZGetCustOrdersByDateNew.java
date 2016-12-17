@@ -6,6 +6,12 @@ import org.hibersap.annotations.Import;
 import org.hibersap.annotations.Parameter;
 import org.hibersap.annotations.Export;
 import org.hibersap.annotations.ParameterType;
+
+import za.co.xeon.external.sap.hibersap.forge.so.dto.EtCustOrders;
+import za.co.xeon.external.sap.hibersap.forge.so.dto.EtReturn;
+import za.co.xeon.external.sap.hibersap.forge.so.dto.ImAuart;
+import za.co.xeon.external.sap.hibersap.forge.so.dto.ImDateR;
+
 import java.lang.Override;
 
 @Bapi("Z_GET_CUST_ORDERS_BY_DATE_NEW")

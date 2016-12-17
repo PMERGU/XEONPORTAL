@@ -1,6 +1,6 @@
 package za.co.xeon.web.rest.dto;
 
-import za.co.xeon.external.sap.hibersap.forge.dto.podr.EtCustOrders;
+import za.co.xeon.external.sap.hibersap.forge.so.dto.EtCustOrders;
 
 public class PODReportResDTO extends EtCustOrders {
 	private String podStatus;

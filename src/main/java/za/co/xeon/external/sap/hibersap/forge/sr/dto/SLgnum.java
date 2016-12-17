@@ -1,11 +1,11 @@
-package za.co.xeon.external.sap.hibersap.forge.dto.sr;
+package za.co.xeon.external.sap.hibersap.forge.sr.dto;
 
 import org.hibersap.annotations.BapiStructure;
 import org.hibersap.annotations.Parameter;
 import java.lang.Override;
 
 @BapiStructure
-public class SLgber {
+public class SLgnum {
 
 	@Parameter("HIGH")
 	String _high;

@@ -28,7 +28,7 @@ import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.dto.ImHuupdate;
-import za.co.xeon.external.sap.hibersap.forge.dto.podr.EtCustOrders;
+import za.co.xeon.external.sap.hibersap.forge.so.dto.EtCustOrders;
 import za.co.xeon.web.rest.dto.HandlingUnitDetails;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 
@@ -130,8 +130,8 @@ public class MobileService {
 	}
 
 	@Async
-	public Future<List<EtCustOrders>> getCustomerOrdersNew(String customerNumber, Date from, Date to) throws Exception {
-		return new AsyncResult<List<EtCustOrders>>(hiberSapService.getCustomerOrdersByDateNew(customerNumber, from, to, true));
+	public Future<List<EtCustOrders>> getCustomerOrdersNew(String type, String customerNumber, Date from, Date to) throws Exception {
+		return new AsyncResult<List<EtCustOrders>>(hiberSapService.getCustomerOrdersByDateNew(type, customerNumber, from, to, true));
 	}
 
 	@Async

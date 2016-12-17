@@ -1,11 +1,11 @@
-package za.co.xeon.external.sap.hibersap.forge.dto.sr;
+package za.co.xeon.external.sap.hibersap.forge.so.dto;
 
 import org.hibersap.annotations.BapiStructure;
 import org.hibersap.annotations.Parameter;
 import java.lang.Override;
 
 @BapiStructure
-public class SMatnr {
+public class ImAuart {
 
 	@Parameter("HIGH")
 	String _high;
@@ -15,6 +15,13 @@ public class SMatnr {
 	String _low;
 	@Parameter("OPTION")
 	String _option;
+
+	public ImAuart(String _sign, String _option, String _low, String _high) {
+		this._sign = _sign;
+		this._option = _option;
+		this._high = _high;
+		this._low = _low;
+	}
 
 	public String get_high() {
 		return this._high;

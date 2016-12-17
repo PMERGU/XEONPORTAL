@@ -1,4 +1,4 @@
-package za.co.xeon.external.sap.hibersap.forge.so.rfc;
+package za.co.xeon.external.sap.hibersap.forge.so.dto;
 
 import org.hibersap.annotations.BapiStructure;
 import org.hibersap.annotations.Parameter;
