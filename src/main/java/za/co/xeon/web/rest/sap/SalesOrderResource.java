@@ -52,7 +52,7 @@ public class SalesOrderResource {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/so/{customerNumber}/orders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<List<EtCustOrders>> getCustomerOrdersNew(@PathVariable(value = "type") String type, @PathVariable(value = "customerNumber") String customerNumber, @RequestParam(value = "from") String from, @RequestParam(value = "to") String to, Pageable pageable) throws Exception {
+	public Callable<List<EtCustOrders>> getCustomerOrdersNew(@RequestParam(value = "type") String type, @PathVariable(value = "customerNumber") String customerNumber, @RequestParam(value = "from") String from, @RequestParam(value = "to") String to, Pageable pageable) throws Exception {
 		log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders (new one)");
 
 		return () -> {
@@ -80,14 +80,14 @@ public class SalesOrderResource {
 
 	@RequestMapping(value = "/so/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(@PathVariable String id, @PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
-		log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", id, deliveryNo);
+	public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
+		log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", deliveryNo);
 		return () -> {
 			List<GtCustOrdersDetail> sapOrders = null;
 			{
 				sapOrders = salesOrderService.getCustomerOrderDetailNew(deliveryNo, new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
 				if (sapOrders.isEmpty()) {
-					log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", id, deliveryNo);
+					log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", deliveryNo);
 				}
 			}
 			return Optional.ofNullable(sapOrders).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
