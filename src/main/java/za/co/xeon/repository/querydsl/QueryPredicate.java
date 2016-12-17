@@ -10,6 +10,7 @@ import za.co.xeon.domain.PostalArea;
 /**
  * Created by Derick on 7/9/2016.
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class QueryPredicate {
 	private SearchCriteria criteria;
 	private final Class type;

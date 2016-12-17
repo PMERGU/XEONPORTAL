@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
  * header)</a>.
  * </p>
  */
+@SuppressWarnings("rawtypes")
 public class PaginationUtil {
 
 	public static HttpHeaders generatePaginationHttpHeaders(Page<?> page, String baseUrl) throws URISyntaxException {

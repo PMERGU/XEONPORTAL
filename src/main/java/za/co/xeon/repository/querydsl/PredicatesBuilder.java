@@ -10,6 +10,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 /**
  * Created by Derick on 7/9/2016.
  */
+@SuppressWarnings("rawtypes")
 public class PredicatesBuilder {
 	private final List<SearchCriteria> params;
 	private final Class type;

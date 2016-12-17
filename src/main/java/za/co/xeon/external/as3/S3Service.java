@@ -32,6 +32,7 @@ import za.co.xeon.config.MobileConfiguration;
  * Created by derick on 2016/02/07.
  */
 @Service
+@SuppressWarnings("unused")
 public class S3Service {
 	private final static Logger log = LoggerFactory.getLogger(S3Service.class);
 

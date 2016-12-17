@@ -35,6 +35,7 @@ import za.co.xeon.web.filter.StaticResourcesProductionFilter;
  * Configuration of web application with Servlet 3.0 APIs.
  */
 @Configuration
+@SuppressWarnings("unused")
 public class WebConfigurer implements ServletContextInitializer, EmbeddedServletContainerCustomizer {
 
 	private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);

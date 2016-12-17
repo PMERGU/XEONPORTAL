@@ -1,4 +1,4 @@
-package za.co.xeon.external.sap.hibersap.forge.rfc;
+package za.co.xeon.external.sap.hibersap.forge.dto.ior;
 
 import java.util.List;
 
@@ -7,10 +7,6 @@ import org.hibersap.annotations.Export;
 import org.hibersap.annotations.Import;
 import org.hibersap.annotations.Parameter;
 import org.hibersap.annotations.ParameterType;
-
-import za.co.xeon.external.sap.hibersap.forge.dto.ior.EtCustOrders;
-import za.co.xeon.external.sap.hibersap.forge.dto.ior.EtReturn;
-import za.co.xeon.external.sap.hibersap.forge.dto.ior.ImDateR;
 
 @Bapi("Z_ORDERS_REPORT")
 public class ZOrdersReport {

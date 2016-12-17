@@ -58,6 +58,7 @@ import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
 @RequestMapping("/api")
 // Max uploaded file size (here it is 20 MB)
 @MultipartConfig(fileSizeThreshold = 15971520)
+@SuppressWarnings("unused")
 public class MobileResource {
 	private final static Logger log = LoggerFactory.getLogger(MobileResource.class);
 

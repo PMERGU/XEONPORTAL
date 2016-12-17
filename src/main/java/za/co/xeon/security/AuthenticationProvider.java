@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@SuppressWarnings("unused")
 public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
 
 	private final Logger log = LoggerFactory.getLogger(AuthenticationProvider.class);

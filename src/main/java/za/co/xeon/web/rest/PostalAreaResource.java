@@ -40,6 +40,7 @@ import za.co.xeon.web.rest.util.PaginationUtil;
  */
 @RestController
 @RequestMapping("/api")
+@SuppressWarnings("unused")
 public class PostalAreaResource {
 
 	private final Logger log = LoggerFactory.getLogger(PostalAreaResource.class);

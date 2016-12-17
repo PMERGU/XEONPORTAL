@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping(value = "/s3")
+@SuppressWarnings("unused")
 public class S3Resource {
 	private final static Logger log = LoggerFactory.getLogger(S3Resource.class);
 

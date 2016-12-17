@@ -47,6 +47,7 @@ import za.co.xeon.web.rest.dto.OrderDetails;
 @RequestMapping("/api")
 // Max uploaded file size (here it is 20 MB)
 @MultipartConfig(fileSizeThreshold = 15971520)
+@SuppressWarnings({ "unused", "rawtypes" })
 public class OpenResource {
 	private final static Logger log = LoggerFactory.getLogger(OpenResource.class);
 

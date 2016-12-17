@@ -22,6 +22,7 @@ import za.co.xeon.repository.UserRepository;
  * Authenticate a user from the database.
  */
 @Component("userDetailsService")
+@SuppressWarnings("unused")
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
 	private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);

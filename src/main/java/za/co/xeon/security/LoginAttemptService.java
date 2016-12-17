@@ -15,6 +15,7 @@ import com.google.common.cache.LoadingCache;
  * Created by Derick on 8/15/2016.
  */
 @Service
+@SuppressWarnings("unused")
 public class LoginAttemptService {
 	private final Logger log = LoggerFactory.getLogger(LoginAttemptService.class);
 

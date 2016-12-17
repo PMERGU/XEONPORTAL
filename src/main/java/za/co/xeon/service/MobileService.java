@@ -36,6 +36,7 @@ import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
  * Created by derick on 2016/02/07.
  */
 @Service
+@SuppressWarnings("unused")
 public class MobileService {
 	private final static Logger log = LoggerFactory.getLogger(MobileService.class);
 

@@ -34,6 +34,7 @@ import za.co.xeon.external.ocr.dto.xsd.result.Document;
  * Created by derick on 2016/02/07.
  */
 @Service
+@SuppressWarnings("unused")
 public class OcrService {
 	private final static Logger log = LoggerFactory.getLogger(OcrService.class);
 	private XPath xPath = XPathFactory.newInstance().newXPath();

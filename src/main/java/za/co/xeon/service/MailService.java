@@ -31,6 +31,7 @@ import za.co.xeon.repository.UserRepository;
  * </p>
  */
 @Service
+@SuppressWarnings("unused")
 public class MailService {
 
 	private final Logger log = LoggerFactory.getLogger(MailService.class);

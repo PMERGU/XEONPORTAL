@@ -18,6 +18,7 @@ import za.co.xeon.config.MobileConfiguration;
 @RestController
 // Max uploaded file size (here it is 20 MB)
 @MultipartConfig(fileSizeThreshold = 5971520)
+@SuppressWarnings("unused")
 public class OcrRestService {
 	private final static Logger log = LoggerFactory.getLogger(OcrRestService.class);
 

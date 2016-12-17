@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
  * Created by Derick on 8/15/2016.
  */
 @Component
+@SuppressWarnings("unused")
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	private final Logger log = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
 
