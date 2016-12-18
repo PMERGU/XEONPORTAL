@@ -26,7 +26,7 @@ angular.module('portalApp')
                 }
             }) .state('orderdetailNew', {
                 parent: 'site',
-                url: '/so/orders/{deliveryNo}?step={orderStep})',
+                url: '/so/orders/{poId}/{deliveryNo}/{type}?step={orderStep})',
                 data: {
                     authorities: ['ROLE_CUSTOMER', 'ROLE_USER'],
                     pageTitle: 'Order Details'
@@ -41,7 +41,7 @@ angular.module('portalApp')
                 },
                 resolve: {
                 	
-                	salesOrder: ['$stateParams', 'SOService', function ($stateParams, SOService) {
+                	order: ['$stateParams', 'SOService', function ($stateParams, SOService) {
                         return SOService.getByDeliveryNo({deliveryNo: $stateParams.deliveryNo});
                     }],
                     
@@ -49,7 +49,7 @@ angular.module('portalApp')
                         return PurchaseOrder.get({id: $stateParams.poId})
                             .$promise.then(function (data) {return data;}, function (errResponse) {console.log(errResponse);return undefined;});
                     }],
-                    order: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
+                    salesOrder: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
                         return PurchaseOrder.getOrder({id: $stateParams.poId, deliveryNo: $stateParams.deliveryNo});
                     }],
                     deliveryNo: ['$stateParams', function ($stateParams) {
@@ -67,12 +67,72 @@ angular.module('portalApp')
                     comments: ['$stateParams', 'Comment', '$q', 'PurchaseOrder', function ($stateParams, Comment, $q, PurchaseOrder) {
                         return PurchaseOrder.getComments({id: $stateParams.poId});
                     }],
-                    huDetails: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
-                        return PurchaseOrder.getHUDetails({id: $stateParams.poId, deliveryNo: $stateParams.deliveryNo});
+                    huDetails: ['$stateParams', 'SOService', function ($stateParams, SOService) {
+                        return SOService.getHUDetails({deliveryNo: $stateParams.deliveryNo});
                     }],
                     currentUser: ['$stateParams', 'Principal', function($stateParams, Principal) {
                         return Principal.identity();
                     }]
                 }
+            }).state('orderdetailNew.attachment', {
+                parent: 'orderdetailNew',
+                url: '/attachments',
+                data: {
+                    authorities: ['ROLE_USER', 'ROLE_CUSTOMER'],
+                },
+                params: {
+                    for: null,
+                    company: null
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/so/attachment-dialog.html',
+                        controller: 'NewAttachmentDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    category: null,
+                                    description: null,
+                                    deliveryNumber: $stateParams.for
+                                };
+                            },
+                            currentUser: ['$stateParams', 'Principal', function($stateParams, Principal) {
+                                return Principal.identity();
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('orderdetail', null, {reload: true});
+                    }, function () {
+                        $state.go('orderdetail');
+                    })
+                }]
+            })
+            .state('orderdetailNew.attachmentDelete', {
+                parent: 'orderdetailNew',
+                url: '/attachments/{id}/delete',
+                data: {
+                    authorities: ['ROLE_USER', 'ROLE_CUSTOMER'],
+                },
+                params: {
+                    attachment: null
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/so/attachment-delete-dialog.html',
+                        controller: 'NewAttachmentDeleteController',
+                        size: 'md',
+                        resolve: {
+                            attachment: function () {
+                                return $stateParams.attachment;
+                            }
+                        }
+
+                    }).result.then(function () {
+                        $state.go('orderdetailNew', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
             })
     });

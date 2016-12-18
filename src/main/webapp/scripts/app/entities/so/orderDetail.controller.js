@@ -5,14 +5,33 @@ angular.module('portalApp')
                                                        purchaseOrder, order, deliveryNo, orderStep, delAttachments, poAttachments, comments,huDetails,salesOrder) {
         $scope.purchaseOrder = purchaseOrder;
         $scope.purchaseOrder = purchaseOrder;
+        $scope.order=order;
+        $scope.poId=$stateParams.poId;
         $scope.deliveryNo = deliveryNo;
         $scope.huDetails=huDetails;
         $scope.orderResolved = false;
         $scope.attachments = [];
+        
+        $scope.orderTypes = {
+        		
+        		'ZOUT' : 'OUTBOUND',
+				'ZINB':'INBOUND',
+				'YCO':'Transport',
+				'ZRET': 'Returns',
+				'ZFF' : 'Freight Forwarding & Clearing',
+				'ZWSE': 'Storage'
+        		
+        }
+        
+        $scope.orderType = $scope.orderTypes[$stateParams.type];
+        
+        $log.debug("purchaseorder :: "+ $scope.purchaseOrder)
+        
+        $log.debug("OrdserType :: "+ $scope.orderType)
 
         $scope.states = {
             'RECEIVED': true,
-            'PROCESSED':  true,// purchaseOrder.state === 'PROCESSED' ? true : false,
+            'PROCESSED':  $scope.purchaseOrder === undefined || $scope.purchaseOrder.state === undefined ? true : $scope.purchaseOrder.state === 'PROCESSED' ? true : false,
             'COLLECTED': false,
             'IN_TRANSIT': false,
             'DELIVERED': false,
@@ -45,7 +64,7 @@ angular.module('portalApp')
             id: null,
             message: null,
             purchaseOrder: {
-                id: purchaseOrder!= undefined ? purchaseOrder.id : null
+                id: $scope.poId
             },
             user: null,
             internal: false,
@@ -91,14 +110,14 @@ angular.module('portalApp')
                 return order1._tknum - order2._tknum;
             });
 
-            if($scope.order[0]._daten !== undefined && $scope.order[0]._daten !== null && $scope.order[0].daten !== ""){
+            if($scope.order[0]._daten !== undefined && $scope.order[0]._daten !== null && $scope.order[0]._daten !== ""){
                 $scope.states['RECEIVED'] = true;
                 $scope.states['PROCESSED'] = true;
                 $scope.states['COLLECTED'] = true;
                 $scope.states['IN_TRANSIT'] = true;
             }
 
-            if($scope.order[0].pdstk === "B" || $scope.order[0].pdstk === "C" ){
+            if($scope.order[0]._pdstk === "B" || $scope.order[0]._pdstk === "C" ){
                 $scope.states['RECEIVED'] = true;
                 $scope.states['PROCESSED'] = true;
                 $scope.states['COLLECTED'] = true;

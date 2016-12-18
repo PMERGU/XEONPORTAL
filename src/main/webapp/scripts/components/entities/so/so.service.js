@@ -28,6 +28,10 @@ angular.module('portalApp')
                         return data;
                 }
             },
+            'getHUDetails': {
+                url: 'api/so/huDetails/:deliveryNo',
+                method: 'GET', isArray: false
+            },
             'save': {
                 method: 'POST',
                 transformRequest: function (data) {
