@@ -17,7 +17,7 @@ import java.lang.Override;
 public class ZGetCustOrdersDetail {
 
 	@Import
-	@Parameter("IM_DATE_R")
+	@Parameter(value = "IM_DATE_R", type = ParameterType.TABLE_STRUCTURE)
 	private final List<ImDateR> _imDateR;
 	@Import
 	@Parameter("IM_VBELN")
@@ -26,7 +26,7 @@ public class ZGetCustOrdersDetail {
 	@Parameter(value = "GT_RETURN", type = ParameterType.STRUCTURE)
 	private GtReturn _gtReturn;
 	@Export
-	@Parameter("GT_CUST_ORDERS_DETAIL")
+	@Parameter(value = "GT_CUST_ORDERS_DETAIL", type = ParameterType.TABLE_STRUCTURE)
 	private List<GtCustOrdersDetail> _gtCustOrdersDetail;
 
 	public ZGetCustOrdersDetail(final List<ImDateR> imDateR, final String imVbeln) {
