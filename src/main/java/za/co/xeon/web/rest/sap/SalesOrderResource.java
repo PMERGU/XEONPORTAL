@@ -27,6 +27,7 @@ import com.codahale.metrics.annotation.Timed;
 
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
+import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.forge.od.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.forge.so.dto.EtCustOrders;
 import za.co.xeon.repository.CompanyRepository;
@@ -93,5 +94,4 @@ public class SalesOrderResource {
 			return Optional.ofNullable(sapOrders).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 		};
 	}
-
 }
