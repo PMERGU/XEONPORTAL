@@ -1,0 +1,67 @@
+<form name="editForm" role="form" novalidate ng-submit="upload(attachment)" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myPartyLabel">Add a new attachment for {{attachment.deliveryNumber}}</h4>
+    </div>
+    <jh-alert-error></jh-alert-error>
+    <div class="m" ng-show="isSaving">
+        <div class="progress m-t-xs full progress-striped active animated">
+            <div style="width: 1%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" role="progressbar" class="progress-bar progress-bar-success animated" ng-style="loadingWidth">
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="field_category">Category</label>
+                    <select class="form-control" name="category" ng-model="attachment.category" id="field_category" required
+                            ng-options="enum | prittyPrint for enum in attachmentCategories">
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="field_description">Description</label>
+                    <textarea class="form-control" rows="4" name="description" id="field_description" required
+                              ng-model="attachment.description"></textarea>
+                    <div ng-show="editForm.description.$invalid">
+                        <p class="help-block small-help-block pull-right" ng-show="editForm.description.$error.required">required</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                Drop File:
+                <div ngf-drop ngf-select ng-model="attachment.files" class="drop-box"
+                     ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+                     accept="image/*,application/pdf" ngf-max-size="5MB" required ngf-model-invalid="errorFile"
+                     ngf-pattern="'image/*,application/pdf'">Drop pdfs or images here or click to upload
+                </div>
+                <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                <div class="alert alert-error" ng-show="editForm.file.$error.maxSize">
+                    {{errorFile.size / 1000000|number:1}}MB: max 5M
+                </div>
+                <div class="alert alert-success" ng-show="attachment.files">
+                    Files added so far for uploading to server:
+                    <ul>
+                        <li ng-repeat="f in attachment.files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;
+            <span ng-show="!isSaving">Save</span>
+            <span ng-show="isSaving">uploading...</span>
+        </button>
+    </div>
+</form>

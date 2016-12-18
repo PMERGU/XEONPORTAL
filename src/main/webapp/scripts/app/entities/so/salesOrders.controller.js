@@ -8,6 +8,7 @@ angular.module('portalApp')
 		$scope.ordersStep = 0;
 		$scope.todaysDate = new Date();
 		$scope.loadingOrders = false;
+		$scope.showTable = false;
 		
 		$scope.soData = {
 				fromDate : null,
@@ -155,6 +156,7 @@ angular.module('portalApp')
 
 		$scope.reloadData = function(refresh) {
 			var resetPaging = true;
+			$scope.showTable=true;
 			getOrders(new Date(), refresh);
 		//			if ($scope.selected.company.id !== null) {
 		//				Company.getPurchaseOrders({

@@ -12,10 +12,10 @@
 
             <div class="panel-body animate-show" ng-show="orderResolved">
                 <h2 class="font-light m-b-xs" ng-show="!states['POD']">
-                    {{purchaseOrder.serviceType | prittyPrint }} order #{{deliveryNo}} in progress
+                    {{orderType | prittyPrint }} order #{{deliveryNo}} in progress
                 </h2>
                 <h2 class="font-light m-b-xs" ng-show="states['POD']" style="color: #3498db">
-                    {{purchaseOrder.serviceType | prittyPrint }} order #{{deliveryNo}} completed {{ states['INVOICE'] ? ' and invoice available' : '' }}
+                    {{orderType | prittyPrint }} order #{{deliveryNo}} completed {{ states['INVOICE'] ? ' and invoice available' : '' }}
                 </h2>
                 <jh-alert></jh-alert>
                 <small>Detailed order view as it proceeds from capture to completed</small>
@@ -46,7 +46,7 @@
 
                 <!-- This is the individual marker-->
                 <div class="marker mCollected timeline-icon" ng-class="{'done': states['COLLECTED']}"
-                     ng-show="purchaseOrder.serviceType !== 'OUTBOUND'">
+                     ng-show="orderType !== 'OUTBOUND'">
                     <i class="icon-pi-cargo-trolley-1"></i>
                     <i class="checkmark fa fa-check" ng-show="states['COLLECTED']"></i>
                     </span>
@@ -58,8 +58,8 @@
                 <div class="marker mTransit timeline-icon" ng-class="{'done': states['IN_TRANSIT']}">
                     <i class="icon-pi-truck-3"></i>
                     <i class="checkmark fa fa-check" ng-show="states['IN_TRANSIT']"></i>
-                    <span style="margin-left: -110%; width: 74px;" ng-show="purchaseOrder.serviceType !== 'OUTBOUND'">In Transit</span>
-                    <span style="margin-left: -110%; width: 74px;" ng-show="purchaseOrder.serviceType === 'OUTBOUND'">Goods Issued</span>
+                    <span style="margin-left: -110%; width: 74px;" ng-show="orderType !== 'OUTBOUND'">In Transit</span>
+                    <span style="margin-left: -110%; width: 74px;" ng-show="orderType === 'OUTBOUND'">Goods Issued</span>
                 </div>
                 <!-- / marker -->
 
@@ -67,9 +67,9 @@
                 <div class="marker mDelivered timeline-icon" ng-class="{'done': states['DELIVERED']}">
                     <i class="icon-pi-hand-truck-4"></i>
                     <i class="checkmark fa fa-check" ng-show="states['DELIVERED']"></i>
-                    <span style="margin-left: -110%;" ng-show="purchaseOrder.serviceType !== 'INBOUND' || purchaseOrder.serviceType !== 'OUTBOUND'">Delivered</span>
-                    <span style="margin-left: -120%;" ng-show="purchaseOrder.serviceType === 'INBOUND'">Received at warehouse</span>
-                    <span style="margin-left: -110%;" ng-show="purchaseOrder.serviceType === 'OUTBOUND'">Delivered</span>
+                    <span style="margin-left: -110%;" ng-show="orderType !== 'INBOUND' || orderType !== 'OUTBOUND'">Delivered</span>
+                    <span style="margin-left: -120%;" ng-show="orderType === 'INBOUND'">Received at warehouse</span>
+                    <span style="margin-left: -110%;" ng-show="orderType === 'OUTBOUND'">Delivered</span>
 
                 </div>
                 <!-- / marker -->
@@ -78,9 +78,9 @@
                 <div class="marker mPod timeline-icon" ng-class="{'done': states['POD']}">
                     <i class="icon-pi-checklist-3"></i>
                     <i class="checkmark fa fa-check" ng-show="states['POD']"></i>
-                    <span style="margin-left: -70%;" ng-show="purchaseOrder.serviceType !== 'INBOUND' || purchaseOrder.serviceType !== 'OUTBOUND'">POD</span>
-                    <span style="margin-left: -70%;" ng-show="purchaseOrder.serviceType === 'INBOUND'">POR</span>
-                    <span style="margin-left: -70%;" ng-show="purchaseOrder.serviceType === 'OUTBOUND'">POR</span>
+                    <span style="margin-left: -70%;" ng-show="orderType !== 'INBOUND' && orderType !== 'OUTBOUND'">POD</span>
+                    <span style="margin-left: -70%;" ng-show="orderType === 'INBOUND'">POR</span>
+                    <span style="margin-left: -70%;" ng-show="orderType === 'OUTBOUND'">POR</span>
                 </div>
                 <!-- / marker -->
 
@@ -102,7 +102,7 @@
                     <uib-tabset>
                         <uib-tab>
                             <uib-tab-heading>
-                                Order Details&nbsp;
+                                Time Stamp&nbsp;
                             </uib-tab-heading>
 
                             <div class="table-responsive project-list">
@@ -123,7 +123,7 @@
                                                 {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}
                                             </small>
                                         </td>
-                                        <td>{{purchaseOrder.captureDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+                                        <td>{{order[0]._audat| date: 'yyyy-MM-dd hh:mm'}}</td>
                                     </tr>
                                     <tr ng-show="purchaseOrder.state === 'PROCESSING'">
                                         <td>2</td>
@@ -146,19 +146,19 @@
                                         </td>
                                         <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
                                     </tr>
-                                    <tr ng-show="states['COLLECTED'] && (purchaseOrder.serviceType === 'COURIER' || purchaseOrder.serviceType === 'INBOUND')">
+                                    <tr ng-show="states['COLLECTED'] && (orderType === 'COURIER' || orderType === 'INBOUND')">
                                         <td>3</td>
                                         <td>Order has been collected and is in transit
                                         </td>
-                                        <td>{{order.daten | date: 'yyyy-MM-dd'}} {{order.uaten | date:
+                                        <td>{{order[0]._daten | date: 'yyyy-MM-dd'}} {{order[0]._uaten | date:
                                             'hh:mm'}}
                                         </td>
                                     </tr>
-                                    <tr ng-show="states['IN_TRANSIT'] && purchaseOrder.serviceType === 'OUTBOUND'">
+                                    <tr ng-show="states['IN_TRANSIT'] && orderType === 'OUTBOUND'">
                                         <td>3</td>
                                         <td>Goods has been issued, on route for delivery
                                         </td>
-                                        <td>{{order.uatbg | date: 'yyyy-MM-dd'}} {{order.uatbg | date:
+                                        <td>{{order[0]._uatbg | date: 'yyyy-MM-dd'}} {{order[0]._uatbg | date:
                                             'hh:mm'}}
                                         </td>
                                     </tr>
@@ -166,17 +166,17 @@
                                         <td>4</td>
                                         <td>Order has been delivered
                                         </td>
-                                        <td>{{order.audat | date: 'yyyy-MM-dd'}} {{order.audat | date:
+                                        <td>{{order[0]._audat | date: 'yyyy-MM-dd'}} {{order[0]._audat | date:
                                             'hh:mm'}}
                                         </td>
                                     </tr>
-                                    <tr ng-show="states['POD'] && purchaseOrder.serviceType === 'COURIER'">
+                                    <tr ng-show="states['POD'] && orderType === 'COURIER'">
                                         <td>5</td>
                                         <td>POD uploaded and available online
                                         <td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}
                                         </td>
                                     </tr>
-                                    <tr ng-show="states['POD'] && (purchaseOrder.serviceType === 'INBOUND' || purchaseOrder.serviceType === 'OUTBOUND')">
+                                    <tr ng-show="states['POD'] && (orderType === 'INBOUND' || orderType === 'OUTBOUND')">
                                         <td>5</td>
                                         <td>POR uploaded and available online
                                         <td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}
@@ -290,7 +290,7 @@
                                         <th width="120px">Image Type</th>
                                         <th>Note</th>
                                         <th width="160px">
-                                            <button type="submit" class="btn btn-primary" style="width: 150px;" ui-sref="orderdetail.attachment({for: deliveryNo})">
+                                            <button type="submit" class="btn btn-primary" style="width: 150px;" ui-sref="orderdetailNew.attachment({for: deliveryNo})">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                                 <span>Add attachment</span>
                                             </button>
@@ -335,7 +335,7 @@
                             <uib-tab-heading>
                                 <span ng-show="comments || purchaseOrder.comment || purchaseOrder.specialInstruction" class="badge badge-warning" style="margin-right: 10px">{{comments.length + (purchaseOrder.comment !== null ? 1 : 0) + (purchaseOrder.specialInstruction !== null ? 1 : 0)}}</span>Comments
                             </uib-tab-heading>
-                            <uib-alert type="danger" ng-show="purchaseOrder.specialInstruction">
+                            <uib-alert type="danger" ng-show="purchaseOrder!= undefined && purchaseOrder.specialInstruction">
                                 <strong>Customer Instruction &nbsp: </strong>{{ purchaseOrder.specialInstruction }}
                             </uib-alert>
                             <uib-alert type="warning" ng-show="purchaseOrder.comment">
@@ -381,6 +381,234 @@
                                 </div>
                             </div>
                         </uib-tab>
+                        <uib-tab>
+                            <uib-tab-heading>
+                                Order Details&nbsp;
+                            </uib-tab-heading>
+
+						<div class="hpanel" style="margin-bottom: 15px;">
+
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-2">
+										<h5>BEZEI : </h5>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{ order[0]._bezei }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>PARVWYE : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._parvwYe }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>PARVW_YC : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._parvwYc }}</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-2">
+										<h5>PARVW_YH : </h5>
+									</div>
+									<div class="col-sm-2">
+										<span> {{order[0]._parvwYh }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>PARVW_WE : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._parvwWe }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>PARVW_AG : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._parvwAg }}</span>
+									</div>
+								</div>
+								<div class="row">
+
+									<div class="col-sm-2">
+										<h5>VSART : </h5>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._vsart }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>VSBED : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._vsbed }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>SDABW : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._sdabw }}</span>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-sm-2">
+										<h5>IHREZ : </h5>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._ihrez }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>SUBMI : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._submi }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>IHREZ_E : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._ihrezE }}</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-2">
+										<h5>VESSEL : </h5>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._vesel }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>CONTNR : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._contnr }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>CONSOL : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._consol }}</span>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-sm-2">
+										<h5>ORIGIN : </h5>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._orgin }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>OWNREF : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._ownref }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>SHIPER : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._shiper }}</span>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-sm-2">
+										<h5>OBIOLI : </h5>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._obioli }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>OBIOLA : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._obiola }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>ETADAT : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._etadat }}</span>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-sm-2">
+										<h5>HBIOLA : </h5>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._hbiola }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>VESVOY : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._vesvoy }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>HBIOL1 : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._hbiol1 }}</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-2">
+										<h5>COMMOD : </h5>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._commod }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>DESTIN : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._destin }}</span>
+									</div>
+									<div class="col-sm-2">
+										<h6>ETD : </h6>
+									</div>
+									
+									<div class="col-sm-2">
+										<span> {{order[0]._etd }}</span>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						
+ 
+					 
+
+					</uib-tab>
+                            
                     </uib-tabset>
                 </div>
             </div>

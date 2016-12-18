@@ -70,12 +70,17 @@
 					</div>
 				</div>
 			</div>
+			<div class="modal-footer">
 
+			<button type="button" ng-click="reloadData(true)" class="btn btn-primary">
+				<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Show Report</span>
+			</button>
+		</div>
 		</div>
 				 
 		</div>
 	</div>
-	<div class="hpanel" ng-show="selected.company">
+	<div class="hpanel" ng-show="showTable">
 		<div class="panel-body">
 			
 
@@ -116,7 +121,7 @@
 								<td>{{ order.DBELN }}</td>
 								<td>{{ order.PDSTK }}</td>
 								<td width="10px">
-									<button type="submit" ui-sref="orderdetailNew({poId: order.BSTKD, deliveryNo: order.DBELN, orderStep: ordersStep})" class="btn btn-info btn-sm">
+									<button type="submit" ui-sref="orderdetailNew({poId: order.BSTKD, deliveryNo: order.DBELN, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 										<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 									</button>
 								</td>
@@ -159,7 +164,7 @@
 								<td>{{ order.DBELN }}</td>
 								<td>{{ order.PDSTK }}</td>
 								<td width="10px">
-									<button type="submit" ui-sref="orderdetail({poId: order.BSTKD, deliveryNo: order.DBELN, orderStep: ordersStep})" class="btn btn-info btn-sm">
+									<button type="submit" ui-sref="orderdetailNew({poId: order.BSTKD, deliveryNo: order.DBELN, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 										<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 									</button>
 								</td>
