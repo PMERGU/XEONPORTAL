@@ -16,6 +16,11 @@ public class ImDateR {
 	Date _high;
 	@Parameter("OPTION")
 	String _option;
+	
+	public ImDateR()
+	{
+		
+	}
 
 	public ImDateR(String _sign, Date _low, Date _high, String _option) {
 		super();

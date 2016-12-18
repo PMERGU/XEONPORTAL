@@ -54,7 +54,11 @@
 			<ul class="nav nav-second-level" ng-class="{in: $state.includes('salesOrder')}">
 				<li ui-sref-active="active"><a ui-sref="salesOrders" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span>View all SO</span></a></li>
 			</ul></li>
-
+		<li ng-class="{active: $state.includes('so')}" has-any-authority="ROLE_USER,ROLE_CUSTOMER_CSU"><a href="#"> <span class="nav-label">Sales Orderss</span><span class="fa arrow"></span>
+		</a>
+			<ul class="nav nav-second-level" ng-class="{in: $state.includes('so')}">
+				<li ui-sref-active="active"><a ui-sref="so" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-blackboard"></span>&#xA0;<span>View all SO</span></a></li>
+			</ul></li>
 
 		<li ng-class="{active: $state.includes('party')}"><a href="#"> <span class="nav-label">Party</span><span class="fa arrow"></span>
 		</a>
