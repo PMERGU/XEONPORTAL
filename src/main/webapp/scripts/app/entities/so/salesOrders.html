@@ -24,7 +24,7 @@
 						</div>
 						<div class="form-group">
 							<h4>Order Type</h4>
-							<select class="form-control" name="szone" ng-model="soData.ioType" id="field_ioStatus">
+							<select class="form-control" name="szone" ng-model="soData.orType" id="field_ioStatus">
 								<option value="ZOUT">Outbound</option>
 								<option value="ZINB">Inbound</option>
 								<option value="YCO">Transport</option>
@@ -82,8 +82,6 @@
 	</div>
 	<div class="hpanel" ng-show="showTable">
 		<div class="panel-body">
-			
-
 			<uib-tabset> <uib-tab> <uib-tab-heading> <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: 'DBELN').length}}</span>Undelivered&nbsp; <span class="btn btn-default btn-xs" ng-click="reloadData(true)" ng-disabled="loadingOrders"> <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
 			</span> </uib-tab-heading>
 			<div class="panel-body" style="padding-top: 0px;">
