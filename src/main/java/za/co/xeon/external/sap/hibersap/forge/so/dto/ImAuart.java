@@ -16,6 +16,10 @@ public class ImAuart {
 	@Parameter("OPTION")
 	String _option;
 
+	public ImAuart() {
+		super();
+	}
+
 	public ImAuart(String _sign, String _option, String _low, String _high) {
 		this._sign = _sign;
 		this._option = _option;

@@ -27,7 +27,6 @@ import com.codahale.metrics.annotation.Timed;
 
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
-import za.co.xeon.external.sap.hibersap.dto.Hunumbers;
 import za.co.xeon.external.sap.hibersap.forge.od.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.forge.so.dto.EtCustOrders;
 import za.co.xeon.repository.CompanyRepository;
