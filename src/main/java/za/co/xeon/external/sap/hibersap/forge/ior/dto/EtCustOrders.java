@@ -27,6 +27,8 @@ public class EtCustOrders {
 	String _ernam;
 	@Parameter("PARVW_WE")
 	String _parvwWe;
+	@Parameter("BEZEI")
+	String _bezei;
 	@Parameter("PARVW_YE")
 	String _parvwYe;
 	@Parameter("PARVW_YC")
@@ -49,6 +51,8 @@ public class EtCustOrders {
 	Date _erzet;
 	@Parameter("VBELN")
 	String _vbeln;
+	@Parameter("IBELN")
+	String _ibeln;
 	@Parameter("AUART")
 	String _auart;
 	@Parameter("KWMENG")
@@ -130,6 +134,14 @@ public class EtCustOrders {
 
 	public void set_parvwWe(final String _parvwWe) {
 		this._parvwWe = _parvwWe;
+	}
+
+	public String get_bezei() {
+		return this._bezei;
+	}
+
+	public void set_bezei(final String _bezei) {
+		this._bezei = _bezei;
 	}
 
 	public String get_parvwYe() {
@@ -220,6 +232,14 @@ public class EtCustOrders {
 		this._vbeln = _vbeln;
 	}
 
+	public String get_ibeln() {
+		return this._ibeln;
+	}
+
+	public void set_ibeln(final String _ibeln) {
+		this._ibeln = _ibeln;
+	}
+
 	public String get_auart() {
 		return this._auart;
 	}
@@ -281,6 +301,8 @@ public class EtCustOrders {
 			result += ", _ernam: " + _ernam;
 		if (_parvwWe != null && !_parvwWe.trim().isEmpty())
 			result += ", _parvwWe: " + _parvwWe;
+		if (_bezei != null && !_bezei.trim().isEmpty())
+			result += ", _bezei: " + _bezei;
 		if (_parvwYe != null && !_parvwYe.trim().isEmpty())
 			result += ", _parvwYe: " + _parvwYe;
 		if (_parvwYc != null && !_parvwYc.trim().isEmpty())
@@ -303,6 +325,8 @@ public class EtCustOrders {
 			result += ", _erzet: " + _erzet;
 		if (_vbeln != null && !_vbeln.trim().isEmpty())
 			result += ", _vbeln: " + _vbeln;
+		if (_ibeln != null && !_ibeln.trim().isEmpty())
+			result += ", _ibeln: " + _ibeln;
 		if (_auart != null && !_auart.trim().isEmpty())
 			result += ", _auart: " + _auart;
 		if (_kwmeng != null)
