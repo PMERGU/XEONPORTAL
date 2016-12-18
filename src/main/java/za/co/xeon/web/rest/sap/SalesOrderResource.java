@@ -1,5 +1,6 @@
 package za.co.xeon.web.rest.sap;
 
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,9 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +28,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
+import za.co.xeon.domain.Attachment;
+import za.co.xeon.domain.Comment;
 import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
+import za.co.xeon.external.sap.hibersap.forge.hu.rfc.ZGetHandlingUnits;
 import za.co.xeon.external.sap.hibersap.forge.od.dto.GtCustOrdersDetail;
 import za.co.xeon.external.sap.hibersap.forge.so.dto.EtCustOrders;
+import za.co.xeon.repository.AttachmentRepository;
+import za.co.xeon.repository.CommentRepository;
 import za.co.xeon.repository.CompanyRepository;
 import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.SalesOrderService;
 import za.co.xeon.web.rest.MobileResource;
+import za.co.xeon.web.rest.dto.HandlingUnitDetails;
+import za.co.xeon.web.rest.util.PaginationUtil;
 
 @RestController
 @RequestMapping("/api")
@@ -48,6 +58,10 @@ public class SalesOrderResource {
 	private PurchaseOrderRepository purchaseOrderRepository;
 	@Inject
 	private UserRepository userRepository;
+	@Inject
+	private CommentRepository commentRepository;
+	@Inject
+	private AttachmentRepository attachmentRepository;
 
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/so/{customerNumber}/orders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -93,4 +107,58 @@ public class SalesOrderResource {
 			return Optional.ofNullable(sapOrders).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 		};
 	}
+
+	@RequestMapping(value = "/so/huDetails/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public Callable<ResponseEntity<HandlingUnitDetails>> getHuDetails(@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
+		log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", deliveryNo);
+		return () -> {
+			if (SecurityUtils.isUserXeonOrAdmin()) {
+				HandlingUnitDetails hud = null;
+				{
+					ZGetHandlingUnits rfc = salesOrderService.getHandlingUnitDetails(deliveryNo);
+					hud = new HandlingUnitDetails(rfc.get_huheader(), rfc.get_huitem(), rfc.get_hunumbers());
+					if (hud.getHuheader().isEmpty()) {
+						log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", deliveryNo);
+					}
+				}
+				return Optional.ofNullable(hud).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+			} else {
+				log.debug("[PO:{}] - Limiting huDetails due to not CSU or Admin", deliveryNo);
+				return new ResponseEntity<>(new HandlingUnitDetails(), HttpStatus.OK);
+			}
+		};
+	}
+
+	/**
+	 * GET /poLines -> get all the poLines.
+	 */
+	@RequestMapping(value = "/so/{poNumber}/comments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public ResponseEntity<List<Comment>> getAllPoComments(@PathVariable String poNumber, Pageable pageable) throws URISyntaxException {
+		log.debug("[PO:{}] - REST request to get a page of comments", poNumber);
+		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
+		Page<Comment> page = null;
+		if (!(SecurityUtils.isUserXeonOrAdmin())) {
+			page = commentRepository.findByInternalIsFalseAndPurchaseOrder(purchaseOrder, pageable);
+		} else {
+			page = commentRepository.findByPurchaseOrder(purchaseOrder, pageable);
+		}
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/so/comments");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	/**
+	 * GET /attachments -> get all the attachment.
+	 */
+	@RequestMapping(value = "/so/{poNumber}/attachments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public ResponseEntity<List<Attachment>> getAllPoAttachments(@PathVariable String poNumber, Pageable pageable) throws URISyntaxException {
+		log.debug("[PO:{}] - REST request to get a page of attachments", poNumber);
+		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
+		Page<Attachment> page = attachmentRepository.findByPurchaseOrder(purchaseOrder, pageable);
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/so/" + poNumber + "/attachments");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
 }
