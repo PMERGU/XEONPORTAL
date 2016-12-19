@@ -105,7 +105,7 @@ angular.module('portalApp')
                     });
                 });
             }
-            getOrders(new Date());
+//            getOrders(new Date());
             getCapturedPOs();
         });
 
