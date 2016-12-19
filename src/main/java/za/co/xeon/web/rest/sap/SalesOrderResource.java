@@ -157,7 +157,7 @@ public class SalesOrderResource {
 		log.debug("[PO:{}] - REST request to get a page of attachments", poNumber);
 		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
 		Page<Attachment> page = attachmentRepository.findByPurchaseOrder(purchaseOrder, pageable);
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/so/" + poNumber + "/attachments");
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/so/attachments");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
 
