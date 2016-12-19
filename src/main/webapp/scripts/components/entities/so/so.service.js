@@ -32,6 +32,14 @@ angular.module('portalApp')
                 url: 'api/so/huDetails/:deliveryNo',
                 method: 'GET', isArray: false
             },
+            'getComments': {
+                url: 'api/so/:poNumber/comments',
+                method: 'GET', isArray: true
+            },
+            'getAttachments': {
+                url: 'api/so/:poNumber/attachments',
+                method: 'GET', isArray: true
+            },
             'save': {
                 method: 'POST',
                 transformRequest: function (data) {

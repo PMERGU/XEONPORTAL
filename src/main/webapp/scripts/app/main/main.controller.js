@@ -1,12 +1,57 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('MainController', function ($scope, $cacheFactory, $log, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder, CachedOrders) {
+    .controller('MainController', function ($scope, $cacheFactory, $log, Principal, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, PurchaseOrder, CachedOrders,SOService) {
         $scope.deliveredOrders = [];
-        $scope.undeliveredOrders = [];
-        $scope.ordersStep = 0;
-        $scope.todaysDate = new Date();
-        $scope.loadingOrders = false;
+		$scope.undeliveredOrders = [];
+		$scope.ordersStep = 0;
+		$scope.todaysDate = new Date();
+		$scope.loadingOrders = false;
+		$scope.showTable = false;
+		
+		$scope.soData = {
+				fromDate : null,
+				toDate : null,
+				orType : null,
+				id : null
+			};
+		$scope.dateformat = 'yyyy-MM-dd';
+		$scope.requiredFields = {};
+		$scope.dateOptions = {
+				// dateDisabled: disabled,
+				formatYear : 'yy',
+				// maxDate: new Date(new
+				// Date(todaysDate).setMonth(todaysDate.getMonth()+2)),
+				// minDate: new Date(),
+				startingDay : 0
+			};
+
+			// Disable weekend selection
+			function disabled(data) {
+				var date = data.date,
+					mode = data.mode;
+				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+			}
+			;
+
+			$scope.dateSetup = {
+				dpFromDate : {
+					opened : false,
+					open : function($event) {
+
+						$scope.dateSetup.dpFromDate.opened = true;
+					}
+				},
+
+				dpToDate : {
+					opened : false,
+					open : function($event) {
+						$scope.dateSetup.dpToDate.opened = true;
+					}
+				}
+			};
+		 
+
 
         $scope.dominant = '#fff';
         $scope.colors = {
@@ -66,6 +111,7 @@ angular.module('portalApp')
 
         $scope.reloadData = function () {
             var resetPaging = true;
+            $scope.showTable=true;
             getOrders(new Date(), true);
         };
 
@@ -83,21 +129,29 @@ angular.module('portalApp')
         function getOrders(dateT, force){
             $scope.loadingOrders = true;
             if($scope.account.company.id !== null) {
-                CachedOrders.getOrders($scope.ordersStep,
+               /* CachedOrders.getOrders($scope.ordersStep,
                     $scope.account.company.sapId,
                     new Date(new Date(dateT).setMonth(dateT.getMonth() - 1)),
                     // new Date(new Date(dateT).setDate(dateT.getDate() - 1)),
                     new Date(new Date(dateT).setDate(dateT.getDate()+1)),
                     force
-                ).then(function (data) {
-                    $scope.deliveredOrders = data.filter(function (el) {
-                        return (el.pdstk === "B" || el.pdstk === "C");
-                    });
-                    $scope.undeliveredOrders = data.filter(function (el) {
-                        return (el.pdstk === "A" || el.pdstk === "");
-                    });
-                    $scope.loadingOrders = false;
-                });
+                )*/
+                SOService.getByCustomerNumber({type :  $scope.soData.orType , customerNumber: $scope.account.company.sapId,
+                	from : $scope.soData.fromDate,
+					to : $scope.soData.toDate 
+				
+				}).$promise.then(function(data) {
+					$scope.deliveredOrders = data.filter(function(el) {
+						$log.debug("el.PDSTK :: " + el.PDSTK);
+						return (el.PDSTK === "B" || el.PDSTK === "C");
+					});
+					$scope.undeliveredOrders = data.filter(function(el) {
+						return (el.PDSTK === "A");
+					});
+					$scope.loadingOrders = false;
+					$log.debug("delivered length :: " + $scope.deliveredOrders.length);
+					$log.debug("undelivered length :: " + $scope.undeliveredOrders.length);
+				});
             }
         }
 

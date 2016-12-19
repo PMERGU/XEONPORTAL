@@ -6,7 +6,7 @@ angular.module('portalApp')
         $scope.purchaseOrder = purchaseOrder;
         $scope.purchaseOrder = purchaseOrder;
         $scope.order=order;
-        $scope.poId=$stateParams.poId;
+        $scope.poNumber=$stateParams.poNumber;
         $scope.deliveryNo = deliveryNo;
         $scope.huDetails=huDetails;
         $scope.orderResolved = false;
@@ -17,7 +17,7 @@ angular.module('portalApp')
         		'ZOUT' : 'OUTBOUND',
 				'ZINB':'INBOUND',
 				'YCO':'Transport',
-				'ZRET': 'Returns',
+				'ZRET': 'INBOUND',             //'Returns' replaced with INBOUND bcz for both INBOUND and retuns coditions are same in html page
 				'ZFF' : 'Freight Forwarding & Clearing',
 				'ZWSE': 'Storage'
         		
@@ -64,7 +64,7 @@ angular.module('portalApp')
             id: null,
             message: null,
             purchaseOrder: {
-                id: $scope.poId
+            	poNumber: $scope.poNumber
             },
             user: null,
             internal: false,

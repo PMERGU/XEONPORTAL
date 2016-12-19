@@ -44,7 +44,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4 hidden-md">
+       <!--  <div class="col-lg-4 hidden-md">
             <div class="hpanel hgreen">
                 <div class="panel-body" ng-style="{'border-top': '2px solid ' + colors.palette[1]}">
                     <img alt="logo" class="company-logo"
@@ -52,11 +52,11 @@
                          style="max-height: 150px; max-width: 100%;display: block;margin-left: auto;margin-right: auto " ng-if="company.background" color-thief color-thief-dominant="colors.dominant" color-thief-palette="colors.palette"/>
                     <h3>{{company.name}}<span class="pull-right">{{company.sapId}}</span></h3>
 
-                    <!--<div class="text-muted font-bold m-b-xs">California, LA</div>-->
-                    <!--<p>-->
-                    <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices-->
-                    <!--accumsan.-->
-                    <!--</p>-->
+                    <div class="text-muted font-bold m-b-xs">California, LA</div>
+                    <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices
+                    accumsan.
+                    </p>
                     <uib-progressbar value="100" type="success" ng-style="{'background-color': colors.palette[2]}"
                                      class="progress-small full progress-striped active progressbar-company"></uib-progressbar>
                 </div>
@@ -81,117 +81,171 @@
                         </tbody>
                     </table>
                 </div>
-                <!--<div class="panel-footer contact-footer">-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-md-4 border-right">-->
-                            <!--<div class="contact-stat"><span>Purchase Orders: </span> <strong>{{pos.processed.length + pos.processing.length + pos.unprocessed.length}}</strong></div>-->
-                        <!--</div>-->
-                        <!--<div class="col-md-4 border-right">-->
-                            <!--<div class="contact-stat"><span>Processing: </span> <strong>{{pos.processing.length}}</strong></div>-->
-                        <!--</div>-->
-                        <!--<div class="col-md-4">-->
-                            <!--<div class="contact-stat"><span>Unprocessed: </span> <strong>{{ pos.unprocessed.length }}</strong></div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <div class="panel-footer contact-footer">
+                    <div class="row">
+                        <div class="col-md-4 border-right">
+                            <div class="contact-stat"><span>Purchase Orders: </span> <strong>{{pos.processed.length + pos.processing.length + pos.unprocessed.length}}</strong></div>
+                        </div>
+                        <div class="col-md-4 border-right">
+                            <div class="contact-stat"><span>Processing: </span> <strong>{{pos.processing.length}}</strong></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="contact-stat"><span>Unprocessed: </span> <strong>{{ pos.unprocessed.length }}</strong></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-8 col-md-12">
-            <div class="hpanel">
-                <div class="panel-body">
-                    <input ng-disabled="loadingOrders" ng-show="ordersStep !== 0" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.next()" value="Next 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
-                    <input ng-disabled="loadingOrders" type="button" class="btn btn-primary pull-right" ng-click="ordersWizard.prev()" value="Prev 30 days" style="padding: 4px 15px;margin-right: 10px;margin-top: 4px;"/>
+        </div> -->
+        <div class="col-lg-12 col-md-12">
+        <div class="hpanel" style="margin-bottom: 15px;">
+			
+			<div class="panel-body">
+			<div class="row">
+						<div class="col-md-6">
+							<h2 class="font-light m-b-xs">Sales orders</h2>
+							<jh-alert></jh-alert>
+							<small>All sales orders captured in SAP against a
+								specific customer</small>
+						</div>
+					</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<h4>From Date</h4>
+						<div class="input-group">
+							<input id="field_fromDate" type="text" class="form-control" uib-datepicker-popup name="fromDate" ng-model="soData.fromDate" datepicker-options="dateOptions" is-open="dateSetup.dpFromDate.opened" /> <span class="input-group-btn"> +
+								<button type="button" class="btn btn-default" style="margin-top: 0px !important;" ng-click="dateSetup.dpFromDate.open($event)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</div>
+						<div class="form-group">
+							<h4>Order Type</h4>
+							<select class="form-control" name="szone" ng-model="soData.orType" id="field_ioStatus">
+								<option value="ZOUT">Outbound</option>
+								<option value="ZINB">Inbound</option>
+								<option value="YCO">Transport</option>
+								<option value="ZRET">Returns</option>
+								<option value="ZFF">Freight Forwarding & Clearing</option>
+								<option value="ZWSE">Storage</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<h4>To Date</h4>
+						<div class="input-group">
+							<input id="field_toDate" type="text" class="form-control" uib-datepicker-popup name="toDate" ng-model="soData.toDate" datepicker-options="dateOptions" is-open="dateSetup.dpToDate.opened" /> <span class="input-group-btn"> +
+								<button type="button" class="btn btn-default" ng-click="dateSetup.dpToDate.open($event)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</div>
+						 
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
 
-                    <uib-tabset>
-                        <uib-tab>
-                            <uib-tab-heading>
-                                <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: 'dbeln').length}}</span>Undelivered&nbsp;
-                                <span class="btn btn-default btn-xs" ng-click="reloadData()" ng-disabled="loadingOrders">
-                                    <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
-                                </span>
-                            </uib-tab-heading>
-                            <div class="panel-body" style="padding-top: 0px;">
-                                <div class="table-responsive">
-                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
-                                        <thead>
-                                        <tr>
-                                            <th>Purchase Order</th>
-                                            <th>Capture Date</th>
-                                            <th>Pickup</th>
-                                            <th>Ship to</th>
-                                            <th>Sales Order</th>
-                                            <th>Delivery No</th>
-                                            <th>Consignee</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="order in undeliveredOrders | unique: 'dbeln'">
-                                                <!--<td>{{ order.bstkd }} <small ng-show="order.bezei">[{{ order.bezei }}]</small></td-->
-                                            <td>{{ order.bstkd }}</td>
-                                            <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
-                                            <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
-                                            <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
-                                            <td>{{ order.vbeln }}</td>
-                                            <td>{{ order.dbeln }}</td>
-                                            <td>{{ order.skunnr }}</td>
-                                            <td width="10px">
-                                                <button type="submit"
-                                                        ui-sref="orderdetail({poId: purchaseOrders[order.bstkd].id, deliveryNo: order.dbeln, orderStep: ordersStep})"
-                                                        class="btn btn-info btn-sm">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                    <span class="hidden-xs hidden-sm"></span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </uib-tab>
-                        <uib-tab>
-                            <uib-tab-heading>
-                                <span class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders | unique: 'dbeln').length}}</span>Delivered
-                            </uib-tab-heading>
-                            <div class="panel-body" style="padding-top: 0px;">
-                                <div class="table-responsive">
-                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
-                                        <thead>
-                                            <tr>
-                                                <th>Purchase Order</th>
-                                                <th>Capture Date</th>
-                                                <th>Pickup</th>
-                                                <th>Ship to</th>
-                                                <th>Sales Order</th>
-                                                <th>Delivery No</th>
-                                                <th>Consignee</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="order in deliveredOrders | unique: 'dbeln'">
-                                                <td>{{ order.bstkd }}</small></td>
-                                                <td>{{ purchaseOrders[order.bstkd].captureDate | date:'yyyy-MM-dd HH:mm' }}</td>
-                                                <td>{{ purchaseOrders[order.bstkd].pickUpParty.name }}</td>
-                                                <td>{{ purchaseOrders[order.bstkd].shipToParty.name }}</td>
-                                                <td>{{ order.vbeln }}</td>
-                                                <td>{{ order.dbeln }}</td>
-                                                <td>{{ order.skunnr }}</td>
-                                                <td width="10px">
-                                                    <button type="submit"
-                                                            ui-sref="orderdetail({poId: purchaseOrders[order.bstkd].id, deliveryNo: order.dbeln, orderStep: ordersStep})"
-                                                            class="btn btn-info btn-sm">
-                                                        <span class="glyphicon glyphicon-eye-open"></span>
-                                                        <span class="hidden-xs hidden-sm"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </uib-tab>
-                    </uib-tabset>
+			<button type="button" ng-click="reloadData(true)" class="btn btn-primary">
+				<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Show Sales Orders</span>
+			</button>
+		</div>
+		</div>
+            <div class="hpanel" ng-show="showTable">
+                <div class="panel-body">
+                    <uib-tabset> <uib-tab> <uib-tab-heading> <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: 'DBELN').length}}</span>Undelivered&nbsp; <span class="btn btn-default btn-xs" ng-click="reloadData(true)" ng-disabled="loadingOrders"> <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
+			</span> </uib-tab-heading>
+			<div class="panel-body" style="padding-top: 0px;">
+				<div class="table-responsive">
+					<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover table-centered" style="width: 100% !important;">
+						<thead>
+							<tr>
+								 
+								<th>Purchase Order</th>
+								<th>Customer Controller</th>
+								<th>Captured By</th>
+								<th>Capture Date - Time</th>
+								<th>Pickup Party</th>
+								<th>Pickup HUB</th>
+								<th>Ship to Party</th>
+								<th>Consignee</th>
+								<th>Sales Order</th>
+								<th>Delivery No</th>
+								<th>POD Status</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="order in undeliveredOrders | unique: 'DBELN'">
+								 
+								<td>{{ order.BSTKD }}</td>
+								<td>{{ order.PARVW_YE }}</td>
+								<td>{{ order.ERNAM }}</td>
+								<td>{{ order.AUDAT }} - {{ order.ERZET}}</td>
+								<td>{{ order.PARVW_YC }}</td>
+								<td>{{ order.PARVW_YH }}</td>
+								<td>{{ order.PARVW_WE }}</td>
+								<td>{{ order.PARVW_AG }}</td>
+								<td>{{ order.VBELN }}</td>
+								<td>{{ order.DBELN }}</td>
+								<td>{{ order.PDSTK }}</td>
+								<td width="10px">
+									<button type="submit" ui-sref="orderdetailNew({poId: order.BSTKD, deliveryNo: order.DBELN, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
+										<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			</uib-tab> <uib-tab> <uib-tab-heading> <span class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders | unique: 'DBELN').length}}</span>Delivered </uib-tab-heading>
+			<div class="panel-body" style="padding-top: 0px;">
+				<div class="table-responsive">
+					<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
+						<thead>
+							<tr>
+								<th>Purchase Order</th>
+								<th>Customer Controller</th>
+								<th>Captured By</th>
+								<th>Capture Date - Time</th>
+								<th>Pickup Party</th>
+								<th>Pickup HUB</th>
+								<th>Ship to Party</th>
+								<th>Consignee</th>
+								<th>Sales Order</th>
+								<th>Delivery No</th>
+								<th>POD Status</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="order in deliveredOrders | unique: 'DBELN'">
+								<td>{{ order.BSTKD }}</td>
+								<td>{{ order.PARVW_YE }}</td>
+								<td>{{ order.ERNAM }}</td>
+								<td>{{ order.AUDAT }} - {{ order.ERZET}}</td>
+								<td>{{ order.PARVW_YC }}</td>
+								<td>{{ order.PARVW_YH }}</td>
+								<td>{{ order.PARVW_WE }}</td>
+								<td>{{ order.PARVW_AG }}</td>
+								<td>{{ order.VBELN }}</td>
+								<td>{{ order.DBELN }}</td>
+								<td>{{ order.PDSTK }}</td>
+								<td width="10px">
+									<button type="submit" ui-sref="orderdetailNew({poId: order.BSTKD, deliveryNo: order.DBELN, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
+										<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			</uib-tab> </uib-tabset>
                 </div>
             </div>
         </div>

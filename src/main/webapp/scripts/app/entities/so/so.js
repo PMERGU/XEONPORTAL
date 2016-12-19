@@ -26,7 +26,7 @@ angular.module('portalApp')
                 }
             }) .state('orderdetailNew', {
                 parent: 'site',
-                url: '/so/orders/{poId}/{deliveryNo}/{type}?step={orderStep})',
+                url: '/so/orders/{poNumber}/{deliveryNo}/{type}?step={orderStep})',
                 data: {
                     authorities: ['ROLE_CUSTOMER', 'ROLE_USER'],
                     pageTitle: 'Order Details'
@@ -46,11 +46,11 @@ angular.module('portalApp')
                     }],
                     
                     purchaseOrder: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
-                        return PurchaseOrder.get({id: $stateParams.poId})
+                        return PurchaseOrder.get({id: $stateParams.poNumber})
                             .$promise.then(function (data) {return data;}, function (errResponse) {console.log(errResponse);return undefined;});
                     }],
                     salesOrder: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
-                        return PurchaseOrder.getOrder({id: $stateParams.poId, deliveryNo: $stateParams.deliveryNo});
+                        return PurchaseOrder.getOrder({id: $stateParams.poNumber, deliveryNo: $stateParams.deliveryNo});
                     }],
                     deliveryNo: ['$stateParams', function ($stateParams) {
                         return $stateParams.deliveryNo === undefined || $stateParams.deliveryNo === null ? 0 : $stateParams.deliveryNo;
@@ -61,11 +61,11 @@ angular.module('portalApp')
                     delAttachments: ['$stateParams', 'Attachment', '$q', 'PurchaseOrder', function ($stateParams, Attachment, $q, PurchaseOrder) {
                         return Attachment.query({deliveryNumber: $stateParams.deliveryNo});
                     }],
-                    poAttachments: ['$stateParams', 'Attachment', '$q', 'PurchaseOrder', function ($stateParams, Attachment, $q, PurchaseOrder) {
-                        return PurchaseOrder.getAttachments({id: $stateParams.poId});
+                    poAttachments: ['$stateParams', 'Attachment', '$q', 'SOService', function ($stateParams, Attachment, $q, SOService) {
+                        return SOService.getAttachments({poNumber: $stateParams.poNumber});
                     }],
-                    comments: ['$stateParams', 'Comment', '$q', 'PurchaseOrder', function ($stateParams, Comment, $q, PurchaseOrder) {
-                        return PurchaseOrder.getComments({id: $stateParams.poId});
+                    comments: ['$stateParams', 'Comment', '$q', 'SOService', function ($stateParams, Comment, $q, PurchaseOrder) {
+                        return PurchaseOrder.getComments({poNumber: $stateParams.poNumber});
                     }],
                     huDetails: ['$stateParams', 'SOService', function ($stateParams, SOService) {
                         return SOService.getHUDetails({deliveryNo: $stateParams.deliveryNo});
