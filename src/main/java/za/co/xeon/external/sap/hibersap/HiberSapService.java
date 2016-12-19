@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibersap.bapi.BapiRet2;
 import org.hibersap.configuration.AnnotationConfiguration;
 import org.hibersap.configuration.xml.SessionManagerConfig;
@@ -20,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import com.sap.conn.jco.ext.DestinationDataProvider;
 
+import za.co.xeon.domain.PurchaseOrder;
+import za.co.xeon.domain.enumeration.PoState;
+import za.co.xeon.domain.enumeration.ServiceType;
 import za.co.xeon.external.sap.SapSettings;
 import za.co.xeon.external.sap.hibersap.dto.ExReturn;
 import za.co.xeon.external.sap.hibersap.dto.GtCustOrders;
@@ -40,6 +44,7 @@ import za.co.xeon.external.sap.hibersap.forge.sr.dto.SMatnr;
 import za.co.xeon.external.sap.hibersap.forge.sr.dto.SWerks;
 import za.co.xeon.external.sap.hibersap.forge.sr.dto.StockInventory;
 import za.co.xeon.external.sap.hibersap.forge.sr.rfc.ZStockInventory;
+import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.service.util.Pad;
 import za.co.xeon.web.rest.dto.HandlingUnitDto;
 import za.co.xeon.web.rest.dto.HandlingUnitUpdateDto;
@@ -56,6 +61,9 @@ public class HiberSapService {
 	@Autowired
 	private SapSettings s3Settings;
 
+	@Autowired
+	private PurchaseOrderRepository purchaseOrderRepository;
+
 	private SessionManager sessionManager;
 
 	@PostConstruct
@@ -64,7 +72,7 @@ public class HiberSapService {
 		SessionManagerConfig cfg = new SessionManagerConfig("A12").setContext(JCoContext.class.getName()).setProperty(DestinationDataProvider.JCO_ASHOST, s3Settings.getAshost()).setProperty(DestinationDataProvider.JCO_SYSNR, s3Settings.getSysnr()).setProperty(DestinationDataProvider.JCO_CLIENT, s3Settings.getClient()).setProperty(DestinationDataProvider.JCO_USER, s3Settings.getUser()).setProperty(DestinationDataProvider.JCO_PASSWD, s3Settings.getPasswd()).setProperty(DestinationDataProvider.JCO_LANG, s3Settings.getLang()).setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, s3Settings.getPoolCapacity()).setProperty(DestinationDataProvider.JCO_PEAK_LIMIT, s3Settings.getPeakLimit());
 
 		AnnotationConfiguration configuration = new AnnotationConfiguration(cfg);
-		configuration.addBapiClasses(CustOrdersRFC.class, CustOrdersDetailRFC.class, CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, UpdateHandlingUnitsRFC.class, ZStockInventory.class, UpdatePodRFC.class, ZGetCustOrdersByDateNew.class, ZOrdersReport.class, ZGetCustOrdersDetail.class,ZGetHandlingUnits.class);
+		configuration.addBapiClasses(CustOrdersRFC.class, CustOrdersDetailRFC.class, CustomerOrdersByDateRFC.class, HandlingUnitsRFC.class, ReceivedHandlingUnitsRFC.class, SalesOrderCreateRFC.class, UpdateHandlingUnitsRFC.class, ZStockInventory.class, UpdatePodRFC.class, ZGetCustOrdersByDateNew.class, ZOrdersReport.class, ZGetCustOrdersDetail.class, ZGetHandlingUnits.class);
 		sessionManager = configuration.buildSessionManager();
 	}
 
@@ -113,8 +121,20 @@ public class HiberSapService {
 			dateRange.add(new za.co.xeon.external.sap.hibersap.forge.od.dto.ImDateR("I", from, to, "BT"));
 			ZGetCustOrdersDetail rfc = new ZGetCustOrdersDetail(dateRange, orderNumber);
 			session.execute(rfc);
-
-			return rfc.get_gtCustOrdersDetail();
+			List<za.co.xeon.external.sap.hibersap.forge.od.dto.GtCustOrdersDetail> ret = rfc.get_gtCustOrdersDetail();
+			for (za.co.xeon.external.sap.hibersap.forge.od.dto.GtCustOrdersDetail det : ret) {
+				PurchaseOrder po = new PurchaseOrder();
+				po.setPoNumber(det.get_bstkd());
+				po.setState(PoState.PROCESSED);
+				po.setReference(StringUtils.left(det.get_bstkd(), 10));
+				po.setCollective(StringUtils.left(det.get_bstkd(), 10));
+				po.setAccountReference(StringUtils.left(det.get_bstkd(), 10));
+				po.setSoNumber(det.get_vbeln());
+				po.setServiceType(ServiceType.valueOf(det.get_auart()));
+				if (purchaseOrderRepository.findFirstByPoNumber(det.get_bstkd()) == null)
+					purchaseOrderRepository.save(po);
+			}
+			return ret;
 		} catch (Exception e) {
 			log.error("Couldnt complete getCustOrderDetailNew : + " + e.getMessage(), e);
 			throw e;
