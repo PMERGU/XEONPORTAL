@@ -223,15 +223,15 @@ public class PurchaseOrder implements Serializable {
 	@Column(name = "trade_type")
 	private TradeType tradeType;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "xeon_user_id")
 	private User xeonUser;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "captured_by")
 	private User capturedBy;
 

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,7 +52,7 @@ public class Attachment implements Serializable {
 	@Column(name = "mime_type")
 	private String mimeType;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 
@@ -61,7 +62,7 @@ public class Attachment implements Serializable {
 	@Column(name = "visible")
 	private boolean visible = true;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "purchase_order_id")
 	private PurchaseOrder purchaseOrder;
 

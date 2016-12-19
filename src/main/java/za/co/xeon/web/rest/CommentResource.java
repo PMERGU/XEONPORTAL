@@ -26,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import za.co.xeon.domain.Comment;
+import za.co.xeon.domain.PurchaseOrder;
 import za.co.xeon.domain.User;
 import za.co.xeon.repository.CommentRepository;
+import za.co.xeon.repository.PurchaseOrderRepository;
 import za.co.xeon.repository.UserRepository;
 import za.co.xeon.security.SecurityUtils;
 import za.co.xeon.service.MailService;
@@ -50,6 +52,9 @@ public class CommentResource {
 	private UserRepository userRepository;
 
 	@Inject
+	private PurchaseOrderRepository purchaseOrderRepository;
+
+	@Inject
 	private MailService mailService;
 
 	/**
@@ -61,6 +66,10 @@ public class CommentResource {
 		log.debug("REST request to save Comment : {}", comment);
 		if (comment.getId() != null) {
 			return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("comment", "idexists", "A new comment cannot already have an ID")).body(null);
+		}
+		if (comment.getPurchaseOrder().getPoNumber() != null && comment.getPurchaseOrder().getId() == null) {
+			PurchaseOrder po = purchaseOrderRepository.findFirstByPoNumber(comment.getPurchaseOrder().getPoNumber());
+			comment.setPurchaseOrder(po);
 		}
 		Comment result = commentRepository.save(comment);
 
@@ -79,6 +88,10 @@ public class CommentResource {
 		comment.setUser(comment.getUser() == null ? user : comment.getUser());
 		if (comment.getId() == null) {
 			return createComment(comment, request);
+		}
+		if (comment.getPurchaseOrder().getPoNumber() != null && comment.getPurchaseOrder().getId() == null) {
+			PurchaseOrder po = purchaseOrderRepository.findFirstByPoNumber(comment.getPurchaseOrder().getPoNumber());
+			comment.setPurchaseOrder(po);
 		}
 		Comment result = commentRepository.save(comment);
 		mailService.sendOrderCommentMail(result);

@@ -130,7 +130,7 @@ public class HiberSapService {
 				po.setCollective(StringUtils.left(det.get_bstkd(), 10));
 				po.setAccountReference(StringUtils.left(det.get_bstkd(), 10));
 				po.setSoNumber(det.get_vbeln());
-				po.setServiceType(ServiceType.valueOf(det.get_auart()));
+				po.setServiceType(getBySapCode(det.get_auart()));
 				if (purchaseOrderRepository.findFirstByPoNumber(det.get_bstkd()) == null)
 					purchaseOrderRepository.save(po);
 			}
@@ -141,6 +141,23 @@ public class HiberSapService {
 		} finally {
 			session.close();
 		}
+	}
+
+	private ServiceType getBySapCode(String auart) {
+		ServiceType ret = null;
+		if (StringUtils.equalsIgnoreCase(ServiceType.INBOUND.getSapCode(), auart))
+			ret = ServiceType.INBOUND;
+		else if (StringUtils.equalsIgnoreCase(ServiceType.OUTBOUND.getSapCode(), auart))
+			ret = ServiceType.OUTBOUND;
+		else if (StringUtils.equalsIgnoreCase(ServiceType.FULL_CONTAINER_LOAD.getSapCode(), auart))
+			ret = ServiceType.FULL_CONTAINER_LOAD;
+		else if (StringUtils.equalsIgnoreCase(ServiceType.FULL_TRUCK_LOAD.getSapCode(), auart))
+			ret = ServiceType.FULL_TRUCK_LOAD;
+		else if (StringUtils.equalsIgnoreCase(ServiceType.CROSS_HAUL.getSapCode(), auart))
+			ret = ServiceType.CROSS_HAUL;
+		else if (StringUtils.equalsIgnoreCase(ServiceType.BREAKBULK_TRANSPORT.getSapCode(), auart))
+			ret = ServiceType.BREAKBULK_TRANSPORT;
+		return ret;
 	}
 
 	public List<GtCustOrdersDetail> getCustomerOrderDetails(String orderNumber, Date from, Date to) throws ParseException {
