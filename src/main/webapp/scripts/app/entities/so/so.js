@@ -45,12 +45,9 @@ angular.module('portalApp')
                         return SOService.getByDeliveryNo({deliveryNo: $stateParams.deliveryNo});
                     }],
                     
-                    purchaseOrder: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
-                        return PurchaseOrder.get({id: $stateParams.poNumber})
+                    purchaseOrder: ['$stateParams', 'SOService', function ($stateParams, PurchaseOrder) {
+                        return PurchaseOrder.getPOByNumber({poNumber: $stateParams.poNumber})
                             .$promise.then(function (data) {return data;}, function (errResponse) {console.log(errResponse);return undefined;});
-                    }],
-                    salesOrder: ['$stateParams', 'PurchaseOrder', function ($stateParams, PurchaseOrder) {
-                        return PurchaseOrder.getOrder({id: $stateParams.poNumber, deliveryNo: $stateParams.deliveryNo});
                     }],
                     deliveryNo: ['$stateParams', function ($stateParams) {
                         return $stateParams.deliveryNo === undefined || $stateParams.deliveryNo === null ? 0 : $stateParams.deliveryNo;
@@ -64,8 +61,8 @@ angular.module('portalApp')
                     poAttachments: ['$stateParams', 'Attachment', '$q', 'SOService', function ($stateParams, Attachment, $q, SOService) {
                         return SOService.getAttachments({poNumber: $stateParams.poNumber});
                     }],
-                    comments: ['$stateParams', 'Comment', '$q', 'SOService', function ($stateParams, Comment, $q, PurchaseOrder) {
-                        return PurchaseOrder.getComments({poNumber: $stateParams.poNumber});
+                    comments: ['$stateParams', 'Comment', '$q', 'SOService', function ($stateParams, Comment, $q, SOService) {
+                        return SOService.getComments({poNumber: $stateParams.poNumber});
                     }],
                     huDetails: ['$stateParams', 'SOService', function ($stateParams, SOService) {
                         return SOService.getHUDetails({deliveryNo: $stateParams.deliveryNo});
@@ -102,9 +99,9 @@ angular.module('portalApp')
                             }]
                         }
                     }).result.then(function (result) {
-                        $state.go('orderdetail', null, {reload: true});
+                        $state.go('orderdetailNew', null, {reload: true});
                     }, function () {
-                        $state.go('orderdetail');
+                        $state.go('orderdetailNew');
                     })
                 }]
             })

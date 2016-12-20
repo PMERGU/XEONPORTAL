@@ -40,6 +40,10 @@ angular.module('portalApp')
                 url: 'api/so/:poNumber/attachments',
                 method: 'GET', isArray: true
             },
+            'getPOByNumber': {
+                url: 'api/so/:poNumber/po',
+                method: 'GET'
+            },
             'save': {
                 method: 'POST',
                 transformRequest: function (data) {

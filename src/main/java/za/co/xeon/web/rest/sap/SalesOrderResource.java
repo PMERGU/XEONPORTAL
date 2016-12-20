@@ -160,5 +160,23 @@ public class SalesOrderResource {
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/so/attachments");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
+	
+	
+	/**
+	 * GET /purchaseOrders/:id -> get the "id" purchaseOrder.
+	 */
+	@RequestMapping(value = "/so/{poNumber}/po", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Timed
+	public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable String poNumber) {
+		log.debug("[PO:{}] - REST request to get PurchaseOrder",poNumber);
+		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber + "");
+		if (!(SecurityUtils.isUserXeonOrAdmin())) {
+			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+//			if (purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()) {
+//				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//			}
+		}
+		return Optional.ofNullable(purchaseOrder).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
 
 }

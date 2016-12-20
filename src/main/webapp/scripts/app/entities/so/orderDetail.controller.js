@@ -2,7 +2,7 @@
 
 angular.module('portalApp')
     .controller('NewOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal, PurchaseOrder, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, Attachment, Comment,
-                                                       purchaseOrder, order, deliveryNo, orderStep, delAttachments, poAttachments, comments,huDetails,salesOrder) {
+                                                       purchaseOrder, order, deliveryNo, orderStep, delAttachments, poAttachments, comments,huDetails) {
         $scope.purchaseOrder = purchaseOrder;
         $scope.purchaseOrder = purchaseOrder;
         $scope.order=order;
