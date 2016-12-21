@@ -110,7 +110,7 @@
 								<td>{{ order.BSTKD }}</td>
 								<td>{{ order.PARVW_YE }}</td>
 								<td>{{ order.ERNAM }}</td>
-								<td>{{ order.AUDAT }} - {{ order.ERZET}}</td>
+								<td>{{ order.AUDAT | date: 'yyyy-MM-dd'}} - {{ order.ERZET | date: 'HH:mm'}}</td>
 								<td>{{ order.PARVW_YC }}</td>
 								<td>{{ order.PARVW_YH }}</td>
 								<td>{{ order.PARVW_WE }}</td>
@@ -153,7 +153,7 @@
 								<td>{{ order.BSTKD }}</td>
 								<td>{{ order.PARVW_YE }}</td>
 								<td>{{ order.ERNAM }}</td>
-								<td>{{ order.AUDAT }} - {{ order.ERZET}}</td>
+								<td>{{ order.AUDAT | date: 'yyyy-MM-dd'}} - {{ order.ERZET | date: 'HH:mm'}}</td>
 								<td>{{ order.PARVW_YC }}</td>
 								<td>{{ order.PARVW_YH }}</td>
 								<td>{{ order.PARVW_WE }}</td>
@@ -197,7 +197,7 @@
 								<td>{{ order.BSTKD }}</td>
 								<td>{{ order.PARVW_YE }}</td>
 								<td>{{ order.ERNAM }}</td>
-								<td>{{ order.AUDAT }} - {{ order.ERZET}}</td>
+								<td>{{ order.AUDAT | date: 'yyyy-MM-dd'}} - {{ order.ERZET | date: 'HH:mm'}}</td>
 								<td>{{ order.PARVW_YC }}</td>
 								<td>{{ order.PARVW_YH }}</td>
 								<td>{{ order.PARVW_WE }}</td>
