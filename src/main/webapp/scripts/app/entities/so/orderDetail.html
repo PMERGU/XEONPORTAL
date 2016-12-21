@@ -215,9 +215,9 @@
                                     <tbody>
                                     <tr ng-repeat="hu in huDetails.huheader | orderBy:'id'">
                                         <td>{{$index+1}}</td>
-                                        <td ng-init="log({{hu.huId}})">{{hu.huId}}</td>
+                                        <td ng-init="log({{hu._huId}})">{{hu._huId}}</td>
                                         <td>
-                                            <span ng-switch="hu.huGrp1">
+                                            <span ng-switch="hu._huGrp1">
                                                 <span ng-switch-when="10">Collected</span>
                                                 <span ng-switch-when="20">Uncollected</span>
                                                 <span ng-switch-when="30">At JNB Warehouse</span>
@@ -228,7 +228,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span ng-switch="hu.huGrp2">
+                                            <span ng-switch="hu._huGrp2">
                                                 <span ng-switch-when="10">Packed in truck</span>
                                                 <span ng-switch-when="20">In Transit</span>
                                                 <span ng-switch-when="30">At Rework</span>
@@ -240,7 +240,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span ng-switch="hu.huGrp3">
+                                            <span ng-switch="hu._huGrp3">
                                                 <span ng-switch-when="00">Start</span>
                                                 <span ng-switch-when="01">Step 1</span>
                                                 <span ng-switch-when="02">Step 2</span>
@@ -256,21 +256,21 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span ng-switch="hu.huGrp4">
+                                            <span ng-switch="hu._huGrp4">
                                                 <span ng-switch-when="01">Reworked</span>
                                                 <span ng-switch-when="03">Rework bypass</span>
                                                 <span ng-switch-default>Not reworked</span>
                                             </span>
                                         </td>
                                         <td>
-                                            <div>{{ hu.height * hu.length * hu.width / 1000000 | number:2}}m&sup3;</div>
+                                            <div>{{ hu._height * hu._length * hu._width / 1000000 | number:2}}m&sup3;</div>
                                             <small>
-                                                <b>H:{{hu.height|number:0}} * L:{{hu.lenght|number:0}} * W:{{hu.width|number:0}}</b>
+                                                <b>H:{{hu._height|number:0}} * L:{{hu._lenght|number:0}} * W:{{hu._width|number:0}}</b>
                                             </small>
                                         </td>
-                                        <td>{{ hu.unitDim }}</td>
-                                        <td>{{ hu.totalWght }}</td>
-                                        <td>{{ hu.maxUnitOfWght }}</td>
+                                        <td>{{ hu._unitDim }}</td>
+                                        <td>{{ hu._totalWght }}</td>
+                                        <td>{{ hu._maxUnitOfWght }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
