@@ -4,6 +4,7 @@ angular.module('portalApp')
 	.controller('NewSalesOrdersController', function($scope, $stateParams, $sce, $window, $log, Company, CustomerOrders, DTOptionsBuilder, DTColumnDefBuilder, CachedOrders, SOService, sweet, identity) {
 		$log.debug("ID : " + $stateParams.company);
 		$scope.deliveredOrders = [];
+		$scope.emptyStatusOrders = [];
 		$scope.undeliveredOrders = [];
 		$scope.ordersStep = 0;
 		$scope.todaysDate = new Date();
@@ -145,8 +146,12 @@ angular.module('portalApp')
 					$scope.undeliveredOrders = data.filter(function(el) {
 						return (el.PDSTK === "A");
 					});
+					$scope.emptyStatusOrders = data.filter(function(el) {
+						return (el.PDSTK === "");
+					});
 					$scope.loadingOrders = false;
 					$log.debug("delivered length :: " + $scope.deliveredOrders.length);
+					$log.debug("emptyStatusOrders length :: " + $scope.emptyStatusOrders.length);
 					$log.debug("undelivered length :: " + $scope.undeliveredOrders.length);
 				});
 				
@@ -157,6 +162,9 @@ angular.module('portalApp')
 		$scope.reloadData = function(refresh) {
 			var resetPaging = true;
 			$scope.showTable=true;
+			$scope.deliveredOrders = [];
+			$scope.emptyStatusOrders = [];
+			$scope.undeliveredOrders = [];
 			getOrders(new Date(), refresh);
 		//			if ($scope.selected.company.id !== null) {
 		//				Company.getPurchaseOrders({
