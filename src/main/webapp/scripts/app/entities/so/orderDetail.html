@@ -191,7 +191,8 @@
 
                             </div>
                         </uib-tab>
-                        <uib-tab ng-show="huDetails && huDetails.huheader">
+                      <!--  <uib-tab ng-show="huDetails && huDetails.huheader"> --> 
+                      <uib-tab >
                             <uib-tab-heading>
                                 <span ng-show="huDetails" class="badge badge-success" style="margin-right: 10px">{{huDetails.huheader.length}}</span>Handling Units
                             </uib-tab-heading>
@@ -214,7 +215,7 @@
                                     <tbody>
                                     <tr ng-repeat="hu in huDetails.huheader | orderBy:'id'">
                                         <td>{{$index+1}}</td>
-                                        <td>{{hu.huId}}</td>
+                                        <td ng-init="log({{hu.huId}})">{{hu.huId}}</td>
                                         <td>
                                             <span ng-switch="hu.huGrp1">
                                                 <span ng-switch-when="10">Collected</span>
@@ -391,21 +392,21 @@
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-sm-2">
-										<h5>BEZEI : </h5>
+										<h6>Sales Doc Type Desc : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{ order[0]._bezei }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>PARVWYE : </h6>
+										<h6>Controller : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._parvwYe }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>PARVW_YC : </h6>
+										<h6>Collection Party : </h6>
 									</div>
 									
 									<div class="col-sm-2">
@@ -414,20 +415,20 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-2">
-										<h5>PARVW_YH : </h5>
+										<h6>Pickup HUB: </h6>
 									</div>
 									<div class="col-sm-2">
 										<span> {{order[0]._parvwYh }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>PARVW_WE : </h6>
+										<h6>Ship to Party: </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._parvwWe }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>PARVW_AG : </h6>
+										<h6>Consignee : </h6>
 									</div>
 									
 									<div class="col-sm-2">
@@ -437,21 +438,21 @@
 								<div class="row">
 
 									<div class="col-sm-2">
-										<h5>VSART : </h5>
+										<h6>Shipping Type : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._vsart }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>VSBED : </h6>
+										<h6>Shipping Conditions : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._vsbed }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>SDABW : </h6>
+										<h6>Special Processing Indicator : </h6>
 									</div>
 									
 									<div class="col-sm-2">
@@ -461,21 +462,21 @@
 								
 								<div class="row">
 									<div class="col-sm-2">
-										<h5>IHREZ : </h5>
+										<h6>Customer's Internal Ref : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._ihrez }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>SUBMI : </h6>
+										<h6>Collective Number : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._submi }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>IHREZ_E : </h6>
+										<h6>Ship-to party charecter: </h6>
 									</div>
 									
 									<div class="col-sm-2">
@@ -484,21 +485,21 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-2">
-										<h5>VESSEL : </h5>
+										<h6>Vessel : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._vesel }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>CONTNR : </h6>
+										<h6>Containers : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._contnr }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>CONSOL : </h6>
+										<h6>Consol : </h6>
 									</div>
 									
 									<div class="col-sm-2">
@@ -508,21 +509,21 @@
 								
 								<div class="row">
 									<div class="col-sm-2">
-										<h5>ORIGIN : </h5>
+										<h6>Origin : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._orgin }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>OWNREF : </h6>
+										<h6>Carrier Reference : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._ownref }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>SHIPER : </h6>
+										<h6>Shipper : </h6>
 									</div>
 									
 									<div class="col-sm-2">
@@ -532,21 +533,21 @@
 								
 								<div class="row">
 									<div class="col-sm-2">
-										<h5>OBIOLI : </h5>
+										<h6>Master Ocean/Air Way Bill Issue : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._obioli }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>OBIOLA : </h6>
+										<h6>Master Ocean/ Air Way Bill: </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._obiola }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>ETADAT : </h6>
+										<h6>ETA Date : </h6>
 									</div>
 									
 									<div class="col-sm-2">
@@ -556,21 +557,21 @@
 								
 								<div class="row">
 									<div class="col-sm-2">
-										<h5>HBIOLA : </h5>
+										<h6>House Ocean/ Air Way Bill : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._hbiola }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>VESVOY : </h6>
+										<h6>Vessel Voyage  / Flight : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._vesvoy }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>HBIOL1 : </h6>
+										<h6>House Ocean/Air Way Bill Issue: </h6>
 									</div>
 									
 									<div class="col-sm-2">
@@ -579,14 +580,14 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-2">
-										<h5>COMMOD : </h5>
+										<h6>Commodity : </h6>
 									</div>
 									
 									<div class="col-sm-2">
 										<span> {{order[0]._commod }}</span>
 									</div>
 									<div class="col-sm-2">
-										<h6>DESTIN : </h6>
+										<h6>Destination : </h6>
 									</div>
 									
 									<div class="col-sm-2">

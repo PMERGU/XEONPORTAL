@@ -50,10 +50,13 @@ public class LoginAttemptService {
 	}
 
 	public boolean isBlocked(final String key) {
-		try {
+		/*try {
 			return attemptsCache.get(key) >= MAX_ATTEMPT;
 		} catch (final ExecutionException e) {
 			return false;
 		}
+		*/ 
+		//Security is disabled - to enable unblock the above code
+		return false;
 	}
 }
