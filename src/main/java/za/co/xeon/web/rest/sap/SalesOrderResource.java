@@ -168,7 +168,7 @@ public class SalesOrderResource {
 	@RequestMapping(value = "/so/{poNumber}/po", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
 	public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable String poNumber) {
-		log.debug("[PO:{}] - REST request to get PurchaseOrder",poNumber);
+		log.debug("[PO:{}] - REST request to get PurchaseOrder");
 		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber + "");
 		if (!(SecurityUtils.isUserXeonOrAdmin())) {
 			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
