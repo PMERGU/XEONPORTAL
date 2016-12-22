@@ -274,6 +274,7 @@
                                         <div class="input-group">
                                             <input id="field_collectionDate" type="text" class="form-control"
                                                    name="collectionDate"
+                                                   ng-model-options="{timezone:'UTC'}" 
                                                    uib-datepicker-popup valid-date
                                                    ng-model="purchaseOrder.collectionDate"
                                                    datepicker-options="dateOptions"
@@ -351,6 +352,7 @@
                                         <div class="input-group">
                                             <input type="text" id="field_dropOffDate" class="form-control"
                                                    uib-datepicker-popup  valid-date
+                                                   ng-model-options="{timezone:'UTC'}" 
                                                    ng-required="purchaseOrder['dropOffDate'] !== null"
                                                    name="dropOffDate" ng-required="requiredFields['dropOffDate']"
                                                    ng-model="purchaseOrder.dropOffDate" is-open="dateSetup.dpDropOff.opened"
@@ -608,6 +610,7 @@
                                         <input id="field_cvEta" type="text" class="form-control"
                                                name="cvEta"
                                                uib-datepicker-popup
+                                               ng-model-options="{timezone:'UTC'}" 
                                                ng-model="purchaseOrder.cvEta"
                                                datepicker-options="dateOptions"
                                                ng-required="requiredFields['cvEta']"
@@ -712,6 +715,7 @@
                                         <input id="field_cvEtd" type="text" class="form-control"
                                                name="cvEtd"
                                                uib-datepicker-popup
+                                               ng-model-options="{timezone:'UTC'}" 
                                                ng-model="purchaseOrder.cvEtd"
                                                datepicker-options="dateOptions"
                                                ng-required="requiredFields['cvEtd']"
@@ -758,6 +762,7 @@
                                         <input id="field_cvWaybillIssue" type="text" class="form-control"
                                                name="cvWaybillIssue"
                                                uib-datepicker-popup
+                                               ng-model-options="{timezone:'UTC'}" 
                                                ng-model="purchaseOrder.cvWaybillIssue"
                                                datepicker-options="dateOptions"
                                                ng-required="requiredFields['cvWaybillIssue']"
@@ -793,6 +798,7 @@
                                         <input id="field_cvHouseWaybillIssue" type="text" class="form-control"
                                                name="cvHouseWaybillIssue"
                                                uib-datepicker-popup
+                                               ng-model-options="{timezone:'UTC'}" 
                                                ng-model="purchaseOrder.cvHouseWaybillIssue"
                                                datepicker-options="dateOptions"
                                                ng-required="requiredFields['cvHouseWaybillIssue']"

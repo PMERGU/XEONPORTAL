@@ -56,10 +56,6 @@ angular.module('portalApp')
                         	 });
                     }],
                     
-                    purchaseOrder: ['$stateParams', 'SOService', function ($stateParams, PurchaseOrder) {
-                        return PurchaseOrder.getPOByNumber({poNumber: $stateParams.poNumber})
-                            .$promise.then(function (data) {return data;}, function (errResponse) {console.log(errResponse);return undefined;});
-                    }],
                     deliveryNo: ['$stateParams', function ($stateParams) {
                         return $stateParams.deliveryNo === undefined || $stateParams.deliveryNo === null ? 0 : $stateParams.deliveryNo;
                     }],
