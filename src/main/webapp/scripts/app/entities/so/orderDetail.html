@@ -263,9 +263,9 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <div>{{ hu._height * hu._length * hu._width / 1000000 | number:2}}m&sup3;</div>
+                                            <div>{{ hu._height * hu._lenght * hu._width / 1000000 | number:3}}m&sup3;</div>
                                             <small>
-                                                <b>H:{{hu._height|number:0}} * L:{{hu._lenght|number:0}} * W:{{hu._width|number:0}}</b>
+                                                <b>H:{{hu._height|number:3}} - L:{{hu._lenght|number:3}} - W:{{hu._width|number:3}}</b>
                                             </small>
                                         </td>
                                         <td>{{ hu._unitDim }}</td>
@@ -551,7 +551,7 @@
 									</div>
 									
 									<div class="col-sm-2">
-										<span> {{order[0]._etadat }}</span>
+										<span> {{order[0]._etadat | date: 'yyyy-MM-dd' }}</span>
 									</div>
 								</div>
 								
@@ -598,7 +598,7 @@
 									</div>
 									
 									<div class="col-sm-2">
-										<span> {{order[0]._etd }}</span>
+										<span> {{order[0]._etd | date: 'yyyy-MM-dd'}}</span>
 									</div>
 								</div>
 								
