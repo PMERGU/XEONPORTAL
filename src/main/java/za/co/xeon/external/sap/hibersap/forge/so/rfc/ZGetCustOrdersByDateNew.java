@@ -33,10 +33,11 @@ public class ZGetCustOrdersByDateNew {
 	@Parameter(value = "ET_RETURN", type = ParameterType.STRUCTURE)
 	private EtReturn _etReturn;
 	@Export
-	@Parameter("ET_CUST_ORDERS")
+	@Parameter(value = "ET_CUST_ORDERS", type = ParameterType.TABLE_STRUCTURE)
 	private List<EtCustOrders> _etCustOrders;
 
-	public ZGetCustOrdersByDateNew(final List<ImAuart> imAuart, final List<ImDateR> imDateR, final String imStatusPod, final String imCustomer) {
+	public ZGetCustOrdersByDateNew(final List<ImAuart> imAuart, final List<ImDateR> imDateR, final String imStatusPod,
+			final String imCustomer) {
 		this._imAuart = imAuart;
 		this._imDateR = imDateR;
 		this._imStatusPod = imStatusPod;

@@ -140,14 +140,14 @@ angular.module('portalApp')
 				
 				}).$promise.then(function(data) {
 					$scope.deliveredOrders = data.filter(function(el) {
-						$log.debug("el.PDSTK :: " + el.PDSTK);
-						return (el.PDSTK === "B" || el.PDSTK === "C");
+						$log.debug("el._pdstk :: " + el._pdstk);
+						return (el._pdstk === "B" || el._pdstk === "C");
 					});
 					$scope.undeliveredOrders = data.filter(function(el) {
-						return (el.PDSTK === "A");
+						return (el._pdstk === "A");
 					});
 					$scope.emptyStatusOrders = data.filter(function(el) {
-						return (el.PDSTK === "");
+						return (el._pdstk === "");
 					});
 					$scope.loadingOrders = false;
 					$log.debug("delivered length :: " + $scope.deliveredOrders.length);

@@ -66,27 +66,29 @@ public class SalesOrderResource {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/so/{customerNumber}/orders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<List<EtCustOrders>> getCustomerOrdersNew(@RequestParam(value = "type") String type, @PathVariable(value = "customerNumber") String customerNumber, @RequestParam(value = "from") String from, @RequestParam(value = "to") String to, Pageable pageable) throws Exception {
+	public Callable<List<EtCustOrders>> getCustomerOrdersNew(@RequestParam(value = "type") String type,
+			@PathVariable(value = "customerNumber") String customerNumber, @RequestParam(value = "from") String from,
+			@RequestParam(value = "to") String to, Pageable pageable) throws Exception {
 		log.debug("Service [GET] /mobile/customer/" + customerNumber + "/orders (new one)");
 
 		return () -> {
 			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
 			Future<List<EtCustOrders>> future;
 			if (SecurityUtils.isUserCustomer()) {
-				log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].company.sapId : " + user.getCompany().getSapId());
-				future = salesOrderService.getCustomerOrdersNew(type, user.getCompany().getSapId(), new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
-
-				if (SecurityUtils.isUserCustomerCSU()) {
-					Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(user.getCompany()).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-					return future.get().stream().collect(Collectors.toList());
-				} else {
-					Map<String, String> poMap = purchaseOrderRepository.findByUser(user).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
-					return future.get().stream().collect(Collectors.toList());
-				}
-
+				log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].user.sapId : "
+						+ user.getFcSapId());
+				future = salesOrderService.getCustomerOrdersNew(type, user.getCompany().getSapId(),
+						new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+				// return future.get().stream().collect(Collectors.toList());
+				return future.get().stream().filter(et -> et.get_parvwYe().equalsIgnoreCase(user.getFcSapId()))
+						.collect(Collectors.toList());
 			} else {
-				future = salesOrderService.getCustomerOrdersNew(type, customerNumber, new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
-				Map<String, String> poMap = purchaseOrderRepository.findByUserId_Company(companyRepository.findBySapId(customerNumber)).stream().filter(po -> po.getPoNumber() != null).collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
+				future = salesOrderService.getCustomerOrdersNew(type, customerNumber,
+						new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+				Map<String, String> poMap = purchaseOrderRepository
+						.findByUserId_Company(companyRepository.findBySapId(customerNumber)).stream()
+						.filter(po -> po.getPoNumber() != null)
+						.collect(Collectors.toMap(PurchaseOrder::getPoNumber, PurchaseOrder::getPoNumber));
 				return future.get().stream().collect(Collectors.toList());
 			}
 		};
@@ -94,23 +96,28 @@ public class SalesOrderResource {
 
 	@RequestMapping(value = "/so/orders/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
+	public Callable<ResponseEntity<List<GtCustOrdersDetail>>> getPoOrder(
+			@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
 		log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", deliveryNo);
 		return () -> {
 			List<GtCustOrdersDetail> sapOrders = null;
 			{
-				sapOrders = salesOrderService.getCustomerOrderDetailNew(deliveryNo, new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
+				sapOrders = salesOrderService.getCustomerOrderDetailNew(deliveryNo,
+						new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01"), new Date()).get();
 				if (sapOrders.isEmpty()) {
-					log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", deliveryNo);
+					log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders",
+							deliveryNo);
 				}
 			}
-			return Optional.ofNullable(sapOrders).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+			return Optional.ofNullable(sapOrders).map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+					.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 		};
 	}
 
 	@RequestMapping(value = "/so/huDetails/{deliveryNo}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public Callable<ResponseEntity<HandlingUnitDetails>> getHuDetails(@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
+	public Callable<ResponseEntity<HandlingUnitDetails>> getHuDetails(
+			@PathVariable(value = "deliveryNo") String deliveryNo, Pageable pageable) throws Exception {
 		log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{}", deliveryNo);
 		return () -> {
 			if (SecurityUtils.isUserXeonOrAdmin()) {
@@ -119,10 +126,12 @@ public class SalesOrderResource {
 					ZGetHandlingUnits rfc = salesOrderService.getHandlingUnitDetails(deliveryNo);
 					hud = new HandlingUnitDetails(rfc.get_huheader(), rfc.get_huitem(), rfc.get_hunumbers());
 					if (hud.getHuheader().isEmpty()) {
-						log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders", deliveryNo);
+						log.debug("[PO:{}] - Service [GET] /purchaseOrders/{}/orders/{} - could not find sap orders",
+								deliveryNo);
 					}
 				}
-				return Optional.ofNullable(hud).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+				return Optional.ofNullable(hud).map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+						.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 			} else {
 				log.debug("[PO:{}] - Limiting huDetails due to not CSU or Admin", deliveryNo);
 				return new ResponseEntity<>(new HandlingUnitDetails(), HttpStatus.OK);
@@ -135,7 +144,8 @@ public class SalesOrderResource {
 	 */
 	@RequestMapping(value = "/so/{poNumber}/comments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public ResponseEntity<List<Comment>> getAllPoComments(@PathVariable String poNumber, Pageable pageable) throws URISyntaxException {
+	public ResponseEntity<List<Comment>> getAllPoComments(@PathVariable String poNumber, Pageable pageable)
+			throws URISyntaxException {
 		log.debug("[PO:{}] - REST request to get a page of comments", poNumber);
 		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
 		Page<Comment> page = null;
@@ -153,15 +163,15 @@ public class SalesOrderResource {
 	 */
 	@RequestMapping(value = "/so/{poNumber}/attachments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	public ResponseEntity<List<Attachment>> getAllPoAttachments(@PathVariable String poNumber, Pageable pageable) throws URISyntaxException {
+	public ResponseEntity<List<Attachment>> getAllPoAttachments(@PathVariable String poNumber, Pageable pageable)
+			throws URISyntaxException {
 		log.debug("[PO:{}] - REST request to get a page of attachments", poNumber);
 		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber);
 		Page<Attachment> page = attachmentRepository.findByPurchaseOrder(purchaseOrder, pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/so/attachments");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
-	
-	
+
 	/**
 	 * GET /purchaseOrders/:id -> get the "id" purchaseOrder.
 	 */
@@ -171,12 +181,15 @@ public class SalesOrderResource {
 		log.debug("[PO:{}] - REST request to get PurchaseOrder");
 		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(poNumber + "");
 		if (!(SecurityUtils.isUserXeonOrAdmin())) {
-			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-//			if (purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()) {
-//				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//			}
+			// User user =
+			// userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+			// if (purchaseOrder.getUser().getCompany().getId() !=
+			// user.getCompany().getId()) {
+			// return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			// }
 		}
-		return Optional.ofNullable(purchaseOrder).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+		return Optional.ofNullable(purchaseOrder).map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 }

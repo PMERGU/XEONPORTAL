@@ -78,7 +78,8 @@ public class UserService {
 		});
 	}
 
-	public User createUserInformation(String login, String password, String firstName, String lastName, String email, String langKey) {
+	public User createUserInformation(String login, String password, String firstName, String lastName, String email,
+			String langKey) {
 
 		User newUser = new User();
 		Authority authority = authorityRepository.findOne("ROLE_USER");
@@ -118,7 +119,8 @@ public class UserService {
 		}
 		if (managedUserDTO.getAuthorities() != null) {
 			Set<Authority> authorities = new HashSet<>();
-			managedUserDTO.getAuthorities().stream().forEach(authority -> authorities.add(authorityRepository.findOne(authority)));
+			managedUserDTO.getAuthorities().stream()
+					.forEach(authority -> authorities.add(authorityRepository.findOne(authority)));
 			user.setAuthorities(authorities);
 		}
 		String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
@@ -169,6 +171,11 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
+	public Optional<User> getUserWithFcSapId(String fcSapId) {
+		return userRepository.findOneByFcSapId(fcSapId);
+	}
+
+	@Transactional(readOnly = true)
 	public User getUserWithAuthorities(Long id) {
 		User user = userRepository.findOne(id);
 		user.getAuthorities().size(); // eagerly load the association
@@ -192,7 +199,8 @@ public class UserService {
 	@Scheduled(cron = "0 0 1 * * ?")
 	public void removeNotActivatedUsers() {
 		ZonedDateTime now = ZonedDateTime.now();
-		List<User> users = userRepository.findAllByEnabledIsTrueAndActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
+		List<User> users = userRepository
+				.findAllByEnabledIsTrueAndActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
 		for (User user : users) {
 			log.debug("Deleting not activated user {}", user.getLogin());
 			userRepository.delete(user);

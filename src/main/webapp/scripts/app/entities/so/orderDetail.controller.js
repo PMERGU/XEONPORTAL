@@ -25,9 +25,14 @@ angular.module('portalApp')
         
         $scope.orderType = $scope.orderTypes[$stateParams.type];
         
-        $log.debug("purchaseorder :: "+ $scope.purchaseOrder)
+        $log.debug("purchaseorder :: "+ $scope.purchaseOrder);
         
-        $log.debug("OrdserType :: "+ $scope.orderType)
+        $log.debug("OrdserType :: "+ $scope.orderType);
+        $scope.log = function(message) {
+            $log.debug(message);
+        }
+         $log.debug("Hu Details" +$scope.huDetails) ;
+        
 
         $scope.states = {
             'RECEIVED': true,
