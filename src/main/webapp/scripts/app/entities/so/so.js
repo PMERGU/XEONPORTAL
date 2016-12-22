@@ -42,7 +42,18 @@ angular.module('portalApp')
                 resolve: {
                 	
                 	order: ['$stateParams', 'SOService', function ($stateParams, SOService) {
-                        return SOService.getByDeliveryNo({deliveryNo: $stateParams.deliveryNo});
+                        return SOService.getByDeliveryNo({deliveryNo: $stateParams.deliveryNo}).$promise.then(function (data) {
+                        	var finalData={};
+                        	return SOService.getPOByNumber({poNumber: $stateParams.poNumber})
+                            .$promise.then(function (dataa) {
+                            	var dataOr=data;
+                            	var po=dataa;
+                            	finalData.Order=dataOr;
+                            	finalData.poData=po;
+                            	return finalData;}, function (errResponse) {console.log(errResponse);return undefined;})
+                        	
+                        	
+                        	 });
                     }],
                     
                     purchaseOrder: ['$stateParams', 'SOService', function ($stateParams, PurchaseOrder) {

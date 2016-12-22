@@ -1,620 +1,490 @@
 <div>
-    <div small-header>
-        <div class="hpanel" style="margin-bottom: 15px;">
-            <div class="panel-body" ng-hide="orderResolved">
-                <h2 class="font-light m-b-xs">
-                    Loading order #{{deliveryNo}}....please be patient
-                    <span>
-                        <i class="fa fa-refresh fa-spin fa-fw fa-1x"></i>
-                    </span>
-                </h2>
-            </div>
+	<div small-header>
+		<div class="hpanel" style="margin-bottom: 15px;">
+			<div class="panel-body" ng-hide="orderResolved">
+				<h2 class="font-light m-b-xs">
+					Loading order #{{deliveryNo}}....please be patient <span> <i class="fa fa-refresh fa-spin fa-fw fa-1x"></i>
+					</span>
+				</h2>
+			</div>
 
-            <div class="panel-body animate-show" ng-show="orderResolved">
-                <h2 class="font-light m-b-xs" ng-show="!states['POD']">
-                    {{orderType | prittyPrint }} order #{{deliveryNo}} in progress
-                </h2>
-                <h2 class="font-light m-b-xs" ng-show="states['POD']" style="color: #3498db">
-                    {{orderType | prittyPrint }} order #{{deliveryNo}} completed {{ states['INVOICE'] ? ' and invoice available' : '' }}
-                </h2>
-                <jh-alert></jh-alert>
-                <small>Detailed order view as it proceeds from capture to completed</small>
-            </div>
-        </div>
-    </div>
-    <div ng-show="orderResolved" class="animate-show hpanel">
-        <div class="panel-body">
+			<div class="panel-body animate-show" ng-show="orderResolved">
+				<h2 class="font-light m-b-xs" ng-show="!states['POD']">{{orderType | prittyPrint }} order #{{deliveryNo}} in progress</h2>
+				<h2 class="font-light m-b-xs" ng-show="states['POD']" style="color: #3498db">{{orderType | prittyPrint }} order #{{deliveryNo}} completed {{ states['INVOICE'] ? ' and invoice available' : '' }}</h2>
+				<jh-alert></jh-alert>
+				<small>Detailed order view as it proceeds from capture to completed</small>
+			</div>
+		</div>
+	</div>
+	<div ng-show="orderResolved" class="animate-show hpanel">
+		<div class="panel-body">
 
-            <div id="timeline-wrap">
-                <div id="timeline"></div>
+			<div id="timeline-wrap">
+				<div id="timeline"></div>
 
-                <!-- This is the individual marker-->
-                <div class="marker mReceived timeline-icon" ng-class="{'done': states['RECEIVED']}">
-                    <i class="icon-pi-cargo-box-3"></i>
-                    <i class="checkmark fa fa-check" ng-show="states['RECEIVED']"></i>
-                    <span style="margin-left: -105%;">Received</span>
-                </div>
-                <!-- / marker -->
+				<!-- This is the individual marker-->
+				<div class="marker mReceived timeline-icon" ng-class="{'done': states['RECEIVED']}">
+					<i class="icon-pi-cargo-box-3"></i> <i class="checkmark fa fa-check" ng-show="states['RECEIVED']"></i> <span style="margin-left: -105%;">Received</span>
+				</div>
+				<!-- / marker -->
 
-                <!-- This is the individual marker-->
-                <div class="marker mProcessed timeline-icon" ng-class="{'done': states['PROCESSED']}">
-                    <i class="icon-pi-cargo-box-6"></i>
-                    <i class="checkmark fa fa-check" ng-show="states['PROCESSED']"></i>
-                    <span style="margin-left: -110%;">Processed</span>
-                </div>
-                <!-- / marker -->
+				<!-- This is the individual marker-->
+				<div class="marker mProcessed timeline-icon" ng-class="{'done': states['PROCESSED']}">
+					<i class="icon-pi-cargo-box-6"></i> <i class="checkmark fa fa-check" ng-show="states['PROCESSED']"></i> <span style="margin-left: -110%;">Processed</span>
+				</div>
+				<!-- / marker -->
 
-                <!-- This is the individual marker-->
-                <div class="marker mCollected timeline-icon" ng-class="{'done': states['COLLECTED']}"
-                     ng-show="orderType !== 'OUTBOUND'">
-                    <i class="icon-pi-cargo-trolley-1"></i>
-                    <i class="checkmark fa fa-check" ng-show="states['COLLECTED']"></i>
-                    </span>
-                    <span style="margin-left: -110%;">Collected</span>
-                </div>
-                <!-- / marker -->
+				<!-- This is the individual marker-->
+				<div class="marker mCollected timeline-icon" ng-class="{'done': states['COLLECTED']}" ng-show="orderType !== 'OUTBOUND'">
+					<i class="icon-pi-cargo-trolley-1"></i> <i class="checkmark fa fa-check" ng-show="states['COLLECTED']"></i> </span> <span style="margin-left: -110%;">Collected</span>
+				</div>
+				<!-- / marker -->
 
-                <!-- This is the individual marker-->
-                <div class="marker mTransit timeline-icon" ng-class="{'done': states['IN_TRANSIT']}">
-                    <i class="icon-pi-truck-3"></i>
-                    <i class="checkmark fa fa-check" ng-show="states['IN_TRANSIT']"></i>
-                    <span style="margin-left: -110%; width: 74px;" ng-show="orderType !== 'OUTBOUND'">In Transit</span>
-                    <span style="margin-left: -110%; width: 74px;" ng-show="orderType === 'OUTBOUND'">Goods Issued</span>
-                </div>
-                <!-- / marker -->
+				<!-- This is the individual marker-->
+				<div class="marker mTransit timeline-icon" ng-class="{'done': states['IN_TRANSIT']}">
+					<i class="icon-pi-truck-3"></i> <i class="checkmark fa fa-check" ng-show="states['IN_TRANSIT']"></i> <span style="margin-left: -110%; width: 74px;" ng-show="orderType !== 'OUTBOUND'">In Transit</span> <span style="margin-left: -110%; width: 74px;" ng-show="orderType === 'OUTBOUND'">Goods Issued</span>
+				</div>
+				<!-- / marker -->
 
-                <!-- This is the individual marker-->
-                <div class="marker mDelivered timeline-icon" ng-class="{'done': states['DELIVERED']}">
-                    <i class="icon-pi-hand-truck-4"></i>
-                    <i class="checkmark fa fa-check" ng-show="states['DELIVERED']"></i>
-                    <span style="margin-left: -110%;" ng-show="orderType !== 'INBOUND' || orderType !== 'OUTBOUND'">Delivered</span>
-                    <span style="margin-left: -120%;" ng-show="orderType === 'INBOUND'">Received at warehouse</span>
-                    <span style="margin-left: -110%;" ng-show="orderType === 'OUTBOUND'">Delivered</span>
+				<!-- This is the individual marker-->
+				<div class="marker mDelivered timeline-icon" ng-class="{'done': states['DELIVERED']}">
+					<i class="icon-pi-hand-truck-4"></i> <i class="checkmark fa fa-check" ng-show="states['DELIVERED']"></i> <span style="margin-left: -110%;" ng-show="orderType !== 'INBOUND' || orderType !== 'OUTBOUND'">Delivered</span> <span style="margin-left: -120%;" ng-show="orderType === 'INBOUND'">Received at warehouse</span> <span style="margin-left: -110%;" ng-show="orderType === 'OUTBOUND'">Delivered</span>
 
-                </div>
-                <!-- / marker -->
+				</div>
+				<!-- / marker -->
 
-                <!-- This is the individual marker-->
-                <div class="marker mPod timeline-icon" ng-class="{'done': states['POD']}">
-                    <i class="icon-pi-checklist-3"></i>
-                    <i class="checkmark fa fa-check" ng-show="states['POD']"></i>
-                    <span style="margin-left: -70%;" ng-show="orderType !== 'INBOUND' && orderType !== 'OUTBOUND'">POD</span>
-                    <span style="margin-left: -70%;" ng-show="orderType === 'INBOUND'">POR</span>
-                    <span style="margin-left: -70%;" ng-show="orderType === 'OUTBOUND'">POR</span>
-                </div>
-                <!-- / marker -->
+				<!-- This is the individual marker-->
+				<div class="marker mPod timeline-icon" ng-class="{'done': states['POD']}">
+					<i class="icon-pi-checklist-3"></i> <i class="checkmark fa fa-check" ng-show="states['POD']"></i> <span style="margin-left: -70%;" ng-show="orderType !== 'INBOUND' && orderType !== 'OUTBOUND'">POD</span> <span style="margin-left: -70%;" ng-show="orderType === 'INBOUND'">POR</span> <span style="margin-left: -70%;" ng-show="orderType === 'OUTBOUND'">POR</span>
+				</div>
+				<!-- / marker -->
 
-                <!-- This is the individual marker-->
-                <div class="marker mInvoice timeline-icon" ng-class="{'done': states['INVOICE']}">
-                    <i class="icon-pi-payment-2"></i>
-                    <i class="checkmark fa fa-check" ng-show="states['INVOICE_LOADED']"></i>
-                    <span style="margin-left: -85%;">Invoice</span>
-                </div>
-                <!-- / marker -->
-            </div>
-        </div>
-    </div>
+				<!-- This is the individual marker-->
+				<div class="marker mInvoice timeline-icon" ng-class="{'done': states['INVOICE']}">
+					<i class="icon-pi-payment-2"></i> <i class="checkmark fa fa-check" ng-show="states['INVOICE_LOADED']"></i> <span style="margin-left: -85%;">Invoice</span>
+				</div>
+				<!-- / marker -->
+			</div>
+		</div>
+	</div>
 
-    <div ng-show="orderResolved" class="animate-show row">
-        <div class="col-lg-12">
-            <div class="hpanel">
-                <div class="panel-body list">
-                    <uib-tabset>
-                        <uib-tab>
-                            <uib-tab-heading>
-                                Time Stamp&nbsp;
-                            </uib-tab-heading>
+	<div ng-show="orderResolved" class="animate-show row">
+		<div class="col-lg-12">
+			<div class="hpanel">
+				<div class="panel-body list">
+					<uib-tabset> <uib-tab> <uib-tab-heading> Time Stamp&nbsp; </uib-tab-heading>
 
-                            <div class="table-responsive project-list">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Step</th>
-                                        <th>Description</th>
-                                        <th>Date</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-hide="purchaseOrder.state === 'NOT_FOUND'">
-                                        <td>1</td>
-                                        <td>Order captured on portal
-                                            <br/>
-                                            <small>&nbsp; <i class="fa fa-user"></i> captured by
-                                                {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}
-                                            </small>
-                                        </td>
-                                        <td>{{order[0]._audat| date: 'yyyy-MM-dd hh:mm'}}</td>
-                                    </tr>
-                                    <tr ng-show="purchaseOrder.state === 'PROCESSING'">
-                                        <td>2</td>
-                                        <td>Order is being processed by Xeon Team
-                                            <br/>
-                                            <small>&nbsp; <i class="fa fa-bullseye"></i> assigned to
-                                                {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}
-                                            </small>
-                                        </td>
-                                        <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
-                                    </tr>
-                                    <tr ng-show="states['PROCESSED']">
-                                        <td>2</td>
-                                        <td>Order has been processed by our team
-                                            <br/>
-                                            <small ng-show="purchaseOrder.xeonUser">&nbsp; <i class="fa fa-user"></i>
-                                                processed by {{purchaseOrder.xeonUser.firstName}}
-                                                {{purchaseOrder.xeonUser.lastName}}
-                                            </small>
-                                        </td>
-                                        <td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
-                                    </tr>
-                                    <tr ng-show="states['COLLECTED'] && (orderType === 'COURIER' || orderType === 'INBOUND')">
-                                        <td>3</td>
-                                        <td>Order has been collected and is in transit
-                                        </td>
-                                        <td>{{order[0]._daten | date: 'yyyy-MM-dd'}} {{order[0]._uaten | date:
-                                            'hh:mm'}}
-                                        </td>
-                                    </tr>
-                                    <tr ng-show="states['IN_TRANSIT'] && orderType === 'OUTBOUND'">
-                                        <td>3</td>
-                                        <td>Goods has been issued, on route for delivery
-                                        </td>
-                                        <td>{{order[0]._uatbg | date: 'yyyy-MM-dd'}} {{order[0]._uatbg | date:
-                                            'hh:mm'}}
-                                        </td>
-                                    </tr>
-                                    <tr ng-show="states['DELIVERED']">
-                                        <td>4</td>
-                                        <td>Order has been delivered
-                                        </td>
-                                        <td>{{order[0]._audat | date: 'yyyy-MM-dd'}} {{order[0]._audat | date:
-                                            'hh:mm'}}
-                                        </td>
-                                    </tr>
-                                    <tr ng-show="states['POD'] && orderType === 'COURIER'">
-                                        <td>5</td>
-                                        <td>POD uploaded and available online
-                                        <td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}
-                                        </td>
-                                    </tr>
-                                    <tr ng-show="states['POD'] && (orderType === 'INBOUND' || orderType === 'OUTBOUND')">
-                                        <td>5</td>
-                                        <td>POR uploaded and available online
-                                        <td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}
-                                        </td>
-                                    </tr>
-                                    <tr ng-show="states['INVOICE_LOADED']">
-                                        <td>6</td>
-                                        <td>Invoice is available for download, please look under attachments tab</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+					<div class="table-responsive project-list">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Step</th>
+									<th>Description</th>
+									<th>Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-hide="purchaseOrder.state === 'NOT_FOUND'">
+									<td>1</td>
+									<td>Order captured on portal <br /> <small>&nbsp; <i class="fa fa-user"></i> captured by {{purchaseOrder.user.firstName}} {{purchaseOrder.user.lastName}}
+									</small>
+									</td>
+									<td>{{order[0]._audat| date: 'yyyy-MM-dd hh:mm'}}</td>
+								</tr>
+								<tr ng-show="purchaseOrder.state === 'PROCESSING'">
+									<td>2</td>
+									<td>Order is being processed by Xeon Team <br /> <small>&nbsp; <i class="fa fa-bullseye"></i> assigned to {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}
+									</small>
+									</td>
+									<td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+								</tr>
+								<tr ng-show="states['PROCESSED']">
+									<td>2</td>
+									<td>Order has been processed by our team <br /> <small ng-show="purchaseOrder.xeonUser">&nbsp; <i class="fa fa-user"></i> processed by {{purchaseOrder.xeonUser.firstName}} {{purchaseOrder.xeonUser.lastName}}
+									</small>
+									</td>
+									<td>{{purchaseOrder.updatedDate | date: 'yyyy-MM-dd hh:mm'}}</td>
+								</tr>
+								<tr ng-show="states['COLLECTED'] && (orderType === 'COURIER' || orderType === 'INBOUND')">
+									<td>3</td>
+									<td>Order has been collected and is in transit</td>
+									<td>{{order[0]._daten | date: 'yyyy-MM-dd'}} {{order[0]._uaten | date: 'hh:mm'}}</td>
+								</tr>
+								<tr ng-show="states['IN_TRANSIT'] && orderType === 'OUTBOUND'">
+									<td>3</td>
+									<td>Goods has been issued, on route for delivery</td>
+									<td>{{order[0]._uatbg | date: 'yyyy-MM-dd'}} {{order[0]._uatbg | date: 'hh:mm'}}</td>
+								</tr>
+								<tr ng-show="states['DELIVERED']">
+									<td>4</td>
+									<td>Order has been delivered</td>
+									<td>{{order[0]._audat | date: 'yyyy-MM-dd'}} {{order[0]._audat | date: 'hh:mm'}}</td>
+								</tr>
+								<tr ng-show="states['POD'] && orderType === 'COURIER'">
+									<td>5</td>
+									<td>POD uploaded and available online
+									<td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}</td>
+								</tr>
+								<tr ng-show="states['POD'] && (orderType === 'INBOUND' || orderType === 'OUTBOUND')">
+									<td>5</td>
+									<td>POR uploaded and available online
+									<td>{{podDate | date: 'yyyy-MM-dd'}} {{podDate | date: 'hh:mm'}}</td>
+								</tr>
+								<tr ng-show="states['INVOICE_LOADED']">
+									<td>6</td>
+									<td>Invoice is available for download, please look under attachments tab</td>
+								</tr>
+							</tbody>
+						</table>
 
-                            </div>
-                        </uib-tab>
-                      <!--  <uib-tab ng-show="huDetails && huDetails.huheader"> --> 
-                      <uib-tab >
-                            <uib-tab-heading>
-                                <span ng-show="huDetails" class="badge badge-success" style="margin-right: 10px">{{huDetails.huheader.length}}</span>Handling Units
-                            </uib-tab-heading>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-condensed table-hover table-centered" >
-                                    <thead>
-                                    <tr>
-                                        <th width="60px">ID</th>
-                                        <th>HU Number</th>
-                                        <th>Status 1</th>
-                                        <th>Status 2</th>
-                                        <th>Status 3</th>
-                                        <th>Status 4</th>
-                                        <th>Volume / Dimensions</th>
-                                        <th>UoM</th>
-                                        <th>Weight</th>
-                                        <th>Weight UoM</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="hu in huDetails.huheader | orderBy:'id'">
-                                        <td>{{$index+1}}</td>
-                                        <td ng-init="log({{hu._huId}})">{{hu._huId}}</td>
-                                        <td>
-                                            <span ng-switch="hu._huGrp1">
-                                                <span ng-switch-when="10">Collected</span>
-                                                <span ng-switch-when="20">Uncollected</span>
-                                                <span ng-switch-when="30">At JNB Warehouse</span>
-                                                <span ng-switch-when="40">At CPT Warehouse</span>
-                                                <span ng-switch-when="50">At PLZ Warehouse</span>
-                                                <span ng-switch-when="60">At DBN Warehouse</span>
-                                                <span ng-switch-default></span>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span ng-switch="hu._huGrp2">
-                                                <span ng-switch-when="10">Packed in truck</span>
-                                                <span ng-switch-when="20">In Transit</span>
-                                                <span ng-switch-when="30">At Rework</span>
-                                                <span ng-switch-when="40">Customer Collection</span>
-                                                <span ng-switch-when="50">Linehaul delivery</span>
-                                                <span ng-switch-when="60">Local Delivery</span>
-                                                <span ng-switch-when="70">Delivered</span>
-                                                <span ng-switch-default></span>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span ng-switch="hu._huGrp3">
-                                                <span ng-switch-when="00">Start</span>
-                                                <span ng-switch-when="01">Step 1</span>
-                                                <span ng-switch-when="02">Step 2</span>
-                                                <span ng-switch-when="03">Step 3</span>
-                                                <span ng-switch-when="04">Step 4</span>
-                                                <span ng-switch-when="05">Step 5</span>
-                                                <span ng-switch-when="06">Step 6</span>
-                                                <span ng-switch-when="07">Step 7</span>
-                                                <span ng-switch-when="08">Step 8</span>
-                                                <span ng-switch-when="09">Step 9</span>
-                                                <span ng-switch-when="10">Step 10</span>
-                                                <span ng-switch-default></span>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span ng-switch="hu._huGrp4">
-                                                <span ng-switch-when="01">Reworked</span>
-                                                <span ng-switch-when="03">Rework bypass</span>
-                                                <span ng-switch-default>Not reworked</span>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div>{{ hu._height * hu._lenght * hu._width / 1000000 | number:3}}m&sup3;</div>
-                                            <small>
-                                                <b>H:{{hu._height|number:3}} - L:{{hu._lenght|number:3}} - W:{{hu._width|number:3}}</b>
-                                            </small>
-                                        </td>
-                                        <td>{{ hu._unitDim }}</td>
-                                        <td>{{ hu._totalWght }}</td>
-                                        <td>{{ hu._maxUnitOfWght }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </uib-tab>
-                        <uib-tab>
-                            <uib-tab-heading>
-                                <span ng-show="attachments" class="badge badge-success" style="margin-right: 10px">{{attachments.length}}</span>Attachments
-                            </uib-tab-heading>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-condensed table-hover table-centered" >
-                                    <thead>
-                                    <tr>
-                                        <th width="60px">Id</th>
-                                        <th width="180px">Category</th>
-                                        <th width="140px">Date Added</th>
-                                        <th width="160px">Uploaded by</th>
-                                        <th width="120px">Image Type</th>
-                                        <th>Note</th>
-                                        <th width="160px">
-                                            <button type="submit" class="btn btn-primary" style="width: 150px;" ui-sref="orderdetailNew.attachment({for: deliveryNo})">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                                <span>Add attachment</span>
-                                            </button>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="attachment in attachments | orderBy:'id'">
-                                        <td>{{$index+1}}</td>
-                                        <td>{{attachment.category}}</td>
-                                        <td>{{attachment.createdDate | date: 'yyyy-MM-dd HH:mm'}}</td>
-                                        <td>{{attachment.user.firstName === 'Administrator' ? 'Mobile scanner' : attachment.user.firstName + ' ' + attachment.user.lastName}}</td>
-                                        <td>{{attachment.mimeType}}</td>
-                                        <td>{{attachment.description}}</td>
-                                        <td class="text-right">
-                                            <div class="btn-group flex-btn-group-container">
-                                                <!--<button type="submit"-->
-                                                        <!--ui-sref="orderdetail"-->
-                                                        <!--class="btn btn-info">-->
-                                                    <!--<span class="glyphicon glyphicon-eye-open"></span>-->
-                                                    <!--<span class="hidden-xs hidden-sm"></span>-->
-                                                <!--</button>-->
-                                                <button type="button" ng-click="downloadAttachment(attachment)" ng-disabled="isDownloadingAttachment" class="btn btn-primary btn-lg" style="height: 33px;padding-top: 5px;width: 70px;">
-                                                    <span class="glyphicon glyphicon-download" ng-show="selectedAttachment.id != attachment.id || !isDownloadingAttachment"></span>
-                                                    <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="selectedAttachment.id == attachment.id && isDownloadingAttachment"></span>
-                                                    <span class="hidden-xs hidden-sm"></span>
-                                                </button>
-                                                <button type="button"
-                                                        ui-sref="orderdetail.attachmentDelete({attachment: attachment})"
-                                                        class="btn btn-danger">
-                                                    <span class="glyphicon glyphicon-remove-circle"></span>
-                                                    <span class="hidden-xs hidden-sm"></span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </uib-tab>
-                        <uib-tab>
-                            <uib-tab-heading>
-                                <span ng-show="comments || purchaseOrder.comment || purchaseOrder.specialInstruction" class="badge badge-warning" style="margin-right: 10px">{{comments.length + (purchaseOrder.comment !== null ? 1 : 0) + (purchaseOrder.specialInstruction !== null ? 1 : 0)}}</span>Comments
-                            </uib-tab-heading>
-                            <uib-alert type="danger" ng-show="purchaseOrder!= undefined && purchaseOrder.specialInstruction">
-                                <strong>Customer Instruction &nbsp: </strong>{{ purchaseOrder.specialInstruction }}
-                            </uib-alert>
-                            <uib-alert type="warning" ng-show="purchaseOrder.comment">
-                                <strong>PO comment from CSU: </strong>{{ purchaseOrder.comment }}
-                            </uib-alert>
-                            <div class="hpanel">
-                                <div class="panel-heading" style="background-color: #e1f0fa; border: 1px solid #9fcceb">
-                                    <form name="commentForm" role="form" novalidate ng-submit="cuComment(comment)" show-validation>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" ng-model="comment.message" placeholder="Type your comment here..." required>
-                                            <span class="input-group-btn">
-                                                <button type="submit" ng-disabled="commentForm.$invalid || isSaving" class="btn btn-primary">
-                                                    <span class="glyphicon glyphicon-save"></span>&nbsp;
-                                                    <span ng-show="!isSavingComment">Add Comment</span>
-                                                    <span ng-show="isSavingComment">uploading...</span>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="panel-body no-padding">
-                                    <div class="row" ng-show="comments.length === 0">
-                                        <div class="col-md-12" style="margin-top:15px">
-                                            <strong>&nbsp;&nbsp;&nbsp;No comments have been added as yet</strong>
-                                        </div>
-                                    </div>
-                                    <div class="row" ng-show="comments.length !== 0">
-                                        <div class="col-md-12">
-                                            <div class="chat-discussion" style="height: auto; max-height: 500px">
-                                                <div ng-repeat="comment in comments | orderBy:'-captureDate'" class="chat-message" ng-class="{'left':comment.user.company.type!=='XEON', 'right':comment.user.company.type==='XEON'}">
-                                                    <ng-avatar initials="{{comment.user.firstName.charAt(0) + comment.user.lastName.charAt(0)}}" corner-radius="7" bg-color="{{ comment.user.company.type!=='XEON' ? '#ffb606' : '#258cd1' }}" class="message-avatar"></ng-avatar>
-                                                    <div class="message">
-                                                        <a class="message-author" href="#"> {{ comment.user.firstName + ' ' + comment.user.lastName }} from {{ comment.user.company.name }}</a>
-                                                        <span class="message-date">  {{ comment.captureDate | date:'yyyy-MM-dd HH:mm' }} </span>
-                                                        <span class="message-content" style="font-weight: bold;">
-                                                            {{ comment.message }}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </uib-tab>
-                        <uib-tab>
-                            <uib-tab-heading>
-                                Order Details&nbsp;
-                            </uib-tab-heading>
-
-						<div class="hpanel" style="margin-bottom: 15px;">
-
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-sm-2">
-										<h6>Sales Doc Type Desc : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{ order[0]._bezei }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Controller : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._parvwYe }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Collection Party : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._parvwYc }}</span>
+					</div>
+					</uib-tab> <!--  <uib-tab ng-show="huDetails && huDetails.huheader"> --> <uib-tab> <uib-tab-heading> <span ng-show="huDetails" class="badge badge-success" style="margin-right: 10px">{{huDetails.huheader.length}}</span>Handling Units </uib-tab-heading>
+					<div class="table-responsive">
+						<table class="table table-striped table-condensed table-hover table-centered">
+							<thead>
+								<tr>
+									<th width="60px">ID</th>
+									<th>HU Number</th>
+									<th>Status 1</th>
+									<th>Status 2</th>
+									<th>Status 3</th>
+									<th>Status 4</th>
+									<th>Volume / Dimensions</th>
+									<th>UoM</th>
+									<th>Weight</th>
+									<th>Weight UoM</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="hu in huDetails.huheader | orderBy:'id'">
+									<td>{{$index+1}}</td>
+									<td ng-init="log({{hu._huId}})">{{hu._huId}}</td>
+									<td><span ng-switch="hu._huGrp1"> <span ng-switch-when="10">Collected</span> <span ng-switch-when="20">Uncollected</span> <span ng-switch-when="30">At JNB Warehouse</span> <span ng-switch-when="40">At CPT Warehouse</span> <span ng-switch-when="50">At PLZ Warehouse</span> <span ng-switch-when="60">At DBN Warehouse</span> <span ng-switch-default></span>
+									</span></td>
+									<td><span ng-switch="hu._huGrp2"> <span ng-switch-when="10">Packed in truck</span> <span ng-switch-when="20">In Transit</span> <span ng-switch-when="30">At Rework</span> <span ng-switch-when="40">Customer Collection</span> <span ng-switch-when="50">Linehaul delivery</span> <span ng-switch-when="60">Local Delivery</span> <span ng-switch-when="70">Delivered</span> <span ng-switch-default></span>
+									</span></td>
+									<td><span ng-switch="hu._huGrp3"> <span ng-switch-when="00">Start</span> <span ng-switch-when="01">Step 1</span> <span ng-switch-when="02">Step 2</span> <span ng-switch-when="03">Step 3</span> <span ng-switch-when="04">Step 4</span> <span ng-switch-when="05">Step 5</span> <span ng-switch-when="06">Step 6</span> <span ng-switch-when="07">Step 7</span> <span ng-switch-when="08">Step 8</span> <span ng-switch-when="09">Step 9</span> <span ng-switch-when="10">Step 10</span> <span ng-switch-default></span>
+									</span></td>
+									<td><span ng-switch="hu._huGrp4"> <span ng-switch-when="01">Reworked</span> <span ng-switch-when="03">Rework bypass</span> <span ng-switch-default>Not reworked</span>
+									</span></td>
+									<td>
+										<div>{{ hu._height * hu._lenght * hu._width / 1000000 | number:3}}m&sup3;</div> <small> <b>H:{{hu._height|number:3}} - L:{{hu._lenght|number:3}} - W:{{hu._width|number:3}}</b>
+									</small>
+									</td>
+									<td>{{ hu._unitDim }}</td>
+									<td>{{ hu._totalWght }}</td>
+									<td>{{ hu._maxUnitOfWght }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</uib-tab> <uib-tab> <uib-tab-heading> <span ng-show="attachments" class="badge badge-success" style="margin-right: 10px">{{attachments.length}}</span>Attachments </uib-tab-heading>
+					<div class="table-responsive">
+						<table class="table table-striped table-condensed table-hover table-centered">
+							<thead>
+								<tr>
+									<th width="60px">Id</th>
+									<th width="180px">Category</th>
+									<th width="140px">Date Added</th>
+									<th width="160px">Uploaded by</th>
+									<th width="120px">Image Type</th>
+									<th>Note</th>
+									<th width="160px">
+										<button type="submit" class="btn btn-primary" style="width: 150px;" ui-sref="orderdetailNew.attachment({for: deliveryNo})">
+											<span class="glyphicon glyphicon-plus"></span> <span>Add attachment</span>
+										</button>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="attachment in attachments | orderBy:'id'">
+									<td>{{$index+1}}</td>
+									<td>{{attachment.category}}</td>
+									<td>{{attachment.createdDate | date: 'yyyy-MM-dd HH:mm'}}</td>
+									<td>{{attachment.user.firstName === 'Administrator' ? 'Mobile scanner' : attachment.user.firstName + ' ' + attachment.user.lastName}}</td>
+									<td>{{attachment.mimeType}}</td>
+									<td>{{attachment.description}}</td>
+									<td class="text-right">
+										<div class="btn-group flex-btn-group-container">
+											<!--<button type="submit"-->
+											<!--ui-sref="orderdetail"-->
+											<!--class="btn btn-info">-->
+											<!--<span class="glyphicon glyphicon-eye-open"></span>-->
+											<!--<span class="hidden-xs hidden-sm"></span>-->
+											<!--</button>-->
+											<button type="button" ng-click="downloadAttachment(attachment)" ng-disabled="isDownloadingAttachment" class="btn btn-primary btn-lg" style="height: 33px; padding-top: 5px; width: 70px;">
+												<span class="glyphicon glyphicon-download" ng-show="selectedAttachment.id != attachment.id || !isDownloadingAttachment"></span> <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="selectedAttachment.id == attachment.id && isDownloadingAttachment"></span> <span class="hidden-xs hidden-sm"></span>
+											</button>
+											<button type="button" ui-sref="orderdetail.attachmentDelete({attachment: attachment})" class="btn btn-danger">
+												<span class="glyphicon glyphicon-remove-circle"></span> <span class="hidden-xs hidden-sm"></span>
+											</button>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</uib-tab> <uib-tab> <uib-tab-heading> <span ng-show="comments || purchaseOrder.comment || purchaseOrder.specialInstruction" class="badge badge-warning" style="margin-right: 10px">{{comments.length + (purchaseOrder.comment !== null ? 1 : 0) + (purchaseOrder.specialInstruction !== null ? 1 : 0)}}</span>Comments </uib-tab-heading> <uib-alert type="danger" ng-show="purchaseOrder!= undefined && purchaseOrder.specialInstruction"> <strong>Customer Instruction &nbsp: </strong>{{ purchaseOrder.specialInstruction }} </uib-alert> <uib-alert type="warning" ng-show="purchaseOrder.comment"> <strong>PO comment from CSU: </strong>{{ purchaseOrder.comment }} </uib-alert>
+					<div class="hpanel">
+						<div class="panel-heading" style="background-color: #e1f0fa; border: 1px solid #9fcceb">
+							<form name="commentForm" role="form" novalidate ng-submit="cuComment(comment)" show-validation>
+								<div class="input-group">
+									<input type="text" class="form-control" ng-model="comment.message" placeholder="Type your comment here..." required> <span class="input-group-btn">
+										<button type="submit" ng-disabled="commentForm.$invalid || isSaving" class="btn btn-primary">
+											<span class="glyphicon glyphicon-save"></span>&nbsp; <span ng-show="!isSavingComment">Add Comment</span> <span ng-show="isSavingComment">uploading...</span>
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+						<div class="panel-body no-padding">
+							<div class="row" ng-show="comments.length === 0">
+								<div class="col-md-12" style="margin-top: 15px">
+									<strong>&nbsp;&nbsp;&nbsp;No comments have been added as yet</strong>
+								</div>
+							</div>
+							<div class="row" ng-show="comments.length !== 0">
+								<div class="col-md-12">
+									<div class="chat-discussion" style="height: auto; max-height: 500px">
+										<div ng-repeat="comment in comments | orderBy:'-captureDate'" class="chat-message" ng-class="{'left':comment.user.company.type!=='XEON', 'right':comment.user.company.type==='XEON'}">
+											<ng-avatar initials="{{comment.user.firstName.charAt(0) + comment.user.lastName.charAt(0)}}" corner-radius="7" bg-color="{{ comment.user.company.type!=='XEON' ? '#ffb606' : '#258cd1' }}" class="message-avatar"></ng-avatar>
+											<div class="message">
+												<a class="message-author" href="#"> {{ comment.user.firstName + ' ' + comment.user.lastName }} from {{ comment.user.company.name }}</a> <span class="message-date"> {{ comment.captureDate | date:'yyyy-MM-dd HH:mm' }} </span> <span class="message-content" style="font-weight: bold;"> {{ comment.message }} </span>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-sm-2">
-										<h6>Pickup HUB: </h6>
-									</div>
-									<div class="col-sm-2">
-										<span> {{order[0]._parvwYh }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Ship to Party: </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._parvwWe }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Consignee : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._parvwAg }}</span>
-									</div>
-								</div>
-								<div class="row">
-
-									<div class="col-sm-2">
-										<h6>Shipping Type : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._vsart }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Shipping Conditions : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._vsbed }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Special Processing Indicator : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._sdabw }}</span>
-									</div>
-								</div>
-								
-								<div class="row">
-									<div class="col-sm-2">
-										<h6>Customer's Internal Ref : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._ihrez }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Collective Number : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._submi }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Ship-to party charecter: </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._ihrezE }}</span>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-2">
-										<h6>Vessel : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._vessel }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Containers : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._contnr }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Consol : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._consol }}</span>
-									</div>
-								</div>
-								
-								<div class="row">
-									<div class="col-sm-2">
-										<h6>Origin : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._origin }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Carrier Reference : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._ownref }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Shipper : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._shiper }}</span>
-									</div>
-								</div>
-								
-								<div class="row">
-									<div class="col-sm-2">
-										<h6>Master Ocean/Air Way Bill Issue : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._obioli }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Master Ocean/ Air Way Bill: </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._obiola }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>ETA Date : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._etadat | date: 'yyyy-MM-dd' }}</span>
-									</div>
-								</div>
-								
-								<div class="row">
-									<div class="col-sm-2">
-										<h6>House Ocean/ Air Way Bill : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._hbiola }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Vessel Voyage  / Flight : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._vesvoy }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>House Ocean/Air Way Bill Issue: </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._hbiol1 }}</span>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-2">
-										<h6>Commodity : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._commod }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>Destination : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._destin }}</span>
-									</div>
-									<div class="col-sm-2">
-										<h6>ETD : </h6>
-									</div>
-									
-									<div class="col-sm-2">
-										<span> {{order[0]._etd | date: 'yyyy-MM-dd'}}</span>
-									</div>
-								</div>
-								
 							</div>
 						</div>
-						
- 
-					 
+					</div>
+					</uib-tab> <uib-tab> <uib-tab-heading> Order Details&nbsp; </uib-tab-heading>
 
-					</uib-tab>
-                            
-                    </uib-tabset>
-                </div>
-            </div>
+					<div class="hpanel" style="margin-bottom: 15px;">
+
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-2">
+									<h6>Sales Doc Type Desc :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{ order[0]._bezei }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Controller :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._parvwYe }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Collection Party :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._parvwYc }}</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-2">
+									<h6>Pickup HUB:</h6>
+								</div>
+								<div class="col-sm-2">
+									<span> {{order[0]._parvwYh }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Ship to Party:</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._parvwWe }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Consignee :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._parvwAg }}</span>
+								</div>
+							</div>
+							<div class="row">
+
+								<div class="col-sm-2">
+									<h6>Shipping Type :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._vsart }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Shipping Conditions :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._vsbed }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Special Processing Indicator :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._sdabw }}</span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-2">
+									<h6>Customer's Internal Ref :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._ihrez }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Collective Number :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._submi }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Ship-to party charecter:</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._ihrezE }}</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-2">
+									<h6>Vessel :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._vessel }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Containers :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._contnr }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Consol :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._consol }}</span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-2">
+									<h6>Origin :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._origin }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Carrier Reference :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._ownref }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Shipper :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._shiper }}</span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-2">
+									<h6>Master Ocean/Air Way Bill Issue :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._obioli }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Master Ocean/ Air Way Bill:</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._obiola }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>ETA Date :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._etadat | date: 'yyyy-MM-dd' }}</span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-2">
+									<h6>House Ocean/ Air Way Bill :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._hbiola }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Vessel Voyage / Flight :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._vesvoy }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>House Ocean/Air Way Bill Issue:</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._hbiol1 }}</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-2">
+									<h6>Commodity :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._commod }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>Destination :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._destin }}</span>
+								</div>
+								<div class="col-sm-2">
+									<h6>ETD :</h6>
+								</div>
+
+								<div class="col-sm-2">
+									<span> {{order[0]._etd | date: 'yyyy-MM-dd'}}</span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+
+
+					</uib-tab> </uib-tabset>
+				</div>
+			</div>
 		</div>
-		 <!-- <button type="submit"
+		<!-- <button type="submit"
             onclick="window.history.back()"
             class="btn btn-info">
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>

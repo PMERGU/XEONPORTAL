@@ -7,8 +7,7 @@
 					<div class="col-md-6">
 						<h2 class="font-light m-b-xs">Sales orders</h2>
 						<jh-alert></jh-alert>
-						<small>All sales orders captured in SAP against a specific
-							customer</small>
+						<small>All sales orders captured in SAP against a specific customer</small>
 					</div>
 				</div>
 				<div class="row">
@@ -16,22 +15,15 @@
 						<div class="form-group">
 							<h4>From Date</h4>
 							<div class="input-group">
-								<input id="field_fromDate" type="text" class="form-control"
-									uib-datepicker-popup name="fromDate" ng-model="soData.fromDate"
-									datepicker-options="dateOptions"
-									is-open="dateSetup.dpFromDate.opened" /> <span
-									class="input-group-btn"> +
-									<button type="button" class="btn btn-default"
-										style="margin-top: 0px !important;"
-										ng-click="dateSetup.dpFromDate.open($event)">
+								<input ng-model-options="{timezone:'UTC'}" id="field_fromDate" type="text" class="form-control" uib-datepicker-popup name="fromDate" ng-model="soData.fromDate" datepicker-options="dateOptions" is-open="dateSetup.dpFromDate.opened" /> <span class="input-group-btn"> +
+									<button type="button" class="btn btn-default" style="margin-top: 0px !important;" ng-click="dateSetup.dpFromDate.open($event)">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</button>
 								</span>
 							</div>
 							<div class="form-group">
 								<h4>Order Type</h4>
-								<select class="form-control" name="szone"
-									ng-model="soData.orType" id="field_ioStatus">
+								<select class="form-control" name="szone" ng-model="soData.orType" id="field_ioStatus">
 									<option value="ZOUT">Outbound</option>
 									<option value="ZINB">Inbound</option>
 									<option value="YCO">Transport</option>
@@ -46,13 +38,8 @@
 						<div class="form-group">
 							<h4>To Date</h4>
 							<div class="input-group">
-								<input id="field_toDate" type="text" class="form-control"
-									uib-datepicker-popup name="toDate" ng-model="soData.toDate"
-									datepicker-options="dateOptions"
-									is-open="dateSetup.dpToDate.opened" /> <span
-									class="input-group-btn"> +
-									<button type="button" class="btn btn-default"
-										ng-click="dateSetup.dpToDate.open($event)">
+								<input ng-model-options="{timezone:'UTC'}" id="field_toDate" type="text" class="form-control" uib-datepicker-popup name="toDate" ng-model="soData.toDate" datepicker-options="dateOptions" is-open="dateSetup.dpToDate.opened" /> <span class="input-group-btn"> +
+									<button type="button" class="btn btn-default" ng-click="dateSetup.dpToDate.open($event)">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</button>
 								</span>
@@ -62,19 +49,10 @@
 
 								<h4>Company</h4>
 
-								<button type="submit" id="salesOR" style="display: none"
-									class="btn btn-info btn-sm">
-									<span class="glyphicon glyphicon-eye-open"></span> <span
-										class="hidden-xs hidden-sm"></span>
+								<button type="submit" id="salesOR" style="display: none" class="btn btn-info btn-sm">
+									<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 								</button>
-								<ui-select ng-model="selected.company" title="Choose a company">
-								<ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match>
-								<ui-select-choices
-									repeat="company in companies | orderBy:'name'">
-								<span ng-bind-html="company.name | highlight: $select.search"></span>
-								<small
-									ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small>
-								</ui-select-choices> </ui-select>
+								<ui-select ng-model="selected.company" title="Choose a company"> <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match> <ui-select-choices repeat="company in companies | orderBy:'name'"> <span ng-bind-html="company.name | highlight: $select.search"></span> <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small> </ui-select-choices> </ui-select>
 
 							</div>
 						</div>
@@ -83,10 +61,8 @@
 			</div>
 			<div class="modal-footer">
 
-				<button type="button" ng-click="reloadData(true)"
-					class="btn btn-primary">
-					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Show
-						Sales Orders</span>
+				<button type="button" ng-click="reloadData(true)" class="btn btn-primary">
+					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Show Sales Orders</span>
 				</button>
 			</div>
 		</div>
@@ -95,19 +71,11 @@
 </div>
 <div class="hpanel" ng-show="showTable">
 	<div class="panel-body">
-		<uib-tabset> <uib-tab> <uib-tab-heading>
-		<span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders
-			| unique: 'DBELN').length}}</span>Undelivered&nbsp; <span
-			class="btn btn-default btn-xs" ng-click="reloadData(true)"
-			ng-disabled="loadingOrders"> <i class="fa fa-refresh"
-			ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
+		<uib-tabset> <uib-tab> <uib-tab-heading> <span class="badge badge-danger" style="margin-right: 10px">{{(undeliveredOrders | unique: '_dbeln').length}}</span>Undelivered&nbsp; <span class="btn btn-default btn-xs" ng-click="reloadData(true)" ng-disabled="loadingOrders"> <i class="fa fa-refresh" ng-class="{'fa-spin fa-fw': loadingOrders}"></i>
 		</span> </uib-tab-heading>
 		<div class="panel-body" style="padding-top: 0px;">
 			<div class="table-responsive">
-				<table datatable="ng" dt-options="dtOptions"
-					dt-column-defs="dtColumnDefs"
-					class="table table-striped hover table-centered"
-					style="width: 100% !important;">
+				<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover table-centered" style="width: 100% !important;">
 					<thead>
 						<tr>
 
@@ -126,7 +94,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="order in undeliveredOrders | unique: 'DBELN'">
+						<tr ng-repeat="order in undeliveredOrders | unique: '_dbeln'">
 
 							<td>{{ order._bstkd }}</td>
 							<td>{{ order._parvwYe }}</td>
@@ -140,11 +108,8 @@
 							<td>{{ order._dbeln }}</td>
 							<td>{{ order._pdstk }}</td>
 							<td width="10px">
-								<button type="submit"
-									ui-sref="orderdetailNew({poNumber: order.BSTKD, deliveryNo: order.DBELN, type : soData.ioType, orderStep: ordersStep})"
-									class="btn btn-info btn-sm">
-									<span class="glyphicon glyphicon-eye-open"></span> <span
-										class="hidden-xs hidden-sm"></span>
+								<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
+									<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 								</button>
 							</td>
 						</tr>
@@ -152,14 +117,10 @@
 				</table>
 			</div>
 		</div>
-		</uib-tab> <uib-tab> <uib-tab-heading> <span
-			class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders
-			| unique: 'DBELN').length}}</span>Delivered </uib-tab-heading>
+		</uib-tab> <uib-tab> <uib-tab-heading> <span class="badge badge-primary" style="margin-right: 10px">{{(deliveredOrders | unique: '_dbeln').length}}</span>Delivered </uib-tab-heading>
 		<div class="panel-body" style="padding-top: 0px;">
 			<div class="table-responsive">
-				<table datatable="ng" dt-options="dtOptions"
-					dt-column-defs="dtColumnDefs" class="table table-striped hover"
-					style="width: 100% !important;">
+				<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
 					<thead>
 						<tr>
 							<th>Purchase Order</th>
@@ -177,7 +138,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="order in deliveredOrders | unique: 'DBELN'">
+						<tr ng-repeat="order in deliveredOrders | unique: '_dbeln'">
 							<td>{{ order._bstkd }}</td>
 							<td>{{ order._parvwYe }}</td>
 							<td>{{ order._ernam }}</td>
@@ -190,11 +151,8 @@
 							<td>{{ order._dbeln }}</td>
 							<td>{{ order._pdstk }}</td>
 							<td width="10px">
-								<button type="submit"
-									ui-sref="orderdetailNew({poNumber: order.BSTKD, deliveryNo: order.DBELN, type : soData.ioType, orderStep: ordersStep})"
-									class="btn btn-info btn-sm">
-									<span class="glyphicon glyphicon-eye-open"></span> <span
-										class="hidden-xs hidden-sm"></span>
+								<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
+									<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 								</button>
 							</td>
 						</tr>
@@ -202,14 +160,10 @@
 				</table>
 			</div>
 		</div>
-		</uib-tab> <uib-tab> <uib-tab-heading> <span
-			class="badge badge-primary" style="margin-right: 10px">{{(emptyStatusOrders
-			| unique: 'DBELN').length}}</span>Others </uib-tab-heading>
+		</uib-tab> <uib-tab> <uib-tab-heading> <span class="badge badge-primary" style="margin-right: 10px">{{(emptyStatusOrders | unique: '_dbeln').length}}</span>Others </uib-tab-heading>
 		<div class="panel-body" style="padding-top: 0px;">
 			<div class="table-responsive">
-				<table datatable="ng" dt-options="dtOptions"
-					dt-column-defs="dtColumnDefs" class="table table-striped hover"
-					style="width: 100% !important;">
+				<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
 					<thead>
 						<tr>
 							<th>Purchase Order</th>
@@ -227,7 +181,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="order in emptyStatusOrders | unique: 'DBELN'">
+						<tr ng-repeat="order in emptyStatusOrders | unique: '_dbeln'">
 							<td>{{ order._bstkd }}</td>
 							<td>{{ order._parvwYe }}</td>
 							<td>{{ order._ernam }}</td>
@@ -240,11 +194,8 @@
 							<td>{{ order._dbeln }}</td>
 							<td>{{ order._pdstk }}</td>
 							<td width="10px">
-								<button type="submit"
-									ui-sref="orderdetailNew({poNumber: order.BSTKD, deliveryNo: order.DBELN, type : soData.ioType, orderStep: ordersStep})"
-									class="btn btn-info btn-sm">
-									<span class="glyphicon glyphicon-eye-open"></span> <span
-										class="hidden-xs hidden-sm"></span>
+								<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
+									<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 								</button>
 							</td>
 						</tr>

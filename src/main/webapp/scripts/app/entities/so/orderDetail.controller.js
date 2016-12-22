@@ -1,16 +1,17 @@
 'use strict';
 
 angular.module('portalApp')
-    .controller('NewOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal, PurchaseOrder, $log, CustomerOrders, FileSaver, Blob, $interval, Upload, Attachment, Comment,
-                                                       purchaseOrder, order, deliveryNo, orderStep, delAttachments, poAttachments, comments,huDetails) {
-        $scope.purchaseOrder = purchaseOrder;
-        $scope.purchaseOrder = purchaseOrder;
-        $scope.order=order;
+    .controller('NewOrderDetailController', function ($scope, $stateParams, $sce, $window, $q, Principal,SOService,  $log, CustomerOrders, FileSaver, Blob, $interval, Upload, Attachment, Comment,
+                                                        order, deliveryNo, orderStep, delAttachments, poAttachments, comments,huDetails) {
+        
+        $scope.order=order.Order;
+        $scope.purchaseOrder=order.poData;
         $scope.poNumber=$stateParams.poNumber;
         $scope.deliveryNo = deliveryNo;
         $scope.huDetails=huDetails;
         $scope.orderResolved = false;
         $scope.attachments = [];
+        
         
         $scope.orderTypes = {
         		
@@ -107,7 +108,7 @@ angular.module('portalApp')
         });
 
         //WHEN ORDER IS LOADED, LETS START WITH THE ORDER DATA
-        order.$promise.then(function(result) {
+        $scope.order.$promise.then(function(result) {
             $scope.orderResolved = true;
 
             $scope.order = result.sort(function (order1, order2) {
@@ -158,7 +159,7 @@ angular.module('portalApp')
         };
 
         $interval(function () {
-            PurchaseOrder.getComments({id: purchaseOrder.id}).$promise.then(function(result){
+            PurchaseOrder.getComments({id:  $scope.purchaseOrder.id}).$promise.then(function(result){
                 $scope.comments = result;
             });
         }, 60000);
