@@ -74,7 +74,7 @@ public class SalesOrderResource {
 		return () -> {
 			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
 			Future<List<EtCustOrders>> future;
-			if (SecurityUtils.isUserCustomer()) {
+			if (SecurityUtils.isUserCustomer() && !SecurityUtils.isUserCustomerCSU()){
 				log.debug("Restricting CustomerOrders lookup by user[" + user.getLogin() + "].user.sapId : "
 						+ user.getFcSapId());
 				future = salesOrderService.getCustomerOrdersNew(type, user.getCompany().getSapId(),

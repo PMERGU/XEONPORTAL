@@ -168,7 +168,8 @@
 									<td><span ng-switch="hu._huGrp4"> <span ng-switch-when="01">Reworked</span> <span ng-switch-when="03">Rework bypass</span> <span ng-switch-default>Not reworked</span>
 									</span></td>
 									<td>
-										<div>{{ hu._height * hu._lenght * hu._width / 1000000 | number:3}}m&sup3;</div> <small> <b>H:{{hu._height|number:3}} - L:{{hu._lenght|number:3}} - W:{{hu._width|number:3}}</b>
+										<!-- <div>{{ hu._height * hu._lenght * hu._width / 1000000 | number:3}}m&sup3;</div> <small> <b>H:{{hu._height|number:3}} - L:{{hu._lenght|number:3}} - W:{{hu._width|number:3}}</b>  -->
+										<div>{{hu._totalVol}}</div>
 									</small>
 									</td>
 									<td>{{ hu._unitDim }}</td>
