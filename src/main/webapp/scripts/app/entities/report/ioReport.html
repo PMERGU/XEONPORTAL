@@ -63,32 +63,30 @@
 					<thead>
 						<tr>
 							<th><span>Purchase Order</span></th>
-							<th><span>Customer Controller</span></th>
+							<th><span>Description</span></th>
 							<th><span>Captured By</span></th>
 							<th><span>Pickup Party</span></th>
 							<th><span>Pickup HUB</span></th>
-							<th><span>Ship to party</span></th>
-							<th><span>Consignee</span></th>
+							<th><span>Billing Status</span></th>
+							<th><span>Batch Number</span></th>
 							<th><span>Sales Order</span></th>
-							<th><span>Deliver No</span></th>
+							<th><span>Billing Document</span></th>
 							<th><span>POD Attachments</span></th>
-							<th><span>Invoice Attachments</span></th>
-							<th><span>Invoice Number</span></th>
-							<th><span>A</span></th>
-							<th><span>B</span></th>
-							<th><span>C</span></th>
-							<th><span>D</span></th>
-							<th><span>E</span></th>
-							<th><span>F</span></th>
-							<th><span>A</span></th>
-							<th><span>B</span></th>
-							<th><span>C</span></th>
-							<th><span>D</span></th>
-							<th><span>E</span></th>
-							<th><span>F</span></th>
-							<th><span>A</span></th>
-							<th><span>B</span></th>
-							<th><span>C</span></th>
+							<th><span>Description</span></th>
+							<th><span>Description</span></th>
+							<th><span>Date Proof of Delivery</span></th>
+							<th><span>Confirmation Time</span></th>
+							<th><span>POD Status</span></th>
+							<th><span>Customer Number</span></th>
+							<th><span>Document Date</span></th>
+							<th><span>SD Item Number</span></th>
+							<th><span>Entry Time</span></th>
+							<th><span>Billing Date</span></th>
+							<th><span>Sales Order Item</span></th>
+							<th><span>Entry Time</span></th>
+							<th><span>Description</span></th>
+							<th><span>Sales Unit</span></th>
+							<th><span>Meterial Number</span></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -99,25 +97,23 @@
 							<td>{{ioRec._ernam}}</td>
 							<td>{{ioRec._parvwYc}}</td>
 							<td>{{ioRec._parvwYh}}</td>
-							<td>{{ioRec._parvwWe}}</td>
-							<td>{{ioRec._parvwAg}}</td>
+							<td>{{ioRec._fkstk}}</td>
+							<td>{{ioRec._charg}}</td>
 							<td>{{ioRec._vbeln}}</td>
 							<td>{{ioRec._dbeln}}</td>
-							<td>{{ioRec.podStatus}}</td>
-							<td>{{ioRec.invStatus}}</td>
 							<td>{{ioRec._ibeln}}</td>
 							<td>{{ioRec._parvwWe}}</td>
 							<td>{{ioRec._parvwAg}}</td>
-							<td>{{ioRec._podat}}</td>
-							<td>{{ioRec._potim}}</td>
+							<td>{{ioRec._podat | date: 'yyyy-MM-dd'}}</td>
+							<td>{{ioRec._potim |  date: 'HH:mm' }}</td>
 							<td>{{ioRec._pdstk}}</td>
 							<td>{{ioRec._skunnr}}</td>
-							<td>{{ioRec._audat}}</td>
+							<td>{{ioRec._audat | date: 'yyyy-MM-dd'}}</td>
 							<td>{{ioRec._posnr}}</td>
-							<td>{{ioRec._drzet}}</td>
-							<td>{{ioRec._fkdat}}</td>
+							<td>{{ioRec._drzet |  date: 'HH:mm' }}</td>
+							<td>{{ioRec._fkdat | date: 'yyyy-MM-dd' }}</td>
 							<td>{{ioRec._arktx}}</td>
-							<td>{{ioRec._erzet}}</td>
+							<td>{{ioRec._erzet  |  date: 'HH:mm'  }}</td>
 							<td>{{ioRec._parvwYh}}</td>
 							<td>{{ioRec._vrkme}}</td>
 							<td>{{ioRec._matnr}}</td>
