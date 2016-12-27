@@ -3,7 +3,7 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-6">
-					<h2 class="font-light m-b-xs">IO Report</h2>
+					<h2 class="font-light m-b-xs">In bound and Outbound Report</h2>
 					<jh-alert></jh-alert>
 				</div>
 			</div>
@@ -18,7 +18,11 @@
 								</button>
 							</span>
 						</div>
-						<div class="form-group">
+							<div class="form-group" has-authority="ROLE_USER">
+							<h4>Company</h4>
+							<ui-select ng-model="selected.company" title="Choose a company"> <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match> <ui-select-choices repeat="company in companies | orderBy:'name' | filter: $select.search"> <span ng-bind-html="company.name | highlight: $select.search"></span> <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small> </ui-select-choices> </ui-select>
+						</div>
+					<!-- 	<div class="form-group">
 							<h4>IO Status</h4>
 							<select class="form-control" name="szone" ng-model="ioReport.ioType" id="field_ioStatus">
 								<option value="">ALL</option>
@@ -26,7 +30,7 @@
 								<option value="B">B</option>
 								<option value="A">A</option>
 							</select>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -39,10 +43,7 @@
 								</button>
 							</span>
 						</div>
-						<div class="form-group" has-authority="ROLE_USER">
-							<h4>Company</h4>
-							<ui-select ng-model="selected.company" title="Choose a company"> <ui-select-match placeholder="Select or search for company">{{$select.selected.name}}</ui-select-match> <ui-select-choices repeat="company in companies | orderBy:'name' | filter: $select.search"> <span ng-bind-html="company.name | highlight: $select.search"></span> <small ng-bind-html="' - [SapId: ' + company.sapId + ']' | highlight: $select.search"></small> </ui-select-choices> </ui-select>
-						</div>
+					
 					</div>
 				</div>
 			</div>
