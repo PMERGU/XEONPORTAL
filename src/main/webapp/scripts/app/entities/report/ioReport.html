@@ -1,4 +1,18 @@
 <div>
+
+<head>
+
+<style type="text/css">
+
+/* .table{display:block; height: 400px; overflow-x:scroll;  overflow-y:scroll; }
+
+.table.tbody{ overflow-y:scroll; } */
+
+
+</style>
+ 
+
+</head>
 	<div class="hpanel" style="margin-bottom: 15px;">
 		<div class="panel-body">
 			<div class="row">
@@ -56,37 +70,37 @@
 			</button>
 		</div>
 	</div>
-	<div class="hpanel">
+	<div class="hpanel" ng-show="showdownloadbuttons" >
 		<div class="panel-body">
-			<div class="table-responsive">
-
-				<table class="jh-table table table-striped export-table" id="stockReport" fixed-header ng-show="showdownloadbuttons">
+			<div class="table-responsive" style="margin-top: 20px">
+              <scrollable-table watch="ioData">
+				<table class="jh-table table table-striped export-table" id="stockReport"    >
 					<thead>
 						<tr>
-							<th><span>Purchase Order</span></th>
-							<th><span>Customer Controller</span></th>
-							<th><span>Captured By</span></th>
-							<th><span>Pickup Party</span></th>
-							<th><span>Pickup HUB</span></th>
-							<th><span>Billing Status</span></th>
-							<th><span>Batch Number</span></th>
-							<th><span>Sales Order</span></th>
-							<th><span>Billing Document</span></th>
-							<th><span>POD Attachments</span></th>
-							<th><span>Ship to Party</span></th>
-							<th><span>Sold to Party</span></th>
-							<th><span>Date Proof of Delivery</span></th>
-							<th><span>Confirmation Time</span></th>
-							<th><span>POD Status</span></th>
-							<th><span>Customer Number</span></th>
-							<th><span>Document Date</span></th>
-							<th><span>SD Item Number</span></th>
-							<th><span>Entry Time</span></th>
-							<th><span>Billing Date</span></th>
-							<th><span>Sales Order Item</span></th>
-							<th><span>Entry Time</span></th>							
-							<th><span>Sales Unit</span></th>
-							<th><span>Meterial Number</span></th>
+							<th class="columns" >Purchase Order</th>
+							<th class="columns1" >Customer Controller</th>
+							<th class="columns2">Captured By</th>
+							<th class="columns">Pickup Party</th>
+							<th class="columns3">Pickup HUB</th>
+							<th class="columns4">Billing Status</th>
+							<th class="columns5">Batch Number</th>
+							<th class="columns6">Sales Order</th>
+							<th  class="columns7" >Billing Document</th>
+							<th class="columns8" >POD Attachments</th>
+							<th  class="columns9" >Ship to Party</th>
+							<th  class="columns10" >Sold to Party</th>
+							<th  class="columns11" >Date Proof of Delivery</th>
+							<th  class="columns12" >Confirmation Time</th>
+							<th class="columns13" >POD Status</th>
+							<th class="columns14" >Customer Number</th>
+							<th class="columns15" >Document Date</th>
+							<th  class="columns16">SD Item Number</th>
+							<th class="columns17" >Entry Time</th>
+							<th class="columns18" >Billing Date</th>
+							<th class="columns19" >Sales Order Item</th>
+							<th class="columns20" >Entry Time</th>							
+							<th  class="columns21">Sales Unit</th>
+							<th  class="columns22" >Meterial Number</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -123,16 +137,13 @@
 
 				</table>
 
-
+</scrollable-table>
 			</div>
 			<br />
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" ng-show="showdownloadbuttons" onclick="$('#stockReport').tableExport({type:'excel', escape:'false'});">
 					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download Excel</span>
-				</button>
-				<button type="button" ng-click="downloadPdf()" ng-show="showdownloadbuttons" class="btn btn-primary">
-					<span class="glyphicon glyphicon-save"></span>&nbsp;<span>Download PDF</span>
 				</button>
 			</div>
 		</div>
