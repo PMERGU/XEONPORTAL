@@ -94,13 +94,13 @@
 							<th class="columns13" >POD Status</th>
 							<th class="columns14" >Customer Number</th>
 							<th class="columns15" >Document Date</th>
-							<th  class="columns16">SD Item Number</th>
 							<th class="columns17" >Entry Time</th>
+							<th  class="columns16">SD Item Number</th>
 							<th class="columns18" >Billing Date</th>
+							<th class="columns20" >Entry Time</th>
 							<th class="columns19" >Sales Order Item</th>
-							<th class="columns20" >Entry Time</th>							
 							<th  class="columns21">Sales Unit</th>
-							<th  class="columns22" >Meterial Number</th>
+							<th  class="columns22" >Material Number</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -123,11 +123,11 @@
 							<td>{{ioRec._pdstk}}</td>
 							<td>{{ioRec._skunnr}}</td>
 							<td>{{ioRec._audat | date: 'yyyy-MM-dd'}}</td>
-							<td>{{ioRec._posnr}}</td>
 							<td>{{ioRec._drzet |  date: 'HH:mm' }}</td>
+							<td>{{ioRec._posnr}}</td>
 							<td>{{ioRec._fkdat | date: 'yyyy-MM-dd' }}</td>
-							<td>{{ioRec._arktx}}</td>
-							<td>{{ioRec._erzet  |  date: 'HH:mm'  }}</td>							
+							<td>{{ioRec._erzet  |  date: 'HH:mm'  }}</td>
+							<td>{{ioRec._arktx}}</td>	
 							<td>{{ioRec._vrkme}}</td>
 							<td>{{ioRec._matnr}}</td>
 						</tr>
