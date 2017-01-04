@@ -403,9 +403,13 @@ public class HiberSapService {
 		Session session = sessionManager.openSession();
 		try {
 			List<ImDateR> dateRange = new ArrayList<ImDateR>();
-			List<ImAuart> auart = new ArrayList<ImAuart>();
-			dateRange.add(new ImDateR("I", from, to, "BT"));
-			auart.add(new ImAuart("I", "EQ", type!="" ? type : null , null));
+			List<ImAuart> auart = null;
+			if(type!=null && !type.equalsIgnoreCase("") )
+			{
+				auart= new ArrayList<ImAuart>();
+				dateRange.add(new ImDateR("I", from, to, "BT"));
+				auart.add(new ImAuart("I", "EQ", type!="" ? type : null , null));
+			}
 			ZGetCustOrdersByDateNew rfc = new ZGetCustOrdersByDateNew(auart, dateRange, null, customerNumber);
 			session.execute(rfc);
 
