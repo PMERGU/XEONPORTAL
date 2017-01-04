@@ -641,7 +641,7 @@ public class PurchaseOrderResource {
 	@Timed
 	public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable Long id) {
 		log.debug("[PO:{}] - REST request to get PurchaseOrder");
-		PurchaseOrder purchaseOrder = purchaseOrderRepository.findFirstByPoNumber(id + "");
+		PurchaseOrder purchaseOrder = purchaseOrderRepository.findOne(id);
 		if (!(SecurityUtils.isUserXeonOrAdmin())) {
 			User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
 			if (purchaseOrder.getUser().getCompany().getId() != user.getCompany().getId()) {
