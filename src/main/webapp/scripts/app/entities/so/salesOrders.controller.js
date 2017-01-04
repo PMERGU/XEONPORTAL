@@ -11,6 +11,8 @@ angular.module('portalApp')
 		$scope.loadingOrders = false;
 		$scope.showTable = false;
 		
+		$scope.showOrderType=false;
+		
 		$scope.soData = {
 				fromDate : null,
 				toDate : null,
@@ -132,8 +134,14 @@ angular.module('portalApp')
 
 		function getOrders(dateT, force) {
 			$scope.loadingOrders = true;
+			$scope.showOrderType=false;
 			if ($scope.selected.company.id !== null) {
 				$log.debug( $scope.soData.orType + "Company length :: " + $scope.selected.company.sapId);
+				
+				if($scope.soData.orType == null || $scope.soData.orType == '')
+					{
+					$scope.showOrderType=true;
+					}
 				SOService.getByCustomerNumber({type : $scope.soData.orType == null ? "" : $scope.soData.orType , customerNumber: $scope.selected.company.sapId,
 					from : $scope.soData.fromDate,
 							to : $scope.soData.toDate 
