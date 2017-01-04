@@ -24,6 +24,7 @@
 							<div class="form-group">
 								<h4>Order Type</h4>
 								<select class="form-control" name="szone" ng-model="soData.orType" id="field_ioStatus">
+								<option value="">ALL</option>
 									<option value="ZOUT">Outbound</option>
 									<option value="ZINB">Inbound</option>
 									<option value="YCO">Transport</option>
@@ -90,7 +91,9 @@
 							<th>Sales Order</th>
 							<th>Delivery No</th>
 							<th>POD Status</th>
+							<th ng-hide="soData.orType != '' " >Order Type</th>
 							<th></th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -112,6 +115,9 @@
 									<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
 								</button>
 							</td>
+							<td ng-hide="soData.orType != '' "><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZINB">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="ZRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span> 
+							</span></td>
+							
 						</tr>
 					</tbody>
 				</table>

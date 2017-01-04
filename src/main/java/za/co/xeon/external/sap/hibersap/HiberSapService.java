@@ -405,7 +405,7 @@ public class HiberSapService {
 			List<ImDateR> dateRange = new ArrayList<ImDateR>();
 			List<ImAuart> auart = new ArrayList<ImAuart>();
 			dateRange.add(new ImDateR("I", from, to, "BT"));
-			auart.add(new ImAuart("I", "EQ", type, null));
+			auart.add(new ImAuart("I", "EQ", type!="" ? type : null , null));
 			ZGetCustOrdersByDateNew rfc = new ZGetCustOrdersByDateNew(auart, dateRange, null, customerNumber);
 			session.execute(rfc);
 
