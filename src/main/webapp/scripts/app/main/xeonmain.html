@@ -28,6 +28,7 @@
                                         <th>Employee</th>
                                         <th>Captured By</th>
                                         <th>Purchase Order</th>
+                                        <th>Capture Date</th>
                                         <th>Mode of Transport</th>
                                         <th>Reference</th>
                                         <th>Status</th>
@@ -41,6 +42,7 @@
                                         <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
                                         <td>{{ po.capturedBy.firstName + ' ' + po.capturedBy.lastName }}</td>
                                         <td>{{ po.poNumber }}</td>
+                                        <td>{{ po.captureDate | date:'yyyy-MM-dd HH:mm:ss '}}</td>
                                         <td>{{ po.modeOfTransport }}</td>
                                         <td>{{ po.reference }}</td>
                                         <td>{{ po.state }}</td>
@@ -77,6 +79,7 @@
                                         <th>Employee</th>
                                         <th>Captured By</th>
                                         <th>Purchase Order</th>
+                                        <th>Capture Date</th>
                                         <th>Mode of Transport</th>
                                         <th>Reference</th>
                                         <th>Status</th>
@@ -90,6 +93,7 @@
                                         <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
                                         <td>{{ po.capturedBy.firstName + ' ' + po.capturedBy.lastName }}</td>
                                         <td>{{ po.poNumber }}</td>
+                                        <td>{{ po.captureDate | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                                         <td>{{ po.modeOfTransport }}</td>
                                         <td>{{ po.reference }}</td>
                                         <td>{{ po.state }}</td>
@@ -125,6 +129,7 @@
                                         <th>Company</th>
                                         <th>Captured By</th>
                                         <th>Purchase Order</th>
+                                        <th>Completed Date</th>
                                         <th>Mode of Transport</th>
                                         <th>Reference</th>
                                         <th>Status</th>
@@ -136,6 +141,7 @@
                                         <td>{{ po.user.company.name }}</td>
                                         <td>{{ po.user.firstName }} {{ po.user.lastName }}</td>
                                         <td>{{ po.poNumber }}</td>
+                                        <td>{{ po.updatedDate | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                                         <td>{{ po.modeOfTransport }}</td>
                                         <td>{{ po.reference }}</td>
                                         <td>{{ po.state }}</td>
