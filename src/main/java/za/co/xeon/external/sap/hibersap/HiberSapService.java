@@ -423,14 +423,21 @@ public class HiberSapService {
 		}
 	}
 
-	public List<EtCustOrders> getCustomerOrdersForPOD(String sapId, Date from, Date to, String podStatus)
+	public List<EtCustOrders> getCustomerOrdersForPOD(String sapId, Date from, Date to, String podStatus, String type)
 			throws ParseException {
 		sapId = Pad.left(sapId, 10);
 		Session session = sessionManager.openSession();
 		try {
 			List<ImDateR> dateRange = new ArrayList<ImDateR>();
 			dateRange.add(new ImDateR("I", from, to, "BT"));
-			ZGetCustOrdersByDateNew rfc = new ZGetCustOrdersByDateNew(null, dateRange, podStatus, sapId);
+			List<ImAuart> auart =  new ArrayList<ImAuart>();
+			if(type!=null && !type.equalsIgnoreCase("") )
+			{
+				auart= new ArrayList<ImAuart>();
+				auart.add(new ImAuart("I", "EQ", type!="" ? type : null , null));
+			}
+			
+			ZGetCustOrdersByDateNew rfc = new ZGetCustOrdersByDateNew(auart, dateRange, podStatus, sapId);
 			session.execute(rfc);
 			return rfc.get_etCustOrders();
 		} catch (Exception e) {

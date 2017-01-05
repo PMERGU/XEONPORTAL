@@ -45,6 +45,25 @@
 						</div>
 					</div>
 				</div>
+				
+					<div class="col-md-4">
+							<div class="form-group">
+								<h4>Order Type</h4>
+								<select class="form-control" name="szone" ng-model="podReport.orType" id="field_ioStatus">
+								<option value="">ALL</option>
+									<option value="ZOUT">Outbound</option>
+									<option value="ZIN1">Inbound</option>
+									<option value="YCO">Transport</option>
+									<option value="YRET">Returns</option>
+									<option value="ZFF">Freight Forwarding & Clearing</option>
+									<option value="ZWSE">Storage</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					
+					 
+					
 			</div>
 
 		</div>
@@ -75,6 +94,7 @@
 							<th>Order Type</th>
 							<th><span>POD Attachments</span></th>
 							<th><span>Invoice Attachments</span></th>
+							
 						</tr>
 					</thead>
 					<tbody>

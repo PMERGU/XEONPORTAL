@@ -6,6 +6,7 @@ public class PODReportReqDTO {
 	private Date fromDate;
 	private Date toDate;
 	private String podType;
+	private String orderType;
 	private String sapId;
 
 	public Date getFromDate() {
@@ -43,5 +44,13 @@ public class PODReportReqDTO {
 	@Override
 	public String toString() {
 		return "PODReportReqDTO [fromDate=" + fromDate + ", toDate=" + toDate + ", podType=" + podType + ", sapId=" + sapId + "]";
+	}
+
+	public String getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
 	}
 }

@@ -18,6 +18,7 @@ angular.module('portalApp')
 				fromDate : null,
 				toDate : null,
 				podType : null,
+				orType : null,
 				id : null
 			};
 			$scope.podData = [];
@@ -156,6 +157,7 @@ angular.module('portalApp')
 
 			if ($stateParams.queryType === undefined || $stateParams.queryType === null || $stateParams.queryType === "ALL") {
 				$scope.podReport.sapId = $scope.selected.company.sapId;
+				$scope.podReport.orType = $scope.podReport.orType == null ? "" : $scope.podReport.orType ;
 				//				$scope.stockReport.
 				$log.debug("test Status: " + $scope.podStatus);
 				PODReport.save($scope.podReport, onSaveSuccess, onSaveError);

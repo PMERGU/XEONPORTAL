@@ -125,7 +125,7 @@ public class ReportResource {
 		return () -> {
 			List<PODReportResDTO> ret = new ArrayList<PODReportResDTO>();
 			try {
-				List<EtCustOrders> evResult = hiberSapService.getCustomerOrdersForPOD(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType());
+				List<EtCustOrders> evResult = hiberSapService.getCustomerOrdersForPOD(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType(),dto.getOrderType());
 				for (EtCustOrders evr : evResult) {
 					PODReportResDTO resDto = new PODReportResDTO();
 					BeanUtils.copyProperties(resDto, evr);
@@ -203,7 +203,7 @@ public class ReportResource {
 
 		List<PODReportResDTO> ret = new ArrayList<PODReportResDTO>();
 		try {
-			List<EtCustOrders> evResult = hiberSapService.getCustomerOrdersForPOD(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType());
+			List<EtCustOrders> evResult = hiberSapService.getCustomerOrdersForPOD(dto.getSapId(), dto.getFromDate(), dto.getToDate(), dto.getPodType(),dto.getOrderType());
 			for (EtCustOrders evr : evResult) {
 				PODReportResDTO resDto = new PODReportResDTO();
 				BeanUtils.copyProperties(resDto, evr);
