@@ -16,9 +16,9 @@ angular.module('portalApp')
         $scope.orderTypes = {
         		
         		'ZOUT' : 'OUTBOUND',
-				'ZINB':'INBOUND',
+				'ZIN1':'INBOUND',
 				'YCO':'Transport',
-				'ZRET': 'INBOUND',             //'Returns' replaced with INBOUND bcz for both INBOUND and retuns coditions are same in html page
+				'YRET': 'INBOUND',             //'Returns' replaced with INBOUND bcz for both INBOUND and retuns coditions are same in html page
 				'ZFF' : 'Freight Forwarding & Clearing',
 				'ZWSE': 'Storage'
         		

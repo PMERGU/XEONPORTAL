@@ -26,9 +26,9 @@
 								<select class="form-control" name="szone" ng-model="soData.orType" id="field_ioStatus">
 								<option value="">ALL</option>
 									<option value="ZOUT">Outbound</option>
-									<option value="ZINB">Inbound</option>
+									<option value="ZIN1">Inbound</option>
 									<option value="YCO">Transport</option>
-									<option value="ZRET">Returns</option>
+									<option value="YRET">Returns</option>
 									<option value="ZFF">Freight Forwarding & Clearing</option>
 									<option value="ZWSE">Storage</option>
 								</select>
@@ -90,7 +90,6 @@
 							<th>Consignee</th>
 							<th>Sales Order</th>
 							<th>Delivery No</th>
-							<th>POD Status</th>
 							<th ng-if="showOrderType" >Order Type</th>
 							<th></th>
 							
@@ -109,8 +108,7 @@
 							<td>{{ order._parvwAg }}</td>
 							<td>{{ order._vbeln }}</td>
 							<td>{{ order._dbeln }}</td>
-							<td>{{ order._pdstk }}</td>
-							<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZINB">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="ZRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span> 
+							<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span> 
 							</span></td>
 							<td width="10px">
 								<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
@@ -140,7 +138,7 @@
 							<th>Consignee</th>
 							<th>Sales Order</th>
 							<th>Delivery No</th>
-							<th>POD Status</th>
+							<th ng-if="showOrderType" >Order Type</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -156,7 +154,8 @@
 							<td>{{ order._parvwAg }}</td>
 							<td>{{ order._vbeln }}</td>
 							<td>{{ order._dbeln }}</td>
-							<td>{{ order._pdstk }}</td>
+							<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span> 
+							</span></td>
 							<td width="10px">
 								<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 									<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
@@ -183,7 +182,7 @@
 							<th>Consignee</th>
 							<th>Sales Order</th>
 							<th>Delivery No</th>
-							<th>POD Status</th>
+							<th ng-if="showOrderType" >Order Type</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -199,7 +198,8 @@
 							<td>{{ order._parvwAg }}</td>
 							<td>{{ order._vbeln }}</td>
 							<td>{{ order._dbeln }}</td>
-							<td>{{ order._pdstk }}</td>
+							<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span> 
+							</span></td>
 							<td width="10px">
 								<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 									<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>

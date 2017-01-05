@@ -22,9 +22,9 @@
 							<h4>POD Status</h4>
 							<select class="form-control" name="szone" ng-model="podReport.podType" id="field_podStatus">
 								<option value="">ALL</option>
-								<option value="C">C</option>
-								<option value="B">B</option>
-								<option value="A">A</option>
+								<option value="C">Delivered</option>
+								<option value="B">Partially Delivered</option>
+								<option value="A">Undelivered</option>
 							</select>
 						</div>
 					</div>
@@ -65,12 +65,14 @@
 							<th><span>Purchase Order</span></th>
 							<th><span>Customer Controller</span></th>
 							<th><span>Captured By</span></th>
+							<th>Capture Date - Time</th>
 							<th><span>Pickup Party</span></th>
 							<th><span>Pickup HUB</span></th>
 							<th><span>Ship to party</span></th>
 							<th><span>Consignee</span></th>
 							<th><span>Sales Order</span></th>
 							<th><span>Deliver No</span></th>
+							<th>Order Type</th>
 							<th><span>POD Attachments</span></th>
 							<th><span>Invoice Attachments</span></th>
 						</tr>
@@ -81,12 +83,15 @@
 							<td>{{podRec._bstkd}}</td>
 							<td>{{podRec._parvwYe}}</td>
 							<td>{{podRec._ernam}}</td>
+							<td>{{podRec._audat | date: 'yyyy-MM-dd'}} - {{podRec._erzet |  date: 'HH:mm'}}</td>
 							<td>{{podRec._parvwYc}}</td>
 							<td>{{podRec._parvwYh}}</td>
 							<td>{{podRec._parvwWe}}</td>
 							<td>{{podRec._parvwAg}}</td>
 							<td>{{podRec._vbeln}}</td>
 							<td>{{podRec._dbeln}}</td>
+							<td><span ng-switch="podRec._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span> 
+							</span></td>
 							<td>{{podRec.podStatus}}</td>
 							<td>{{podRec.invStatus}}</td>
 						</tr>
