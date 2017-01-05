@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('portalApp')
-	.controller('PODReportController', function($scope, $log, $state, $stateParams, $http, Company, PODReport, ParseLinks, Principal) {
+	.controller('PODReportController', function($scope, $log, $state, $stateParams, $http, Company, PODReport, ParseLinks, Principal,DTOptionsBuilder, DTColumnDefBuilder) {
 
 		$scope.podData = [];
 		$scope.predicate = 'id';
@@ -165,6 +165,19 @@ angular.module('portalApp')
 			}
 		};
 
+		
+		$scope.dtOptions = DTOptionsBuilder.newOptions()
+		.withBootstrap()
+		.withPaginationType('full_numbers')
+		.withOption('rowCallback', rowCallback)
+		.withDisplayLength(25);
+	$scope.dtColumnDefs = [
+		DTColumnDefBuilder.newColumnDef(0),
+		DTColumnDefBuilder.newColumnDef(1),
+		DTColumnDefBuilder.newColumnDef(2),
+		DTColumnDefBuilder.newColumnDef(3),
+		DTColumnDefBuilder.newColumnDef(4)
+	];
 
 		$scope.downloadPdf = function() {
 
@@ -192,6 +205,17 @@ angular.module('portalApp')
 				});
 
 			}
+		};
+		
+		function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+			// Unbind first in order to avoid any duplicate handler (see https://github.com/l-lin/angular-datatables/issues/87)
+			$('td', nRow).unbind('click');
+			$('td', nRow).bind('click', function() {
+				$scope.$apply(function() {
+					$log.debug(aData);
+				});
+			});
+			return nRow;
 		};
 
 

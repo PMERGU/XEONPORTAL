@@ -32,7 +32,8 @@ THE SOFTWARE.*/
 						pdfLeftMargin:20,
 						escape:'true',
 						htmlContent:'false',
-						consoleLog:'false'
+						consoleLog:'false',
+						name:'Report'
 				};
                 
 				var options = $.extend(defaults, options);
@@ -279,8 +280,7 @@ THE SOFTWARE.*/
 					var uri = 'data:application/vnd.ms-'+defaults.type+';filename=Test.xls;' + base64data;
 					var downloadLink = document.createElement("a");
 					downloadLink.href = uri;
-					downloadLink.download = new Date().toISOString().slice(0,19)+".xls";
-
+					downloadLink.download =defaults.name+"_"+ new Date().toISOString().slice(0,19)+".xls";
 					document.body.appendChild(downloadLink);
 					downloadLink.click();
 					document.body.removeChild(downloadLink);
