@@ -276,7 +276,15 @@ THE SOFTWARE.*/
 					excelFile += "</html>";
 
 					var base64data = "base64," + $.base64.encode(excelFile);
-					window.open('data:application/vnd.ms-'+defaults.type+';filename=exportData.doc;' + base64data);
+					var uri = 'data:application/vnd.ms-'+defaults.type+';filename=Test.xls;' + base64data;
+					var downloadLink = document.createElement("a");
+					downloadLink.href = uri;
+					downloadLink.download = new Date().toISOString().slice(0,19)+".xls";
+
+					document.body.appendChild(downloadLink);
+					downloadLink.click();
+					document.body.removeChild(downloadLink);
+					//window.open('data:application/vnd.ms-'+defaults.type+';filename=Test.xls;' + base64data);
 					
 				}else if(defaults.type == 'png'){
 					html2canvas($(el), {
