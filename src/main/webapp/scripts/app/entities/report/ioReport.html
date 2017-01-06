@@ -120,14 +120,14 @@
 							<td>{{ioRec._ibeln}}</td>
 							<td>{{ioRec._parvwWe}}</td>
 							<td>{{ioRec._parvwAg}}</td>
-							<td>{{ioRec._podat | date: 'yyyy-MM-dd'}} - {{ioRec._potim |  date: 'HH:mm' }}</td>
+							<td>{{ioRec._podat | date: 'dd-MMM-yyyy'}}  {{ioRec._potim == '1969-12-31T22:00:00.000+0000' ? ' ' : ioRec._potim |  date: 'HH:mm' }}</td>
 						<!-- 	<td>{{ioRec._potim |  date: 'HH:mm' }}</td>  -->
 							<td>{{ioRec._pdstk}}</td>
 						<!-- 	<td>{{ioRec._skunnr}}</td>  -->
-							<td>{{ioRec._audat | date: 'yyyy-MM-dd'}} - {{ioRec._erzet |  date: 'HH:mm' }}</td>
+							<td>{{ioRec._audat | date: 'dd-MMM-yyyy'}}  {{ioRec._erzet |  date: 'HH:mm' }}</td>
 						<!-- <td>{{ioRec._erzet |  date: 'HH:mm' }}</td>  -->	
 							<td>{{ioRec._posnr}}</td>
-							<td>{{ioRec._fkdat | date: 'yyyy-MM-dd' }} - {{ioRec._drzet  |  date: 'HH:mm'  }}</td>
+							<td>{{ioRec._fkdat | date: 'dd-MMM-yyyy' }}  {{ioRec._drzet  |  date: 'HH:mm'  }}</td>
 						<!--  	<td>{{ioRec._drzet  |  date: 'HH:mm'  }}</td> -->
 							<td>{{ioRec._arktx}}</td>
 							<td>{{ioRec._kwmeng}}</td>	
