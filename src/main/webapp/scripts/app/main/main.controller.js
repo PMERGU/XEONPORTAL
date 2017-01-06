@@ -9,7 +9,7 @@ angular.module('portalApp')
 		$scope.todaysDate = new Date();
 		$scope.loadingOrders = false;
 		$scope.showTable = false;
-		
+		$scope.showOrderType=false;
 		$scope.soData = {
 				fromDate : null,
 				toDate : null,
@@ -132,6 +132,7 @@ angular.module('portalApp')
             $scope.deliveredOrders = [];
 			$scope.emptyStatusOrders = [];
 			$scope.undeliveredOrders = [];
+			$scope.showOrderType=false;
             if($scope.account.company.id !== null) {
                /* CachedOrders.getOrders($scope.ordersStep,
                     $scope.account.company.sapId,
@@ -140,7 +141,12 @@ angular.module('portalApp')
                     new Date(new Date(dateT).setDate(dateT.getDate()+1)),
                     force
                 )*/
-                SOService.getByCustomerNumber({type :  $scope.soData.orType , customerNumber: $scope.account.company.sapId,
+            	
+            	if($scope.soData.orType == null || $scope.soData.orType == '')
+				{
+            		$scope.showOrderType=true;
+				}
+                SOService.getByCustomerNumber({type :   $scope.soData.orType == null ? "" : $scope.soData.orType  , customerNumber: $scope.account.company.sapId,
                 	from : $scope.soData.fromDate,
 					to : $scope.soData.toDate 
 				

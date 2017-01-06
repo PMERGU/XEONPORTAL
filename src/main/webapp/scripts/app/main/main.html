@@ -115,6 +115,7 @@
 								<div class="form-group">
 									<h4>Order Type</h4>
 									<select class="form-control" name="szone" ng-model="soData.orType" id="field_ioStatus">
+										<option value="">ALL</option>
 										<option value="ZOUT">Outbound</option>
 										<option value="ZINB">Inbound</option>
 										<option value="YCO">Transport</option>
@@ -167,7 +168,7 @@
 										<th>Consignee</th>
 										<th>Sales Order</th>
 										<th>Delivery No</th>
-										<th>POD Status</th>
+										<th ng-if="showOrderType">Order Type</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -177,14 +178,15 @@
 										<td>{{ order._bstkd }}</td>
 										<td>{{ order._parvwYe }}</td>
 										<td>{{ order._ernam }}</td>
-										<td>{{ order._audat }} - {{ order._erzet }}</td>
+										<td>{{ order._audat | date: 'yyyy-MM-dd'}} - {{ order._erzet | date: 'HH:mm'}}</td>
 										<td>{{ order._parvwYc }}</td>
 										<td>{{ order._parvwYh }}</td>
 										<td>{{ order._parvwWe }}</td>
 										<td>{{ order._parvwAg }}</td>
 										<td>{{ order._vbeln }}</td>
 										<td>{{ order._dbeln }}</td>
-										<td>{{ order._pdstk }}</td>
+										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
+										</span></td>
 										<td width="10px">
 											<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 												<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
@@ -211,7 +213,7 @@
 										<th>Consignee</th>
 										<th>Sales Order</th>
 										<th>Delivery No</th>
-										<th>POD Status</th>
+										<th ng-if="showOrderType">Order Type</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -220,14 +222,15 @@
 										<td>{{ order._bstkd }}</td>
 										<td>{{ order._parvwYe }}</td>
 										<td>{{ order._ernam }}</td>
-										<td>{{ order._audat }} - {{ order._erzet }}</td>
+										<td>{{ order._audat | date: 'yyyy-MM-dd'}} - {{ order._erzet | date: 'HH:mm'}}</td>
 										<td>{{ order._parvwYc }}</td>
 										<td>{{ order._parvwYh }}</td>
 										<td>{{ order._parvwWe }}</td>
 										<td>{{ order._parvwAg }}</td>
 										<td>{{ order._vbeln }}</td>
 										<td>{{ order._dbeln }}</td>
-										<td>{{ order._pdstk }}</td>
+										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
+										</span></td>
 										<td width="10px">
 											<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 												<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
@@ -238,52 +241,51 @@
 							</table>
 						</div>
 					</div>
-					</uib-tab>
-					
-					<uib-tab> <uib-tab-heading> <span class="badge badge-primary" style="margin-right: 10px">{{(emptyStatusOrders | unique: '_dbeln').length}}</span>Others </uib-tab-heading>
-		<div class="panel-body" style="padding-top: 0px;">
-			<div class="table-responsive">
-				<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
-					<thead>
-						<tr>
-							<th>Purchase Order</th>
-							<th>Customer Controller</th>
-							<th>Captured By</th>
-							<th>Capture Date - Time</th>
-							<th>Pickup Party</th>
-							<th>Pickup HUB</th>
-							<th>Ship to Party</th>
-							<th>Consignee</th>
-							<th>Sales Order</th>
-							<th>Delivery No</th>
-							<th>POD Status</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="order in emptyStatusOrders | unique: '_dbeln'">
-							<td>{{ order._bstkd }}</td>
-							<td>{{ order._parvwYe }}</td>
-							<td>{{ order._ernam }}</td>
-							<td>{{ order._audat }} - {{ order._erzet }}</td>
-							<td>{{ order._parvwYc }}</td>
-							<td>{{ order._parvwYh }}</td>
-							<td>{{ order._parvwWe }}</td>
-							<td>{{ order._parvwAg }}</td>
-							<td>{{ order._vbeln }}</td>
-							<td>{{ order._dbeln }}</td>
-							<td>{{ order._pdstk }}</td>
-							<td width="10px">
-								<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
-									<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		</uib-tab>  </uib-tabset>
+					</uib-tab> <uib-tab> <uib-tab-heading> <span class="badge badge-primary" style="margin-right: 10px">{{(emptyStatusOrders | unique: '_dbeln').length}}</span>Others </uib-tab-heading>
+					<div class="panel-body" style="padding-top: 0px;">
+						<div class="table-responsive">
+							<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped hover" style="width: 100% !important;">
+								<thead>
+									<tr>
+										<th>Purchase Order</th>
+										<th>Customer Controller</th>
+										<th>Captured By</th>
+										<th>Capture Date - Time</th>
+										<th>Pickup Party</th>
+										<th>Pickup HUB</th>
+										<th>Ship to Party</th>
+										<th>Consignee</th>
+										<th>Sales Order</th>
+										<th>Delivery No</th>
+										<th ng-if="showOrderType">Order Type</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="order in emptyStatusOrders | unique: '_dbeln'">
+										<td>{{ order._bstkd }}</td>
+										<td>{{ order._parvwYe }}</td>
+										<td>{{ order._ernam }}</td>
+										<td>{{ order._audat | date: 'yyyy-MM-dd'}} - {{ order._erzet | date: 'HH:mm'}}</td>
+										<td>{{ order._parvwYc }}</td>
+										<td>{{ order._parvwYh }}</td>
+										<td>{{ order._parvwWe }}</td>
+										<td>{{ order._parvwAg }}</td>
+										<td>{{ order._vbeln }}</td>
+										<td>{{ order._dbeln }}</td>
+										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
+										</span></td>
+										<td width="10px">
+											<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
+												<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					</uib-tab> </uib-tabset>
 				</div>
 			</div>
 		</div>
