@@ -174,6 +174,8 @@ public class ReportResource {
 
 		List<StockInventory> ret = new ArrayList<StockInventory>();
 		try {
+			Company company = companyRepository.findOne(Long.valueOf(dto.getCompany()));
+			dto.setCompany(company.getMaterialName());
 			ret = hiberSapService.fetchStockData(dto);
 			log.debug("[Reportz:{}] - REST request to Fetch Stock Data for Report By User size", ret.size());
 		} catch (Exception e) {
