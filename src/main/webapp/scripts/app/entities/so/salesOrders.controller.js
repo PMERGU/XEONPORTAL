@@ -11,6 +11,17 @@ angular.module('portalApp')
 		$scope.loadingOrders = false;
 		$scope.showTable = false;
 		
+		 $scope.orderTypes = {
+	        		
+	        		'ZOUT' : 'OUTBOUND',
+					'ZIN1':'INBOUND',
+					'YCO':'Transport',
+					'YRET': 'INBOUND',             //'Returns' replaced with INBOUND bcz for both INBOUND and retuns coditions are same in html page
+					'ZFF' : 'Freight Forwarding & Clearing',
+					'ZWSE': 'Storage'
+	        		
+	        }
+		
 		$scope.showOrderType=false;
 		
 		$scope.soData = {
@@ -147,6 +158,13 @@ angular.module('portalApp')
 							to : $scope.soData.toDate 
 				
 				}).$promise.then(function(data) {
+					$log.debug("Total length :: " + data.length);
+					$scope.orderDate=data.filter(function(el) {
+						$log.debug($scope.orderTypes[el._auart] + " el._auart :: " + el._auart);
+						return ($scope.orderTypes[el._auart] != null);
+					});
+					data =$scope.orderDate;
+					$log.debug("Total first filter length :: " + data.length);
 					$scope.deliveredOrders = data.filter(function(el) {
 						$log.debug("el._pdstk :: " + el._pdstk);
 						return (el._pdstk === "B" || el._pdstk === "C");
