@@ -159,6 +159,7 @@
 									<tr>
 
 										<th>Purchase Order</th>
+										<th ng-if="showOrderType">Order Type</th>
 										<th>Customer Controller</th>
 										<th>Captured By</th>
 										<th>Capture Date - Time</th>
@@ -168,7 +169,7 @@
 										<th>Consignee</th>
 										<th>Sales Order</th>
 										<th>Delivery No</th>
-										<th ng-if="showOrderType">Order Type</th>
+										
 										<th></th>
 									</tr>
 								</thead>
@@ -176,6 +177,8 @@
 									<tr ng-repeat="order in undeliveredOrders | unique: '_dbeln'">
 
 										<td>{{ order._bstkd }}</td>
+										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
+										</span></td>
 										<td>{{ order._parvwYe }}</td>
 										<td>{{ order._ernam }}</td>
 										<td>{{ order._audat | date: 'yyyy-MM-dd'}} - {{ order._erzet | date: 'HH:mm'}}</td>
@@ -185,8 +188,7 @@
 										<td>{{ order._parvwAg }}</td>
 										<td>{{ order._vbeln }}</td>
 										<td>{{ order._dbeln }}</td>
-										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
-										</span></td>
+										
 										<td width="10px">
 											<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 												<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
@@ -204,6 +206,7 @@
 								<thead>
 									<tr>
 										<th>Purchase Order</th>
+										<th ng-if="showOrderType">Order Type</th>
 										<th>Customer Controller</th>
 										<th>Captured By</th>
 										<th>Capture Date - Time</th>
@@ -213,13 +216,15 @@
 										<th>Consignee</th>
 										<th>Sales Order</th>
 										<th>Delivery No</th>
-										<th ng-if="showOrderType">Order Type</th>
+										
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr ng-repeat="order in deliveredOrders | unique: '_dbeln'">
 										<td>{{ order._bstkd }}</td>
+										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
+										</span></td>
 										<td>{{ order._parvwYe }}</td>
 										<td>{{ order._ernam }}</td>
 										<td>{{ order._audat | date: 'yyyy-MM-dd'}} - {{ order._erzet | date: 'HH:mm'}}</td>
@@ -229,8 +234,7 @@
 										<td>{{ order._parvwAg }}</td>
 										<td>{{ order._vbeln }}</td>
 										<td>{{ order._dbeln }}</td>
-										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
-										</span></td>
+										
 										<td width="10px">
 											<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 												<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
@@ -248,6 +252,7 @@
 								<thead>
 									<tr>
 										<th>Purchase Order</th>
+										<th ng-if="showOrderType">Order Type</th>
 										<th>Customer Controller</th>
 										<th>Captured By</th>
 										<th>Capture Date - Time</th>
@@ -257,13 +262,15 @@
 										<th>Consignee</th>
 										<th>Sales Order</th>
 										<th>Delivery No</th>
-										<th ng-if="showOrderType">Order Type</th>
+										
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr ng-repeat="order in emptyStatusOrders | unique: '_dbeln'">
 										<td>{{ order._bstkd }}</td>
+										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
+										</span></td>
 										<td>{{ order._parvwYe }}</td>
 										<td>{{ order._ernam }}</td>
 										<td>{{ order._audat | date: 'yyyy-MM-dd'}} - {{ order._erzet | date: 'HH:mm'}}</td>
@@ -273,8 +280,7 @@
 										<td>{{ order._parvwAg }}</td>
 										<td>{{ order._vbeln }}</td>
 										<td>{{ order._dbeln }}</td>
-										<td ng-if="showOrderType"><span ng-switch="order._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
-										</span></td>
+										
 										<td width="10px">
 											<button type="submit" ui-sref="orderdetailNew({poNumber: order._bstkd, deliveryNo: order._dbeln, type : soData.ioType, orderStep: ordersStep})" class="btn btn-info btn-sm">
 												<span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs hidden-sm"></span>
