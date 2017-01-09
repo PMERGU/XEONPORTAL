@@ -44,6 +44,8 @@ public class EtCustOrders {
 	String _parvwYc;
 	@Parameter("PARVW_YH")
 	String _parvwYh;
+	@Parameter("PARVW_YE_DESC")
+	String _parvwYeDesc;
 	@Parameter("SKUNNR")
 	String _skunnr;
 
@@ -191,6 +193,14 @@ public class EtCustOrders {
 		this._parvwYh = _parvwYh;
 	}
 
+	public String get_parvwYeDesc() {
+		return _parvwYeDesc;
+	}
+
+	public void set_parvwYeDesc(String _parvwYeDesc) {
+		this._parvwYeDesc = _parvwYeDesc;
+	}
+
 	public String get_skunnr() {
 		return this._skunnr;
 	}
@@ -238,6 +248,8 @@ public class EtCustOrders {
 			result += ", _parvwYc: " + _parvwYc;
 		if (_parvwYh != null && !_parvwYh.trim().isEmpty())
 			result += ", _parvwYh: " + _parvwYh;
+		if (_parvwYeDesc != null && !_parvwYeDesc.trim().isEmpty())
+			result += ", _parvwYeDesc: " + _parvwYeDesc;
 		if (_skunnr != null && !_skunnr.trim().isEmpty())
 			result += ", _skunnr: " + _skunnr;
 		return result;
