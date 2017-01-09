@@ -80,29 +80,30 @@
 							<th class="columns" >Purchase Order</th>
 							<th class="columns1" >Customer Controller</th>
 							<th class="columns2">Captured By</th>
-							<th class="columns">Pickup Party</th>
-							<th class="columns3">Pickup HUB</th>
-							<th class="columns4">Billing Status</th>
-							<th class="columns5">Batch Number</th>
-							<th class="columns6">Sales Order</th>
-							<th  class="columns7" >Billing Document</th>
-							<th class="columns8" >Invoice Number</th>
-							<th  class="columns9" >Ship to Party</th>
-							<th  class="columns10" >Sold to Party</th>
-							<th  class="columns11" >Date of Delivery</th>
+							<th class="columns3">Pickup Party</th>
+							<th class="columns4">Pickup HUB</th>
+							<th class="columns5">Billing Status</th>
+							<th class="columns6">Batch Number</th>
+							<th class="columns7">Sales Order</th>
+							<th class="columns8" >Order type</th>
+							<th  class="columns9" >Billing Document</th>
+							<th class="columns10" >Invoice Number</th>
+							<th  class="columns11" >Ship to Party</th>
+							<th  class="columns12" >Sold to Party</th>
+							<th  class="columns13" >Date of Delivery</th>
 							<!-- <th  class="columns12" >Confirmation Time</th>  -->
-							<th class="columns12" >POD Status</th>
+							<th class="columns14" >POD Status</th>
 						<!-- 	<th class="columns13" >Customer Number</th>  -->
-							<th class="columns14" >Document Date</th>
+							<th class="columns15" >Document Date</th>
 							<!-- <th class="columns17" >Entry Time</th>  -->
-							<th  class="columns15">SD Item Number</th>
-							<th class="columns16" >Billing Date</th>
+							<th  class="columns16">SD Item Number</th>
+							<th class="columns17" >Billing Date</th>
 						<!-- 	<th class="columns20" >Entry Time</th>  -->
-							<th class="columns17" >Sales Order Item</th>
-							<th class="columns18">Cumulative sales units</th>
-							<th  class="columns19">Sales Unit</th>
-							<th  class="columns20" >Material Number</th>
-							<th class="columns21" >Order type</th>
+							<th class="columns18" >Sales Order Item</th>
+							<th class="columns19">Cumulative sales units</th>
+							<th  class="columns20">Sales Unit</th>
+							<th  class="columns21" >Material Number</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -116,6 +117,7 @@
 							<td>{{ioRec._fkstk}}</td>
 							<td>{{ioRec._charg}}</td>
 							<td>{{ioRec._vbeln}}</td>
+							<td ><span ng-switch="ioRec._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span>
 							<td>{{ioRec._dbeln}}</td>
 							<td>{{ioRec._ibeln}}</td>
 							<td>{{ioRec._parvwWe}}</td>
@@ -133,7 +135,7 @@
 							<td>{{ioRec._kwmeng}}</td>	
 							<td>{{ioRec._vrkme}}</td>
 							<td>{{ioRec._matnr}}</td>
-							<td ><span ng-switch="ioRec._auart"> <span ng-switch-when="ZOUT">Outbound</span> <span ng-switch-when="ZIN1">InBound</span> <span ng-switch-when="YCO">Transport</span> <span ng-switch-when="YRET">Returns</span> <span ng-switch-when="ZFF">Freight Forwarding & Clearing</span> <span ng-switch-when="ZWSE">Storage</span> 
+							 
 							</span></td>
 						</tr>
 					</tbody>
